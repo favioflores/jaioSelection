@@ -1,4 +1,4 @@
-package jaio.seletion.bean;
+package jaio.selection.bean;
 
 import java.io.Serializable;
 

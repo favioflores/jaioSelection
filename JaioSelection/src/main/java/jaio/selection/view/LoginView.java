@@ -19,7 +19,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import jaio.seletion.bean.UsuarioBean;
+import jaio.selection.bean.UsuarioBean;
 
 @ManagedBean(name = "loginView")
 @ViewScoped
