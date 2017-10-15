@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<f:facet name="first">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta name="viewport"
+			content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<link rel="shortcut icon" type="image/png"
+			href="#{request.contextPath}/resources/omega-layout/images/logo-jaio.png" />
+	</f:facet>
+	<title>Jaio Selection</title>
+</h:head>
+
+<h:body styleClass="login-body">
+
+	<div id="login-wrapper">
+		<h:form id="formLogin">
+			<div id="login-container">
+				<!--  <p:graphicImage name="images/logo-jaio.png" library="omega-layout" width="100" />  -->
+				<span class="title">#{msg['login.iniciar.sesion']}</span>
+				<p:growl life="4000" />
+				<p:focus for="ipUsuario" />
+				<div class="ui-g ui-fluid">
+					<div class="ui-g-12">
+						<p:inputText id="ipUsuario" value="#{loginView.usuario}"
+							placeholder="#{msg['login.usuario']}" required="true"
+							requiredMessage="#{msg['login.usuario.incorrecto']}"
+							label="#{msg['login.usuario']}" />
+						<p:message for="ipUsuario" display="tooltip"></p:message>
+					</div>
+					<div class="ui-g-12">
+						<p:password id="ipPassword" value="#{loginView.contraseña}"
+							placeholder="#{msg['login.password']}" feedback="false"
+							required="true"
+							requiredMessage="#{msg['login.password.incorrecto']}"
+							label="#{msg['login.password']}" autocomplete="true"  />
+						<p:message for="ipPassword" display="tooltip"></p:message>
+					</div>
+					<div class="ui-g-12 ui-md-12">
+						<p:link>#{msg['login.olvide.password']}</p:link>
+					</div>
+					<div class="ui-g-12">
+						<p:commandButton id="btnLogin"
+							actionListener="#{loginView.iniciarSesion}"
+							styleClass="navy-button" value="#{msg['login.ingresar']}"
+							update=":formLogin:" />
+						<p:hotkey id="hotLogin" bind="ENTER"
+							actionListener="#{loginView.iniciarSesion}" update=":formLogin:" />
+					</div>
+				</div>
+				<p:blockUI block="formLogin" trigger="btnLogin"></p:blockUI>
+				<p:blockUI block="formLogin" trigger="hotLogin"></p:blockUI>
+
+
+			</div>
+		</h:form>
+
+		<div class="login-footer">Jaio Selection</div>
+	</div>
+
+	<h:outputStylesheet name="css/layout.css" library="omega-layout" />
+</h:body>
+
+</html>
