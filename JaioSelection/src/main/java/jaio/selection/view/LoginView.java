@@ -10,6 +10,7 @@ import java.util.Map;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
@@ -18,21 +19,33 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jmx.export.annotation.ManagedAttribute;
+import org.springframework.stereotype.Component;
 
 import jaio.selection.bean.UsuarioBean;
+import jaio.selection.dao.UsuarioDAO;
+import jaio.selection.entity2.Usuario;
+import jaio.selection.service.UsuarioService;
+import jaio.selection.service.impl.UsuarioServiceImpl;
 
 @ManagedBean(name = "loginView")
 @ViewScoped
+@Component
 public class LoginView implements Serializable {
+
+	//@ManagedProperty(value = "#{UsuarioService}")
+	@Autowired
+	private UsuarioService usuarioService;
 
 	private static Log log = LogFactory.getLog(LoginView.class);
 
 	private static final long serialVersionUID = -1L;
 
+
 	private String usuario;
-
 	private String contraseña;
-
+	
 	public String getUsuario() {
 		return usuario;
 	}
@@ -94,6 +107,13 @@ public class LoginView implements Serializable {
 					message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Usuario y contraseña requeridos",null);
 				} else {
 					if (usuario.equals("admin") && contraseña.equals("admin")) {
+						
+						System.out.println("fafo 3");
+						System.out.println(usuarioService);
+						Usuario objUsuario = usuarioService.obtenerUsuario(0);
+						
+						System.out.println(objUsuario.getCorreo());
+						
 	                    FacesContext.getCurrentInstance().getExternalContext().redirect("bienvenida.jsf");
 					} else {
 						message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Usuario y contraseña incorrectos",null);
