@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generated 21/10/2017 10:12:51 AM by Hibernate Tools 5.2.5.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping auto-import="true" default-access="property" default-cascade="none" default-lazy="true">
+    <class catalog="jaioselectiondb" dynamic-insert="false" dynamic-update="false" mutable="true" name="jaio.selection.model.ModeloCompetenciaSinonimo" optimistic-lock="version" polymorphism="implicit" select-before-update="false" table="modelo_competencia_sinonimo">
+        <id name="id" type="java.lang.Integer">
+            <column name="id"/>
+            <generator class="identity"/>
+        </id>
+        <many-to-one class="jaio.selection.model.ModeloCompetencia" embed-xml="true" fetch="select" insert="true" name="modeloCompetencia" not-found="exception" optimistic-lock="true" unique="false" update="true">
+            <column name="modelo_competencia_id" not-null="true"/>
+        </many-to-one>
+        <property generated="never" lazy="false" name="palabra" optimistic-lock="true" type="string" unique="false">
+            <column length="100" name="palabra" not-null="true"/>
+        </property>
+    </class>
+</hibernate-mapping>

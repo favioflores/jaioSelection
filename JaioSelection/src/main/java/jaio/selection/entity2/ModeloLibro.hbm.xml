@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generated 21/10/2017 10:12:51 AM by Hibernate Tools 5.2.5.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping auto-import="true" default-access="property" default-cascade="none" default-lazy="true">
+    <class catalog="jaioselectiondb" dynamic-insert="false" dynamic-update="false" mutable="true" name="jaio.selection.model.ModeloLibro" optimistic-lock="version" polymorphism="implicit" select-before-update="false" table="modelo_libro">
+        <id name="id" type="java.lang.Integer">
+            <column name="id"/>
+            <generator class="identity"/>
+        </id>
+        <property generated="never" lazy="false" name="nombre" optimistic-lock="true" type="string" unique="false">
+            <column length="200" name="nombre" not-null="true"/>
+        </property>
+        <property generated="never" lazy="false" name="autor" optimistic-lock="true" type="string" unique="false">
+            <column length="500" name="autor"/>
+        </property>
+        <property generated="never" lazy="false" name="adaptacion" optimistic-lock="true" type="string" unique="false">
+            <column length="500" name="adaptacion"/>
+        </property>
+        <property generated="never" lazy="false" name="resena" optimistic-lock="true" type="string" unique="false">
+            <column length="2000" name="resena"/>
+        </property>
+        <property generated="never" lazy="false" name="horasEstimadas" optimistic-lock="true" type="java.lang.Integer" unique="false">
+            <column name="horas_estimadas"/>
+        </property>
+        <property generated="never" lazy="false" name="minutosEstimados" optimistic-lock="true" type="java.lang.Integer" unique="false">
+            <column name="minutos_estimados"/>
+        </property>
+        <set embed-xml="true" fetch="select" inverse="true" lazy="true" mutable="true" name="modeloEvaluacions" optimistic-lock="true" sort="unsorted" table="modelo_evaluacion">
+            <key on-delete="noaction">
+                <column name="modelo_libro_id" not-null="true"/>
+            </key>
+            <one-to-many class="jaio.selection.model.ModeloEvaluacion" embed-xml="true" not-found="exception"/>
+        </set>
+    </class>
+</hibernate-mapping>

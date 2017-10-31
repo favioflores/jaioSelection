@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+
+	<session-factory>
+		<property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+		<property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+		<property name="hibernate.connection.url">jdbc:mysql://localhost:3309/jaioselectiondb</property>
+		<property name="hibernate.connection.username">root</property>
+		<property name="hibernate.connection.password">frozen4play</property>
+		<property name="hibernate.show_sql">true</property>
+		<property name="hibernate.connection.autocommit">false</property>
+
+		<mapping resource="jaio/selection/model/Area.hbm.xml" />
+		<mapping resource="jaio/selection/model/BateriaEvaluacion.hbm.xml" />
+		<mapping resource="jaio/selection/model/BateriaPersonalizada.hbm.xml" />
+		<mapping resource="jaio/selection/model/Candidato.hbm.xml" />
+		<mapping resource="jaio/selection/model/ComunicadoProceso.hbm.xml" />
+		<mapping resource="jaio/selection/model/Definicion.hbm.xml" />
+		<mapping resource="jaio/selection/model/Elemento.hbm.xml" />
+		<mapping resource="jaio/selection/model/Empresa.hbm.xml" />
+		<mapping resource="jaio/selection/model/EvaluacionPerfil.hbm.xml" />
+		<mapping resource="jaio/selection/model/InfoAcademica.hbm.xml" />
+		<mapping resource="jaio/selection/model/InfoConocimiento.hbm.xml" />
+		<mapping resource="jaio/selection/model/InfoExperiencia.hbm.xml" />
+		<mapping resource="jaio/selection/model/InfoReferencia.hbm.xml" />
+		<mapping resource="jaio/selection/model/ModeloCompetencia.hbm.xml" />
+		<mapping resource="jaio/selection/model/ModeloCompetenciaSinonimo.hbm.xml" />
+		<mapping resource="jaio/selection/model/ModeloComunicado.hbm.xml" />
+		<mapping resource="jaio/selection/model/ModeloEvaluacion.hbm.xml" />
+		<mapping resource="jaio/selection/model/ModeloEvaluacionXCompetencia.hbm.xml" />
+		<mapping resource="jaio/selection/model/ModeloLibro.hbm.xml" />
+		<mapping resource="jaio/selection/model/ModeloPregunta.hbm.xml" />
+		<mapping resource="jaio/selection/model/ModeloRespuesta.hbm.xml" />
+		<mapping resource="jaio/selection/model/Notificaciones.hbm.xml" />
+		<mapping resource="jaio/selection/model/Perfil.hbm.xml" />
+		<mapping resource="jaio/selection/model/ProcesoSeleccion.hbm.xml" />
+		<mapping resource="jaio/selection/model/Usuario.hbm.xml" />
+
+	</session-factory>
+</hibernate-configuration>

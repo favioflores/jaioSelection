@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generated 21/10/2017 10:12:51 AM by Hibernate Tools 5.2.5.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping auto-import="true" default-access="property" default-cascade="none" default-lazy="true">
+    <class catalog="jaioselectiondb" dynamic-insert="false" dynamic-update="false" mutable="true" name="jaio.selection.model.Usuario" optimistic-lock="version" polymorphism="implicit" select-before-update="false" table="usuario">
+        <id name="id" type="java.lang.Integer">
+            <column name="id"/>
+            <generator class="identity"/>
+        </id>
+        <property generated="never" lazy="false" name="correo" optimistic-lock="true" type="string" unique="false">
+            <column length="200" name="correo" not-null="true"/>
+        </property>
+        <property generated="never" lazy="false" name="nombreCompleto" optimistic-lock="true" type="string" unique="false">
+            <column length="200" name="nombre_completo" not-null="true"/>
+        </property>
+        <property generated="never" lazy="false" name="fechaRegistro" optimistic-lock="true" type="date" unique="false">
+            <column length="10" name="fecha_registro" not-null="true"/>
+        </property>
+        <property generated="never" lazy="false" name="estado" optimistic-lock="true" type="int" unique="false">
+            <column name="estado" not-null="true"/>
+        </property>
+        <property generated="never" lazy="false" name="contrasena" optimistic-lock="true" type="string" unique="false">
+            <column length="45" name="contrasena" not-null="true"/>
+        </property>
+        <set embed-xml="true" fetch="select" inverse="true" lazy="true" mutable="true" name="empresas" optimistic-lock="true" sort="unsorted" table="empresa">
+            <key on-delete="noaction">
+                <column name="usuario_id" not-null="true"/>
+            </key>
+            <one-to-many class="jaio.selection.model.Empresa" embed-xml="true" not-found="exception"/>
+        </set>
+    </class>
+</hibernate-mapping>

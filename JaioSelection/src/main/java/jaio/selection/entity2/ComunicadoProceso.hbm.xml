@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generated 21/10/2017 10:12:51 AM by Hibernate Tools 5.2.5.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping auto-import="true" default-access="property" default-cascade="none" default-lazy="true">
+    <class catalog="jaioselectiondb" dynamic-insert="false" dynamic-update="false" mutable="true" name="jaio.selection.model.ComunicadoProceso" optimistic-lock="version" polymorphism="implicit" select-before-update="false" table="comunicado_proceso">
+        <composite-id class="jaio.selection.model.ComunicadoProcesoId" mapped="false" name="id" unsaved-value="undefined">
+            <key-property name="procesoSeleccionId" type="int">
+                <column name="proceso_seleccion_id"/>
+            </key-property>
+            <key-property name="modeloComunicadoId" type="int">
+                <column name="modelo_comunicado_id"/>
+            </key-property>
+        </composite-id>
+        <many-to-one class="jaio.selection.model.ModeloComunicado" embed-xml="true" fetch="select" insert="false" name="modeloComunicado" not-found="exception" optimistic-lock="true" unique="false" update="false">
+            <column name="modelo_comunicado_id" not-null="true"/>
+        </many-to-one>
+        <many-to-one class="jaio.selection.model.ProcesoSeleccion" embed-xml="true" fetch="select" insert="false" name="procesoSeleccion" not-found="exception" optimistic-lock="true" unique="false" update="false">
+            <column name="proceso_seleccion_id" not-null="true"/>
+        </many-to-one>
+    </class>
+</hibernate-mapping>

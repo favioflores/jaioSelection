@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generated 21/10/2017 10:12:51 AM by Hibernate Tools 5.2.5.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping auto-import="true" default-access="property" default-cascade="none" default-lazy="true">
+    <class catalog="jaioselectiondb" dynamic-insert="false" dynamic-update="false" mutable="true" name="jaio.selection.model.InfoExperiencia" optimistic-lock="version" polymorphism="implicit" select-before-update="false" table="info_experiencia">
+        <id name="id" type="java.lang.Integer">
+            <column name="id"/>
+            <generator class="identity"/>
+        </id>
+        <many-to-one class="jaio.selection.model.Candidato" embed-xml="true" fetch="select" insert="true" name="candidato" not-found="exception" optimistic-lock="true" unique="false" update="true">
+            <column name="candidato_id" not-null="true"/>
+        </many-to-one>
+        <property generated="never" lazy="false" name="empresa" optimistic-lock="true" type="string" unique="false">
+            <column length="200" name="empresa" not-null="true"/>
+        </property>
+        <property generated="never" lazy="false" name="fechaInicio" optimistic-lock="true" type="date" unique="false">
+            <column length="10" name="fecha_inicio" not-null="true"/>
+        </property>
+        <property generated="never" lazy="false" name="fechaFin" optimistic-lock="true" type="date" unique="false">
+            <column length="10" name="fecha_fin"/>
+        </property>
+        <property generated="never" lazy="false" name="logro" optimistic-lock="true" type="binary" unique="false">
+            <column name="logro"/>
+        </property>
+        <property generated="never" lazy="false" name="cargo" optimistic-lock="true" type="string" unique="false">
+            <column length="1000" name="cargo" not-null="true"/>
+        </property>
+        <set embed-xml="true" fetch="select" inverse="true" lazy="true" mutable="true" name="infoReferencias" optimistic-lock="true" sort="unsorted" table="info_referencia">
+            <key on-delete="noaction">
+                <column name="info_experiencia_id" not-null="true"/>
+            </key>
+            <one-to-many class="jaio.selection.model.InfoReferencia" embed-xml="true" not-found="exception"/>
+        </set>
+    </class>
+</hibernate-mapping>

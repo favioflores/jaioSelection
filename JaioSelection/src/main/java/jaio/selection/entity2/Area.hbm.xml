@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generated 21/10/2017 10:12:51 AM by Hibernate Tools 5.2.5.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping auto-import="true" default-access="property" default-cascade="none" default-lazy="true">
+    <class catalog="jaioselectiondb" dynamic-insert="false" dynamic-update="false" mutable="true" name="jaio.selection.model.Area" optimistic-lock="version" polymorphism="implicit" select-before-update="false" table="area">
+        <id name="id" type="java.lang.Integer">
+            <column name="id"/>
+            <generator class="identity"/>
+        </id>
+        <many-to-one class="jaio.selection.model.Area" embed-xml="true" fetch="select" insert="true" name="area" not-found="exception" optimistic-lock="true" unique="false" update="true">
+            <column name="area_herarquia_id"/>
+        </many-to-one>
+        <many-to-one class="jaio.selection.model.Empresa" embed-xml="true" fetch="select" insert="true" name="empresa" not-found="exception" optimistic-lock="true" unique="false" update="true">
+            <column name="empresa_id" not-null="true"/>
+        </many-to-one>
+        <property generated="never" lazy="false" name="descripcion" optimistic-lock="true" type="string" unique="false">
+            <column length="200" name="descripcion" not-null="true"/>
+        </property>
+        <property generated="never" lazy="false" name="fechaRegistro" optimistic-lock="true" type="date" unique="false">
+            <column length="10" name="fecha_registro" not-null="true"/>
+        </property>
+        <property generated="never" lazy="false" name="estado" optimistic-lock="true" type="int" unique="false">
+            <column name="estado" not-null="true"/>
+        </property>
+        <set embed-xml="true" fetch="select" inverse="true" lazy="true" mutable="true" name="areas" optimistic-lock="true" sort="unsorted" table="area">
+            <key on-delete="noaction">
+                <column name="area_herarquia_id"/>
+            </key>
+            <one-to-many class="jaio.selection.model.Area" embed-xml="true" not-found="exception"/>
+        </set>
+        <set embed-xml="true" fetch="select" inverse="true" lazy="true" mutable="true" name="perfils" optimistic-lock="true" sort="unsorted" table="perfil">
+            <key on-delete="noaction">
+                <column name="area_id" not-null="true"/>
+            </key>
+            <one-to-many class="jaio.selection.model.Perfil" embed-xml="true" not-found="exception"/>
+        </set>
+    </class>
+</hibernate-mapping>

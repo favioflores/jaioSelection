@@ -1,0 +1,15 @@
+package jaio.selection.service;
+
+import java.util.List;
+
+import jaio.selection.entity2.ModeloEvaluacionXCompetencia;
+
+public interface ModeloEvaluacionXCompetenciaService {
+
+	public abstract boolean crearModeloEvaluacionXCompetencia(ModeloEvaluacionXCompetencia ModeloEvaluacionXCompetencia);
+	public abstract boolean actualizaModeloEvaluacionXCompetencia(ModeloEvaluacionXCompetencia ModeloEvaluacionXCompetencia);
+	public abstract ModeloEvaluacionXCompetencia obtenerModeloEvaluacionXCompetencia(Integer Id);
+	public abstract boolean borrarModeloEvaluacionXCompetencia(ModeloEvaluacionXCompetencia ModeloEvaluacionXCompetencia);
+	public abstract List<ModeloEvaluacionXCompetencia> obtenerModeloEvaluacionXCompetencias();
+	
+}
