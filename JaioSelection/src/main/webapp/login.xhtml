@@ -33,15 +33,15 @@
 							placeholder="#{msg['login.usuario']}" required="true"
 							requiredMessage="#{msg['login.usuario.incorrecto']}"
 							label="#{msg['login.usuario']}" />
-						<p:message for="ipUsuario" display="tooltip"></p:message>
+						<p:message for="ipUsuario" display="tooltip" />
 					</div>
 					<div class="ui-g-12">
-						<p:password id="ipPassword" value="#{loginView.contraseña}"
+						<p:password id="ipPassword" value="#{loginView.contrasena}"
 							placeholder="#{msg['login.password']}" feedback="false"
 							required="true"
 							requiredMessage="#{msg['login.password.incorrecto']}"
 							label="#{msg['login.password']}" autocomplete="true"  />
-						<p:message for="ipPassword" display="tooltip"></p:message>
+						<p:message for="ipPassword" display="tooltip" />
 					</div>
 					<div class="ui-g-12 ui-md-12">
 						<p:link>#{msg['login.olvide.password']}</p:link>

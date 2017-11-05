@@ -2,7 +2,7 @@ package jaio.selection.dao;
 
 import java.util.List;
 
-import jaio.selection.entity2.Perfil;
+import jaio.selection.entity.Perfil;
 
 public interface PerfilDAO {
 

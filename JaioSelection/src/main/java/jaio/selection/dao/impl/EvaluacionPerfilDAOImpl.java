@@ -11,7 +11,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 
 import jaio.selection.dao.EvaluacionPerfilDAO;
-import jaio.selection.entity2.EvaluacionPerfil;
+import jaio.selection.entity.EvaluacionPerfil;
 
 @Repository 
 public class EvaluacionPerfilDAOImpl extends GenericDAO implements EvaluacionPerfilDAO, Serializable {

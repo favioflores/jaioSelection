@@ -1,28 +1,26 @@
 package jaio.selection.dao.impl;
 
 import java.io.Serializable;
-
-import javax.annotation.Resource;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public abstract class GenericDAO implements Serializable{
-	
+
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 
-	@Resource(name="sessionFactory")
+	@Autowired
 	private SessionFactory sessionFactory;
-	
+
 	private static final Log log = LogFactory.getLog(GenericDAO.class);
-	
-	protected Session getSession() {
-		
+
+	public Session getSession() {
+
 		Session session = null;
 		try {
 			session = sessionFactory.getCurrentSession();
@@ -32,5 +30,5 @@ public abstract class GenericDAO implements Serializable{
 		}
 		return null;
 	}
-	
+
 }

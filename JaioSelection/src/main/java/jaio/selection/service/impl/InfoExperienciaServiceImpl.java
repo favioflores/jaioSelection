@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import jaio.selection.dao.impl.InfoExperienciaDAOImpl;
-import jaio.selection.entity2.InfoExperiencia;
+import jaio.selection.entity.InfoExperiencia;
 import jaio.selection.service.InfoExperienciaService;
 
 public class InfoExperienciaServiceImpl implements InfoExperienciaService, Serializable {

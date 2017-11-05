@@ -2,7 +2,7 @@ package jaio.selection.service;
 
 import java.util.List;
 
-import jaio.selection.entity2.ProcesoSeleccion;
+import jaio.selection.entity.ProcesoSeleccion;
 
 public interface ProcesoSeleccionService {
 

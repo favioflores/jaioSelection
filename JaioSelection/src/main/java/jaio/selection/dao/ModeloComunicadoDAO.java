@@ -2,7 +2,7 @@ package jaio.selection.dao;
 
 import java.util.List;
 
-import jaio.selection.entity2.ModeloComunicado;
+import jaio.selection.entity.ModeloComunicado;
 
 public interface ModeloComunicadoDAO {
 

@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import jaio.selection.dao.impl.BateriaEvaluacionDAOImpl;
-import jaio.selection.entity2.BateriaEvaluacion;
+import jaio.selection.entity.BateriaEvaluacion;
 import jaio.selection.service.BateriaEvaluacionService;
 
 public class BateriaEvaluacionServiceImpl implements BateriaEvaluacionService, Serializable {

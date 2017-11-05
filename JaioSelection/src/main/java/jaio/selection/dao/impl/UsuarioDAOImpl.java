@@ -6,29 +6,25 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 
 import jaio.selection.dao.UsuarioDAO;
-import jaio.selection.entity2.Usuario;
+import jaio.selection.entity.Usuario;
 
 
-@Repository 
+@Repository
 public class UsuarioDAOImpl extends GenericDAO implements UsuarioDAO {
 
 	private static final long serialVersionUID = 1L;
 
 	private static final Log log = LogFactory.getLog(UsuarioDAOImpl.class);
-	
+
 	public boolean crearUsuario(Usuario Usuario) {
 
 		Session session = getSession();
 
 		session.beginTransaction();
-		
+
 		try {
 			session.save(Usuario);
 			session.getTransaction().commit();
@@ -59,6 +55,7 @@ public class UsuarioDAOImpl extends GenericDAO implements UsuarioDAO {
 		return false;
 	}
 
+	@Override
 	public Usuario obtenerUsuario(Integer id) {
 
 		Session session = getSession();
@@ -72,6 +69,27 @@ public class UsuarioDAOImpl extends GenericDAO implements UsuarioDAO {
 		}
 
 		return Usuario;
+	}
+
+	@Override
+	public Usuario obtenerUsuario(String correo, String contrasena) {
+
+		Session session = getSession();
+		Usuario usuario = null;
+
+		try {
+			Query query = session.createQuery("FROM Usuario where correo = ? and contrasena = ?");
+
+			query.setString(0, correo);
+			query.setString(1, contrasena);
+
+			usuario = (Usuario) query.uniqueResult();
+
+		} catch (Exception e) {
+			log.error(e);
+		}
+
+		return usuario;
 	}
 
 	public boolean borrarUsuario(Usuario Usuario) {

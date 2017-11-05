@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import jaio.selection.dao.impl.DefinicionDAOImpl;
-import jaio.selection.entity2.Definicion;
+import jaio.selection.entity.Definicion;
 import jaio.selection.service.DefinicionService;
 
 public class DefinicionServiceImpl implements DefinicionService, Serializable {

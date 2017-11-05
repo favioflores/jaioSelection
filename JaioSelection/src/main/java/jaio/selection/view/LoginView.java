@@ -1,7 +1,6 @@
 package jaio.selection.view;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.net.HttpURLConnection;
@@ -10,31 +9,25 @@ import java.util.Map;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jmx.export.annotation.ManagedAttribute;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import jaio.selection.bean.UsuarioBean;
-import jaio.selection.dao.UsuarioDAO;
-import jaio.selection.entity2.Usuario;
+import jaio.selection.entity.Usuario;
 import jaio.selection.service.UsuarioService;
-import jaio.selection.service.impl.UsuarioServiceImpl;
+import jaio.selection.util.Utilitarios;
 
 @ManagedBean(name = "loginView")
-@ViewScoped
-@Component
-public class LoginView implements Serializable {
+@Scope("request")
+@Component("loginView")
+public class LoginView extends BaseView implements Serializable {
 
-	//@ManagedProperty(value = "#{UsuarioService}")
 	@Autowired
 	private UsuarioService usuarioService;
 
@@ -44,8 +37,8 @@ public class LoginView implements Serializable {
 
 
 	private String usuario;
-	private String contraseña;
-	
+	private String contrasena;
+
 	public String getUsuario() {
 		return usuario;
 	}
@@ -54,20 +47,12 @@ public class LoginView implements Serializable {
 		this.usuario = usuario;
 	}
 
-	public String getContraseña() {
-		return contraseña;
+	public String getcontrasena() {
+		return contrasena;
 	}
 
-	public void setContraseña(String contraseña) {
-		this.contraseña = contraseña;
-	}
-
-	public void abandonarSistema(ActionEvent event) {
-
-		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Saliendo", "Muchas gracias por su visita");
-
-		FacesContext.getCurrentInstance().addMessage(null, message);
-
+	public void setcontrasena(String contrasena) {
+		this.contrasena = contrasena;
 	}
 
 	public void iniciarSesion() throws Exception {
@@ -84,7 +69,8 @@ public class LoginView implements Serializable {
 		String ipAddress = request.getRemoteAddr();
 
 		if (!ipAddress.equals("127.0.0.1") && !ipAddress.equals("0:0:0:0:0:0:0:1")) {
-			if (validaConexionGoogle()) {
+			//if (validaConexionGoogle()) {
+			if (true) {
 				if (captchaInvalido(captha)) {
 					message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error de inicio de sesion",
 							"Captcha invalido");
@@ -103,24 +89,32 @@ public class LoginView implements Serializable {
 
 			try {
 
-				if (usuario.isEmpty() || contraseña.isEmpty()) {
-					message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Usuario y contraseña requeridos",null);
+				boolean flag = true;
+
+				if (usuario.isEmpty() || contrasena.isEmpty()) {
+
+					flag = false;
+
 				} else {
-					if (usuario.equals("admin") && contraseña.equals("admin")) {
-						
-						System.out.println("fafo 3");
-						System.out.println(usuarioService);
-						Usuario objUsuario = usuarioService.obtenerUsuario(0);
-						
-						System.out.println(objUsuario.getCorreo());
-						
-	                    FacesContext.getCurrentInstance().getExternalContext().redirect("bienvenida.jsf");
-					} else {
-						message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Usuario y contraseña incorrectos",null);
-						usuario = "";
-						contraseña = "";
+
+					Usuario objUsuario = usuarioService.obtenerUsuario(usuario, contrasena);
+
+					if(Utilitarios.esNuloOVacio(objUsuario)){
+						flag = false;
+					}else{
+						Utilitarios.ponerSession(new UsuarioBean(objUsuario),"userSession");
 					}
+
 				}
+
+				if(!flag){
+					message = new FacesMessage(FacesMessage.SEVERITY_ERROR, msg("login.usuario.contrasena.incorrecto"),null);
+				}else{
+			        FacesContext.getCurrentInstance().getExternalContext().redirect("bienvenida.jsf");
+				}
+
+				usuario = "";
+				contrasena = "";
 
 			} catch (Exception ex) {
 				log.error(ex);
@@ -130,40 +124,6 @@ public class LoginView implements Serializable {
 				FacesContext.getCurrentInstance().addMessage(null, message);
 			}
 		}
-	}
-
-	/*
-	 * public void cerrarSesion(){
-	 * 
-	 * try {
-	 * 
-	 * HttpSession session = (HttpSession)
-	 * FacesContext.getCurrentInstance().getExternalContext().getSession(true);
-	 * usuarioInfo = (UsuarioInfo) session.getAttribute("usuarioInfo");
-	 * session.invalidate(); registraHistorialAcceso(usuarioInfo.getIntUsuarioPk(),
-	 * true, null, new Date(), usuarioInfo.getIntHistorialPk());
-	 * FacesContext.getCurrentInstance().getExternalContext().redirect("iniciar.jsf"
-	 * );
-	 * 
-	 * } catch (IOException ex) { log.error(ex); }
-	 * 
-	 * }
-	 */
-	public UsuarioBean obtenerUsuarioInfo() {
-
-		HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
-
-		return (UsuarioBean) session.getAttribute("usuarioInfo");
-
-	}
-
-	public void ingresaSistema() {
-		try {
-			FacesContext.getCurrentInstance().getExternalContext().redirect("principal.jsf");
-		} catch (IOException ex) {
-			log.error(ex);
-		}
-
 	}
 
 	private boolean captchaInvalido(String str) throws Exception {
@@ -200,7 +160,7 @@ public class LoginView implements Serializable {
 
 	}
 
-	private boolean validaConexionGoogle() throws Exception {
+	private void validaConexionGoogle(){
 
 		try {
 
@@ -213,21 +173,8 @@ public class LoginView implements Serializable {
 
 		} catch (Exception e) {
 			log.error(e);
-			return false;
 		}
-		return true;
 
 	}
-	/*
-	 * public void timeout() throws IOException {
-	 * 
-	 * HttpSession session = (HttpSession)
-	 * FacesContext.getCurrentInstance().getExternalContext().getSession(true);
-	 * usuarioInfo = (UsuarioInfo) session.getAttribute("usuarioInfo");
-	 * session.invalidate(); registraHistorialAcceso(usuarioInfo.getIntUsuarioPk(),
-	 * true, null, new Date(), usuarioInfo.getIntHistorialPk());
-	 * //FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
-	 * 
-	 * }
-	 */
+
 }

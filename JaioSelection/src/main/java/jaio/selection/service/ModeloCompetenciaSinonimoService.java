@@ -2,7 +2,7 @@ package jaio.selection.service;
 
 import java.util.List;
 
-import jaio.selection.entity2.ModeloCompetenciaSinonimo;
+import jaio.selection.entity.ModeloCompetenciaSinonimo;
 
 public interface ModeloCompetenciaSinonimoService {
 

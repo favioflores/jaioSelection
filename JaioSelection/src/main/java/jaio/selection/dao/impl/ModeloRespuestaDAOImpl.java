@@ -11,7 +11,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 
 import jaio.selection.dao.ModeloRespuestaDAO;
-import jaio.selection.entity2.ModeloRespuesta;
+import jaio.selection.entity.ModeloRespuesta;
 
 @Repository 
 public class ModeloRespuestaDAOImpl extends GenericDAO implements ModeloRespuestaDAO, Serializable {

@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import jaio.selection.dao.impl.InfoConocimientoDAOImpl;
-import jaio.selection.entity2.InfoConocimiento;
+import jaio.selection.entity.InfoConocimiento;
 import jaio.selection.service.InfoConocimientoService;
 
 public class InfoConocimientoServiceImpl implements InfoConocimientoService, Serializable {

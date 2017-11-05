@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import jaio.selection.dao.impl.ModeloComunicadoDAOImpl;
-import jaio.selection.entity2.ModeloComunicado;
+import jaio.selection.entity.ModeloComunicado;
 import jaio.selection.service.ModeloComunicadoService;
 
 public class ModeloComunicadoServiceImpl implements ModeloComunicadoService, Serializable {

@@ -11,7 +11,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 
 import jaio.selection.dao.PerfilDAO;
-import jaio.selection.entity2.Perfil;
+import jaio.selection.entity.Perfil;
 
 @Repository 
 public class PerfilDAOImpl extends GenericDAO implements PerfilDAO, Serializable{

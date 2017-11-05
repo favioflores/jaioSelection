@@ -2,7 +2,7 @@ package jaio.selection.service;
 
 import java.util.List;
 
-import jaio.selection.entity2.Empresa;
+import jaio.selection.entity.Empresa;
 
 public interface EmpresaService {
 

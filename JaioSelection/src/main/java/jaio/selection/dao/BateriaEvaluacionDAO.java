@@ -2,7 +2,7 @@ package jaio.selection.dao;
 
 import java.util.List;
 
-import jaio.selection.entity2.BateriaEvaluacion;
+import jaio.selection.entity.BateriaEvaluacion;
 
 public interface BateriaEvaluacionDAO {
 
@@ -11,5 +11,5 @@ public interface BateriaEvaluacionDAO {
 	public abstract BateriaEvaluacion obtenerBateriaEvaluacion(Integer Id);
 	public abstract boolean borrarBateriaEvaluacion(BateriaEvaluacion BateriaEvaluacion);
 	public abstract List<BateriaEvaluacion> obtenerBateriaEvaluacions();
-	
+
 }

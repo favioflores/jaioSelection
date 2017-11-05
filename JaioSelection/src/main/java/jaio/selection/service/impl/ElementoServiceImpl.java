@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import jaio.selection.dao.impl.ElementoDAOImpl;
-import jaio.selection.entity2.Elemento;
+import jaio.selection.entity.Elemento;
 import jaio.selection.service.ElementoService;
 
 public class ElementoServiceImpl implements ElementoService, Serializable {

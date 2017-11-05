@@ -2,7 +2,7 @@ package jaio.selection.service;
 
 import java.util.List;
 
-import jaio.selection.entity2.Notificaciones;
+import jaio.selection.entity.Notificaciones;
 
 public interface NotificacionesService {
 

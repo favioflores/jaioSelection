@@ -2,7 +2,7 @@ package jaio.selection.dao;
 
 import java.util.List;
 
-import jaio.selection.entity2.ModeloRespuesta;
+import jaio.selection.entity.ModeloRespuesta;
 
 public interface ModeloRespuestaDAO {
 

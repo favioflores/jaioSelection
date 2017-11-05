@@ -11,7 +11,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 
 import jaio.selection.dao.ModeloComunicadoDAO;
-import jaio.selection.entity2.ModeloComunicado;
+import jaio.selection.entity.ModeloComunicado;
 
 @Repository 
 public class ModeloComunicadoDAOImpl extends GenericDAO implements ModeloComunicadoDAO, Serializable {

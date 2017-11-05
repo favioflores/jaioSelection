@@ -2,34 +2,37 @@ package jaio.selection.bean;
 
 import java.io.Serializable;
 
+import jaio.selection.entity.Usuario;
+
 public class UsuarioBean implements Serializable{
 
     /**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
+
 	private Integer intUsuarioPk;
-    private String strEmail;
-    private String strFechaAcceso;
+    private String strMail;
     private String strDescripcion;
-    
+
+
+    public UsuarioBean (Usuario usuario) {
+		intUsuarioPk = usuario.getId();
+		strMail = usuario.getCorreo();
+		strDescripcion = usuario.getNombreCompleto();
+	}
+
 	public Integer getIntUsuarioPk() {
 		return intUsuarioPk;
 	}
 	public void setIntUsuarioPk(Integer intUsuarioPk) {
 		this.intUsuarioPk = intUsuarioPk;
 	}
-	public String getStrEmail() {
-		return strEmail;
+	public String getStrMail() {
+		return strMail;
 	}
-	public void setStrEmail(String strEmail) {
-		this.strEmail = strEmail;
-	}
-	public String getStrFechaAcceso() {
-		return strFechaAcceso;
-	}
-	public void setStrFechaAcceso(String strFechaAcceso) {
-		this.strFechaAcceso = strFechaAcceso;
+	public void setStrMail(String strMail) {
+		this.strMail = strMail;
 	}
 	public String getStrDescripcion() {
 		return strDescripcion;
@@ -38,5 +41,4 @@ public class UsuarioBean implements Serializable{
 		this.strDescripcion = strDescripcion;
 	}
 
-    
 }

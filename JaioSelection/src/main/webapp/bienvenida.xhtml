@@ -50,31 +50,20 @@
 		<div class="ui-g">
 			<div class="ui-g-12">
 				<div class="card">
-					<h1>Bienvenida</h1>
-					<p align="justify">Hola! Te saluda el equipo de Jaio y queremos
-						trasmitirte lo emocionado que estamos al ver que usas nuestra
-						plataforma JAIO SELECTION y permitir que tu proceso de selección
-						sea una experienci mas fácil y rápida. Estamos convencidos que
-						hemos diseñado una plataforma muy buena para ti y tu empresa, y
-						contamos contigo para seguir creciendo y aprendiendo cosas nuevas.
-						Recuerda seguir los siguientes pasos para poder instruirte y que
-						puedas utilizar todas las herramientas de manera óptima y
-						oportunamente.</p>
-					<h1>Pasos</h1>
+					<h1>#{msg['bienvenida']}</h1>
+					<p align="justify">#{msg['bienvenida.parrafo1']}</p>
+					<h1>#{msg['bienvenida.pasos']}</h1>
 
 					<p:steps activeIndex="0" readonly="false">
-						<p:menuitem value="Crear tu empresa" url="#" />
-						<p:menuitem value="Crear tus perfiles" url="#" />
-						<p:menuitem value="Personaliza tus evaluaciones" url="#" />
-						<p:menuitem value="Realiza tu proceso de selección" url="#" />
+						<p:menuitem value="#{msg['bienvenida.paso1']}" url="#" />
+						<p:menuitem value="#{msg['bienvenida.paso2']}" url="#" />
+						<p:menuitem value="#{msg['bienvenida.paso3']}" url="#" />
+						<p:menuitem value="#{msg['bienvenida.paso4']}" url="#" />
+						<p:menuitem value="#{msg['bienvenida.paso5']}" url="#" />
 					</p:steps>
 
 				<br/>
 				
-<p:media value="https://youtu.be/KVV8R_JCuS0" width="420" height="315" player="flash"/>
-
-
-
 				</div>
 
 			</div>

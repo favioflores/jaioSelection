@@ -2,7 +2,7 @@ package jaio.selection.dao;
 
 import java.util.List;
 
-import jaio.selection.entity2.Area;
+import jaio.selection.entity.Area;
 
 public interface AreaDAO {
 
@@ -11,5 +11,5 @@ public interface AreaDAO {
 	public abstract Area obtenerArea(Integer Id);
 	public abstract boolean borrarArea(Area Area);
 	public abstract List<Area> obtenerAreas();
-	
+
 }

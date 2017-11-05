@@ -11,7 +11,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 
 import jaio.selection.dao.BateriaPersonalizadaDAO;
-import jaio.selection.entity2.BateriaPersonalizada;
+import jaio.selection.entity.BateriaPersonalizada;
 
 @Repository 
 public class BateriaPersonalizadaDAOImpl extends GenericDAO implements BateriaPersonalizadaDAO, Serializable {

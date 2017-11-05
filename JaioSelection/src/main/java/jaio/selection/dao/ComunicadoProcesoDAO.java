@@ -2,7 +2,7 @@ package jaio.selection.dao;
 
 import java.util.List;
 
-import jaio.selection.entity2.ComunicadoProceso;
+import jaio.selection.entity.ComunicadoProceso;
 
 public interface ComunicadoProcesoDAO {
 

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import jaio.selection.dao.impl.AreaDAOImpl;
-import jaio.selection.entity2.Area;
+import jaio.selection.entity.Area;
 import jaio.selection.service.AreaService;
 
 @Service

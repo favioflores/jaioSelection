@@ -2,7 +2,7 @@ package jaio.selection.service;
 
 import java.util.List;
 
-import jaio.selection.entity2.InfoConocimiento;
+import jaio.selection.entity.InfoConocimiento;
 
 public interface InfoConocimientoService {
 

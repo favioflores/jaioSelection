@@ -11,7 +11,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 
 import jaio.selection.dao.CandidatoDAO;
-import jaio.selection.entity2.Candidato;
+import jaio.selection.entity.Candidato;
 
 @Repository 
 public class CandidatoDAOImpl extends GenericDAO implements CandidatoDAO, Serializable {

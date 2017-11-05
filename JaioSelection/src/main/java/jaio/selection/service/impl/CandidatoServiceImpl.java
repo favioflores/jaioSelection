@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import jaio.selection.dao.impl.CandidatoDAOImpl;
-import jaio.selection.entity2.Candidato;
+import jaio.selection.entity.Candidato;
 import jaio.selection.service.CandidatoService;
 
 public class CandidatoServiceImpl implements CandidatoService, Serializable {

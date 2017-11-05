@@ -2,7 +2,7 @@ package jaio.selection.dao;
 
 import java.util.List;
 
-import jaio.selection.entity2.ModeloEvaluacionXCompetencia;
+import jaio.selection.entity.ModeloEvaluacionXCompetencia;
 
 public interface ModeloEvaluacionXCompetenciaDAO {
 

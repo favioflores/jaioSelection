@@ -2,7 +2,7 @@ package jaio.selection.dao;
 
 import java.util.List;
 
-import jaio.selection.entity2.Empresa;
+import jaio.selection.entity.Empresa;
 
 public interface EmpresaDAO {
 

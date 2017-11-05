@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import jaio.selection.dao.impl.ModeloCompetenciaDAOImpl;
-import jaio.selection.entity2.ModeloCompetencia;
+import jaio.selection.entity.ModeloCompetencia;
 import jaio.selection.service.ModeloCompetenciaService;
 
 public class ModeloCompetenciaServiceImpl implements ModeloCompetenciaService, Serializable {

@@ -2,7 +2,7 @@ package jaio.selection.service;
 
 import java.util.List;
 
-import jaio.selection.entity2.Definicion;
+import jaio.selection.entity.Definicion;
 
 public interface DefinicionService {
 

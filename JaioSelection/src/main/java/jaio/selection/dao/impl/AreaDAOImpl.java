@@ -7,13 +7,12 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 
 import jaio.selection.dao.AreaDAO;
-import jaio.selection.entity2.Area;
+import jaio.selection.entity.Area;
 
-@Repository 
+@Repository
 public class AreaDAOImpl extends GenericDAO implements AreaDAO, Serializable {
 
 	private static final Log log = LogFactory.getLog(AreaDAOImpl.class);
@@ -23,7 +22,7 @@ public class AreaDAOImpl extends GenericDAO implements AreaDAO, Serializable {
 		Session session = getSession();
 
 		session.beginTransaction();
-		
+
 		try {
 			session.save(area);
 			session.getTransaction().commit();

@@ -2,7 +2,7 @@ package jaio.selection.dao;
 
 import java.util.List;
 
-import jaio.selection.entity2.InfoReferencia;
+import jaio.selection.entity.InfoReferencia;
 
 public interface InfoReferenciaDAO {
 

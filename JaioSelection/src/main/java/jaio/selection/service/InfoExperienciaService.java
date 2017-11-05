@@ -2,7 +2,7 @@ package jaio.selection.service;
 
 import java.util.List;
 
-import jaio.selection.entity2.InfoExperiencia;
+import jaio.selection.entity.InfoExperiencia;
 
 public interface InfoExperienciaService {
 

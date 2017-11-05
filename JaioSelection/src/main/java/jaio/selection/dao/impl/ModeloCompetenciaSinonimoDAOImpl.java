@@ -11,7 +11,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 
 import jaio.selection.dao.ModeloCompetenciaSinonimoDAO;
-import jaio.selection.entity2.ModeloCompetenciaSinonimo;
+import jaio.selection.entity.ModeloCompetenciaSinonimo;
 
 @Repository 
 public class ModeloCompetenciaSinonimoDAOImpl extends GenericDAO implements ModeloCompetenciaSinonimoDAO, Serializable {

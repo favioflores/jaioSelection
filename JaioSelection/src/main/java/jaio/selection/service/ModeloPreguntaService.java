@@ -2,7 +2,7 @@ package jaio.selection.service;
 
 import java.util.List;
 
-import jaio.selection.entity2.ModeloPregunta;
+import jaio.selection.entity.ModeloPregunta;
 
 public interface ModeloPreguntaService {
 

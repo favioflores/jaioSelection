@@ -11,7 +11,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 
 import jaio.selection.dao.NotificacionesDAO;
-import jaio.selection.entity2.Notificaciones;
+import jaio.selection.entity.Notificaciones;
 
 @Repository 
 public class NotificacionesDAOImpl extends GenericDAO implements NotificacionesDAO, Serializable {

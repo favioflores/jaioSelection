@@ -2,7 +2,7 @@ package jaio.selection.service;
 
 import java.util.List;
 
-import jaio.selection.entity2.BateriaPersonalizada;
+import jaio.selection.entity.BateriaPersonalizada;
 
 public interface BateriaPersonalizadaService {
 

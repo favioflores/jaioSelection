@@ -11,7 +11,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 
 import jaio.selection.dao.ElementoDAO;
-import jaio.selection.entity2.Elemento;
+import jaio.selection.entity.Elemento;
 
 @Repository 
 public class ElementoDAOImpl extends GenericDAO implements ElementoDAO, Serializable {

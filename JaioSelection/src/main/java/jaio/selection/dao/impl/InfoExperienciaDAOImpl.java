@@ -11,7 +11,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 
 import jaio.selection.dao.InfoExperienciaDAO;
-import jaio.selection.entity2.InfoExperiencia;
+import jaio.selection.entity.InfoExperiencia;
 
 @Repository 
 public class InfoExperienciaDAOImpl extends GenericDAO implements InfoExperienciaDAO, Serializable {

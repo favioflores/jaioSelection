@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import jaio.selection.dao.impl.NotificacionesDAOImpl;
-import jaio.selection.entity2.Notificaciones;
+import jaio.selection.entity.Notificaciones;
 import jaio.selection.service.NotificacionesService;
 
 public class NotificacionesServiceImpl implements NotificacionesService, Serializable {

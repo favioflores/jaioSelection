@@ -2,7 +2,7 @@ package jaio.selection.service;
 
 import java.util.List;
 
-import jaio.selection.entity2.Area;
+import jaio.selection.entity.Area;
 
 public interface AreaService {
 

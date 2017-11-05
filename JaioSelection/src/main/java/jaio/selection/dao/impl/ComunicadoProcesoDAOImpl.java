@@ -10,7 +10,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 
 import jaio.selection.dao.ComunicadoProcesoDAO;
-import jaio.selection.entity2.ComunicadoProceso;
+import jaio.selection.entity.ComunicadoProceso;
 
 @Repository 
 public class ComunicadoProcesoDAOImpl implements ComunicadoProcesoDAO {

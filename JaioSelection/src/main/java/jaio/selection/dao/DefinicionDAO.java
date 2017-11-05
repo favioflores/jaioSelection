@@ -2,7 +2,7 @@ package jaio.selection.dao;
 
 import java.util.List;
 
-import jaio.selection.entity2.Definicion;
+import jaio.selection.entity.Definicion;
 
 public interface DefinicionDAO {
 

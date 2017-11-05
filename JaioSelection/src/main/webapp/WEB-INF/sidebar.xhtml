@@ -18,48 +18,46 @@
                 <div class="profile">
                     <p:graphicImage name="images/profile.png" library="omega-layout" />
                     <a id="profile-button" href="#">
-                        <span class="username">Ylene Sanchez</span>
+                        <span class="username"><p:outputLabel value="#{sidebarView.descripcion}"/></span>
                         <i class="fa fa-fw fa-cog"></i>
                     </a>
                     <ul>
-                        <li><a href="#"><i class="fa fa-fw fa-sliders"></i><span>Perfil</span></a></li>
-                        <li><a href="#"><i class="fa fa-fw fa-bell"></i><span>Notificaciones</span><span class="menu-badge">2</span></a></li>
-                        <li><a href="#"><i class="fa fa-fw fa-sign-out"></i><span>Cerrar sesión</span></a></li>
+                        <li><a href="#"><i class="fa fa-fw fa-sliders"></i><span>#{msg['side.perfil']}</span></a></li>
+                        <li><a href="#"><i class="fa fa-fw fa-bell"></i><span>#{msg['side.notificaciones']}</span><span class="menu-badge">2</span></a></li>
+                        <li><a href="#"><i class="fa fa-fw fa-sign-out"></i><span>#{msg['side.cerrar.sesion']}</span></a></li>
                     </ul>
                 </div>
 <h:form>
                 <div class="menu">
                     <po:menu>
-                        <p:menuitem id="om_dashboard" value="Bienvenida" icon="fa fa-home" outcome="bienvenida"/>
-                        <!-- p:menuitem id="om_induccion" value="Inducción" icon="fa fa-sitemap"  -->
-                        
-                        <p:submenu id="om_empresa" label="Gestionar empresas" icon="fa fa-building-o">
-                        	<p:menuitem id="om_perfil0" value="Registro de empresas" outcome="crearEmpresa" />
-                            <p:menuitem id="om_perfil1" value="Registro de organizaciones" outcome="crearPerfil" />
+                        <p:menuitem id="om_dashboard" value="#{msg['side.bienvenida']}" icon="fa fa-home" outcome="bienvenida"/>
+                        <p:submenu id="om_empresa" label="#{msg['side.gestionar.empresas']}" icon="fa fa-building-o">
+                        	<p:menuitem id="om_perfil0" value="#{msg['side.registro.empresa']}" outcome="crearEmpresa" />
+                            <!-- p:menuitem id="om_perfil1" value="#{msg['side.registro.organizacion']}" outcome="crearPerfil"  -->
                         </p:submenu>
 
 
-                        <p:submenu id="om_proSeleccion" label="Procesos de selección" icon="fa fa-group">
-                            <p:menuitem id="om_defProyecto" value="Definir proceso" />
-                            <p:menuitem id="om_reclutamiento" value="Reclutamiento" />
-                            <p:menuitem id="om_preSeleccion" value="Preselección" />
-                            <p:menuitem id="om_selEvaluacion" value="Monitoreo de evaluaciones" />
-                            <p:menuitem id="om_diagnostico" value="Diagnostico" />
-                            <p:menuitem id="om_preCandidato" value="Presentación de candidatos"  />
+                        <p:submenu id="om_proSeleccion" label="#{msg['side.proceso.seleccion']}" icon="fa fa-group">
+                            <p:menuitem id="om_defProyecto" value="#{msg['side.definir.proceso']}" />
+                            <p:menuitem id="om_reclutamiento" value="#{msg['side.reclutamiento']}" />
+                            <p:menuitem id="om_preSeleccion" value="#{msg['side.preseleccion']}" />
+                            <p:menuitem id="om_selEvaluacion" value="#{msg['side.monitoreo.evaluacion']}" />
+                            <p:menuitem id="om_diagnostico" value="#{msg['side.diagnostico']}" />
+                            <p:menuitem id="om_preCandidato" value="#{msg['side.presentacion.candidatos']}"  />
                         </p:submenu>
 
-                        <p:submenu id="om_default" label="Evaluaciones" icon="fa fa-book">
-                            <p:menuitem id="om_empty1" value="Crear evaluación personalizada" />
-                            <p:menuitem id="om_empty2" value="Actualizar evaluación" />
-                            <p:menuitem id="om_empty3" value="Importa/Exportar evaluaciones" />
+                        <p:submenu id="om_default" label="#{msg['side.evaluaciones']}" icon="fa fa-book">
+                            <p:menuitem id="om_empty1" value="#{msg['side.crear.evaluacion']}" />
+                            <p:menuitem id="om_empty2" value="#{msg['side.actualizar.evaluacion']}" />
+                            <p:menuitem id="om_empty3" value="#{msg['side.importexport']}" />
                         </p:submenu>
                         
-                        <p:submenu id="om_consultas" label="Consultas" icon="fa fa-search">
-                            <p:menuitem id="om_consulta1" value="Consulta de candidatos" />
-                            <p:menuitem id="om_consulta2" value="Consulta de procesos" />
+                        <p:submenu id="om_consultas" label="#{msg['side.consultas']}" icon="fa fa-search">
+                            <p:menuitem id="om_consulta1" value="#{msg['side.consulta.candidatos']}" />
+                            <p:menuitem id="om_consulta2" value="#{msg['side.consulta.procesos']}" />
                         </p:submenu>
                         
-                        <p:menuitem id="om_doc" value="Preguntas frecuentes" icon="fa fa-question-circle-o" />
+                        <p:menuitem id="om_doc" value="#{msg['side.preguntas.frecuentes']}" icon="fa fa-question-circle-o" />
                     </po:menu>
                 </div>
                 </h:form>

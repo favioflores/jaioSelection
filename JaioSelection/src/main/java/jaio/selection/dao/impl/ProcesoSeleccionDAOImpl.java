@@ -11,7 +11,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 
 import jaio.selection.dao.ProcesoSeleccionDAO;
-import jaio.selection.entity2.ProcesoSeleccion;
+import jaio.selection.entity.ProcesoSeleccion;
 
 @Repository 
 public class ProcesoSeleccionDAOImpl extends GenericDAO implements ProcesoSeleccionDAO, Serializable {

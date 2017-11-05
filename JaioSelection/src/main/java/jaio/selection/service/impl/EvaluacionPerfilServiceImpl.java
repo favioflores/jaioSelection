@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import jaio.selection.dao.impl.EvaluacionPerfilDAOImpl;
-import jaio.selection.entity2.EvaluacionPerfil;
+import jaio.selection.entity.EvaluacionPerfil;
 import jaio.selection.service.EvaluacionPerfilService;
 
 public class EvaluacionPerfilServiceImpl implements EvaluacionPerfilService, Serializable {

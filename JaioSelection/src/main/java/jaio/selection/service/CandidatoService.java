@@ -2,7 +2,7 @@ package jaio.selection.service;
 
 import java.util.List;
 
-import jaio.selection.entity2.Candidato;
+import jaio.selection.entity.Candidato;
 
 public interface CandidatoService {
 

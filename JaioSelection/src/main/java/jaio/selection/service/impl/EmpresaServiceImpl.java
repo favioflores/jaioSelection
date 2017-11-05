@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import jaio.selection.dao.impl.EmpresaDAOImpl;
-import jaio.selection.entity2.Empresa;
+import jaio.selection.entity.Empresa;
 import jaio.selection.service.EmpresaService;
 
 public class EmpresaServiceImpl implements EmpresaService, Serializable {

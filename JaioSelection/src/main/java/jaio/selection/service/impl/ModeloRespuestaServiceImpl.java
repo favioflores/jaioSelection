@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import jaio.selection.dao.impl.ModeloRespuestaDAOImpl;
-import jaio.selection.entity2.ModeloRespuesta;
+import jaio.selection.entity.ModeloRespuesta;
 import jaio.selection.service.ModeloRespuestaService;
 
 public class ModeloRespuestaServiceImpl implements ModeloRespuestaService, Serializable {

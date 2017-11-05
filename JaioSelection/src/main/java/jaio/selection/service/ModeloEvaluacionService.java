@@ -2,7 +2,7 @@ package jaio.selection.service;
 
 import java.util.List;
 
-import jaio.selection.entity2.ModeloEvaluacion;
+import jaio.selection.entity.ModeloEvaluacion;
 
 public interface ModeloEvaluacionService {
 

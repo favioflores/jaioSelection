@@ -11,7 +11,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 
 import jaio.selection.dao.EmpresaDAO;
-import jaio.selection.entity2.Empresa;
+import jaio.selection.entity.Empresa;
 
 @Repository 
 public class EmpresaDAOImpl extends GenericDAO implements EmpresaDAO, Serializable {

@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import jaio.selection.dao.impl.ModeloCompetenciaSinonimoDAOImpl;
-import jaio.selection.entity2.ModeloCompetenciaSinonimo;
+import jaio.selection.entity.ModeloCompetenciaSinonimo;
 import jaio.selection.service.ModeloCompetenciaSinonimoService;
 
 public class ModeloCompetenciaSinonimoServiceImpl implements ModeloCompetenciaSinonimoService, Serializable {

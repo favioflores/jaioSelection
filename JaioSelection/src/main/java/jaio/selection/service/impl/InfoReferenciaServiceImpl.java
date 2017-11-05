@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import jaio.selection.dao.impl.InfoReferenciaDAOImpl;
-import jaio.selection.entity2.InfoReferencia;
+import jaio.selection.entity.InfoReferencia;
 import jaio.selection.service.InfoReferenciaService;
 
 public class InfoReferenciaServiceImpl implements InfoReferenciaService, Serializable {

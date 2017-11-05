@@ -2,7 +2,7 @@ package jaio.selection.dao;
 
 import java.util.List;
 
-import jaio.selection.entity2.InfoExperiencia;
+import jaio.selection.entity.InfoExperiencia;
 
 public interface InfoExperienciaDAO {
 

@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import jaio.selection.dao.impl.ProcesoSeleccionDAOImpl;
-import jaio.selection.entity2.ProcesoSeleccion;
+import jaio.selection.entity.ProcesoSeleccion;
 import jaio.selection.service.ProcesoSeleccionService;
 
 public class ProcesoSeleccionServiceImpl implements ProcesoSeleccionService, Serializable {

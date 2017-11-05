@@ -11,7 +11,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 
 import jaio.selection.dao.DefinicionDAO;
-import jaio.selection.entity2.Definicion;
+import jaio.selection.entity.Definicion;
 
 @Repository 
 public class DefinicionDAOImpl extends GenericDAO implements DefinicionDAO, Serializable {

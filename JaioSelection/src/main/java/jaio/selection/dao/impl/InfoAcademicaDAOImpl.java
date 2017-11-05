@@ -11,7 +11,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 
 import jaio.selection.dao.InfoAcademicaDAO;
-import jaio.selection.entity2.InfoAcademica;
+import jaio.selection.entity.InfoAcademica;
 
 @Repository 
 public class InfoAcademicaDAOImpl extends GenericDAO implements InfoAcademicaDAO, Serializable {

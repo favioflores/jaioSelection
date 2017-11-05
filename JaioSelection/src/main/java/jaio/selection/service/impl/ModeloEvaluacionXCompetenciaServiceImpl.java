@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import jaio.selection.dao.impl.ModeloEvaluacionXCompetenciaDAOImpl;
-import jaio.selection.entity2.ModeloEvaluacionXCompetencia;
+import jaio.selection.entity.ModeloEvaluacionXCompetencia;
 import jaio.selection.service.ModeloEvaluacionXCompetenciaService;
 
 public class ModeloEvaluacionXCompetenciaServiceImpl implements ModeloEvaluacionXCompetenciaService, Serializable {

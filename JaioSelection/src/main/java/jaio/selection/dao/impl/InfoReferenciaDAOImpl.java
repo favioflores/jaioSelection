@@ -11,7 +11,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 
 import jaio.selection.dao.InfoReferenciaDAO;
-import jaio.selection.entity2.InfoReferencia;
+import jaio.selection.entity.InfoReferencia;
 
 @Repository 
 public class InfoReferenciaDAOImpl extends GenericDAO implements InfoReferenciaDAO, Serializable {

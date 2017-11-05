@@ -2,7 +2,7 @@ package jaio.selection.dao;
 
 import java.util.List;
 
-import jaio.selection.entity2.InfoAcademica;
+import jaio.selection.entity.InfoAcademica;
 
 public interface InfoAcademicaDAO {
 
