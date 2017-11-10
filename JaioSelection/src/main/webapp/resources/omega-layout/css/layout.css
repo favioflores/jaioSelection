@@ -689,7 +689,7 @@
   .ui-icon-tag:before {
     content: ""; }
 
-.ui-icon-home {
+.ui-icon-DAO {
   background-image: none !important;
   display: inline-block;
   font: normal normal normal 14px/1 FontAwesome;
@@ -699,7 +699,7 @@
   -moz-osx-font-smoothing: grayscale;
   text-indent: 0px !important;
   text-align: center; }
-  .ui-icon-home:before {
+  .ui-icon-DAO:before {
     content: ""; }
 
 .ui-icon-flag {
@@ -3265,7 +3265,7 @@ h2 {
 
 .ui-breadcrumb .ui-icon {
   margin-top: 4px; }
-  .ui-breadcrumb .ui-icon.ui-icon-home {
+  .ui-breadcrumb .ui-icon.ui-icon-DAO {
     margin-top: 3px;
     top: 1px; }
 .ui-breadcrumb .ui-menuitem-link {

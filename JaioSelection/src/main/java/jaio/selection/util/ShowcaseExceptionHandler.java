@@ -56,7 +56,7 @@ public class ShowcaseExceptionHandler extends ExceptionHandlerWrapper implements
                     NavigationHandler navHandler = context.getApplication().getNavigationHandler();
  
                     try {
-                        navHandler.handleNavigation(context, null, "home?faces-redirect=true&expired=true");
+                        navHandler.handleNavigation(context, null, "DAO?faces-redirect=true&expired=true");
                     }
                     finally {
                         it.remove();

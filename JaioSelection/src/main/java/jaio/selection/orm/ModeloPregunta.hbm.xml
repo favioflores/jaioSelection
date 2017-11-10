@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generated 06/11/2017 06:07:28 PM by Hibernate Tools 5.1.4.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping auto-import="true" default-access="property" default-cascade="none" default-lazy="true">
+    <class catalog="jaioselectiondb" dynamic-insert="false" dynamic-update="false" mutable="true" name="jaio.selection.orm.ModeloPregunta" optimistic-lock="version" polymorphism="implicit" select-before-update="false" table="modelo_pregunta">
+        <id name="id" type="java.lang.Integer">
+            <column name="id"/>
+            <generator class="identity"/>
+        </id>
+        <many-to-one class="jaio.selection.orm.ModeloEvaluacion" embed-xml="true" fetch="select" insert="true" name="modeloEvaluacion" not-found="exception" optimistic-lock="true" unique="false" update="true">
+            <column name="modelo_evaluacion_id" not-null="true"/>
+        </many-to-one>
+        <property generated="never" lazy="false" name="tipo" optimistic-lock="true" type="int" unique="false">
+            <column name="tipo" not-null="true"/>
+        </property>
+        <property generated="never" lazy="false" name="nombre" optimistic-lock="true" type="string" unique="false">
+            <column length="300" name="nombre" not-null="true"/>
+        </property>
+        <property generated="never" lazy="false" name="orden" optimistic-lock="true" type="int" unique="false">
+            <column name="orden" not-null="true"/>
+        </property>
+        <property generated="never" lazy="false" name="horasEstimadas" optimistic-lock="true" type="int" unique="false">
+            <column name="horas_estimadas" not-null="true"/>
+        </property>
+        <property generated="never" lazy="false" name="minutosEstimados" optimistic-lock="true" type="int" unique="false">
+            <column name="minutos_estimados" not-null="true"/>
+        </property>
+        <property generated="never" lazy="false" name="imagen" optimistic-lock="true" type="binary" unique="false">
+            <column name="imagen"/>
+        </property>
+        <property generated="never" lazy="false" name="tipoRespuesta" optimistic-lock="true" type="int" unique="false">
+            <column name="tipo_respuesta" not-null="true"/>
+        </property>
+        <set embed-xml="true" fetch="select" inverse="true" lazy="true" mutable="true" name="modeloRespuestas" optimistic-lock="true" sort="unsorted" table="modelo_respuesta">
+            <key on-delete="noaction">
+                <column name="modelo_pregunta_id" not-null="true"/>
+            </key>
+            <one-to-many class="jaio.selection.orm.ModeloRespuesta" embed-xml="true" not-found="exception"/>
+        </set>
+        <set embed-xml="true" fetch="select" inverse="true" lazy="true" mutable="true" name="modeloRespuestas_1" optimistic-lock="true" sort="unsorted" table="modelo_respuesta">
+            <key on-delete="noaction">
+                <column name="modelo_pregunta_id" not-null="true"/>
+            </key>
+            <one-to-many class="jaio.selection.orm.ModeloRespuesta" embed-xml="true" not-found="exception"/>
+        </set>
+    </class>
+</hibernate-mapping>

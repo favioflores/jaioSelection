@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generated 06/11/2017 06:07:28 PM by Hibernate Tools 5.1.4.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping auto-import="true" default-access="property" default-cascade="none" default-lazy="true">
+    <class catalog="jaioselectiondb" dynamic-insert="false" dynamic-update="false" mutable="true" name="jaio.selection.orm.InfoAcademica" optimistic-lock="version" polymorphism="implicit" select-before-update="false" table="info_academica">
+        <id name="id" type="java.lang.Integer">
+            <column name="id"/>
+            <generator class="identity"/>
+        </id>
+        <many-to-one class="jaio.selection.orm.Candidato" embed-xml="true" fetch="select" insert="true" name="candidato" not-found="exception" optimistic-lock="true" unique="false" update="true">
+            <column name="candidato_id" not-null="true"/>
+        </many-to-one>
+        <property generated="never" lazy="false" name="fechaInicio" optimistic-lock="true" type="date" unique="false">
+            <column length="10" name="fecha_inicio" not-null="true"/>
+        </property>
+        <property generated="never" lazy="false" name="fechaFin" optimistic-lock="true" type="date" unique="false">
+            <column length="10" name="fecha_fin"/>
+        </property>
+        <property generated="never" lazy="false" name="nombre" optimistic-lock="true" type="string" unique="false">
+            <column length="200" name="nombre" not-null="true"/>
+        </property>
+        <property generated="never" lazy="false" name="grado" optimistic-lock="true" type="string" unique="false">
+            <column length="200" name="grado"/>
+        </property>
+        <property generated="never" lazy="false" name="logro" optimistic-lock="true" type="string" unique="false">
+            <column length="1000" name="logro"/>
+        </property>
+        <property generated="never" lazy="false" name="especialidad" optimistic-lock="true" type="string" unique="false">
+            <column length="200" name="especialidad"/>
+        </property>
+    </class>
+</hibernate-mapping>

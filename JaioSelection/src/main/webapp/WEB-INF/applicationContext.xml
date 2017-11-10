@@ -11,7 +11,7 @@
 
 	<bean
 		class="org.springframework.context.annotation.CommonAnnotationBeanPostProcessor" />
-
+<!--
 	<bean
 		class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor" />
 
@@ -94,21 +94,13 @@
 		</property>
 	</bean>
 
-	<!--
+
 	<bean id="loginView" class="jaio.selection.view.LoginView" scope="request"  />
 	<bean id="sidebarView" class="jaio.selection.view.SidebarView" scope="session"/>
 	<bean id="empresaView" class="jaio.selection.view.EmpresaView" scope="request"/>
- 	 -->
 
-	<bean class="org.springframework.beans.factory.config.CustomScopeConfigurer">
-		<property name="scopes">
-			<map>
-				<entry key="view">
-					<bean class="jaio.selection.scope.ViewScope" />
-				</entry>
-			</map>
-		</property>
-	</bean>
+	<import resource="classpath:jsfSpringScope.xml"/>
+ -->
 
 </beans>
 

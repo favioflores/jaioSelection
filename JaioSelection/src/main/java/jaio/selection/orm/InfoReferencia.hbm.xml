@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generated 06/11/2017 06:07:28 PM by Hibernate Tools 5.1.4.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping auto-import="true" default-access="property" default-cascade="none" default-lazy="true">
+    <class catalog="jaioselectiondb" dynamic-insert="false" dynamic-update="false" mutable="true" name="jaio.selection.orm.InfoReferencia" optimistic-lock="version" polymorphism="implicit" select-before-update="false" table="info_referencia">
+        <id name="id" type="java.lang.Integer">
+            <column name="id"/>
+            <generator class="identity"/>
+        </id>
+        <many-to-one class="jaio.selection.orm.InfoExperiencia" embed-xml="true" fetch="select" insert="true" name="infoExperiencia" not-found="exception" optimistic-lock="true" unique="false" update="true">
+            <column name="info_experiencia_id" not-null="true"/>
+        </many-to-one>
+        <property generated="never" lazy="false" name="nombreCompleto" optimistic-lock="true" type="string" unique="false">
+            <column length="200" name="nombre_completo" not-null="true"/>
+        </property>
+        <property generated="never" lazy="false" name="cargo" optimistic-lock="true" type="string" unique="false">
+            <column length="200" name="cargo" not-null="true"/>
+        </property>
+        <property generated="never" lazy="false" name="telefono" optimistic-lock="true" type="string" unique="false">
+            <column length="50" name="telefono"/>
+        </property>
+        <property generated="never" lazy="false" name="movil" optimistic-lock="true" type="string" unique="false">
+            <column length="50" name="movil"/>
+        </property>
+    </class>
+</hibernate-mapping>

@@ -5,6 +5,8 @@ import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
+import javax.faces.application.FacesMessage;
+import javax.faces.application.FacesMessage.Severity;
 import javax.faces.context.FacesContext;
 
 import org.apache.commons.logging.Log;
@@ -22,6 +24,11 @@ public abstract class BaseView implements Serializable{
 
 	private static final Log log = LogFactory.getLog(BaseView.class);
 
+	public static final Severity ERROR = FacesMessage.SEVERITY_ERROR;
+	public static final Severity INFO = FacesMessage.SEVERITY_INFO;
+	public static final Severity WARN = FacesMessage.SEVERITY_WARN;
+	public static final Severity FATAL = FacesMessage.SEVERITY_FATAL;
+
     public String msg(String key) {
 
         String result = null;
@@ -33,6 +40,25 @@ public abstract class BaseView implements Serializable{
         	log.error(e);
         }
         return result;
+    }
+
+    public void mostrarAlerta(Severity severity, String key){
+        try {
+        	FacesMessage message = new FacesMessage(severity, msg(key),null);
+        	FacesContext.getCurrentInstance().addMessage(null, message);
+        } catch (Exception e) {
+        	log.error(e);
+        	mostrarError(e);
+        }
+    }
+
+    public void mostrarError(Exception e){
+        try {
+        	FacesMessage message = new FacesMessage(FATAL, e.getMessage(),null);
+        	FacesContext.getCurrentInstance().addMessage(null, message);
+        } catch (Exception ex) {
+        	log.error(ex);
+        }
     }
 
 }

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generated 06/11/2017 06:07:28 PM by Hibernate Tools 5.1.4.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping auto-import="true" default-access="property" default-cascade="none" default-lazy="true">
+    <class catalog="jaioselectiondb" dynamic-insert="false" dynamic-update="false" mutable="true" name="jaio.selection.orm.Definicion" optimistic-lock="version" polymorphism="implicit" select-before-update="false" table="definicion">
+        <id name="id" type="java.lang.Integer">
+            <column name="id"/>
+            <generator class="identity"/>
+        </id>
+        <property generated="never" lazy="false" name="descripcion" optimistic-lock="true" type="string" unique="false">
+            <column length="100" name="descripcion" not-null="true"/>
+        </property>
+        <set embed-xml="true" fetch="select" inverse="true" lazy="true" mutable="true" name="elementos" optimistic-lock="true" sort="unsorted" table="elemento">
+            <key on-delete="noaction">
+                <column name="definicion_id" not-null="true"/>
+            </key>
+            <one-to-many class="jaio.selection.orm.Elemento" embed-xml="true" not-found="exception"/>
+        </set>
+        <set embed-xml="true" fetch="select" inverse="true" lazy="true" mutable="true" name="elementos_1" optimistic-lock="true" sort="unsorted" table="elemento">
+            <key on-delete="noaction">
+                <column name="definicion_id" not-null="true"/>
+            </key>
+            <one-to-many class="jaio.selection.orm.Elemento" embed-xml="true" not-found="exception"/>
+        </set>
+    </class>
+</hibernate-mapping>

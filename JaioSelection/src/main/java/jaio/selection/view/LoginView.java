@@ -9,27 +9,23 @@ import java.util.Map;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import jaio.selection.bean.UsuarioBean;
-import jaio.selection.entity.Usuario;
-import jaio.selection.service.UsuarioService;
+import jaio.selection.dao.UsuarioDAO;
+import jaio.selection.orm.Usuario;
 import jaio.selection.util.Utilitarios;
 
 @ManagedBean(name = "loginView")
-@Scope("request")
-@Component("loginView")
+@RequestScoped
 public class LoginView extends BaseView implements Serializable {
-
-	@Autowired
-	private UsuarioService usuarioService;
 
 	private static Log log = LogFactory.getLog(LoginView.class);
 
@@ -74,7 +70,6 @@ public class LoginView extends BaseView implements Serializable {
 				if (captchaInvalido(captha)) {
 					message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error de inicio de sesion",
 							"Captcha invalido");
-					FacesContext.getCurrentInstance().addMessage(null, message);
 				} else {
 					blValido = true;
 				}
@@ -97,7 +92,8 @@ public class LoginView extends BaseView implements Serializable {
 
 				} else {
 
-					Usuario objUsuario = usuarioService.obtenerUsuario(usuario, contrasena);
+					UsuarioDAO objUsuarioDAO = new UsuarioDAO();
+					Usuario objUsuario = objUsuarioDAO.obtenerUsuario(usuario, contrasena);
 
 					if(Utilitarios.esNuloOVacio(objUsuario)){
 						flag = false;
@@ -108,7 +104,7 @@ public class LoginView extends BaseView implements Serializable {
 				}
 
 				if(!flag){
-					message = new FacesMessage(FacesMessage.SEVERITY_ERROR, msg("login.usuario.contrasena.incorrecto"),null);
+					mostrarAlerta(ERROR,"login.usuario.contrasena.incorrecto");
 				}else{
 			        FacesContext.getCurrentInstance().getExternalContext().redirect("bienvenida.jsf");
 				}
@@ -120,9 +116,6 @@ public class LoginView extends BaseView implements Serializable {
 				log.error(ex);
 			}
 
-			if (message != null) {
-				FacesContext.getCurrentInstance().addMessage(null, message);
-			}
 		}
 	}
 

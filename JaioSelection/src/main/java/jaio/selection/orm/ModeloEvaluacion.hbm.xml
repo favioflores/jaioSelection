@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generated 06/11/2017 06:07:28 PM by Hibernate Tools 5.1.4.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping auto-import="true" default-access="property" default-cascade="none" default-lazy="true">
+    <class catalog="jaioselectiondb" dynamic-insert="false" dynamic-update="false" mutable="true" name="jaio.selection.orm.ModeloEvaluacion" optimistic-lock="version" polymorphism="implicit" select-before-update="false" table="modelo_evaluacion">
+        <id name="id" type="java.lang.Integer">
+            <column name="id"/>
+            <generator class="identity"/>
+        </id>
+        <many-to-one class="jaio.selection.orm.ModeloLibro" embed-xml="true" fetch="select" insert="true" name="modeloLibro" not-found="exception" optimistic-lock="true" unique="false" update="true">
+            <column name="modelo_libro_id" not-null="true"/>
+        </many-to-one>
+        <property generated="never" lazy="false" name="nombre" optimistic-lock="true" type="string" unique="false">
+            <column length="45" name="nombre" not-null="true"/>
+        </property>
+        <property generated="never" lazy="false" name="horasEstimadas" optimistic-lock="true" type="int" unique="false">
+            <column name="horas_estimadas" not-null="true"/>
+        </property>
+        <property generated="never" lazy="false" name="minutosEstimados" optimistic-lock="true" type="int" unique="false">
+            <column name="minutos_estimados" not-null="true"/>
+        </property>
+        <property generated="never" lazy="false" name="validez" optimistic-lock="true" type="big_decimal" unique="false">
+            <column name="validez" not-null="true" precision="5"/>
+        </property>
+        <property generated="never" lazy="false" name="confiabilidad" optimistic-lock="true" type="big_decimal" unique="false">
+            <column name="confiabilidad" not-null="true" precision="5"/>
+        </property>
+        <property generated="never" lazy="false" name="fechaCreacion" optimistic-lock="true" type="date" unique="false">
+            <column length="10" name="fecha_creacion" not-null="true"/>
+        </property>
+        <property generated="never" lazy="false" name="estado" optimistic-lock="true" type="int" unique="false">
+            <column name="estado" not-null="true"/>
+        </property>
+        <property generated="never" lazy="false" name="limiteTiempo" optimistic-lock="true" type="byte" unique="false">
+            <column name="limite_tiempo" not-null="true"/>
+        </property>
+        <set embed-xml="true" fetch="select" inverse="true" lazy="true" mutable="true" name="modeloEvaluacionXCompetencias" optimistic-lock="true" sort="unsorted" table="modelo_evaluacion_x_competencia">
+            <key on-delete="noaction">
+                <column name="modelo_evaluacion_id" not-null="true"/>
+            </key>
+            <one-to-many class="jaio.selection.orm.ModeloEvaluacionXCompetencia" embed-xml="true" not-found="exception"/>
+        </set>
+        <set embed-xml="true" fetch="select" inverse="true" lazy="true" mutable="true" name="bateriaEvaluacions" optimistic-lock="true" sort="unsorted" table="bateria_evaluacion">
+            <key on-delete="noaction">
+                <column name="modelo_evaluacion_id" not-null="true"/>
+            </key>
+            <one-to-many class="jaio.selection.orm.BateriaEvaluacion" embed-xml="true" not-found="exception"/>
+        </set>
+        <set embed-xml="true" fetch="select" inverse="true" lazy="true" mutable="true" name="modeloEvaluacionXCompetencias_1" optimistic-lock="true" sort="unsorted" table="modelo_evaluacion_x_competencia">
+            <key on-delete="noaction">
+                <column name="modelo_evaluacion_id" not-null="true"/>
+            </key>
+            <one-to-many class="jaio.selection.orm.ModeloEvaluacionXCompetencia" embed-xml="true" not-found="exception"/>
+        </set>
+        <set embed-xml="true" fetch="select" inverse="true" lazy="true" mutable="true" name="modeloPreguntas" optimistic-lock="true" sort="unsorted" table="modelo_pregunta">
+            <key on-delete="noaction">
+                <column name="modelo_evaluacion_id" not-null="true"/>
+            </key>
+            <one-to-many class="jaio.selection.orm.ModeloPregunta" embed-xml="true" not-found="exception"/>
+        </set>
+        <set embed-xml="true" fetch="select" inverse="true" lazy="true" mutable="true" name="bateriaEvaluacions_1" optimistic-lock="true" sort="unsorted" table="bateria_evaluacion">
+            <key on-delete="noaction">
+                <column name="modelo_evaluacion_id" not-null="true"/>
+            </key>
+            <one-to-many class="jaio.selection.orm.BateriaEvaluacion" embed-xml="true" not-found="exception"/>
+        </set>
+        <set embed-xml="true" fetch="select" inverse="true" lazy="true" mutable="true" name="modeloPreguntas_1" optimistic-lock="true" sort="unsorted" table="modelo_pregunta">
+            <key on-delete="noaction">
+                <column name="modelo_evaluacion_id" not-null="true"/>
+            </key>
+            <one-to-many class="jaio.selection.orm.ModeloPregunta" embed-xml="true" not-found="exception"/>
+        </set>
+    </class>
+</hibernate-mapping>

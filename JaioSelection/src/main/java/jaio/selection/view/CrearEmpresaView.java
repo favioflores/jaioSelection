@@ -6,6 +6,8 @@ import java.util.Date;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -13,15 +15,13 @@ import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 
-import jaio.selection.entity.Empresa;
+import jaio.selection.dao.EmpresaDAO;
+import jaio.selection.orm.Empresa;
 import jaio.selection.util.Utilitarios;
 
 @ManagedBean(name = "crearEmpresaView")
-@Scope("view")
-@Component("crearEmpresaView")
+@SessionScoped
 public class CrearEmpresaView extends BaseView implements Serializable {
 
 	private static Log log = LogFactory.getLog(CrearEmpresaView.class);
@@ -70,21 +70,23 @@ public class CrearEmpresaView extends BaseView implements Serializable {
 		limpiar();
 	}
 
-	@SuppressWarnings("unused")
-	private void limpiar() {
+	public void limpiar() {
 		razon = "";
 		fecha = Utilitarios.obtieneFechaSistema();
 		imagen = null;
+		imagenPreview = null;
 
 	}
 
 	public void subirImagen(FileUploadEvent event) {
 		try {
+
 			imagen = event.getFile();
 			imagenPreview = new DefaultStreamedContent(new ByteArrayInputStream(imagen.getContents()),
 					imagen.getContentType(), imagen.getFileName());
 		} catch (Exception e) {
 			log.error(e);
+			mostrarAlerta(FATAL, "error.inesperado");
 		}
 	}
 
@@ -92,16 +94,27 @@ public class CrearEmpresaView extends BaseView implements Serializable {
 
 		try {
 
-			Empresa objEmpresa = new Empresa();
+			EmpresaDAO objEmpresaDAO = new EmpresaDAO();
 
-			objEmpresa.setNombre(razon);
-			objEmpresa.setFechaRegistro(new Date());
-			objEmpresa.setImagen(imagen.getContents());
-			objEmpresa.setUsuario(Utilitarios.obtenerUsuarioEntity());
+			Empresa empresa = new Empresa();
+			empresa.setNombre(razon);
+			empresa.setFechaRegistro(new Date());
 
-			System.out.println("Grabar");
+			if(Utilitarios.noEsNuloOVacio(imagen)){
+				empresa.setImagen(imagen.getContents());
+				empresa.setTipo_imagen(imagen.getContentType());
+			}
+			empresa.setUsuario(Utilitarios.obtenerUsuarioEntity());
+
+			objEmpresaDAO.grabar(empresa);
+
+			limpiar();
+
+			mostrarAlerta(INFO, "organizacion.empresa.creada");
+
 		} catch (Exception e) {
 			log.error(e);
+			mostrarAlerta(FATAL, "error.inesperado");
 		}
 	}
 

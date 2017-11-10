@@ -1,14 +1,82 @@
 package jaio.selection.dao;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
-import jaio.selection.entity.Empresa;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.hibernate.Query;
 
-public interface EmpresaDAO {
+import jaio.selection.orm.Empresa;
+import jaio.selection.util.Utilitarios;
 
-	public abstract boolean crearEmpresa(Empresa Empresa);
-	public abstract boolean actualizaEmpresa(Empresa Empresa);
-	public abstract Empresa obtenerEmpresa(Integer Id);
-	public abstract boolean borrarEmpresa(Empresa Empresa);
-	public abstract List<Empresa> obtenerEmpresas();	
+public class EmpresaDAO extends HibernateUtil implements Serializable{
+
+	private static final long serialVersionUID = 1L;
+	private static final Log log = LogFactory.getLog(EmpresaDAO.class);
+
+    public void grabar(Empresa empresa) {
+
+    	iniciaSession();
+
+        try {
+
+            session.save(empresa);
+
+            guardarCambios();
+
+            log.debug("Grago correctamente");
+
+        } catch (Exception e) {
+            rollback(e);
+        }finally {
+        	cerrarSession();
+		}
+    }
+
+
+    public List<Empresa> obtenerEmpresas(){
+
+    	iniciaSession();
+    	try{
+
+    		Query query = session.createQuery("From Empresa e where e.usuario.id = ? ");
+
+    		query.setParameter(0, Utilitarios.obtenerUsuarioSession().getIntUsuarioPk());
+
+    		return query.list();
+
+    	}catch (Exception e) {
+			manejaException(e);
+		}finally{
+			cerrarSession();
+		}
+
+    	return new ArrayList<Empresa>();
+    }
+
+    public Empresa obtenerEmpresa(String id){
+
+    	iniciaSession();
+    	try{
+
+    		Query query = session.createQuery("From Empresa e where e.id = ? ");
+
+    		query.setString(0, id);
+
+    		Empresa empresa = (Empresa) query.uniqueResult();
+
+    		return empresa;
+
+    	}catch (Exception e) {
+			manejaException(e);
+		}finally{
+			cerrarSession();
+		}
+
+    	return null;
+    }
+
 }
+

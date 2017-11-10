@@ -17,8 +17,8 @@ import com.itextpdf.text.pdf.PdfStamper;
 import com.itextpdf.text.pdf.PdfWriter;
 
 import jaio.selection.bean.UsuarioBean;
-import jaio.selection.entity.Usuario;
 import jaio.selection.orm.Elemento;
+import jaio.selection.orm.Usuario;
 
 import java.awt.Color;
 import java.io.ByteArrayOutputStream;
@@ -67,6 +67,11 @@ public class Utilitarios {
 
     public static Date obtenerFechaHoraSistema(){
         return new Date();
+    }
+
+    public static String obtenerFechaHoraSistema(String formato){
+    	SimpleDateFormat formateador = new SimpleDateFormat(formato);
+        return formateador.format(new Date());
     }
 
     public static boolean esNuloOVacio(Object obj) {
@@ -709,9 +714,10 @@ public void onEndPage(PdfWriter writer, Document document) {
             Elemento objElemento = (Elemento) itLstElementos.next();
 
             objSelectItem = new SelectItem();
+            /*
             objSelectItem.setValue(objElemento.getElIdElementoPk());
             objSelectItem.setLabel(objElemento.getElTxDescripcion());
-
+*/
             lstMetodologias.add(objSelectItem);
         }
 

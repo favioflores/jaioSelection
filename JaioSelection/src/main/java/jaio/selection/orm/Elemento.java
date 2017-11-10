@@ -1,5 +1,5 @@
 package jaio.selection.orm;
-// Generated 21/10/2014 08:38:36 PM by Hibernate Tools 3.2.1.GA
+// Generated 06/11/2017 06:07:26 PM by Hibernate Tools 5.1.4.Final
 
 
 
@@ -9,66 +9,56 @@ package jaio.selection.orm;
 public class Elemento  implements java.io.Serializable {
 
 
-     private Integer elIdElementoPk;
-     private int elInActivo;
-     private int elNuOrden;
-     private String elTxDescripcion;
-     private Integer elInUsaEscala;
-     private String elTxValor1;
-     private byte[] elCadena;
+     private Integer id;
+     private Definicion definicion;
+     private String descripcion;
+     private int orden;
+     private byte activo;
 
     public Elemento() {
     }
 
-	
-    public Integer getElIdElementoPk() {
-        return this.elIdElementoPk;
+    public Elemento(Definicion definicion, String descripcion, int orden, byte activo) {
+       this.definicion = definicion;
+       this.descripcion = descripcion;
+       this.orden = orden;
+       this.activo = activo;
+    }
+   
+    public Integer getId() {
+        return this.id;
     }
     
-    public void setElIdElementoPk(Integer elIdElementoPk) {
-        this.elIdElementoPk = elIdElementoPk;
+    public void setId(Integer id) {
+        this.id = id;
     }
-    public int getElInActivo() {
-        return this.elInActivo;
-    }
-    
-    public void setElInActivo(int elInActivo) {
-        this.elInActivo = elInActivo;
-    }
-    public int getElNuOrden() {
-        return this.elNuOrden;
+    public Definicion getDefinicion() {
+        return this.definicion;
     }
     
-    public void setElNuOrden(int elNuOrden) {
-        this.elNuOrden = elNuOrden;
+    public void setDefinicion(Definicion definicion) {
+        this.definicion = definicion;
     }
-    public String getElTxDescripcion() {
-        return this.elTxDescripcion;
-    }
-    
-    public void setElTxDescripcion(String elTxDescripcion) {
-        this.elTxDescripcion = elTxDescripcion;
-    }
-    public Integer getElInUsaEscala() {
-        return this.elInUsaEscala;
+    public String getDescripcion() {
+        return this.descripcion;
     }
     
-    public void setElInUsaEscala(Integer elInUsaEscala) {
-        this.elInUsaEscala = elInUsaEscala;
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
-    public String getElTxValor1() {
-        return this.elTxValor1;
-    }
-    
-    public void setElTxValor1(String elTxValor1) {
-        this.elTxValor1 = elTxValor1;
-    }
-    public byte[] getElCadena() {
-        return this.elCadena;
+    public int getOrden() {
+        return this.orden;
     }
     
-    public void setElCadena(byte[] elCadena) {
-        this.elCadena = elCadena;
+    public void setOrden(int orden) {
+        this.orden = orden;
+    }
+    public byte getActivo() {
+        return this.activo;
+    }
+    
+    public void setActivo(byte activo) {
+        this.activo = activo;
     }
 
 

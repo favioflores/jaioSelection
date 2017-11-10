@@ -148,6 +148,7 @@ public class Constantes {
     public static String DDMMYYYYHH24MISS = "ddMMyyyyHHmmssS";
     public static String HH24_MI_DDMMYYYY = "HH:mm dd/MM/yyyy";
     public static String DDMMYYYY = "dd/MM/yyyy";
+    public static String HH24 = "HH";
 
     public static String STR_EXTENSION_PDF = ".pdf";
     public static String STR_EXTENSION_PNG = ".png";
@@ -252,6 +253,7 @@ public class Constantes {
 
 
 
-
+    public static String MASCULINO = "6";
+    public static String FEMENINO = "7";
 
 }
