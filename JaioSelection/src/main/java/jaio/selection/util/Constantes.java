@@ -250,7 +250,7 @@ public class Constantes {
 
 
     public static String SESSION_USUARIO = "userSession";
-
+    public static String SESSION_EMPRESA = "empresaSession";
 
 
     public static String MASCULINO = "6";

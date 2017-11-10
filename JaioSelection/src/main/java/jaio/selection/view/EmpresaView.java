@@ -9,6 +9,8 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -16,12 +18,14 @@ import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 
 import jaio.selection.bean.EmpresaBean;
+import jaio.selection.bean.UsuarioBean;
 import jaio.selection.dao.EmpresaDAO;
 import jaio.selection.orm.Empresa;
+import jaio.selection.util.Constantes;
 import jaio.selection.util.Utilitarios;
 
 @ManagedBean(name = "empresaView")
-@SessionScoped
+@ViewScoped
 public class EmpresaView extends BaseView implements Serializable {
 
 	private static Log log = LogFactory.getLog(EmpresaView.class);
@@ -72,10 +76,9 @@ public class EmpresaView extends BaseView implements Serializable {
 
 					img = new DefaultStreamedContent(new ByteArrayInputStream(objEmpresa.getImagen()),
 							objEmpresa.getTipo_imagen());
-				}else{
+				} else {
 					img = null;
 				}
-
 
 				lstEmpresas.add(objEmpresaBean);
 			}
@@ -84,6 +87,16 @@ public class EmpresaView extends BaseView implements Serializable {
 			log.error(e);
 		}
 
+	}
+
+	public void abrirEditorOrganigrama(String idEmpresa) {
+
+		try {
+			Utilitarios.ponerSession(idEmpresa,Constantes.SESSION_EMPRESA);
+			FacesContext.getCurrentInstance().getExternalContext().redirect("organigrama.jsf");
+		} catch (Exception e) {
+			log.error(e);
+		}
 	}
 
 }

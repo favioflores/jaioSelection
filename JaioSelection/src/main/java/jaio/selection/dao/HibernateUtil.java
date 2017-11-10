@@ -37,7 +37,7 @@ public class HibernateUtil implements Serializable{
     }
 
     public void iniciaSession(){
-        session = getSessionFactory().getCurrentSession();
+        session = getSessionFactory().openSession();
         tx = session.beginTransaction();
         log.debug("Inicio transaccion");
     }

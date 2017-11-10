@@ -49,7 +49,8 @@
 
 									<h:column>
 										<p:commandButton icon="fa fa-sitemap White"
-											styleClass="aqua-button">
+											styleClass="aqua-button" actionListener="#{empresaView.abrirEditorOrganigrama(emp.id)}" >
+											<f:param name="empId" value="#{emp.id}" />
 										</p:commandButton>
 
 										<p:commandButton icon="fa fa-trash" styleClass="aqua-button">

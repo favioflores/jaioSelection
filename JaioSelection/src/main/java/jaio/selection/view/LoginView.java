@@ -21,6 +21,7 @@ import org.springframework.stereotype.Component;
 import jaio.selection.bean.UsuarioBean;
 import jaio.selection.dao.UsuarioDAO;
 import jaio.selection.orm.Usuario;
+import jaio.selection.util.Constantes;
 import jaio.selection.util.Utilitarios;
 
 @ManagedBean(name = "loginView")
@@ -98,7 +99,7 @@ public class LoginView extends BaseView implements Serializable {
 					if(Utilitarios.esNuloOVacio(objUsuario)){
 						flag = false;
 					}else{
-						Utilitarios.ponerSession(new UsuarioBean(objUsuario),"userSession");
+						Utilitarios.ponerSession(new UsuarioBean(objUsuario),Constantes.SESSION_USUARIO);
 					}
 
 				}
