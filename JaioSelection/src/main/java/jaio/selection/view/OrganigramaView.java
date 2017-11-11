@@ -33,9 +33,8 @@ public class OrganigramaView extends BaseView implements Serializable {
 
 	private OrganigramNode rootNode;
 	private OrganigramNode selection;
-	private String employeeName;
-	
-	
+	private String area;
+	private String perfil;
 
 	public OrganigramNode getRootNode() {
 		return rootNode;
@@ -53,12 +52,20 @@ public class OrganigramaView extends BaseView implements Serializable {
 		this.selection = selection;
 	}
 
-	public String getEmployeeName() {
-		return employeeName;
+	public String getArea() {
+		return area;
 	}
 
-	public void setEmployeeName(String employeeName) {
-		this.employeeName = employeeName;
+	public void setArea(String area) {
+		this.area = area;
+	}
+
+	public String getPerfil() {
+		return perfil;
+	}
+
+	public void setPerfil(String perfil) {
+		this.perfil = perfil;
 	}
 
 	@PostConstruct
@@ -71,63 +78,48 @@ public class OrganigramaView extends BaseView implements Serializable {
 			if (Utilitarios.esNuloOVacio(Utilitarios.obtenerSession(Constantes.SESSION_EMPRESA))) {
 				FacesContext.getCurrentInstance().getExternalContext().redirect("crearEmpresa.jsf");
 			} else {
-				
+
 				String idEmpresa = (String) Utilitarios.obtenerSession(Constantes.SESSION_EMPRESA);
 
 				EmpresaDAO objEmpresaDAO = new EmpresaDAO();
-				
+
 				Empresa objEmpresa = objEmpresaDAO.obtenerEmpresa(idEmpresa);
-				
+
 				rootNode = new DefaultOrganigramNode("root", objEmpresa.getNombre(), null);
 				rootNode.setCollapsible(false);
-				rootNode.setDroppable(true);
+				rootNode.setDroppable(false);
 				rootNode.setDraggable(false);
+				rootNode.setSelectable(true);
+				rootNode.setType("root");
+
+				OrganigramNode ejemploArea = addNode(rootNode, "area", "Ejemplo de Area");
 				
-				/*
-				 * OrganigramNode softwareDevelopment = addDivision(rootNode,
-				 * "Software Development", "Ridvan Agar");
-				 * 
-				 * OrganigramNode teamJavaEE = addDivision(softwareDevelopment, "Team JavaEE");
-				 * addDivision(teamJavaEE, "JSF", "Thomas Andraschko"); addDivision(teamJavaEE,
-				 * "Backend", "Marie Louise");
-				 * 
-				 * OrganigramNode teamMobile = addDivision(softwareDevelopment, "Team Mobile");
-				 * addDivision(teamMobile, "Android", "Andy Ruby"); addDivision(teamMobile,
-				 * "iOS", "Stevan Jobs");
-				 * 
-				 * addDivision(rootNode, "Managed Services", "Thorsten Schultze",
-				 * "Sandra Becker");
-				 * 
-				 * OrganigramNode marketing = addDivision(rootNode, "Marketing");
-				 * addDivision(marketing, "Social Media", "Ali Mente", "Susanne Muster");
-				 * addDivision(marketing, "Press", "Manfred Mustermann", "Hans Peter");
-				 * 
-				 * addDivision(rootNode, "Management", "Hassan El Manfalouty");
-				 */
+				addNode(ejemploArea, "perfil", "Ylene Sanchez Sotelo");				
 
 			}
+			
 		} catch (Exception e) {
 			log.error(e);
 		}
 	}
 
-	protected OrganigramNode addDivision(OrganigramNode parent, String name, String... employees) {
-		OrganigramNode divisionNode = new DefaultOrganigramNode("division", name, parent);
-		divisionNode.setDroppable(true);
-		divisionNode.setDraggable(true);
-		divisionNode.setSelectable(true);
-
-		if (employees != null) {
-			for (String employee : employees) {
-				OrganigramNode employeeNode = new DefaultOrganigramNode("employee", employee, divisionNode);
-				employeeNode.setDraggable(true);
-				employeeNode.setSelectable(true);
-			}
+	protected OrganigramNode addNode(OrganigramNode parent, String tipo, String name) {
+		
+		OrganigramNode node = new DefaultOrganigramNode(tipo, name, parent);
+		node.setDroppable(true);
+		node.setDraggable(true);
+		node.setSelectable(true);
+		
+		if(tipo.equals("area")) {
+			node.setCollapsible(true);	
+		}else if(tipo.equals("perfil")) {
+			node.setCollapsible(false);
 		}
-
-		return divisionNode;
+		
+		
+		return node;
 	}
-
+	
 	public void nodeDragDropListener(OrganigramNodeDragDropEvent event) {
 		FacesMessage message = new FacesMessage();
 		message.setSummary("Node '" + event.getOrganigramNode().getData() + "' moved from "
@@ -166,7 +158,6 @@ public class OrganigramaView extends BaseView implements Serializable {
 		// re-evaluate selection - might be a differenct object instance if viewstate
 		// serialization is enabled
 		OrganigramNode currentSelection = OrganigramHelper.findTreeNode(rootNode, selection);
-		setMessage(currentSelection.getData() + " will entfernt werden.", FacesMessage.SEVERITY_INFO);
 	}
 
 	public void removeEmployee() {
@@ -176,22 +167,21 @@ public class OrganigramaView extends BaseView implements Serializable {
 		currentSelection.getParent().getChildren().remove(currentSelection);
 	}
 
-	public void addEmployee() {
-		// re-evaluate selection - might be a differenct object instance if viewstate
-		// serialization is enabled
+	public void agregarArea() {
+		
 		OrganigramNode currentSelection = OrganigramHelper.findTreeNode(rootNode, selection);
+		addNode(currentSelection, "area", area);
+		area = "";
 
-		OrganigramNode employee = new DefaultOrganigramNode("employee", employeeName, currentSelection);
-		employee.setDraggable(true);
-		employee.setSelectable(true);
 	}
 
-	private void setMessage(String msg, FacesMessage.Severity severity) {
-		FacesMessage message = new FacesMessage();
-		message.setSummary(msg);
-		message.setSeverity(severity);
-		FacesContext.getCurrentInstance().addMessage(null, message);
+	public void agregarPerfil() {
+		
+		OrganigramNode currentSelection = OrganigramHelper.findTreeNode(rootNode, selection);
+		addNode(currentSelection, "perfil", perfil);
+		perfil = "";
 	}
+
 
 	public void verHistorial() {
 		try {

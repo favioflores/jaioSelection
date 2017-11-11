@@ -8,18 +8,28 @@
 		<h:form id="formOrganigrama" enctype="multipart/form-data">
 
 			<style>
-.ui-organigram .ui-organigram-node.division {
-	background: #93e7ff;
-	background: -moz-linear-gradient(top, #93e7ff 0%, #007efc 100%);
-	background: -webkit-linear-gradient(top, #93e7ff 0%, #007efc 100%);
-	background: linear-gradient(to bottom, #93e7ff 0%, #007efc 100%);
+.ui-organigram .ui-organigram-node {
+background: #356aa0; /* Old browsers */
+background: -moz-linear-gradient(top, #356aa0 0%, #356aa0 100%); /* FF3.6-15 */
+background: -webkit-linear-gradient(top, #356aa0 0%,#356aa0 100%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(to bottom, #356aa0 0%,#356aa0 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#356aa0', endColorstr='#356aa0',GradientType=0 ); /* IE6-9 */
+}
+.ui-organigram .ui-organigram-node.area {
+background: #ff0084; /* Old browsers */
+background: -moz-linear-gradient(top, #ff0084 0%, #ff0084 100%); /* FF3.6-15 */
+background: -webkit-linear-gradient(top, #ff0084 0%,#ff0084 100%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(to bottom, #ff0084 0%,#ff0084 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff0084', endColorstr='#ff0084',GradientType=0 ); /* IE6-9 */	
 }
 
-.ui-organigram .ui-organigram-node.employee {
-	background: #88c048;
-	background: -moz-linear-gradient(top, #88c048 0%, #69a038 100%);
-	background: -webkit-linear-gradient(top, #88c048 0%, #69a038 100%);
-	background: linear-gradient(to bottom, #88c048 0%, #69a038 100%);
+.ui-organigram .ui-organigram-node.perfil {
+background: #f9c667; /* Old browsers */
+background: -moz-linear-gradient(top, #f9c667 0%, #eab448 90%); /* FF3.6-15 */
+background: -webkit-linear-gradient(top, #f9c667 0%,#eab448 90%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(to bottom, #f9c667 0%,#eab448 90%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f9c667', endColorstr='#eab448',GradientType=0 ); /* IE6-9 */
+
 }
 </style>
 
@@ -36,12 +46,12 @@
 						<p:commandButton value="#{msg['organigrama.verHistorial']}"
 							disabled="true" actionListener="#{organigramaView.verHistorial}" />
 
-						<br />
-<br />
-<br />
+						<br /> <br /> <br />
+
+
 						<p:organigram id="organigrama" widgetVar="organigrama"
-							value="#{organigramaView.rootNode}" var="node"
-							zoom="true"
+							value="#{organigramaView.rootNode}" var="node" zoom="false"
+							leafNodeConnectorHeight="0" autoScrollToSelection="false"
 							selection="#{organigramaView.selection}" style="width: 100%">
 
 							<p:organigramNode>
@@ -52,103 +62,69 @@
 								<h:outputText value="#{node.data}" />
 							</p:organigramNode>
 
-							<p:organigramNode type="division" styleClass="division"
+							<p:organigramNode type="area" styleClass="area" style="border-radius: 10px;"
 								icon="ui-icon-suitcase" iconPos="left">
 								<h:outputText value="#{node.data}" />
 							</p:organigramNode>
 
-							<p:organigramNode type="employee" styleClass="employee"
+							<p:organigramNode type="perfil" styleClass="perfil"
 								icon="ui-icon-person">
 								<h:outputText value="#{node.data}" />
 							</p:organigramNode>
 						</p:organigram>
 
-
-
-
-
-						<p:contextMenu for="organigrama" nodeType="employee">
-							<p:menuitem value="fire employee" update="organigrama"
+						<p:contextMenu for="organigrama" nodeType="root">
+							<p:menuitem value="Agregar area" ajax="false" icon="ui-icon-plus"
+								onclick="PF('agregarAreaDialog').show(); return false;" />
+						</p:contextMenu>
+						
+						<p:contextMenu for="organigrama" nodeType="perfil">
+							<p:menuitem value="Quitar perfil" update="organigrama"
 								icon="ui-icon-close"
-								actionListener="#{organigramaView.removeEmployee()}" />
+								actionListener="#{organigramaView.quitarPerfil()}" />
 						</p:contextMenu>
 
-						<p:contextMenu for="organigrama" nodeType="division">
-							<p:menuitem value="Add employee" ajax="false" icon="ui-icon-plus"
-								onclick="PF('addEmployeeDialog').show(); return false;" />
-							<p:menuitem value="Remove division"
-								update="organigrama @form:growl" icon="ui-icon-close"
-								actionListener="#{organigramaView.removeDivision()}" />
+						<p:contextMenu for="organigrama" nodeType="area">
+							<p:menuitem value="Agregar perfil" ajax="false" icon="ui-icon-plus"
+								onclick="PF('agregarPerfilDialog').show(); return false;" />
+							<p:menuitem value="Quitar area"
+								update="organigrama" icon="ui-icon-close"	
+								actionListener="#{organigramaView.quitarArea()}" />
 						</p:contextMenu>
 
-						<p:dialog id="addEmployeeDialog" widgetVar="addEmployeeDialog"
-							header="Add employee">
+						<p:dialog id="agregarAreaDialog" widgetVar="agregarAreaDialog" closeOnEscape="true" resizable="false"
+							header="Agregar area">
 
-							<p:inputText value="#{organigramaView.employeeName}" />
+							<p:inputText value="#{organigramaView.area}" />
 
-							<p:commandButton process="@parent" update=":formOrganigrama:organigrama"
-								value="Add" actionListener="organigrama"
-								oncomplete="PF('addEmployeeDialog').hide();" />
+							<p:commandButton process="@parent"
+								update=":formOrganigrama:organigrama" value="agregar"
+								actionListener="#{organigramaView.agregarArea()}"
+								oncomplete="PF('agregarAreaDialog').hide();" />
 
 						</p:dialog>
+
+
+						<p:dialog id="agregarPerfilDialog" widgetVar="agregarPerfilDialog" closeOnEscape="true" resizable="false"
+							header="Agregar perfil">
+
+							<h:panelGrid columns="1">
+							<p:inputText value="#{organigramaView.perfil}" />
+
+							<p:commandButton process="@parent"
+								update=":formOrganigrama:organigrama" value="agregar"
+								actionListener="#{organigramaView.agregarPerfil()}"
+								oncomplete="PF('agregarPerfilDialog').hide();" />
+</h:panelGrid>
+						</p:dialog>
+
 					</div>
 				</div>
 			</div>
+
+
+
 		</h:form>
-		<p:dialog header="#{msg['organizacion.dialog.titulo']}"
-			widgetVar="dlgNuevo" modal="true" resizable="false"
-			focus=":formCrear:desc" appendTo="@(body)" closeOnEscape="true"
-			closable="true" showEffect="clip" hideEffect="clip" responsive="true">
-
-			<h:form id="formCrear" enctype="multipart/form-data">
-				<p:focus for="desc" />
-				<p:growl life="4000" />
-				<h:panelGrid columns="3" cellpadding="5">
-					<p:outputLabel for="desc"
-						value="#{msg['organizacion.dialog.desc']}" />
-					<p:inputText id="desc" widgetVar="desc"
-						value="#{crearEmpresaView.razon}" required="true"></p:inputText>
-					<p:message for="desc" display="tooltip" />
-
-					<p:outputLabel for="fecha"
-						value="#{msg['organizacion.dialog.fecha']}" />
-					<p:inputText id="fecha" value="#{crearEmpresaView.fecha}"
-						readonly="true" required="true"></p:inputText>
-					<p:message for="fecha" display="tooltip" />
-
-					<p:outputLabel for="imagen"
-						value="#{msg['organizacion.dialog.imagen']}" />
-					<p:fileUpload id="imagen"
-						fileUploadListener="#{crearEmpresaView.subirImagen}"
-						previewWidth="10" dragDropSupport="true" update=":formCrear:"
-						auto="true" sizeLimit="100000"
-						allowTypes="/(\.|\/)(gif|jpe?g|png)$/" onstart="enviaDatos()" />
-					<p:message for="imagen" display="tooltip" />
-
-
-
-					<p:outputLabel for="imagePreview"
-						value="#{msg['organizacion.dialog.preview']}" />
-					<p:graphicImage id="imagePreview"
-						value="#{crearEmpresaView.imagenPreview}"
-						alt="#{msg['organizacion.dialog.noimagen']}" height="120"
-						width="160" />
-
-					<p:remoteCommand name="enviaDatos" process="@form" />
-
-
-					<f:facet name="footer">
-						<p:commandButton value="#{msg['organizacion.dialog.crear']}"
-							actionListener="#{crearEmpresaView.crearEmpresa}"
-							update=":formCrear:" oncomplete="PF('dlgNuevo').hide();" />
-
-						<p:hotkey id="hotCrear" bind="enter"
-							actionListener="#{crearEmpresaView.crearEmpresa}"
-							update=":formCrear:" oncomplete="PF('dlgNuevo').hide();" />
-					</f:facet>
-				</h:panelGrid>
-			</h:form>
-		</p:dialog>
 
 	</ui:define>
 
