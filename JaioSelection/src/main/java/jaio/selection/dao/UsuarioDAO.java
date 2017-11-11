@@ -17,9 +17,6 @@ import jaio.selection.orm.Usuario;
 
 public class UsuarioDAO extends HibernateUtil implements Serializable {
 
-    /**
-	 *
-	 */
 	private static final long serialVersionUID = 1L;
 	private static final Log log = LogFactory.getLog(UsuarioDAO.class);
 

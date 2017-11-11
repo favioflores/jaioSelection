@@ -1,6 +1,10 @@
 package jaio.selection.view;
 
 import java.io.Serializable;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -18,8 +22,12 @@ import org.primefaces.event.organigram.OrganigramNodeSelectEvent;
 import org.primefaces.model.DefaultOrganigramNode;
 import org.primefaces.model.OrganigramNode;
 
+import jaio.selection.dao.AreaDAO;
 import jaio.selection.dao.EmpresaDAO;
+import jaio.selection.dao.PerfilDAO;
+import jaio.selection.orm.Area;
 import jaio.selection.orm.Empresa;
+import jaio.selection.orm.Perfil;
 import jaio.selection.util.Constantes;
 import jaio.selection.util.Utilitarios;
 
@@ -35,6 +43,9 @@ public class OrganigramaView extends BaseView implements Serializable {
 	private OrganigramNode selection;
 	private String area;
 	private String perfil;
+
+	private AreaDAO objAreaDAO = new AreaDAO();
+	private PerfilDAO objPerfilDAO = new PerfilDAO();
 
 	public OrganigramNode getRootNode() {
 		return rootNode;
@@ -81,45 +92,99 @@ public class OrganigramaView extends BaseView implements Serializable {
 
 				String idEmpresa = (String) Utilitarios.obtenerSession(Constantes.SESSION_EMPRESA);
 
-				EmpresaDAO objEmpresaDAO = new EmpresaDAO();
+				List<Area> lstAreas = objAreaDAO.obtenerAreas(Constantes.EL_AREA_ESTADO_REGISTRADO);
 
-				Empresa objEmpresa = objEmpresaDAO.obtenerEmpresa(idEmpresa);
+				if (lstAreas.isEmpty()) {
 
-				rootNode = new DefaultOrganigramNode("root", objEmpresa.getNombre(), null);
-				rootNode.setCollapsible(false);
-				rootNode.setDroppable(false);
-				rootNode.setDraggable(false);
-				rootNode.setSelectable(true);
-				rootNode.setType("root");
+					grabarPrimeraVez(idEmpresa);
+					armarOrganigramaBD(idEmpresa, lstAreas);
 
-				OrganigramNode ejemploArea = addNode(rootNode, "area", "Ejemplo de Area");
-				
-				addNode(ejemploArea, "perfil", "Ylene Sanchez Sotelo");				
+				} else {
+					armarOrganigramaBD(idEmpresa, lstAreas);
+				}
 
 			}
-			
+
 		} catch (Exception e) {
 			log.error(e);
 		}
 	}
 
-	protected OrganigramNode addNode(OrganigramNode parent, String tipo, String name) {
-		
+	protected void armarOrganigramaBD(String idEmpresa, List<Area> lstAreas) {
+
+		try {
+
+			EmpresaDAO objEmpresaDAO = new EmpresaDAO();
+
+			Empresa objEmpresa = objEmpresaDAO.obtenerEmpresa(idEmpresa);
+
+			rootNode = new DefaultOrganigramNode("root", objEmpresa.getNombre(), null);
+			rootNode.setCollapsible(false);
+			rootNode.setDroppable(false);
+			rootNode.setDraggable(false);
+			rootNode.setSelectable(true);
+			rootNode.setType("root");
+
+			for(Area objArea : lstAreas){
+				System.out.println(objArea.getDescripcion());
+			}
+
+
+
+		} catch (Exception e) {
+			log.error(e);
+		}
+	}
+
+	protected void grabarPrimeraVez(String idEmpresa) {
+
+		try {
+
+			EmpresaDAO objEmpresaDAO = new EmpresaDAO();
+
+			Empresa objEmpresa = objEmpresaDAO.obtenerEmpresa(idEmpresa);
+
+			Area objArea = new Area();
+			objArea.setEmpresa(objEmpresa);
+			objArea.setDescripcion(msg("organizacion.ejemplo.area"));
+			objArea.setEstado(Constantes.EL_AREA_ESTADO_REGISTRADO);
+			objArea.setFechaRegistro(new Date());
+
+			Perfil objPerfil = new Perfil();
+
+			objPerfil.setArea(objArea);
+			objPerfil.setNombre(msg("organizacion.ejemplo.perfil"));
+			objPerfil.setFechaRegistro(new Date());
+			objPerfil.setEstado(Constantes.EL_PERFIL_ESTADO_REGISTRADO);
+
+			Set<Perfil> perfiles = new HashSet<Perfil>();
+			perfiles.add(objPerfil);
+			objArea.setPerfils(perfiles);
+
+			objAreaDAO.grabar(objArea);
+
+		} catch (Exception e) {
+			log.error(e);
+		}
+	}
+
+	protected OrganigramNode addNode(OrganigramNode parent, String tipo, String name, String key) {
+
 		OrganigramNode node = new DefaultOrganigramNode(tipo, name, parent);
 		node.setDroppable(true);
 		node.setDraggable(true);
 		node.setSelectable(true);
-		
-		if(tipo.equals("area")) {
-			node.setCollapsible(true);	
-		}else if(tipo.equals("perfil")) {
+		node.setRowKey(key);
+
+		if (tipo.equals("area")) {
+			node.setCollapsible(true);
+		} else if (tipo.equals("perfil")) {
 			node.setCollapsible(false);
 		}
-		
-		
+
 		return node;
 	}
-	
+
 	public void nodeDragDropListener(OrganigramNodeDragDropEvent event) {
 		FacesMessage message = new FacesMessage();
 		message.setSummary("Node '" + event.getOrganigramNode().getData() + "' moved from "
@@ -154,34 +219,34 @@ public class OrganigramaView extends BaseView implements Serializable {
 		FacesContext.getCurrentInstance().addMessage(null, message);
 	}
 
-	public void removeDivision() {
-		// re-evaluate selection - might be a differenct object instance if viewstate
-		// serialization is enabled
-		OrganigramNode currentSelection = OrganigramHelper.findTreeNode(rootNode, selection);
-	}
-
-	public void removeEmployee() {
-		// re-evaluate selection - might be a differenct object instance if viewstate
-		// serialization is enabled
+	public void quitarArea() {
 		OrganigramNode currentSelection = OrganigramHelper.findTreeNode(rootNode, selection);
 		currentSelection.getParent().getChildren().remove(currentSelection);
 	}
 
-	public void agregarArea() {
-		
+	public void quitarPerfil() {
 		OrganigramNode currentSelection = OrganigramHelper.findTreeNode(rootNode, selection);
-		addNode(currentSelection, "area", area);
-		area = "";
+		currentSelection.getParent().getChildren().remove(currentSelection);
+	}
+
+	public synchronized void agregarArea() {
+
+		synchronized (this) {
+			OrganigramNode currentSelection = OrganigramHelper.findTreeNode(rootNode, selection);
+			addNode(currentSelection, "area", area,null);
+			area = "";
+		}
 
 	}
 
-	public void agregarPerfil() {
-		
-		OrganigramNode currentSelection = OrganigramHelper.findTreeNode(rootNode, selection);
-		addNode(currentSelection, "perfil", perfil);
-		perfil = "";
-	}
+	public synchronized void agregarPerfil() {
 
+		synchronized (this) {
+			OrganigramNode currentSelection = OrganigramHelper.findTreeNode(rootNode, selection);
+			addNode(currentSelection, "perfil", perfil,null);
+			perfil = "";
+		}
+	}
 
 	public void verHistorial() {
 		try {

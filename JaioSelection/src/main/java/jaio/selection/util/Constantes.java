@@ -256,4 +256,11 @@ public class Constantes {
     public static String MASCULINO = "6";
     public static String FEMENINO = "7";
 
+    public static Integer EL_AREA_ESTADO_REGISTRADO = 8;
+    public static Integer EL_AREA_ESTADO_ELIMINADO = 9;
+
+    public static Integer EL_PERFIL_ESTADO_REGISTRADO = 10;
+    public static Integer EL_PERFIL_ESTADO_ELIMINADO = 11;
+
+
 }

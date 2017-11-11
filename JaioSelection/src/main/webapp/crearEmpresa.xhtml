@@ -19,9 +19,8 @@
 							value="#{msg['organizacion.boton.nuevo']}" icon="fa fa-plus" />
 						<p:hotkey id="hotNuevo" bind="shift+n"
 							onstart="PF('dlgNuevo').show();" />
-						<br> </br>
-
-
+						<br/>
+						<br/>
 										
 						<p:dataGrid var="emp" value="#{empresaView.lstEmpresas}"
 							columns="3" layout="grid" rows="6" paginator="true" id="emp"
@@ -49,8 +48,7 @@
 
 									<h:column>
 										<p:commandButton icon="fa fa-sitemap White"
-											styleClass="aqua-button" actionListener="#{empresaView.abrirEditorOrganigrama(emp.id)}" >
-											<f:param name="empId" value="#{emp.id}" />
+											styleClass="aqua-button" actionListener="#{empresaView.abrirEditorOrganigrama(emp.id	)}">
 										</p:commandButton>
 
 										<p:commandButton icon="fa fa-trash" styleClass="aqua-button">

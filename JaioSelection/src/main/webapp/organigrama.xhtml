@@ -9,27 +9,39 @@
 
 			<style>
 .ui-organigram .ui-organigram-node {
-background: #356aa0; /* Old browsers */
-background: -moz-linear-gradient(top, #356aa0 0%, #356aa0 100%); /* FF3.6-15 */
-background: -webkit-linear-gradient(top, #356aa0 0%,#356aa0 100%); /* Chrome10-25,Safari5.1-6 */
-background: linear-gradient(to bottom, #356aa0 0%,#356aa0 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#356aa0', endColorstr='#356aa0',GradientType=0 ); /* IE6-9 */
+	background: #356aa0; /* Old browsers */
+	background: -moz-linear-gradient(top, #356aa0 0%, #356aa0 100%);
+	/* FF3.6-15 */
+	background: -webkit-linear-gradient(top, #356aa0 0%, #356aa0 100%);
+	/* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(to bottom, #356aa0 0%, #356aa0 100%);
+	/* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#356aa0',
+		endColorstr='#356aa0', GradientType=0); /* IE6-9 */
 }
+
 .ui-organigram .ui-organigram-node.area {
-background: #ff0084; /* Old browsers */
-background: -moz-linear-gradient(top, #ff0084 0%, #ff0084 100%); /* FF3.6-15 */
-background: -webkit-linear-gradient(top, #ff0084 0%,#ff0084 100%); /* Chrome10-25,Safari5.1-6 */
-background: linear-gradient(to bottom, #ff0084 0%,#ff0084 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff0084', endColorstr='#ff0084',GradientType=0 ); /* IE6-9 */	
+	background: #ff0084; /* Old browsers */
+	background: -moz-linear-gradient(top, #ff0084 0%, #ff0084 100%);
+	/* FF3.6-15 */
+	background: -webkit-linear-gradient(top, #ff0084 0%, #ff0084 100%);
+	/* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(to bottom, #ff0084 0%, #ff0084 100%);
+	/* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff0084',
+		endColorstr='#ff0084', GradientType=0); /* IE6-9 */
 }
 
 .ui-organigram .ui-organigram-node.perfil {
-background: #f9c667; /* Old browsers */
-background: -moz-linear-gradient(top, #f9c667 0%, #eab448 90%); /* FF3.6-15 */
-background: -webkit-linear-gradient(top, #f9c667 0%,#eab448 90%); /* Chrome10-25,Safari5.1-6 */
-background: linear-gradient(to bottom, #f9c667 0%,#eab448 90%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f9c667', endColorstr='#eab448',GradientType=0 ); /* IE6-9 */
-
+	background: #f9c667; /* Old browsers */
+	background: -moz-linear-gradient(top, #f9c667 0%, #eab448 90%);
+	/* FF3.6-15 */
+	background: -webkit-linear-gradient(top, #f9c667 0%, #eab448 90%);
+	/* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(to bottom, #f9c667 0%, #eab448 90%);
+	/* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f9c667',
+		endColorstr='#eab448', GradientType=0); /* IE6-9 */
 }
 </style>
 
@@ -41,7 +53,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f9c667', end
 						<p>#{msg['organigrama.parrafo']}</p>
 
 						<p:button value="#{msg['organigrama.volver']}"
-							outcome="crearEmpresa" />
+							outcome="crearEmpresa" icon="fa fa-angle-left" />
 
 						<p:commandButton value="#{msg['organigrama.verHistorial']}"
 							disabled="true" actionListener="#{organigramaView.verHistorial}" />
@@ -54,6 +66,16 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f9c667', end
 							leafNodeConnectorHeight="0" autoScrollToSelection="false"
 							selection="#{organigramaView.selection}" style="width: 100%">
 
+							<p:ajax event="contextmenu" process="@this" />
+
+<!--  
+							<p:ajax event="dragdrop" process="@this" update="@form:growl"
+								listener="#\{organigramView.nodeDragDropListener}" />
+							<p:ajax event="select" process="@this" update="@form:growl"
+								listener="#\{organigramView.nodeSelectListener}" />
+								
+								-->
+
 							<p:organigramNode>
 								<h:outputText value="#{node.data}" />
 							</p:organigramNode>
@@ -62,61 +84,55 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f9c667', end
 								<h:outputText value="#{node.data}" />
 							</p:organigramNode>
 
-							<p:organigramNode type="area" styleClass="area" style="border-radius: 10px;"
-								icon="ui-icon-suitcase" iconPos="left">
+							<p:organigramNode type="area" styleClass="area"
+								style="border-radius: 10px;" icon="fa fa-suitcase">
 								<h:outputText value="#{node.data}" />
 							</p:organigramNode>
 
 							<p:organigramNode type="perfil" styleClass="perfil"
-								icon="ui-icon-person">
+								icon="fa fa-user">
 								<h:outputText value="#{node.data}" />
 							</p:organigramNode>
 						</p:organigram>
 
 						<p:contextMenu for="organigrama" nodeType="root">
-							<p:menuitem value="Agregar area" ajax="false" icon="ui-icon-plus"
-								onclick="PF('agregarAreaDialog').show(); return false;" />
+							<p:menuitem value="#{msg['organigrama.agregar.area']}"
+								icon="ui-icon-plus" update="agregarAreaDialog"
+								oncomplete="PF('agregarAreaDialog').show(); return false;" />
 						</p:contextMenu>
-						
+
 						<p:contextMenu for="organigrama" nodeType="perfil">
-							<p:menuitem value="Quitar perfil" update="organigrama"
-								icon="ui-icon-close"
-								actionListener="#{organigramaView.quitarPerfil()}" />
+							<p:menuitem value="#{msg['organigrama.quitar.perfil']}"
+								update="organigrama" icon="ui-icon-close"
+								actionListener="#{organigramaView.quitarPerfil()}">
+								<p:confirm header="#{msg['organizacion.confirmTitulo']}"
+									message="#{msg['organizacion.confirmQuitarPerfil']}"
+									icon="ui-icon-alert" />
+							</p:menuitem>
 						</p:contextMenu>
 
 						<p:contextMenu for="organigrama" nodeType="area">
-							<p:menuitem value="Agregar perfil" ajax="false" icon="ui-icon-plus"
-								onclick="PF('agregarPerfilDialog').show(); return false;" />
-							<p:menuitem value="Quitar area"
-								update="organigrama" icon="ui-icon-close"	
-								actionListener="#{organigramaView.quitarArea()}" />
+							<p:menuitem value="#{msg['organigrama.agregar.perfil']}"
+								icon="ui-icon-plus" update="agregarPerfilDialog"
+								oncomplete="PF('agregarPerfilDialog').show(); return false;" />
+							<p:menuitem value="#{msg['organigrama.quitar.area']}"
+								update="organigrama" icon="ui-icon-close"
+								actionListener="#{organigramaView.quitarArea()}">
+								<p:confirm header="#{msg['organizacion.confirmTitulo']}"
+									message="#{msg['organizacion.confirmQuitarArea']}"
+									icon="ui-icon-alert" />
+							</p:menuitem>
 						</p:contextMenu>
 
-						<p:dialog id="agregarAreaDialog" widgetVar="agregarAreaDialog" closeOnEscape="true" resizable="false"
-							header="Agregar area">
-
-							<p:inputText value="#{organigramaView.area}" />
-
-							<p:commandButton process="@parent"
-								update=":formOrganigrama:organigrama" value="agregar"
-								actionListener="#{organigramaView.agregarArea()}"
-								oncomplete="PF('agregarAreaDialog').hide();" />
-
-						</p:dialog>
 
 
-						<p:dialog id="agregarPerfilDialog" widgetVar="agregarPerfilDialog" closeOnEscape="true" resizable="false"
-							header="Agregar perfil">
-
-							<h:panelGrid columns="1">
-							<p:inputText value="#{organigramaView.perfil}" />
-
-							<p:commandButton process="@parent"
-								update=":formOrganigrama:organigrama" value="agregar"
-								actionListener="#{organigramaView.agregarPerfil()}"
-								oncomplete="PF('agregarPerfilDialog').hide();" />
-</h:panelGrid>
-						</p:dialog>
+						<p:confirmDialog global="true" showEffect="fade" hideEffect="clip"
+							closeOnEscape="true	">
+							<p:commandButton value="#{msg['si']}" type="button"
+								styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+							<p:commandButton value="#{msg['no']}" type="button"
+								styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+						</p:confirmDialog>
 
 					</div>
 				</div>
@@ -125,6 +141,50 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f9c667', end
 
 
 		</h:form>
+
+		<p:dialog id="agregarAreaDialog" widgetVar="agregarAreaDialog"
+			showEffect="clip" hideEffect="clip" closeOnEscape="true"
+			resizable="false" header="Agregar area">
+			<p:ajax event="close" update="agregarAreaDialog" />
+			<h:form id="frmAgregarArea">
+				<h:panelGrid columns="1" cellpadding="5">
+					<p:inputText value="#{organigramaView.area}" autocomplete="false" />
+
+					<p:commandButton  id="btnCrear" 
+						update=":formOrganigrama:organigrama,:frmAgregarArea:"
+						value="#{msg['organigrama.boton.agregar']}"
+						actionListener="#{organigramaView.agregarArea()}" />
+					<p:hotkey id="hotCrear" bind="enter"
+						actionListener="#{organigramaView.agregarArea()}"
+						update=":formOrganigrama:organigrama,:frmAgregarArea:" />
+					<p:blockUI block="frmAgregarArea" trigger="btnCrear"></p:blockUI>
+					<p:blockUI block="frmAgregarArea" trigger="hotCrear"></p:blockUI>
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+
+
+		<p:dialog id="agregarPerfilDialog" widgetVar="agregarPerfilDialog"
+			showEffect="clip" hideEffect="clip" closeOnEscape="true"
+			resizable="false" header="#{msg['organigrama.agregar.perfil']}">
+			<p:ajax event="close" update="agregarPerfilDialog" />
+			<h:form id="frmAgregarPerfil">
+
+				<h:panelGrid columns="1" cellpadding="5">
+					<p:inputText value="#{organigramaView.perfil}" autocomplete="false" />
+
+					<p:commandButton id="btnCrear" 
+						update=":formOrganigrama:organigrama,:frmAgregarPerfil:"
+						value="#{msg['organigrama.boton.agregar']}"
+						actionListener="#{organigramaView.agregarPerfil()}" />
+					<p:hotkey id="hotCrear" bind="enter"
+						actionListener="#{organigramaView.agregarPerfil()}"
+						update=":formOrganigrama:organigrama,:frmAgregarPerfil:" />
+					<p:blockUI block="frmAgregarPerfil" trigger="btnCrear"></p:blockUI>
+					<p:blockUI block="frmAgregarPerfil" trigger="hotCrear"></p:blockUI>
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
 
 	</ui:define>
 

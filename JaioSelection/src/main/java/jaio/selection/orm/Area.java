@@ -20,20 +20,19 @@ public class Area  implements java.io.Serializable {
      private int estado;
      private Set areas = new HashSet(0);
      private Set perfils = new HashSet(0);
-     private Set areas_1 = new HashSet(0);
-     private Set perfils_1 = new HashSet(0);
+
 
     public Area() {
     }
 
-	
+
     public Area(Empresa empresa, String descripcion, Date fechaRegistro, int estado) {
         this.empresa = empresa;
         this.descripcion = descripcion;
         this.fechaRegistro = fechaRegistro;
         this.estado = estado;
     }
-    public Area(Area area, Empresa empresa, String descripcion, Date fechaRegistro, int estado, Set areas, Set perfils, Set areas_1, Set perfils_1) {
+    public Area(Area area, Empresa empresa, String descripcion, Date fechaRegistro, int estado, Set areas, Set perfils) {
        this.area = area;
        this.empresa = empresa;
        this.descripcion = descripcion;
@@ -41,83 +40,64 @@ public class Area  implements java.io.Serializable {
        this.estado = estado;
        this.areas = areas;
        this.perfils = perfils;
-       this.areas_1 = areas_1;
-       this.perfils_1 = perfils_1;
     }
-   
+
     public Integer getId() {
         return this.id;
     }
-    
+
     public void setId(Integer id) {
         this.id = id;
     }
     public Area getArea() {
         return this.area;
     }
-    
+
     public void setArea(Area area) {
         this.area = area;
     }
     public Empresa getEmpresa() {
         return this.empresa;
     }
-    
+
     public void setEmpresa(Empresa empresa) {
         this.empresa = empresa;
     }
     public String getDescripcion() {
         return this.descripcion;
     }
-    
+
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
     public Date getFechaRegistro() {
         return this.fechaRegistro;
     }
-    
+
     public void setFechaRegistro(Date fechaRegistro) {
         this.fechaRegistro = fechaRegistro;
     }
     public int getEstado() {
         return this.estado;
     }
-    
+
     public void setEstado(int estado) {
         this.estado = estado;
     }
     public Set getAreas() {
         return this.areas;
     }
-    
+
     public void setAreas(Set areas) {
         this.areas = areas;
     }
     public Set getPerfils() {
         return this.perfils;
     }
-    
+
     public void setPerfils(Set perfils) {
         this.perfils = perfils;
     }
-    public Set getAreas_1() {
-        return this.areas_1;
-    }
-    
-    public void setAreas_1(Set areas_1) {
-        this.areas_1 = areas_1;
-    }
-    public Set getPerfils_1() {
-        return this.perfils_1;
-    }
-    
-    public void setPerfils_1(Set perfils_1) {
-        this.perfils_1 = perfils_1;
-    }
-
-
-
 
 }
 

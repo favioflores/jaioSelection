@@ -33,17 +33,5 @@
             </key>
             <one-to-many class="jaio.selection.orm.Perfil" embed-xml="true" not-found="exception"/>
         </set>
-        <set embed-xml="true" fetch="select" inverse="true" lazy="true" mutable="true" name="areas_1" optimistic-lock="true" sort="unsorted" table="area">
-            <key on-delete="noaction">
-                <column name="area_herarquia_id"/>
-            </key>
-            <one-to-many class="jaio.selection.orm.Area" embed-xml="true" not-found="exception"/>
-        </set>
-        <set embed-xml="true" fetch="select" inverse="true" lazy="true" mutable="true" name="perfils_1" optimistic-lock="true" sort="unsorted" table="perfil">
-            <key on-delete="noaction">
-                <column name="area_id" not-null="true"/>
-            </key>
-            <one-to-many class="jaio.selection.orm.Perfil" embed-xml="true" not-found="exception"/>
-        </set>
     </class>
 </hibernate-mapping>

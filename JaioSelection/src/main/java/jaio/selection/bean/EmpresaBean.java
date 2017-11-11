@@ -19,7 +19,6 @@ import jaio.selection.orm.Empresa;
 import jaio.selection.util.Utilitarios;
 import jaio.selection.view.EmpresaView;
 
-@RequestScoped
 public class EmpresaBean implements Serializable {
 
 	/**
@@ -52,16 +51,16 @@ public class EmpresaBean implements Serializable {
 
 		FacesContext context = FacesContext.getCurrentInstance();
 
-		if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
+		if (context.getCurrentPhaseId() != PhaseId.RENDER_RESPONSE) {
 			return new DefaultStreamedContent();
 		} else {
 
 			try {
 				String empId = context.getExternalContext().getRequestParameterMap().get("empId");
 
-				Empresa objEmpresa = new EmpresaDAO().obtenerEmpresa(empId);
+				if (Utilitarios.noEsNuloOVacio(empId)) {
+					Empresa objEmpresa = new EmpresaDAO().obtenerEmpresa(empId);
 
-				if (Utilitarios.noEsNuloOVacio(objEmpresa.getImagen())) {
 					imagen = new DefaultStreamedContent(new ByteArrayInputStream(objEmpresa.getImagen()),
 							objEmpresa.getTipo_imagen());
 					return imagen;
