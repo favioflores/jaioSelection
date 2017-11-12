@@ -2,9 +2,8 @@ package jaio.selection.view;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -22,6 +21,7 @@ import org.primefaces.event.organigram.OrganigramNodeSelectEvent;
 import org.primefaces.model.DefaultOrganigramNode;
 import org.primefaces.model.OrganigramNode;
 
+import jaio.selection.bean.AreaPerfilBean;
 import jaio.selection.dao.AreaDAO;
 import jaio.selection.dao.EmpresaDAO;
 import jaio.selection.dao.PerfilDAO;
@@ -92,16 +92,16 @@ public class OrganigramaView extends BaseView implements Serializable {
 
 				String idEmpresa = (String) Utilitarios.obtenerSession(Constantes.SESSION_EMPRESA);
 
-				List<Area> lstAreas = objAreaDAO.obtenerAreas(Constantes.EL_AREA_ESTADO_REGISTRADO);
+				List<AreaPerfilBean> lstAreaPerfilBean = objAreaDAO.obtenerAreasRegistradas();
 
-				if (lstAreas.isEmpty()) {
-
+				if (lstAreaPerfilBean.isEmpty()) {
 					grabarPrimeraVez(idEmpresa);
-					armarOrganigramaBD(idEmpresa, lstAreas);
-
-				} else {
-					armarOrganigramaBD(idEmpresa, lstAreas);
-				}
+					lstAreaPerfilBean = objAreaDAO.obtenerAreasRegistradas();
+				} 
+				
+				armarMapaBD(lstAreaPerfilBean);
+				armarOrganigramaBD(idEmpresa, lstAreaPerfilBean);
+				
 
 			}
 
@@ -110,7 +110,29 @@ public class OrganigramaView extends BaseView implements Serializable {
 		}
 	}
 
-	protected void armarOrganigramaBD(String idEmpresa, List<Area> lstAreas) {
+	protected void armarMapaBD(List<AreaPerfilBean> lstAreaPerfilBean) {
+		
+
+		for(AreaPerfilBean objAreaPerfilBean: lstAreaPerfilBean){
+			
+			Area objArea = objAreaPerfilBean.getArea();
+			
+			System.out.println("Area : " + objArea.getDescripcion());
+			
+			System.out.println("Area padre : " + objArea.getArea().getDescripcion());
+			
+			List<Perfil> lstPerfiles = objAreaPerfilBean.getLstPerfiles();
+			
+			for(Perfil objPerfil : lstPerfiles) {
+				System.out.println("Perfil : " + objPerfil.getNombre());
+			}
+			
+		}
+		
+				
+	}
+	
+	protected void armarOrganigramaBD(String idEmpresa, List<AreaPerfilBean> lstAreas) {
 
 		try {
 
@@ -125,12 +147,6 @@ public class OrganigramaView extends BaseView implements Serializable {
 			rootNode.setSelectable(true);
 			rootNode.setType("root");
 
-			for(Area objArea : lstAreas){
-				System.out.println(objArea.getDescripcion());
-			}
-
-
-
 		} catch (Exception e) {
 			log.error(e);
 		}
@@ -144,24 +160,50 @@ public class OrganigramaView extends BaseView implements Serializable {
 
 			Empresa objEmpresa = objEmpresaDAO.obtenerEmpresa(idEmpresa);
 
-			Area objArea = new Area();
-			objArea.setEmpresa(objEmpresa);
-			objArea.setDescripcion(msg("organizacion.ejemplo.area"));
-			objArea.setEstado(Constantes.EL_AREA_ESTADO_REGISTRADO);
-			objArea.setFechaRegistro(new Date());
+			Area objArea1 = new Area();
+			objArea1.setEmpresa(objEmpresa);
+			objArea1.setDescripcion(msg("organizacion.ejemplo.area1"));
+			objArea1.setEstado(Constantes.EL_AREA_ESTADO_REGISTRADO);
+			objArea1.setFechaRegistro(new Date());
 
-			Perfil objPerfil = new Perfil();
+			Perfil objPerfil1 = new Perfil();
 
-			objPerfil.setArea(objArea);
-			objPerfil.setNombre(msg("organizacion.ejemplo.perfil"));
-			objPerfil.setFechaRegistro(new Date());
-			objPerfil.setEstado(Constantes.EL_PERFIL_ESTADO_REGISTRADO);
+			objPerfil1.setArea(objArea1);
+			objPerfil1.setNombre(msg("organizacion.ejemplo.perfil1"));
+			objPerfil1.setFechaRegistro(new Date());
+			objPerfil1.setEstado(Constantes.EL_PERFIL_ESTADO_REGISTRADO);
+			objPerfil1.setEmpresa(objEmpresa);
 
-			Set<Perfil> perfiles = new HashSet<Perfil>();
-			perfiles.add(objPerfil);
-			objArea.setPerfils(perfiles);
+			Perfil objPerfil2 = new Perfil();
 
-			objAreaDAO.grabar(objArea);
+			objPerfil2.setArea(objArea1);
+			objPerfil2.setNombre(msg("organizacion.ejemplo.perfil2"));
+			objPerfil2.setFechaRegistro(new Date());
+			objPerfil2.setEstado(Constantes.EL_PERFIL_ESTADO_REGISTRADO);
+			objPerfil2.setEmpresa(objEmpresa);
+			
+			objArea1.getPerfils().add(objPerfil1);
+			objArea1.getPerfils().add(objPerfil2);
+
+			objAreaDAO.grabar(objArea1);
+
+			Area objArea2 = new Area();
+			objArea2.setEmpresa(objEmpresa);
+			objArea2.setDescripcion(msg("organizacion.ejemplo.area2"));
+			objArea2.setEstado(Constantes.EL_AREA_ESTADO_REGISTRADO);
+			objArea2.setFechaRegistro(new Date());
+
+			Perfil objPerfil3 = new Perfil();
+
+			objPerfil3.setArea(objArea2);
+			objPerfil3.setNombre(msg("organizacion.ejemplo.perfil3"));
+			objPerfil3.setFechaRegistro(new Date());
+			objPerfil3.setEstado(Constantes.EL_PERFIL_ESTADO_REGISTRADO);
+			objPerfil3.setEmpresa(objEmpresa);
+			
+			objArea2.getPerfils().add(objPerfil3);
+
+			objAreaDAO.grabar(objArea2);
 
 		} catch (Exception e) {
 			log.error(e);

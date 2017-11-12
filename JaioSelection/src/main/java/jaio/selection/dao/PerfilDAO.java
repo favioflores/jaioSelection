@@ -27,7 +27,7 @@ public class PerfilDAO extends HibernateUtil implements Serializable {
 
 		try {
 
-			Query query = session.createQuery("FROM Perfil p where p.estado = ? and p.empresa.id = ? ");
+			Query query = session.createQuery("select p, a FROM Perfil p join p.area a where p.estado = ? and p.empresa.id = ? ");
 
 			query.setInteger(0, estado);
 			query.setString(1, (String) Utilitarios.obtenerSession(Constantes.SESSION_EMPRESA));

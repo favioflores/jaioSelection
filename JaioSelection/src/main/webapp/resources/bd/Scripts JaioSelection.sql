@@ -1,7 +1,9 @@
-select * from usuario;
 insert into usuario values(null,'favio.flores.olaza@gmail.com','Favio Flores Olaza',sysdate(),1,'frozen4play',6);
 
-select * from definicion;
+ALTER TABLE usuario ADD CONSTRAINT USUARIO_C_CORREO UNIQUE (CORREO);
+CREATE INDEX USUARIO_IDX1_CORREO ON USUARIO (CORREO);
+
+
 insert into definicion values (1,'Estados de usuario');
 insert into definicion values (2,'Estados de empresa');
 insert into definicion values (3,'Sexo');
@@ -24,4 +26,9 @@ insert into elemento values (10,'Registrado',1,true,5);
 insert into elemento values (11,'Eliminado',1,true,5);
 
 commit;
-select * from empresa ;
+
+
+
+delete from perfil;
+delete from area;
+commit;
