@@ -25,8 +25,6 @@ public class SidebarView extends BaseView implements Serializable {
 	private String descripcion;
 	private String avatar;
 
-
-
 	public String getAvatar() {
 		return avatar;
 	}
@@ -54,19 +52,19 @@ public class SidebarView extends BaseView implements Serializable {
 			int hora = Integer.parseInt(Utilitarios.obtenerFechaHoraSistema(Constantes.HH24));
 
 			if (hora < 12) {
-				mostrarAlerta(INFO, "side.bienvenida.persona.dia");
+				mostrarAlerta(INFO, "side.bienvenida.persona.dia", null, null);
 			} else if (hora < 18) {
-				mostrarAlerta(INFO, "side.bienvenida.persona.tarde");
+				mostrarAlerta(INFO, "side.bienvenida.persona.tarde", null, null);
 			} else {
-				mostrarAlerta(INFO, "side.bienvenida.persona.noche");
+				mostrarAlerta(INFO, "side.bienvenida.persona.noche", null, null);
 			}
 
-			if(usuario.getStrSexo().equals(Constantes.MASCULINO)){
-				avatar="avatar_hombre.png";
-			}else if(usuario.getStrSexo().equals(Constantes.FEMENINO)){
-				avatar="avatar_mujer.png";
-			}else{
-				avatar="avatar_otro.png";
+			if (usuario.getStrSexo().equals(Constantes.MASCULINO)) {
+				avatar = "avatar_hombre.png";
+			} else if (usuario.getStrSexo().equals(Constantes.FEMENINO)) {
+				avatar = "avatar_mujer.png";
+			} else {
+				avatar = "avatar_otro.png";
 			}
 
 		} catch (Exception e) {

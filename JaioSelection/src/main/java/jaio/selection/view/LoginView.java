@@ -105,7 +105,7 @@ public class LoginView extends BaseView implements Serializable {
 				}
 
 				if(!flag){
-					mostrarAlerta(ERROR,"login.usuario.contrasena.incorrecto");
+					mostrarAlerta(ERROR,"login.usuario.contrasena.incorrecto", null, null);
 				}else{
 			        FacesContext.getCurrentInstance().getExternalContext().redirect("bienvenida.jsf");
 				}

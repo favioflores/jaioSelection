@@ -66,5 +66,75 @@ public class PerfilDAO extends HibernateUtil implements Serializable {
 
         return null;
     }
+    
+	public boolean eliminaPerfil(String id) {
+
+		iniciaSession();
+
+		try {
+		
+			log.debug("Inicia con el borrado del área y la actualización de sus herarquias");
+
+			String idEmpresa = Utilitarios.obtenerSession(Constantes.SESSION_EMPRESA).toString();
+
+			Query update = session.createSQLQuery(
+					" update perfil set estado = :estado where id = :id and empresa_id = :empresa ");
+							
+			update.setString("empresa", idEmpresa);
+			update.setString("id", id);
+			update.setInteger("estado", Constantes.EL_PERFIL_ESTADO_ELIMINADO);
+			
+			update.executeUpdate();
+			
+			guardarCambios();
+			
+			return true;
+			
+		} catch (RuntimeException re) {
+			rollback(re);
+		}finally {
+			cerrarSession();
+		}
+		
+		return false;
+		
+	}
+
+    
+	public boolean moverPerfil(String idPerfil, String idParentArea) {
+
+		iniciaSession();
+
+		try {
+		
+			log.debug("Inicia con la movida del perfil");
+
+			String idEmpresa = Utilitarios.obtenerSession(Constantes.SESSION_EMPRESA).toString();
+
+			Query update = session.createSQLQuery(
+					" update perfil set area_id = :parent where id = :current and estado = :estado and empresa_id = :empresa ");
+							
+			update.setString("parent", idParentArea);
+			update.setString("current", idPerfil);
+			update.setString("empresa", idEmpresa);
+			update.setInteger("estado", Constantes.EL_PERFIL_ESTADO_REGISTRADO);
+			
+			update.executeUpdate();
+			
+			guardarCambios();
+			
+			return true;
+			
+		} catch (RuntimeException re) {
+			rollback(re);
+		}finally {
+			cerrarSession();
+		}
+		
+		return false;
+		
+	}
+
+    
 }
 

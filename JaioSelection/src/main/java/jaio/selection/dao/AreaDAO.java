@@ -1,18 +1,18 @@
 package jaio.selection.dao;
 
-
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Query;
 
-import jaio.selection.bean.AreaPerfilBean;
+import jaio.selection.bean.AreaOrganigramaBean;
+import jaio.selection.bean.PerfilBean;
 import jaio.selection.orm.Area;
-import jaio.selection.orm.Perfil;
 import jaio.selection.util.Constantes;
 import jaio.selection.util.Utilitarios;
 
@@ -21,43 +21,31 @@ public class AreaDAO extends HibernateUtil implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private static final Log log = LogFactory.getLog(AreaDAO.class);
 
+	public HashMap<String, AreaOrganigramaBean> obtenerAreasPerfilesRegistrados() throws Exception {
 
-	public List<AreaPerfilBean> obtenerAreasRegistradas() {
+		HashMap<String, AreaOrganigramaBean> hAreas = new LinkedHashMap<String, AreaOrganigramaBean>();
 
-		List<AreaPerfilBean> lstAreaPerfil = new ArrayList<AreaPerfilBean>();
+		List lstAreas = new ArrayList();
+		List lstPerfiles = new ArrayList();
 
 		iniciaSession();
 
 		try {
 
-			Query query = session.createQuery("select a FROM Area as a where a.estado = ? and a.empresa.id = ? order by a.areas.id desc ");
+			String idEmpresa = Utilitarios.obtenerSession(Constantes.SESSION_EMPRESA).toString();
 
-			query.setInteger(0, Constantes.EL_AREA_ESTADO_REGISTRADO);
-			query.setString(1, (String) Utilitarios.obtenerSession(Constantes.SESSION_EMPRESA));
+			Query queryAreas = session.createSQLQuery(
+					"select a.id, a.descripcion, a.area_herarquia_id from area a where a.empresa_id = :empresa and a.estado = :estado order by a.area_herarquia_id, a.id  ");
+			queryAreas.setInteger("estado", Constantes.EL_AREA_ESTADO_REGISTRADO);
+			queryAreas.setString("empresa", idEmpresa);
 
-			List<Area> lstArea = query.list();
-			
-			for(Area objArea : lstArea) {
-				
-				AreaPerfilBean objAreaPerfilBean = new AreaPerfilBean();
-				
-				objAreaPerfilBean.setArea(objArea);
-				
-				Iterator itPerfiles = objArea.getPerfils().iterator();
-					
-				while(itPerfiles.hasNext()) {
-					
-					Perfil objPerfil = (Perfil) itPerfiles.next();
-					
-					if(objPerfil.getEstado()==Constantes.EL_PERFIL_ESTADO_REGISTRADO) {
-						objAreaPerfilBean.getLstPerfiles().add(objPerfil);
-					}
-					
-				}
-				
-				lstAreaPerfil.add(objAreaPerfilBean);
-				
-			}
+			Query queryPerfiles = session.createSQLQuery(
+					"select p.id, p.nombre, p.area_id from perfil p where p.empresa_id = :empresa and p.estado = :estado order by p.area_id, p.id ");
+			queryPerfiles.setInteger("estado", Constantes.EL_PERFIL_ESTADO_REGISTRADO);
+			queryPerfiles.setString("empresa", idEmpresa);
+
+			lstAreas = queryAreas.list();
+			lstPerfiles = queryPerfiles.list();
 
 		} catch (Exception e) {
 			log.error(e);
@@ -66,31 +54,147 @@ public class AreaDAO extends HibernateUtil implements Serializable {
 			cerrarSession();
 		}
 
-		return lstAreaPerfil;
-	}
+		for (Object objArea : lstAreas) {
 
-    public Integer grabar(Area area) {
+			Object[] row = (Object[]) objArea;
 
-    	iniciaSession();
+			AreaOrganigramaBean objAreaOrganigramaBean = new AreaOrganigramaBean();
 
-        try {
+			objAreaOrganigramaBean.setId(row[0].toString());
+			objAreaOrganigramaBean.setDescripcion(row[1].toString());
+			objAreaOrganigramaBean.setLstPerfiles(new ArrayList<PerfilBean>());
 
-            Integer id = (Integer) session.save(area);
+			if (Utilitarios.noEsNuloOVacio(row[2])) {
+				objAreaOrganigramaBean.setId_parent(row[2].toString());
+			}
 
-            guardarCambios();
+			hAreas.put(objAreaOrganigramaBean.getId(), objAreaOrganigramaBean);
 
-            log.debug("Grago correctamente");
-
-            return id;
-
-        } catch (Exception e) {
-            rollback(e);
-        }finally {
-        	cerrarSession();
 		}
 
-        return null;
-    }
+		for (Object objPerfil : lstPerfiles) {
+
+			Object[] row = (Object[]) objPerfil;
+
+			AreaOrganigramaBean objArea = hAreas.get(row[2].toString());
+
+			PerfilBean objPerfilBean = new PerfilBean();
+			objPerfilBean.setId(row[0].toString());
+			objPerfilBean.setDescripcion(row[1].toString());
+
+			objArea.getLstPerfiles().add(objPerfilBean);
+
+		}
+
+		return hAreas;
+
+	}
+
+	public boolean eliminaAreaActualizaHerarquias(String idCurrentArea, String idParentArea) {
+
+		iniciaSession();
+
+		try {
+		
+			log.debug("Inicia con el borrado del área y la actualización de sus herarquias");
+
+			String idEmpresa = Utilitarios.obtenerSession(Constantes.SESSION_EMPRESA).toString();
+
+			Query update1 = session.createSQLQuery(
+					" update area set area_herarquia_id = :parent where area_herarquia_id = :current and empresa_id = :empresa ");
+
+			Query update2 = session.createSQLQuery(
+					" update perfil set area_id = :parent where area_id = :current and estado = :estado and empresa_id = :empresa ");
+							
+			Query update3 = session.createSQLQuery(
+					" update area set estado = :estado where id = :current and empresa_id = :empresa ");
+
+			update1.setString("parent", idParentArea);
+			update1.setString("current", idCurrentArea);
+			update1.setString("empresa", idEmpresa);
+
+			update2.setString("parent", idParentArea);
+			update2.setString("current", idCurrentArea);
+			update2.setString("empresa", idEmpresa);
+			update2.setInteger("estado", Constantes.EL_PERFIL_ESTADO_REGISTRADO);
+			
+			update3.setInteger("estado", Constantes.EL_AREA_ESTADO_ELIMINADO);
+			update3.setString("current", idCurrentArea);
+			update3.setString("empresa", idEmpresa);
+			
+			update1.executeUpdate();
+			update2.executeUpdate();
+			update3.executeUpdate();
+			
+			guardarCambios();
+			
+			return true;
+			
+		} catch (RuntimeException re) {
+			rollback(re);
+		}finally {
+			cerrarSession();
+		}
+		
+		return false;
+		
+	}
+
+	public boolean moverArea(String idArea, String idParentArea) {
+
+		iniciaSession();
+
+		try {
+		
+			log.debug("Inicia con la movida del area");
+
+			String idEmpresa = Utilitarios.obtenerSession(Constantes.SESSION_EMPRESA).toString();
+
+			Query update = session.createSQLQuery(
+					" update area set area_herarquia_id = :parent where id = :current and estado = :estado and empresa_id = :empresa ");
+							
+			update.setString("parent", idParentArea);
+			update.setString("current", idArea);
+			update.setString("empresa", idEmpresa);
+			update.setInteger("estado", Constantes.EL_AREA_ESTADO_REGISTRADO);
+			
+			update.executeUpdate();
+			
+			guardarCambios();
+			
+			return true;
+			
+		} catch (RuntimeException re) {
+			rollback(re);
+		}finally {
+			cerrarSession();
+		}
+		
+		return false;
+		
+	}
+	
+	public Integer grabar(Area area) {
+
+		iniciaSession();
+
+		try {
+
+			Integer id = (Integer) session.save(area);
+
+			guardarCambios();
+
+			log.debug("Grago correctamente");
+
+			return id;
+
+		} catch (Exception e) {
+			rollback(e);
+		} finally {
+			cerrarSession();
+		}
+
+		return null;
+	}
 
 }
-

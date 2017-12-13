@@ -85,8 +85,7 @@ public class CrearEmpresaView extends BaseView implements Serializable {
 			imagenPreview = new DefaultStreamedContent(new ByteArrayInputStream(imagen.getContents()),
 					imagen.getContentType(), imagen.getFileName());
 		} catch (Exception e) {
-			log.error(e);
-			mostrarAlerta(FATAL, "error.inesperado");
+			mostrarAlerta(FATAL, "error.inesperado", log, e);
 		}
 	}
 
@@ -110,11 +109,10 @@ public class CrearEmpresaView extends BaseView implements Serializable {
 
 			limpiar();
 
-			mostrarAlerta(INFO, "organizacion.empresa.creada");
+			mostrarAlerta(INFO, "organizacion.empresa.creada", null, null);
 
 		} catch (Exception e) {
-			log.error(e);
-			mostrarAlerta(FATAL, "error.inesperado");
+			mostrarAlerta(FATAL, "error.inesperado", log, e);
 		}
 	}
 

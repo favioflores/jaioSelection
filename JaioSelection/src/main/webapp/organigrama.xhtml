@@ -46,6 +46,7 @@
 </style>
 
 			<p:growl id="growl" life="4000" />
+
 			<div class="ui-g">
 				<div class="ui-g-12">
 					<div class="card">
@@ -68,12 +69,11 @@
 
 							<p:ajax event="contextmenu" process="@this" />
 
-<!--  
-							<p:ajax event="dragdrop" process="@this" update="@form:growl"
-								listener="#\{organigramView.nodeDragDropListener}" />
+							<p:ajax event="dragdrop" process="@this" update=":formOrganigrama:"
+								listener="#{organigramaView.moverNodo}" />
+							<!--  
 							<p:ajax event="select" process="@this" update="@form:growl"
 								listener="#\{organigramView.nodeSelectListener}" />
-								
 								-->
 
 							<p:organigramNode>
@@ -103,31 +103,36 @@
 
 						<p:contextMenu for="organigrama" nodeType="perfil">
 							<p:menuitem value="#{msg['organigrama.quitar.perfil']}"
-								update="organigrama" icon="ui-icon-close"
+								ajax="true" update=":formOrganigrama:" icon="ui-icon-close"
 								actionListener="#{organigramaView.quitarPerfil()}">
-								<p:confirm header="#{msg['organizacion.confirmTitulo']}"
+								<!-- 
+								<p:confirm header="#{msg['organizacion.confirmTitulo']}" 
 									message="#{msg['organizacion.confirmQuitarPerfil']}"
-									icon="ui-icon-alert" />
+									icon="ui-icon-alert" /> -->
 							</p:menuitem>
 						</p:contextMenu>
 
 						<p:contextMenu for="organigrama" nodeType="area">
+							<p:menuitem value="#{msg['organigrama.agregar.area']}"
+								icon="ui-icon-plus" update="agregarAreaDialog"
+								oncomplete="PF('agregarAreaDialog').show(); return false;" />
 							<p:menuitem value="#{msg['organigrama.agregar.perfil']}"
 								icon="ui-icon-plus" update="agregarPerfilDialog"
 								oncomplete="PF('agregarPerfilDialog').show(); return false;" />
 							<p:menuitem value="#{msg['organigrama.quitar.area']}"
-								update="organigrama" icon="ui-icon-close"
+								update=":formOrganigrama:" icon="ui-icon-close" ajax="true"
 								actionListener="#{organigramaView.quitarArea()}">
-								<p:confirm header="#{msg['organizacion.confirmTitulo']}"
-									message="#{msg['organizacion.confirmQuitarArea']}"
-									icon="ui-icon-alert" />
+								<!-- 
+								<p:confirm header="#{msg['organizacion.confirmTitulo']}" 
+									message="#{msg['organizacion.confirmQuitarArea']}" 
+									icon="ui-icon-alert" /> -->
 							</p:menuitem>
 						</p:contextMenu>
 
 
 
 						<p:confirmDialog global="true" showEffect="fade" hideEffect="clip"
-							closeOnEscape="true	">
+							responsive="true" appendTo="@(body)" closeOnEscape="true	">
 							<p:commandButton value="#{msg['si']}" type="button"
 								styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
 							<p:commandButton value="#{msg['no']}" type="button"
@@ -147,16 +152,20 @@
 			resizable="false" header="Agregar area">
 			<p:ajax event="close" update="agregarAreaDialog" />
 			<h:form id="frmAgregarArea">
+				<p:focus for="area" />
 				<h:panelGrid columns="1" cellpadding="5">
-					<p:inputText value="#{organigramaView.area}" autocomplete="false" />
+					<p:inputText id="area" value="#{organigramaView.area}"
+						autocomplete="false" />
 
-					<p:commandButton  id="btnCrear" 
-						update=":formOrganigrama:organigrama,:frmAgregarArea:"
+					<p:commandButton id="btnCrear"
+						update=":formOrganigrama:,:frmAgregarArea:"
 						value="#{msg['organigrama.boton.agregar']}"
-						actionListener="#{organigramaView.agregarArea()}" />
+						actionListener="#{organigramaView.agregarArea()}"
+						oncomplete="PF('agregarAreaDialog').hide();" />
 					<p:hotkey id="hotCrear" bind="enter"
 						actionListener="#{organigramaView.agregarArea()}"
-						update=":formOrganigrama:organigrama,:frmAgregarArea:" />
+						update=":formOrganigrama:,:frmAgregarArea:"
+						oncomplete="PF('agregarAreaDialog').hide();" />
 					<p:blockUI block="frmAgregarArea" trigger="btnCrear"></p:blockUI>
 					<p:blockUI block="frmAgregarArea" trigger="hotCrear"></p:blockUI>
 				</h:panelGrid>
@@ -173,13 +182,15 @@
 				<h:panelGrid columns="1" cellpadding="5">
 					<p:inputText value="#{organigramaView.perfil}" autocomplete="false" />
 
-					<p:commandButton id="btnCrear" 
-						update=":formOrganigrama:organigrama,:frmAgregarPerfil:"
+					<p:commandButton id="btnCrear"
+						update=":formOrganigrama:,:frmAgregarPerfil:"
 						value="#{msg['organigrama.boton.agregar']}"
-						actionListener="#{organigramaView.agregarPerfil()}" />
+						actionListener="#{organigramaView.agregarPerfil()}"
+						oncomplete="PF('agregarPerfilDialog').hide();" />
 					<p:hotkey id="hotCrear" bind="enter"
 						actionListener="#{organigramaView.agregarPerfil()}"
-						update=":formOrganigrama:organigrama,:frmAgregarPerfil:" />
+						update=":formOrganigrama:,:frmAgregarPerfil:"
+						oncomplete="PF('agregarPerfilDialog').hide();" />
 					<p:blockUI block="frmAgregarPerfil" trigger="btnCrear"></p:blockUI>
 					<p:blockUI block="frmAgregarPerfil" trigger="hotCrear"></p:blockUI>
 				</h:panelGrid>

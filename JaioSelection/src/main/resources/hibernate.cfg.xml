@@ -5,7 +5,7 @@
 <hibernate-configuration>
     <session-factory name="sessionFactory">
         <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-        <property name="hibernate.connection.password">frozen4play</property>
+        <property name="hibernate.connection.password">FROZEN4PLAY</property>
         <property name="hibernate.connection.url">jdbc:mysql://localhost:3309/jaioselectiondb</property>
         <property name="hibernate.connection.username">root</property>
         <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
