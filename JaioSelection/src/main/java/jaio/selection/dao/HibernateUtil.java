@@ -67,6 +67,7 @@ public class HibernateUtil implements Serializable{
 
     public void manejaException(Exception e){
         log.error(e);
+        throw new IllegalArgumentException(e);
     }
 
     public static SessionFactory getSessionFactory() {

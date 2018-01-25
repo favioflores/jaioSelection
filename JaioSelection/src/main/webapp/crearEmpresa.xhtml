@@ -1,129 +1,150 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
 
-	<ui:define name="content">
-		<h:form id="formEmpresa" enctype="multipart/form-data">
-			<p:growl life="4000" />
-			<div class="ui-g">
-				<div class="ui-g-12">
-					<div class="card">
-						<h1>#{msg['organizacion.titulo']}</h1>
-						<p>#{msg['organizacion.parrafo']}</p>
+    <ui:define name="content">
+        <h:form id="formEmpresa" enctype="multipart/form-data">
+            <p:growl life="4000" />
+            <div class="ui-g">
+                <div class="ui-g-12">
+                    <div class="card">
+                        <p:panelGrid columns="1" columnClasses="ui-grid-col" layout="grid" styleClass="ui-panelgrid-blank" style="border:0px none; background-color:transparent;">
 
-						<p:commandButton styleClass="aqua-button"
-							oncomplete="PF('dlgNuevo').show();"
-							actionListener="#{crearEmpresaView.limpiar}"
-							value="#{msg['organizacion.boton.nuevo']}" icon="fa fa-plus" />
-						<p:hotkey id="hotNuevo" bind="shift+n"
-							onstart="PF('dlgNuevo').show();" />
-						<br/>
-						<br/>
-										
-						<p:dataGrid var="emp" value="#{empresaView.lstEmpresas}"
-							columns="3" layout="grid" rows="6" paginator="true" id="emp"
-							paginatorPosition="bottom" lazy="true"  
-							emptyMessage="#{msg['no.registros']}"
-							paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-							rowsPerPageTemplate="3,6,9,12,16">
+                            <h1>#{msg['organizacion.titulo']}</h1>
+                            <p>#{msg['organizacion.parrafo']}</p>
 
-							<p:panel style="text-align:center">
-								<h:panelGrid columns="1" style="width:100%">
-									<h:outputText value="#{emp.desc}"
-										styleClass="Fs14 FontDosisMedium" />
-									<p:graphicImage rendered="#{emp.imagen!=null}"
-										value="#{emp.imagen}"
-										alt="#{msg['organizacion.dialog.noimagen']}" height="120"
-										width="140" >
-										<f:param name="empId" value="#{emp.id}" />
-										</p:graphicImage>
-										
+                            <p:commandButton styleClass="aqua-button"
+                                             oncomplete="PF('dlgNuevo').show();"
+                                             actionListener="#{crearEmpresaView.limpiar}"
+                                             value="#{msg['organizacion.boton.nuevo']}" icon="fa fa-plus" />
+                            <p:hotkey id="hotNuevo" bind="shift+n"
+                                      onstart="PF('dlgNuevo').show();" />
+                            <br/>
+                            <br/>
+                            <p:dataGrid var="emp" value="#{empresaView.lstEmpresas}"
+                                        columns="3" layout="grid" rows="6" paginator="true" id="emp"
+                                        paginatorPosition="bottom" lazy="true"  
+                                        emptyMessage="#{msg['no.registros']}"
+                                        paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                        rowsPerPageTemplate="3,6,9,12,16">
 
-									<p:graphicImage rendered="#{emp.imagen==null}"
-										name="images/sin_imagen.png" library="omega-layout" height="120"
-										width="140" >
-										</p:graphicImage>
+                                <p:panel style="text-align:center">
 
-									<h:column>
-										<p:commandButton icon="fa fa-sitemap White"
-											styleClass="aqua-button" actionListener="#{empresaView.abrirEditorOrganigrama(emp.id	)}">
-										</p:commandButton>
-
-										<p:commandButton icon="fa fa-trash" styleClass="aqua-button">
-										</p:commandButton>
-
-										<p:commandButton icon="fa fa-pencil White"
-											styleClass="aqua-button">
-										</p:commandButton>
-									</h:column>
-								</h:panelGrid>
-							</p:panel>
-
-						</p:dataGrid>
-
-					</div>
-				</div>
-			</div>
-		</h:form>
-		<p:dialog header="#{msg['organizacion.dialog.titulo']}"
-			widgetVar="dlgNuevo" modal="true" resizable="false"
-			focus=":formCrear:desc" appendTo="@(body)" closeOnEscape="true"
-			closable="true" showEffect="clip" hideEffect="clip" responsive="true">
-
-			<h:form id="formCrear" enctype="multipart/form-data">
-				<p:focus for="desc" />
-				<p:growl life="4000" />
-				<h:panelGrid columns="3" cellpadding="5">
-					<p:outputLabel for="desc"
-						value="#{msg['organizacion.dialog.desc']}" />
-					<p:inputText id="desc" widgetVar="desc"
-						value="#{crearEmpresaView.razon}" required="true"></p:inputText>
-					<p:message for="desc" display="tooltip" />
-
-					<p:outputLabel for="fecha"
-						value="#{msg['organizacion.dialog.fecha']}" />
-					<p:inputText id="fecha" value="#{crearEmpresaView.fecha}"
-						readonly="true" required="true"></p:inputText>
-					<p:message for="fecha" display="tooltip" />
-
-					<p:outputLabel for="imagen"
-						value="#{msg['organizacion.dialog.imagen']}" />
-					<p:fileUpload id="imagen"
-						fileUploadListener="#{crearEmpresaView.subirImagen}"
-						previewWidth="10" dragDropSupport="true" update=":formCrear:"
-						auto="true" sizeLimit="100000"
-						allowTypes="/(\.|\/)(gif|jpe?g|png)$/" onstart="enviaDatos()" />
-					<p:message for="imagen" display="tooltip" />
+                                    <h:panelGrid columns="1" style="width:100%">
+                                        <br/>
+                                        <span style="font-weight: bold;">#{emp.desc}</span>
+                                        <br/><br/>
+                                        <!--
+                                    <p:graphicImage rendered="#{emp.imagen!=null}"
+                                                    value="#{emp.imagen}"
+                                                    alt="#{msg['organizacion.dialog.noimagen']}" height="120"
+                                                    width="140" >
+                                        <f:param name="empId" value="#{emp.id}" />
+                                    </p:graphicImage>
 
 
+                                    <p:graphicImage rendered="#{emp.imagen==null}"
+                                                    name="images/sin_imagen.png" library="omega-layout" height="120"
+                                                    width="140" >
+                                    </p:graphicImage>
+                                        -->
+                                        <p:rating value="#{emp.orden}">
+                                            <p:ajax event="rate" listener="#{empresaView.ponerPrioridad(emp)}" update=":formEmpresa:" />
+                                            <p:ajax event="cancel" listener="#{empresaView.quitarPrioridad(emp)}" update=":formEmpresa:" />
+                                        </p:rating>
+                                        <br/>
+                                        <h:column>
+                                            <p:commandButton icon="fa fa-sitemap White"
+                                                             styleClass="aqua-button" actionListener="#{empresaView.abrirEditorOrganigrama(emp.id)}">
+                                            </p:commandButton>
 
-					<p:outputLabel for="imagePreview"
-						value="#{msg['organizacion.dialog.preview']}" />
-					<p:graphicImage id="imagePreview"
-						value="#{crearEmpresaView.imagenPreview}"
-						alt="#{msg['organizacion.dialog.noimagen']}" height="120"
-						width="160" />
+                                            <p:commandButton icon="fa fa-trash" 
+                                                             styleClass="aqua-button" actionListener="#{empresaView.eliminarEmpresa(emp.id)}">
 
-					<p:remoteCommand name="enviaDatos" process="@form" />
+                                                <p:confirm header="#{msg['org.emp.confirmEli.Titulo']}" 
+                                                           message="#{msg['org.emp.confirmEli.cuerpo']} #{emp.desc}#{msg['cierre.preg']}"
+                                                           icon="ui-icon-alert" /> 
+
+                                            </p:commandButton>
+
+                                        </h:column>
+                                    </h:panelGrid>
+                                </p:panel>
+
+                            </p:dataGrid>
+
+                            <p:confirmDialog global="true" showEffect="clip" hideEffect="clip"
+                                             responsive="true" appendTo="@(body)" closeOnEscape="true">
+                                <p:commandButton value="#{msg['si']}" type="button"
+                                                 styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                <p:commandButton value="#{msg['no']}" type="button"
+                                                 styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                            </p:confirmDialog>
+                        </p:panelGrid>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+        <p:dialog header="#{msg['organizacion.dialog.titulo']}"
+                  widgetVar="dlgNuevo" modal="true" resizable="false"
+                  focus=":formCrear:desc" appendTo="@(body)" closeOnEscape="true"
+                  closable="true" showEffect="clip" hideEffect="clip" responsive="true">
+            <p:ajax event="close" update=":formEmpresa:" listener="#{empresaView.init()}" />
+            <h:form id="formCrear" enctype="multipart/form-data">
+
+                <p:focus for="desc" />
+                <p:growl life="4000" />
+                <h:panelGrid columns="3" cellpadding="5">
+                    <p:outputLabel for="desc"
+                                   value="#{msg['organizacion.dialog.desc']}" />
+                    <p:inputText id="desc" widgetVar="desc"
+                                 value="#{crearEmpresaView.razon}" required="true"></p:inputText>
+                    <p:message for="desc" display="tooltip" />
+
+                    <p:outputLabel for="fecha"
+                                   value="#{msg['organizacion.dialog.fecha']}" />
+                    <p:inputText id="fecha" value="#{crearEmpresaView.fecha}"
+                                 readonly="true" required="true"></p:inputText>
+                    <p:message for="fecha" display="tooltip" />
+
+                    <p:outputLabel for="imagen"
+                                   value="#{msg['organizacion.dialog.imagen']}" />
+                    <p:fileUpload id="imagen"
+                                  fileUploadListener="#{crearEmpresaView.subirImagen}"
+                                  previewWidth="10" dragDropSupport="true" update=":formCrear:"
+                                  auto="true" sizeLimit="100000"
+                                  allowTypes="/(\.|\/)(gif|jpe?g|png)$/" onstart="enviaDatos()" />
+                    <p:message for="imagen" display="tooltip" />
 
 
-					<f:facet name="footer">
-						<p:commandButton value="#{msg['organizacion.dialog.crear']}"
-							actionListener="#{crearEmpresaView.crearEmpresa}"
-							update=":formCrear:,:formEmpresa:"
-							oncomplete="PF('dlgNuevo').hide();" />
 
-						<p:hotkey id="hotCrear" bind="enter"
-							actionListener="#{crearEmpresaView.crearEmpresa}"
-							update=":formCrear:,:formEmpresa:"
-							oncomplete="PF('dlgNuevo').hide();" />
-					</f:facet>
-				</h:panelGrid>
-			</h:form>
-		</p:dialog>
+                    <p:outputLabel for="imagePreview"
+                                   value="#{msg['organizacion.dialog.preview']}" />
+                    <p:graphicImage id="imagePreview"
+                                    value="#{crearEmpresaView.imagenPreview}"
+                                    alt="#{msg['organizacion.dialog.noimagen']}" height="120"
+                                    width="160" />
 
-	</ui:define>
+                    <p:remoteCommand name="enviaDatos" process="@form" />
+
+
+                    <f:facet name="footer">
+                        <p:commandButton value="#{msg['organizacion.dialog.crear']}"
+                                         actionListener="#{crearEmpresaView.crearEmpresa}"
+                                         update=":formCrear:,:formEmpresa:" 
+                                         oncomplete="PF('dlgNuevo').hide();" />
+
+                        <p:hotkey id="hotCrear" bind="enter"
+                                  actionListener="#{crearEmpresaView.crearEmpresa}"
+                                  update=":formCrear:,:formEmpresa:"
+                                  oncomplete="PF('dlgNuevo').hide();" />
+                    </f:facet>
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+
+    </ui:define>
 
 </ui:composition>

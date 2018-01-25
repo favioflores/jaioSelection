@@ -15,11 +15,11 @@
         <property generated="never" lazy="false" name="fechaRegistro" optimistic-lock="true" type="date" unique="false">
             <column length="10" name="fecha_registro" not-null="true"/>
         </property>
-        <property generated="never" lazy="false" name="estado" optimistic-lock="true" type="int" unique="false">
+        <property generated="never" lazy="false" name="estado" optimistic-lock="true" type="java.lang.Integer" unique="false">
             <column name="estado" not-null="true"/>
         </property>
-        <property generated="never" lazy="false" name="predeterminado" optimistic-lock="true" type="byte" unique="false">
-            <column name="predeterminado" not-null="true"/>
+        <property generated="never" lazy="false" name="orden" optimistic-lock="true" type="int" unique="false">
+            <column name="orden" not-null="false"/>
         </property>
         <property generated="never" lazy="false" name="imagen" optimistic-lock="true" type="binary" unique="false">
             <column name="imagen"/>

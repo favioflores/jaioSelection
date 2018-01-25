@@ -1,11 +1,7 @@
 package jaio.selection.bean;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.Serializable;
-import java.sql.SQLException;
-
-import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseId;
 
@@ -17,67 +13,75 @@ import org.primefaces.model.StreamedContent;
 import jaio.selection.dao.EmpresaDAO;
 import jaio.selection.orm.Empresa;
 import jaio.selection.util.Utilitarios;
-import jaio.selection.view.EmpresaView;
 
 public class EmpresaBean implements Serializable {
 
-	/**
-	 *
-	 */
-	private static final long serialVersionUID = 1L;
-	private static Log log = LogFactory.getLog(EmpresaBean.class);
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private static Log log = LogFactory.getLog(EmpresaBean.class);
 
-	private String id;
-	private String desc;
-	private StreamedContent imagen;
+    private String id;
+    private String desc;
+    private String orden;
+    private StreamedContent imagen;
 
-	public String getId() {
-		return id;
-	}
+    public String getOrden() {
+        return orden;
+    }
 
-	public void setId(String id) {
-		this.id = id;
-	}
+    public void setOrden(String orden) {
+        this.orden = orden;
+    }
 
-	public String getDesc() {
-		return desc;
-	}
+    public String getId() {
+        return id;
+    }
 
-	public void setDesc(String desc) {
-		this.desc = desc;
-	}
+    public void setId(String id) {
+        this.id = id;
+    }
 
-	public StreamedContent getImagen() {
+    public String getDesc() {
+        return desc;
+    }
 
-		FacesContext context = FacesContext.getCurrentInstance();
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
 
-		if (context.getCurrentPhaseId() != PhaseId.RENDER_RESPONSE) {
-			return new DefaultStreamedContent();
-		} else {
+    public StreamedContent getImagen() {
 
-			try {
-				String empId = context.getExternalContext().getRequestParameterMap().get("empId");
+        FacesContext context = FacesContext.getCurrentInstance();
 
-				if (Utilitarios.noEsNuloOVacio(empId)) {
-					Empresa objEmpresa = new EmpresaDAO().obtenerEmpresa(empId);
+        if (context.getCurrentPhaseId() != PhaseId.RENDER_RESPONSE) {
+            return new DefaultStreamedContent();
+        } else {
 
-					imagen = new DefaultStreamedContent(new ByteArrayInputStream(objEmpresa.getImagen()),
-							objEmpresa.getTipo_imagen());
-					return imagen;
-				}
+            try {
+                String empId = context.getExternalContext().getRequestParameterMap().get("empId");
 
-			} catch (Exception e) {
-				log.error(e);
-			}
+                if (Utilitarios.noEsNuloOVacio(empId)) {
+                    Empresa objEmpresa = new EmpresaDAO().obtenerEmpresa(empId);
 
-			return null;
+                    imagen = new DefaultStreamedContent(new ByteArrayInputStream(objEmpresa.getImagen()),
+                            objEmpresa.getTipo_imagen());
+                    return imagen;
+                }
 
-		}
+            } catch (Exception e) {
+                log.error(e);
+            }
 
-	}
+            return null;
 
-	public void setImagen(StreamedContent imagen) {
-		this.imagen = imagen;
-	}
+        }
+
+    }
+
+    public void setImagen(StreamedContent imagen) {
+        this.imagen = imagen;
+    }
 
 }

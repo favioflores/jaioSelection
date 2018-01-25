@@ -16,13 +16,13 @@ public class ModeloEvaluacion  implements java.io.Serializable {
      private Integer id;
      private ModeloLibro modeloLibro;
      private String nombre;
-     private int horasEstimadas;
      private int minutosEstimados;
      private BigDecimal validez;
      private BigDecimal confiabilidad;
      private Date fechaCreacion;
      private int estado;
      private byte limiteTiempo;
+     private byte[] instructivo;
      private Set modeloEvaluacionXCompetencias = new HashSet(0);
      private Set bateriaEvaluacions = new HashSet(0);
      private Set modeloEvaluacionXCompetencias_1 = new HashSet(0);
@@ -34,27 +34,27 @@ public class ModeloEvaluacion  implements java.io.Serializable {
     }
 
 	
-    public ModeloEvaluacion(ModeloLibro modeloLibro, String nombre, int horasEstimadas, int minutosEstimados, BigDecimal validez, BigDecimal confiabilidad, Date fechaCreacion, int estado, byte limiteTiempo) {
+    public ModeloEvaluacion(ModeloLibro modeloLibro, String nombre, int horasEstimadas, int minutosEstimados, BigDecimal validez, BigDecimal confiabilidad, Date fechaCreacion, int estado, byte limiteTiempo, byte[] instructivo) {
         this.modeloLibro = modeloLibro;
         this.nombre = nombre;
-        this.horasEstimadas = horasEstimadas;
         this.minutosEstimados = minutosEstimados;
         this.validez = validez;
         this.confiabilidad = confiabilidad;
         this.fechaCreacion = fechaCreacion;
         this.estado = estado;
         this.limiteTiempo = limiteTiempo;
+        this.instructivo = instructivo;
     }
-    public ModeloEvaluacion(ModeloLibro modeloLibro, String nombre, int horasEstimadas, int minutosEstimados, BigDecimal validez, BigDecimal confiabilidad, Date fechaCreacion, int estado, byte limiteTiempo, Set modeloEvaluacionXCompetencias, Set bateriaEvaluacions, Set modeloEvaluacionXCompetencias_1, Set modeloPreguntas, Set bateriaEvaluacions_1, Set modeloPreguntas_1) {
+    public ModeloEvaluacion(ModeloLibro modeloLibro, String nombre, int horasEstimadas, int minutosEstimados, BigDecimal validez, BigDecimal confiabilidad, Date fechaCreacion, int estado, byte limiteTiempo, byte[] instructivo, Set modeloEvaluacionXCompetencias, Set bateriaEvaluacions, Set modeloEvaluacionXCompetencias_1, Set modeloPreguntas, Set bateriaEvaluacions_1, Set modeloPreguntas_1) {
        this.modeloLibro = modeloLibro;
        this.nombre = nombre;
-       this.horasEstimadas = horasEstimadas;
        this.minutosEstimados = minutosEstimados;
        this.validez = validez;
        this.confiabilidad = confiabilidad;
        this.fechaCreacion = fechaCreacion;
        this.estado = estado;
        this.limiteTiempo = limiteTiempo;
+       this.instructivo = instructivo;
        this.modeloEvaluacionXCompetencias = modeloEvaluacionXCompetencias;
        this.bateriaEvaluacions = bateriaEvaluacions;
        this.modeloEvaluacionXCompetencias_1 = modeloEvaluacionXCompetencias_1;
@@ -84,13 +84,7 @@ public class ModeloEvaluacion  implements java.io.Serializable {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-    public int getHorasEstimadas() {
-        return this.horasEstimadas;
-    }
-    
-    public void setHorasEstimadas(int horasEstimadas) {
-        this.horasEstimadas = horasEstimadas;
-    }
+  
     public int getMinutosEstimados() {
         return this.minutosEstimados;
     }
@@ -177,6 +171,13 @@ public class ModeloEvaluacion  implements java.io.Serializable {
     }
 
 
+    public byte[] getInstructivo() {
+        return instructivo;
+    }
+
+    public void setInstructivo(byte[] instructivo) {
+        this.instructivo = instructivo;
+    }
 
 
 }

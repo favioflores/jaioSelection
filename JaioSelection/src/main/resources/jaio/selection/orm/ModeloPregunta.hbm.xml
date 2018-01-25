@@ -18,17 +18,17 @@
         <property generated="never" lazy="false" name="orden" optimistic-lock="true" type="int" unique="false">
             <column name="orden" not-null="true"/>
         </property>
-        <property generated="never" lazy="false" name="horasEstimadas" optimistic-lock="true" type="int" unique="false">
-            <column name="horas_estimadas" not-null="true"/>
-        </property>
         <property generated="never" lazy="false" name="minutosEstimados" optimistic-lock="true" type="int" unique="false">
             <column name="minutos_estimados" not-null="true"/>
         </property>
         <property generated="never" lazy="false" name="imagen" optimistic-lock="true" type="binary" unique="false">
             <column name="imagen"/>
         </property>
-        <property generated="never" lazy="false" name="tipoRespuesta" optimistic-lock="true" type="int" unique="false">
-            <column name="tipo_respuesta" not-null="true"/>
+        <property generated="never" lazy="false" name="comentario" optimistic-lock="true" type="string" unique="false">
+            <column length="2000" name="comentario" not-null="false"/>
+        </property>
+        <property generated="never" lazy="false" name="ejemplo" optimistic-lock="true" type="byte" unique="false">
+            <column name="ejemplo" not-null="false"/>
         </property>
         <set embed-xml="true" fetch="select" inverse="true" lazy="true" mutable="true" name="modeloRespuestas" optimistic-lock="true" sort="unsorted" table="modelo_respuesta">
             <key on-delete="noaction">

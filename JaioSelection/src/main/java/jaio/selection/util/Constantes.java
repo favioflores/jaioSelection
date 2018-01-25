@@ -262,5 +262,8 @@ public class Constantes {
     public static int EL_PERFIL_ESTADO_REGISTRADO = 10;
     public static int  EL_PERFIL_ESTADO_ELIMINADO = 11;
 
+    public static int EL_EMPRESA_ESTADO_REGISTRADO = 3;
+    public static int  EL_EMPRESA_ESTADO_ELIMINADO = 5;
+
 
 }

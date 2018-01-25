@@ -1,98 +1,98 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
 
-	<ui:define name="content">
-		<h:form>
-			<style>
-.ui-organigram .ui-organigram-node.division {
-	background: #93e7ff;
-	background: -moz-linear-gradient(top, #93e7ff 0%, #007efc 100%);
-	background: -webkit-linear-gradient(top, #93e7ff 0%, #007efc 100%);
-	background: linear-gradient(to bottom, #93e7ff 0%, #007efc 100%);
-}
+    <ui:define name="content">
+        <h:form>
+            <style>
+                .ui-organigram .ui-organigram-node.division {
+                    background: #93e7ff;
+                    background: -moz-linear-gradient(top, #93e7ff 0%, #007efc 100%);
+                    background: -webkit-linear-gradient(top, #93e7ff 0%, #007efc 100%);
+                    background: linear-gradient(to bottom, #93e7ff 0%, #007efc 100%);
+                }
 
-.ui-organigram .ui-organigram-node.employee {
-	background: #88c048;
-	background: -moz-linear-gradient(top, #88c048 0%, #69a038 100%);
-	background: -webkit-linear-gradient(top, #88c048 0%, #69a038 100%);
-	background: linear-gradient(to bottom, #88c048 0%, #69a038 100%);
-}
-</style>
-			<div class="ui-g">
-				<div class="ui-g-12">
-					<div class="card">
-						<h1>Registro de organizaciones</h1>
-						<p align="justify">Esta sección permite definir las áreas o
-							departamentos que componen tu organización u otra, así como la
-							jerarquia y los perfiles involucrados mediante una visión simple
-							de la estructura organizacional. Asimismo, permite la asignación
-							de un modelo de evaluación para uno o mas perfiles con la
-							finalidad de utilizarlos en tus próximos procesos de selección.</p>
+                .ui-organigram .ui-organigram-node.employee {
+                    background: #88c048;
+                    background: -moz-linear-gradient(top, #88c048 0%, #69a038 100%);
+                    background: -webkit-linear-gradient(top, #88c048 0%, #69a038 100%);
+                    background: linear-gradient(to bottom, #88c048 0%, #69a038 100%);
+                }
+            </style>
+            <div class="ui-g">
+                <div class="ui-g-12">
+                    <div class="card">
+                        <h1>Registro de organizaciones</h1>
+                        <p align="justify">Esta sección permite definir las áreas o
+                            departamentos que componen tu organización u otra, así como la
+                            jerarquia y los perfiles involucrados mediante una visión simple
+                            de la estructura organizacional. Asimismo, permite la asignación
+                            de un modelo de evaluación para uno o mas perfiles con la
+                            finalidad de utilizarlos en tus próximos procesos de selección.</p>
 
-						<p:panelGrid columns="2"
-							columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
-							layout="grid" styleClass="ui-panelgrid-blank"
-							style="border:0px none; background-color:transparent;">
+                        <p:panelGrid columns="2"
+                                     columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+                                     layout="grid" styleClass="ui-panelgrid-blank"
+                                     style="border:0px none; background-color:transparent;">
 
-							<p:outputLabel value="Seleccionar empresa :" for="selEmpresa" />
+                            <p:outputLabel value="Seleccionar empresa :" for="selEmpresa" />
 
-							<p:selectOneMenu id="selEmpresa" panelStyle="width:180px" var="t"
-								style="width:160px" filter="true" filterMatchMode="startsWith"
-								effect="fold">
+                            <p:selectOneMenu id="selEmpresa" panelStyle="width:180px" var="t"
+                                             style="width:160px" filter="true" filterMatchMode="startsWith"
+                                             effect="fold">
 
-							</p:selectOneMenu>
+                            </p:selectOneMenu>
 
-							<p:commandButton styleClass="aqua-button" value="Nuevo"
-								icon="fa fa-plus" />
-						</p:panelGrid>
-
-
-
-
-						<br />
-						<!-- 
-					<p:dataTable var="car" value="#{dtSelectionView.cars7}"
-						selectionMode="single" reflow="true"
-						selection="#{dtSelectionView.selectedCar}" rowKey="#{car.id}"
-						paginator="true" emptyMessage="Registros no encontrados"
-						stickyHeader="true" paginatorPosition="bottom" rows="10">
-
-						<p:column headerText="Nro" sortBy="#{car.id}">
-							<h:outputText value="#{car.id}" />
-						</p:column>
-
-						<p:column headerText="Descripción" sortBy="#{car.year}">
-							<h:outputText value="#{car.year}" />
-						</p:column>
-
-						<p:column headerText="Fecha de registro" sortBy="#{car.brand}">
-							<h:outputText value="#{car.brand}" />
-						</p:column>
-
-						<p:column>
-							<h:outputText value="#{car.brand}" />
-						</p:column>
-
-					</p:dataTable>
-					
- -->
-
-
-
-						<p:growl id="growl" />
+                            <p:commandButton styleClass="aqua-button" value="Nuevo"
+                                             icon="fa fa-plus" />
+                        </p:panelGrid>
 
 
 
 
+                        <br />
+                        <!-- 
+                <p:dataTable var="car" value="#{dtSelectionView.cars7}"
+                        selectionMode="single" reflow="true"
+                        selection="#{dtSelectionView.selectedCar}" rowKey="#{car.id}"
+                        paginator="true" emptyMessage="Registros no encontrados"
+                        stickyHeader="true" paginatorPosition="bottom" rows="10">
+
+                        <p:column headerText="Nro" sortBy="#{car.id}">
+                                <h:outputText value="#{car.id}" />
+                        </p:column>
+
+                        <p:column headerText="Descripción" sortBy="#{car.year}">
+                                <h:outputText value="#{car.year}" />
+                        </p:column>
+
+                        <p:column headerText="Fecha de registro" sortBy="#{car.brand}">
+                                <h:outputText value="#{car.brand}" />
+                        </p:column>
+
+                        <p:column>
+                                <h:outputText value="#{car.brand}" />
+                        </p:column>
+
+                </p:dataTable>
+                
+                        -->
 
 
-					</div>
-				</div>
-			</div>
-		</h:form>
-	</ui:define>
+
+                        <p:growl id="growl" />
+
+
+
+
+
+
+                    </div>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
 
 </ui:composition>

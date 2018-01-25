@@ -6,8 +6,6 @@ import java.util.Date;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
-import javax.faces.context.FacesContext;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -18,102 +16,106 @@ import org.primefaces.model.UploadedFile;
 
 import jaio.selection.dao.EmpresaDAO;
 import jaio.selection.orm.Empresa;
+import jaio.selection.util.Constantes;
 import jaio.selection.util.Utilitarios;
+import javax.faces.bean.ViewScoped;
 
 @ManagedBean(name = "crearEmpresaView")
-@SessionScoped
+@ViewScoped
 public class CrearEmpresaView extends BaseView implements Serializable {
 
-	private static Log log = LogFactory.getLog(CrearEmpresaView.class);
+    private static Log log = LogFactory.getLog(CrearEmpresaView.class);
 
-	private static final long serialVersionUID = -1L;
+    private static final long serialVersionUID = -1L;
 
-	private String razon;
-	private String fecha;
-	private UploadedFile imagen;
-	private StreamedContent imagenPreview;
+    private String razon;
+    private String fecha;
+    private UploadedFile imagen;
+    private StreamedContent imagenPreview;
 
-	public StreamedContent getImagenPreview() {
-		return imagenPreview;
-	}
+    public StreamedContent getImagenPreview() {
+        return imagenPreview;
+    }
 
-	public void setImagenPreview(StreamedContent imagenPreview) {
-		this.imagenPreview = imagenPreview;
-	}
+    public void setImagenPreview(StreamedContent imagenPreview) {
+        this.imagenPreview = imagenPreview;
+    }
 
-	public String getRazon() {
-		return razon;
-	}
+    public String getRazon() {
+        return razon;
+    }
 
-	public void setRazon(String razon) {
-		this.razon = razon;
-	}
+    public void setRazon(String razon) {
+        this.razon = razon;
+    }
 
-	public String getFecha() {
-		return fecha;
-	}
+    public String getFecha() {
+        return fecha;
+    }
 
-	public void setFecha(String fecha) {
-		this.fecha = fecha;
-	}
+    public void setFecha(String fecha) {
+        this.fecha = fecha;
+    }
 
-	public UploadedFile getImagen() {
-		return imagen;
-	}
+    public UploadedFile getImagen() {
+        return imagen;
+    }
 
-	public void setImagen(UploadedFile imagen) {
-		this.imagen = imagen;
-	}
+    public void setImagen(UploadedFile imagen) {
+        this.imagen = imagen;
+    }
 
-	@PostConstruct
-	public void init(){
-		limpiar();
-	}
+    @PostConstruct
+    public void init() {
+        limpiar();
+    }
 
-	public void limpiar() {
-		razon = "";
-		fecha = Utilitarios.obtieneFechaSistema();
-		imagen = null;
-		imagenPreview = null;
+    public void limpiar() {
+        razon = "";
+        fecha = Utilitarios.obtieneFechaSistema();
+        imagen = null;
+        imagenPreview = null;
 
-	}
+    }
 
-	public void subirImagen(FileUploadEvent event) {
-		try {
+    public void subirImagen(FileUploadEvent event) {
+        try {
 
-			imagen = event.getFile();
-			imagenPreview = new DefaultStreamedContent(new ByteArrayInputStream(imagen.getContents()),
-					imagen.getContentType(), imagen.getFileName());
-		} catch (Exception e) {
-			mostrarAlerta(FATAL, "error.inesperado", log, e);
-		}
-	}
+            imagen = event.getFile();
+            imagenPreview = new DefaultStreamedContent(new ByteArrayInputStream(imagen.getContents()),
+                    imagen.getContentType(), imagen.getFileName());
+        } catch (Exception e) {
+            mostrarAlerta(FATAL, "error.inesperado", log, e);
+        }
+    }
 
-	public void crearEmpresa() {
+    public void crearEmpresa() {
 
-		try {
+        try {
 
-			EmpresaDAO objEmpresaDAO = new EmpresaDAO();
+            EmpresaDAO objEmpresaDAO = new EmpresaDAO();
 
-			Empresa empresa = new Empresa();
-			empresa.setNombre(razon);
-			empresa.setFechaRegistro(new Date());
+            Empresa empresa = new Empresa();
+            empresa.setNombre(razon);
+            empresa.setFechaRegistro(new Date());
+            empresa.setEstado(Constantes.EL_EMPRESA_ESTADO_REGISTRADO);
 
-			if(Utilitarios.noEsNuloOVacio(imagen)){
-				empresa.setImagen(imagen.getContents());
-				empresa.setTipo_imagen(imagen.getContentType());
-			}
-			empresa.setUsuario(Utilitarios.obtenerUsuarioEntity());
+            if (Utilitarios.noEsNuloOVacio(imagen)) {
+                empresa.setImagen(imagen.getContents());
+                empresa.setTipo_imagen(imagen.getContentType());
+            }
+            empresa.setUsuario(Utilitarios.obtenerUsuarioEntity());
 
-			objEmpresaDAO.grabar(empresa);
+            objEmpresaDAO.grabar(empresa);
 
-			limpiar();
+            limpiar();
 
-			mostrarAlerta(INFO, "organizacion.empresa.creada", null, null);
+            mostrarAlerta(INFO, "organizacion.empresa.creada", null, null);
 
-		} catch (Exception e) {
-			mostrarAlerta(FATAL, "error.inesperado", log, e);
-		}
-	}
+        } catch (Exception e) {
+            mostrarAlerta(FATAL, "error.inesperado", log, e);
+        }
+    }
 
 }
+ 

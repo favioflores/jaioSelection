@@ -12,9 +12,6 @@
         <property generated="never" lazy="false" name="nombre" optimistic-lock="true" type="string" unique="false">
             <column length="45" name="nombre" not-null="true"/>
         </property>
-        <property generated="never" lazy="false" name="horasEstimadas" optimistic-lock="true" type="int" unique="false">
-            <column name="horas_estimadas" not-null="true"/>
-        </property>
         <property generated="never" lazy="false" name="minutosEstimados" optimistic-lock="true" type="int" unique="false">
             <column name="minutos_estimados" not-null="true"/>
         </property>
@@ -33,6 +30,10 @@
         <property generated="never" lazy="false" name="limiteTiempo" optimistic-lock="true" type="byte" unique="false">
             <column name="limite_tiempo" not-null="true"/>
         </property>
+        <property generated="never" lazy="false" name="instructivo" optimistic-lock="true" type="binary" unique="false">
+            <column name="instructivo"/>
+        </property>
+
         <set embed-xml="true" fetch="select" inverse="true" lazy="true" mutable="true" name="modeloEvaluacionXCompetencias" optimistic-lock="true" sort="unsorted" table="modelo_evaluacion_x_competencia">
             <key on-delete="noaction">
                 <column name="modelo_evaluacion_id" not-null="true"/>

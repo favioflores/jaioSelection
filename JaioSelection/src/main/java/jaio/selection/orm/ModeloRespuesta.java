@@ -11,9 +11,8 @@ public class ModeloRespuesta  implements java.io.Serializable {
 
      private Integer id;
      private ModeloPregunta modeloPregunta;
-     private String rptaTexto;
-     private byte[] rptaImagen;
-     private Integer rptaNumero;
+     private String rpta;
+     private String comentario;
      private Integer numeroOrden;
      private byte esCorrecta;
 
@@ -25,11 +24,10 @@ public class ModeloRespuesta  implements java.io.Serializable {
         this.modeloPregunta = modeloPregunta;
         this.esCorrecta = esCorrecta;
     }
-    public ModeloRespuesta(ModeloPregunta modeloPregunta, String rptaTexto, byte[] rptaImagen, Integer rptaNumero, Integer numeroOrden, byte esCorrecta) {
+    public ModeloRespuesta(ModeloPregunta modeloPregunta, String rpta, String comentario, Integer numeroOrden, byte esCorrecta) {
        this.modeloPregunta = modeloPregunta;
-       this.rptaTexto = rptaTexto;
-       this.rptaImagen = rptaImagen;
-       this.rptaNumero = rptaNumero;
+       this.rpta = rpta;
+       this.comentario = comentario;
        this.numeroOrden = numeroOrden;
        this.esCorrecta = esCorrecta;
     }
@@ -48,27 +46,7 @@ public class ModeloRespuesta  implements java.io.Serializable {
     public void setModeloPregunta(ModeloPregunta modeloPregunta) {
         this.modeloPregunta = modeloPregunta;
     }
-    public String getRptaTexto() {
-        return this.rptaTexto;
-    }
     
-    public void setRptaTexto(String rptaTexto) {
-        this.rptaTexto = rptaTexto;
-    }
-    public byte[] getRptaImagen() {
-        return this.rptaImagen;
-    }
-    
-    public void setRptaImagen(byte[] rptaImagen) {
-        this.rptaImagen = rptaImagen;
-    }
-    public Integer getRptaNumero() {
-        return this.rptaNumero;
-    }
-    
-    public void setRptaNumero(Integer rptaNumero) {
-        this.rptaNumero = rptaNumero;
-    }
     public Integer getNumeroOrden() {
         return this.numeroOrden;
     }
@@ -84,8 +62,21 @@ public class ModeloRespuesta  implements java.io.Serializable {
         this.esCorrecta = esCorrecta;
     }
 
+    public String getRpta() {
+        return rpta;
+    }
 
+    public void setRpta(String rpta) {
+        this.rpta = rpta;
+    }
 
+    public String getComentario() {
+        return comentario;
+    }
+
+    public void setComentario(String comentario) {
+        this.comentario = comentario;
+    }
 
 }
 

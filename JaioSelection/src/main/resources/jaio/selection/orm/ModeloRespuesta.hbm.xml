@@ -9,14 +9,11 @@
         <many-to-one class="jaio.selection.orm.ModeloPregunta" embed-xml="true" fetch="select" insert="true" name="modeloPregunta" not-found="exception" optimistic-lock="true" unique="false" update="true">
             <column name="modelo_pregunta_id" not-null="true"/>
         </many-to-one>
-        <property generated="never" lazy="false" name="rptaTexto" optimistic-lock="true" type="string" unique="false">
-            <column length="200" name="rpta_texto"/>
+        <property generated="never" lazy="false" name="rpta" optimistic-lock="true" type="string" unique="false">
+            <column length="200" name="rpta"/>
         </property>
-        <property generated="never" lazy="false" name="rptaImagen" optimistic-lock="true" type="binary" unique="false">
-            <column name="rpta_imagen"/>
-        </property>
-        <property generated="never" lazy="false" name="rptaNumero" optimistic-lock="true" type="java.lang.Integer" unique="false">
-            <column name="rpta_numero"/>
+        <property generated="never" lazy="false" name="comentario" optimistic-lock="true" type="string" unique="false">
+            <column length="1000" name="comentario"/>
         </property>
         <property generated="never" lazy="false" name="numeroOrden" optimistic-lock="true" type="java.lang.Integer" unique="false">
             <column name="numero_orden"/>

@@ -19,7 +19,8 @@ public class ModeloPregunta  implements java.io.Serializable {
      private int horasEstimadas;
      private int minutosEstimados;
      private byte[] imagen;
-     private int tipoRespuesta;
+     private String comentario;
+     private byte ejemplo;
      private Set modeloRespuestas = new HashSet(0);
      private Set modeloRespuestas_1 = new HashSet(0);
 
@@ -27,16 +28,17 @@ public class ModeloPregunta  implements java.io.Serializable {
     }
 
 	
-    public ModeloPregunta(ModeloEvaluacion modeloEvaluacion, int tipo, String nombre, int orden, int horasEstimadas, int minutosEstimados, int tipoRespuesta) {
+    public ModeloPregunta(ModeloEvaluacion modeloEvaluacion, int tipo, String nombre, int orden, int horasEstimadas, int minutosEstimados, String comentario, byte ejemplo) {
         this.modeloEvaluacion = modeloEvaluacion;
         this.tipo = tipo;
         this.nombre = nombre;
         this.orden = orden;
         this.horasEstimadas = horasEstimadas;
         this.minutosEstimados = minutosEstimados;
-        this.tipoRespuesta = tipoRespuesta;
+       this.comentario = comentario;
+       this.ejemplo = ejemplo;
     }
-    public ModeloPregunta(ModeloEvaluacion modeloEvaluacion, int tipo, String nombre, int orden, int horasEstimadas, int minutosEstimados, byte[] imagen, int tipoRespuesta, Set modeloRespuestas, Set modeloRespuestas_1) {
+    public ModeloPregunta(ModeloEvaluacion modeloEvaluacion, int tipo, String nombre, int orden, int horasEstimadas, int minutosEstimados, byte[] imagen, String comentario, byte ejemplo, Set modeloRespuestas, Set modeloRespuestas_1) {
        this.modeloEvaluacion = modeloEvaluacion;
        this.tipo = tipo;
        this.nombre = nombre;
@@ -44,7 +46,8 @@ public class ModeloPregunta  implements java.io.Serializable {
        this.horasEstimadas = horasEstimadas;
        this.minutosEstimados = minutosEstimados;
        this.imagen = imagen;
-       this.tipoRespuesta = tipoRespuesta;
+       this.comentario = comentario;
+       this.ejemplo = ejemplo;
        this.modeloRespuestas = modeloRespuestas;
        this.modeloRespuestas_1 = modeloRespuestas_1;
     }
@@ -105,13 +108,7 @@ public class ModeloPregunta  implements java.io.Serializable {
     public void setImagen(byte[] imagen) {
         this.imagen = imagen;
     }
-    public int getTipoRespuesta() {
-        return this.tipoRespuesta;
-    }
-    
-    public void setTipoRespuesta(int tipoRespuesta) {
-        this.tipoRespuesta = tipoRespuesta;
-    }
+
     public Set getModeloRespuestas() {
         return this.modeloRespuestas;
     }
@@ -127,8 +124,21 @@ public class ModeloPregunta  implements java.io.Serializable {
         this.modeloRespuestas_1 = modeloRespuestas_1;
     }
 
+    public String getComentario() {
+        return comentario;
+    }
 
+    public void setComentario(String comentario) {
+        this.comentario = comentario;
+    }
 
+    public byte getEjemplo() {
+        return ejemplo;
+    }
+
+    public void setEjemplo(byte ejemplo) {
+        this.ejemplo = ejemplo;
+    }
 
 }
 

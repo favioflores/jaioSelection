@@ -37,7 +37,8 @@ public class LoginView extends BaseView implements Serializable {
 	private String contrasena;
 
 	public String getUsuario() {
-		return usuario;
+            usuario = "favio.flores.olaza@gmail.com";
+            return usuario;
 	}
 
 	public void setUsuario(String usuario) {
@@ -45,6 +46,7 @@ public class LoginView extends BaseView implements Serializable {
 	}
 
 	public String getcontrasena() {
+            contrasena = "Frozen4play";
 		return contrasena;
 	}
 

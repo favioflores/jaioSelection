@@ -1,88 +1,88 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:p="http://primefaces.org/ui"
-	xmlns:po="http://primefaces.org/omega">
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:po="http://primefaces.org/omega">
 
-	<div class="sidebar">
-		<div class="nano">
-			<div class="nano-content sidebar-scroll-content">
-				<!-- 
-                <div class="logo">
-                    <p:graphicImage name="images/logo-jaio.png" library="omega-layout" width="50"/>
-                </div>
+    <div class="sidebar">
+        <div class="nano">
+            <div class="nano-content sidebar-scroll-content">
+                <!-- 
+<div class="logo">
+    <p:graphicImage name="images/logo-jaio.png" library="omega-layout" width="50"/>
+</div>
                 -->
 
-				<div class="profile">
-					<p:graphicImage name="images/#{sidebarView.avatar}" library="omega-layout" />
-					<a id="profile-button" href="#"> <span class="username"><p:outputLabel
-								value="#{sidebarView.descripcion}" /></span> <i class="fa fa-fw fa-cog"></i>
-					</a>
-					<ul>
-						<li><a href="#"><i class="fa fa-fw fa-sliders"></i><span>#{msg['side.perfil']}</span></a></li>
-						<li><a href="#"><i class="fa fa-fw fa-bell"></i><span>#{msg['side.notificaciones']}</span><span
-								class="menu-badge">2</span></a></li>
-						<li><a href="#"><i class="fa fa-fw fa-sign-out"></i><span>#{msg['side.cerrar.sesion']}</span></a></li>
-					</ul>
-				</div>
-				<h:form>
-					<p:growl life="4000" />
-					
-					<div class="menu">
-						<po:menu>
-							<p:menuitem id="om_dashboard" value="#{msg['side.bienvenida']}"
-								icon="fa fa-DAO" outcome="bienvenida" />
-							<p:submenu id="om_empresa"
-								label="#{msg['side.gestionar.empresas']}"
-								icon="fa fa-building-o">
-								<p:menuitem id="om_perfil0"
-									value="#{msg['side.registro.empresa']}" outcome="crearEmpresa" />
-								<!-- p:menuitem id="om_perfil1" value="#{msg['side.registro.organizacion']}" outcome="crearPerfil"  -->
-							</p:submenu>
+                <div class="profile">
+                    <p:graphicImage name="images/#{sidebarView.avatar}" library="omega-layout" />
+                    <a id="profile-button" href="#"> <span class="username"><p:outputLabel
+                                value="#{sidebarView.descripcion}" /></span> <i class="fa fa-fw fa-cog"></i>
+                    </a>
+                    <ul>
+                        <li><a href="#"><i class="fa fa-fw fa-sliders"></i><span>#{msg['side.perfil']}</span></a></li>
+                        <li><a href="#"><i class="fa fa-fw fa-bell"></i><span>#{msg['side.notificaciones']}</span><span
+                                    class="menu-badge">2</span></a></li>
+                        <li><a href="#"><i class="fa fa-fw fa-sign-out"></i><span>#{msg['side.cerrar.sesion']}</span></a></li>
+                    </ul>
+                </div>
+                <h:form>
+                    <p:growl life="4000" />
+
+                    <div class="menu">
+                        <po:menu>
+                            <p:menuitem id="om_dashboard" value="#{msg['side.bienvenida']}"
+                                        icon="fa fa-home" outcome="bienvenida" />
+                            <p:submenu id="om_empresa"
+                                       label="#{msg['side.gestionar.empresas']}"
+                                       icon="fa fa-building-o">
+                                <p:menuitem id="om_perfil0"
+                                            value="#{msg['side.registro.empresa']}" outcome="crearEmpresa" />
+                                    <!-- p:menuitem id="om_perfil1" value="#{msg['side.registro.organizacion']}" outcome="crearPerfil"  -->
+                            </p:submenu>
 
 
-							<p:submenu id="om_proSeleccion"
-								label="#{msg['side.proceso.seleccion']}" icon="fa fa-group">
-								<p:menuitem id="om_defProyecto"
-									value="#{msg['side.definir.proceso']}" />
-								<p:menuitem id="om_reclutamiento"
-									value="#{msg['side.reclutamiento']}" />
-								<p:menuitem id="om_preSeleccion"
-									value="#{msg['side.preseleccion']}" />
-								<p:menuitem id="om_selEvaluacion"
-									value="#{msg['side.monitoreo.evaluacion']}" />
-								<p:menuitem id="om_diagnostico"
-									value="#{msg['side.diagnostico']}" />
-								<p:menuitem id="om_preCandidato"
-									value="#{msg['side.presentacion.candidatos']}" />
-							</p:submenu>
+                            <p:submenu id="om_proSeleccion"
+                                       label="#{msg['side.proceso.seleccion']}" icon="fa fa-group">
+                                <p:menuitem id="om_defProyecto"
+                                            value="#{msg['side.definir.proceso']}" outcome="crearProceso" />
+                                <p:menuitem id="om_reclutamiento"
+                                            value="#{msg['side.reclutamiento']}" />
+                                <p:menuitem id="om_preSeleccion"
+                                            value="#{msg['side.preseleccion']}" />
+                                <p:menuitem id="om_selEvaluacion"
+                                            value="#{msg['side.monitoreo.evaluacion']}" />
+                                <p:menuitem id="om_diagnostico"
+                                            value="#{msg['side.diagnostico']}" />
+                                <p:menuitem id="om_preCandidato"
+                                            value="#{msg['side.presentacion.candidatos']}" />
+                            </p:submenu>
+                            <!--
+                            <p:submenu id="om_default" label="#{msg['side.evaluaciones']}"
+                                    icon="fa fa-book">
+                                    <p:menuitem id="om_empty1"
+                                            value="#{msg['side.crear.evaluacion']}" />
+                                    <p:menuitem id="om_empty2"
+                                            value="#{msg['side.actualizar.evaluacion']}" />
+                                    <p:menuitem id="om_empty3" value="#{msg['side.importexport']}" />
+                            </p:submenu>
+                            -->
+                            <p:submenu id="om_consultas" label="#{msg['side.consultas']}"
+                                       icon="fa fa-search">
+                                <p:menuitem id="om_consulta1"
+                                            value="#{msg['side.consulta.candidatos']}" />
+                                <p:menuitem id="om_consulta2"
+                                            value="#{msg['side.consulta.procesos']}" />
+                            </p:submenu>
 
-							<p:submenu id="om_default" label="#{msg['side.evaluaciones']}"
-								icon="fa fa-book">
-								<p:menuitem id="om_empty1"
-									value="#{msg['side.crear.evaluacion']}" />
-								<p:menuitem id="om_empty2"
-									value="#{msg['side.actualizar.evaluacion']}" />
-								<p:menuitem id="om_empty3" value="#{msg['side.importexport']}" />
-							</p:submenu>
-
-							<p:submenu id="om_consultas" label="#{msg['side.consultas']}"
-								icon="fa fa-search">
-								<p:menuitem id="om_consulta1"
-									value="#{msg['side.consulta.candidatos']}" />
-								<p:menuitem id="om_consulta2"
-									value="#{msg['side.consulta.procesos']}" />
-							</p:submenu>
-
-							<p:menuitem id="om_doc"
-								value="#{msg['side.preguntas.frecuentes']}"
-								icon="fa fa-question-circle-o" />
-						</po:menu>
-					</div>
-				</h:form>
-			</div>
-		</div>
-	</div>
+                            <p:menuitem id="om_doc"
+                                        value="#{msg['side.preguntas.frecuentes']}"
+                                        icon="fa fa-question-circle-o" />
+                        </po:menu>
+                    </div>
+                </h:form>
+            </div>
+        </div>
+    </div>
 
 </ui:composition>
