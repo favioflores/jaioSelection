@@ -41,29 +41,3 @@ insert into elemento values (19,'Numérico',1,true,8);
 commit;
 
 
-
-delete from perfil;
-delete b from area as b 
-where b.id in (17);
-
-commit;
-
-select * from area a order by a.area_herarquia_id, a.id;
-select * from perfil;
-select a.id, a.descripcion, a.area_herarquia_id from area a where a.empresa_id = 1 and a.estado = 8;
-select p.id, p.nombre, p.area_id from perfil p where p.empresa_id = 1 and p.estado = 10;
-
-
-update area set area_herarquia_id = 0 where area_herarquia_id = null and empresa_id = 0;
-
-update perfil set area_id = 0 where id = 0 and empresa_id = 0;
-
-update area set estado = 9 where id = 0 and empresa_id = 0 and empresa_id = 0;
-
-
-
-      select * from area;
-      select * from perfil;
-      commit;
-      
-insert into modelo_libro values (1,"Ejemplo Libro 1","Favio Flores","Ylene Sanchez","Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse lacinia vitae magna quis lacinia. Nullam libero orci, malesuada ut aliquet nec, tempor et tellus. Sed in blandit purus. Donec id lacus pulvinar, rhoncus tortor quis, laoreet ipsum. Pellentesque aliquet orci vitae purus imperdiet hendrerit. Nulla iaculis erat ac orci varius placerat. Curabitur eleifend quis nisl in semper. Proin nec cursus enim. Quisque id libero quis est gravida suscipit id at libero. Etiam non sodales urna. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Mauris ultrices dui ac erat pretium, sit amet congue dolor maximus.");
