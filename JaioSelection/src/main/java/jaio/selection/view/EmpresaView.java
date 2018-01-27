@@ -173,6 +173,7 @@ public class EmpresaView extends BaseView implements Serializable {
 
             if (flag) {
                 mostrarAlerta(INFO, "organizacion.empresa.eliminada", null, null);
+                obtenerEmpresas();
             } else {
                 mostrarAlerta(ERROR, "error.inesperado", null, null);
             }

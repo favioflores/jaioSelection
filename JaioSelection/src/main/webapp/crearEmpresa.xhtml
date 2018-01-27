@@ -51,8 +51,8 @@
                                     </p:graphicImage>
                                         -->
                                         <p:rating value="#{emp.orden}">
-                                            <p:ajax event="rate" listener="#{empresaView.ponerPrioridad(emp)}" update=":formEmpresa:" />
-                                            <p:ajax event="cancel" listener="#{empresaView.quitarPrioridad(emp)}" update=":formEmpresa:" />
+                                            <p:ajax event="rate" listener="#{empresaView.ponerPrioridad(emp)}" update=":formEmpresa:emp" />
+                                            <p:ajax event="cancel" listener="#{empresaView.quitarPrioridad(emp)}" update=":formEmpresa:emp" />
                                         </p:rating>
                                         <br/>
                                         <h:column>
@@ -61,7 +61,7 @@
                                             </p:commandButton>
 
                                             <p:commandButton icon="fa fa-trash" 
-                                                             styleClass="aqua-button" actionListener="#{empresaView.eliminarEmpresa(emp.id)}">
+                                                             styleClass="aqua-button" actionListener="#{empresaView.eliminarEmpresa(emp.id)}" update=":formEmpresa:">
 
                                                 <p:confirm header="#{msg['org.emp.confirmEli.Titulo']}" 
                                                            message="#{msg['org.emp.confirmEli.cuerpo']} #{emp.desc}#{msg['cierre.preg']}"
@@ -75,13 +75,6 @@
 
                             </p:dataGrid>
 
-                            <p:confirmDialog global="true" showEffect="clip" hideEffect="clip"
-                                             responsive="true" appendTo="@(body)" closeOnEscape="true">
-                                <p:commandButton value="#{msg['si']}" type="button"
-                                                 styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-                                <p:commandButton value="#{msg['no']}" type="button"
-                                                 styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-                            </p:confirmDialog>
                         </p:panelGrid>
                     </div>
                 </div>
@@ -91,10 +84,10 @@
                   widgetVar="dlgNuevo" modal="true" resizable="false"
                   focus=":formCrear:desc" appendTo="@(body)" closeOnEscape="true"
                   closable="true" showEffect="clip" hideEffect="clip" responsive="true">
-            <p:ajax event="close" update=":formEmpresa:" listener="#{empresaView.init()}" />
-            <h:form id="formCrear" enctype="multipart/form-data">
+            <p:ajax event="close" update=":formEmpresa:" listener="#{empresaView.init()}" resetValues="true" />
+                    <h:form id="formCrear" enctype="multipart/form-data">
 
-                <p:focus for="desc" />
+                    <p:focus for="desc" />
                 <p:growl life="4000" />
                 <h:panelGrid columns="3" cellpadding="5">
                     <p:outputLabel for="desc"
@@ -103,11 +96,11 @@
                                  value="#{crearEmpresaView.razon}" required="true"></p:inputText>
                     <p:message for="desc" display="tooltip" />
 
-                    <p:outputLabel for="fecha"
-                                   value="#{msg['organizacion.dialog.fecha']}" />
-                    <p:inputText id="fecha" value="#{crearEmpresaView.fecha}"
-                                 readonly="true" required="true"></p:inputText>
-                    <p:message for="fecha" display="tooltip" />
+                    <p:outputLabel for="rate"
+                                   value="#{msg['organizacion.dialog.desc']}" />
+                    <p:rating id="rate" value="#{crearEmpresaView.orden}" />
+                    <p:message for="desc" display="tooltip" />
+                    <!--
 
                     <p:outputLabel for="imagen"
                                    value="#{msg['organizacion.dialog.imagen']}" />
@@ -128,7 +121,7 @@
                                     width="160" />
 
                     <p:remoteCommand name="enviaDatos" process="@form" />
-
+                    -->
 
                     <f:facet name="footer">
                         <p:commandButton value="#{msg['organizacion.dialog.crear']}"
@@ -142,8 +135,16 @@
                                   oncomplete="PF('dlgNuevo').hide();" />
                     </f:facet>
                 </h:panelGrid>
-            </h:form>
+                </h:form>
         </p:dialog>
+
+        <p:confirmDialog global="true" showEffect="clip" hideEffect="clip"
+                         closeOnEscape="true">
+            <p:commandButton value="#{msg['si']}" type="button"
+                             styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+            <p:commandButton value="#{msg['no']}" type="button"
+                             styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+        </p:confirmDialog>
 
     </ui:define>
 

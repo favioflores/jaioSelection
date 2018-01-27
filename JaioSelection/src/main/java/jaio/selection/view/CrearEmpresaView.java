@@ -30,9 +30,19 @@ public class CrearEmpresaView extends BaseView implements Serializable {
 
     private String razon;
     private String fecha;
+    private String orden;
     private UploadedFile imagen;
     private StreamedContent imagenPreview;
 
+    public String getOrden() {
+        return orden;
+    }
+
+    public void setOrden(String orden) {
+        this.orden = orden;
+    }
+
+    
     public StreamedContent getImagenPreview() {
         return imagenPreview;
     }
@@ -75,7 +85,7 @@ public class CrearEmpresaView extends BaseView implements Serializable {
         fecha = Utilitarios.obtieneFechaSistema();
         imagen = null;
         imagenPreview = null;
-
+        orden = "";
     }
 
     public void subirImagen(FileUploadEvent event) {
@@ -99,6 +109,10 @@ public class CrearEmpresaView extends BaseView implements Serializable {
             empresa.setNombre(razon);
             empresa.setFechaRegistro(new Date());
             empresa.setEstado(Constantes.EL_EMPRESA_ESTADO_REGISTRADO);
+            
+            if(Utilitarios.noEsNuloOVacio(orden)){
+                empresa.setOrden(Integer.parseInt(orden));
+            }
 
             if (Utilitarios.noEsNuloOVacio(imagen)) {
                 empresa.setImagen(imagen.getContents());
