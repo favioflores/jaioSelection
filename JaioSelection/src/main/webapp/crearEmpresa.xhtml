@@ -85,9 +85,9 @@
                   focus=":formCrear:desc" appendTo="@(body)" closeOnEscape="true"
                   closable="true" showEffect="clip" hideEffect="clip" responsive="true">
             <p:ajax event="close" update=":formEmpresa:" listener="#{empresaView.init()}" resetValues="true" />
-                    <h:form id="formCrear" enctype="multipart/form-data">
+            <h:form id="formCrear" enctype="multipart/form-data">
 
-                    <p:focus for="desc" />
+                <p:focus for="desc" />
                 <p:growl life="4000" />
                 <h:panelGrid columns="3" cellpadding="5">
                     <p:outputLabel for="desc"
@@ -135,10 +135,10 @@
                                   oncomplete="PF('dlgNuevo').hide();" />
                     </f:facet>
                 </h:panelGrid>
-                </h:form>
+            </h:form>
         </p:dialog>
 
-        <p:confirmDialog global="true" showEffect="clip" hideEffect="clip"
+        <p:confirmDialog global="true" showEffect="clip" hideEffect="clip" responsive="true" appendTo="@(body)"
                          closeOnEscape="true">
             <p:commandButton value="#{msg['si']}" type="button"
                              styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />

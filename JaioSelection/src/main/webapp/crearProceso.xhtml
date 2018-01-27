@@ -1,8 +1,8 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                 xmlns:h="http://java.sun.com/jsf/html"
-                 xmlns:f="http://java.sun.com/jsf/core"
-                 xmlns:ui="http://java.sun.com/jsf/facelets"
-                 xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
 
     <ui:define name="content">
         <h:form id="formProceso" enctype="multipart/form-data">
@@ -57,13 +57,6 @@
 
                             </p:dataTable>
 
-                            <p:confirmDialog global="true" showEffect="clip" hideEffect="clip"
-                                             responsive="true" appendTo="@(body)" closeOnEscape="true">
-                                <p:commandButton value="#{msg['si']}" type="button"
-                                                 styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-                                <p:commandButton value="#{msg['no']}" type="button"
-                                                 styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-                            </p:confirmDialog>
                         </p:panelGrid>
                     </div>
                 </div>
@@ -121,6 +114,15 @@
                 </h:panelGrid>
             </h:form>
         </p:dialog>
+
+        <p:confirmDialog global="true" showEffect="clip" hideEffect="clip"
+                         responsive="true" appendTo="@(body)" closeOnEscape="true">
+            <p:commandButton value="#{msg['si']}" type="button"
+                             styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+            <p:commandButton value="#{msg['no']}" type="button"
+                             styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+        </p:confirmDialog>
+
 
     </ui:define>
 
