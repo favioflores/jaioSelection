@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!-- Generated 06/11/2017 06:07:28 PM by Hibernate Tools 5.1.4.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping auto-import="true" default-access="property" default-cascade="none" default-lazy="true">
-    <class catalog="jaioselectiondb" dynamic-insert="false" dynamic-update="false" mutable="true" name="jaio.selection.orm.BateriaEvaluacion" optimistic-lock="version" polymorphism="implicit" select-before-update="false" table="bateria_evaluacion">
+    <class catalog="JaioSelectionDB" dynamic-insert="false" dynamic-update="false" mutable="true" name="jaio.selection.orm.BateriaEvaluacion" optimistic-lock="version" polymorphism="implicit" select-before-update="false" table="bateria_evaluacion">
         <composite-id class="jaio.selection.orm.BateriaEvaluacionId" mapped="false" name="id" unsaved-value="undefined">
             <key-property name="modeloEvaluacionId" type="int">
                 <column name="modelo_evaluacion_id"/>
