@@ -129,12 +129,12 @@ public class CrearProcesoView extends BaseView implements Serializable {
 
         try {
 
-            if (Utilitarios.noEsNuloOVacio(strEmpresaSeleccionada)) {
+             if (Utilitarios.noEsNuloOVacio(strEmpresaSeleccionada)) {
 
                 if (!strEmpresaSeleccionada.equals("-1")) {
                     EmpresaDAO objEmpresaDAO = new EmpresaDAO();
                     Empresa objEmpresa = objEmpresaDAO.obtenerEmpresa(strEmpresaSeleccionada);
-                    poblarPerfil();
+                    poblarArea();
                     mostrarAlerta(INFO, "proceso.seleccion.empresa", null, null, objEmpresa.getNombre());
                 }
             } else {
