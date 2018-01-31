@@ -11,13 +11,13 @@
             margin-top: -4px;
         }
     }
-    
+
     .ui-spinner-down {
         .ui-icon {
             margin-top: -10px;
         }
     }
-    
+
     .ui-spinner-input {
         font-size: $fontSize;
     }
@@ -29,7 +29,7 @@
             padding-left: 0;
         }
     }
-    
+
     .ui-selectonemenu-label {
         font-size: $fontSize;
     }
@@ -49,13 +49,13 @@
     .ui-selectcheckboxmenu-label {
         padding: 4px 26px 4px 5px;
     }
-    
+
     .ui-selectcheckboxmenu-trigger {
         .ui-icon {
             margin-top: 2px;
         }
     }
-    
+
     &.ui-selectcheckboxmenu-multiple {
         .ui-selectcheckboxmenu-multiple-container {
             &.ui-inputfield {
@@ -109,31 +109,31 @@
         .ui-icon-arrow-1-n {
             @include icon-override("\f106");
         }
-        
+
         .ui-icon-arrowstop-1-n {
             @include icon-override("\f102");
         }
-        
+
         .ui-icon-arrow-1-s {
             @include icon-override("\f107");
         }
-        
+
         .ui-icon-arrowstop-1-s {
             @include icon-override("\f103");
         }
-        
+
         .ui-icon-arrow-1-e {
             @include icon-override("\f105");
         }
-        
+
         .ui-icon-arrowstop-1-e {
             @include icon-override("\f101");
         }
-        
+
         .ui-icon-arrow-1-w {
             @include icon-override("\f104");
         }
-        
+
         .ui-icon-arrowstop-1-w {
             @include icon-override("\f100");
         }
@@ -146,15 +146,15 @@
             .ui-icon-arrow-1-e {
                 @include icon-override("\f107");
             }
-            
+
             .ui-icon-arrowstop-1-e {
                 @include icon-override("\f103");
             }
-            
+
             .ui-icon-arrow-1-w {
                 @include icon-override("\f106");
             }
-            
+
             .ui-icon-arrowstop-1-w {
                 @include icon-override("\f102");
             }
@@ -169,26 +169,26 @@
             font-size: 16px;
             color: #fff;
         }
-        
+
         .ui-icon-arrowstop-1-n {
             @include icon-override("\f102");
             font-size: 16px;
             color: #fff;
         }
-        
+
         .ui-icon-arrow-1-s {
             @include icon-override("\f107");
             font-size: 16px;
             color: #fff;
         }
-        
+
         .ui-icon-arrowstop-1-s {
             @include icon-override("\f103");
             font-size: 16px;
             color: #fff;
         }
     }
-    
+
     &.ui-grid-responsive {
         .ui-grid-row {
             .ui-orderlist-controls {
@@ -204,25 +204,25 @@
         box-sizing: border-box;
         height: 23px;
         width: 24px;
-        
+
         span {
             display: none;
         }
-        
+
         &:before {
             position: relative;
             top: 1px;
         }
     }
-    
+
     .ui-paginator-next {
         @include icon-override("\f04b");
     }
-    
+
     .ui-paginator-last  {
         @include icon-override("\f051");
     }
-    
+
     .ui-paginator-prev {
         @include icon-override("\f04b");
         -webkit-transform: rotate(180deg);
@@ -231,15 +231,15 @@
         -o-transform: rotate(180deg);
         transform: rotate(180deg);
     }
-    
+
     .ui-paginator-first {
         @include icon-override("\f048");
     }
-    
+
     .ui-paginator-pages {
         padding: 0;
         vertical-align: top;
-        
+
         .ui-paginator-page {
             height: 17px;
         }
@@ -271,7 +271,7 @@
             padding-left: 5px;
         }
     }
-    
+
     .ui-datepicker-prev {
         .ui-icon {
             @include icon-override("\f053");
@@ -307,7 +307,7 @@
         @include icon-override("\f111");
         visibility: hidden;
     }
-    
+
     .ui-icon-bullet, .ui-icon-blank {
         font-size: 10px;
         margin-top: 2px;
@@ -318,28 +318,28 @@
 .ui-tree {
     .ui-tree-toggler {
         vertical-align: middle;
-        
+
         &.ui-icon-triangle-1-s {
             margin-top: -5px;
         }
     }
-    
+
     &.ui-tree-horizontal {
         .ui-tree-toggler {
             vertical-align: middle;
         }
     }
-    
+
     .ui-treenode-label {
         margin-top: 0px;
         vertical-align: middle;
     }
-    
+
     .ui-chkbox {
         vertical-align: middle;
         margin-right: 2px;
     }
-    
+
     .ui-treenode-icon {
         vertical-align: middle;
         position: relative;
@@ -350,7 +350,7 @@
 .ui-treetable {
     .ui-treetable-toggler {
         margin-top: 1px;
-        
+
         &.ui-icon-triangle-1-s {
             margin-top: 1px;
         }
@@ -449,28 +449,28 @@
             background: none;
             color: #fff;
             padding: 4px;
-            
+
             &.ui-growl-image-info {
                 @include icon-override("\f05a");
                 font-size: 36px;
             }
-            
+
             &.ui-growl-image-error {
                 @include icon-override("\f056");
                 font-size: 36px;
             }
-            
+
             &.ui-growl-image-warn {
                 @include icon-override("\f071");
                 font-size: 36px;
             }
-            
+
             &.ui-growl-image-fatal {
                 @include icon-override("\f056");
                 font-size: 36px;
             }
         }
-        
+
         .ui-growl-icon-close {
             @include icon-override("\f00d");
             font-size: $fontSize;
@@ -484,7 +484,7 @@
         &.ui-carousel-next-button {
             @include icon-override("\f054");
         }
-        
+
         &.ui-carousel-prev-button {
             @include icon-override("\f053");
         }
@@ -508,7 +508,7 @@
             top: 1px;
         }
     }
-    
+
     .ui-menuitem-link {
         text-decoration: none;
     }
@@ -520,13 +520,13 @@
             margin-top: 1px;
         }
     }
-    
+
     &.ui-megamenu {
         .ui-menuitem-icon {
             margin-top: 1px;
         }
     }
-    
+
     .ui-menuitem-link {
         width: 96%;
     }
@@ -542,7 +542,7 @@
     .ui-menuitem-icon {
         margin-top: 1px;
     }
-    
+
     li.ui-state-active {
         .ui-menuitem-icon {
             color: #ffffff;
@@ -578,19 +578,19 @@
             @include icon-override("\f078");
         }
     }
-    
+
     .ui-radiobutton {
         .ui-icon-bullet, .ui-icon-blank {
             color: #186ba0;
         }
     }
-    
+
     .ui-chkbox {
         .ui-chkbox-box {
             color: #186ba0;
         }
     }
-    
+
     .ui-datatable-data {
         tr.ui-state-hover {
             border-bottom: #d5d5d5;
@@ -604,7 +604,7 @@
             .ui-icon {
                 margin-top: 0.6em;
             }
-            
+
             > a:focus {
                 outline: 0 none;
             }
@@ -637,7 +637,7 @@
                 width: 33.33%;
             }
         }
-        
+
         &.ui-buttonset.ui-buttonset-6 {
             .ui-button {
                 width: 16.66%;
@@ -659,7 +659,7 @@
                         border-bottom: 1px solid #d6d6d6;
                     }
                 }
-                
+
                 &.ui-buttonset-6, &.ui-buttonset-3 {
                     .ui-button {
                         width: 100%;
@@ -687,17 +687,17 @@ a {
 .ui-lightbox {
     .ui-lightbox-nav-left {
         letter-spacing: 11px;
-        
+
         span {
             margin: 5px 0;
             padding-left: 7px;
             padding-top: 3px;
         }
     }
-    
+
     .ui-lightbox-nav-right {
         letter-spacing: 11px;
-        
+
         span {
             margin: 5px 0;
             padding-left: 7px;
@@ -714,11 +714,11 @@ a {
         &.green-button {
             background-color: $greenButton;
             border-color: $greenButtonBorder;
-            
+
             &.ui-state-hover {
                 background-color: $greenButtonHover;
             }
-            
+
             &.ui-state-active {
                 background-color: $greenButtonActive;
             }
@@ -732,11 +732,11 @@ a {
         &.yellow-button {
             background-color: $yellowButton;
             border-color: $yellowButtonBorder;
-            
+
             &.ui-state-hover {
                 background-color: $yellowButtonHover;
             }
-            
+
             &.ui-state-active {
                 background-color: $yellowButtonActive;
             }
@@ -750,11 +750,11 @@ a {
         &.red-button {
             background-color: $redButton;
             border-color: $redButtonBorder;
-            
+
             &.ui-state-hover {
                 background-color: $redButtonHover;
             }
-            
+
             &.ui-state-active {
                 background-color: $redButtonActive;
             }
@@ -768,11 +768,11 @@ a {
         &.aqua-button {
             background-color: $aquaButton;
             border-color: $aquaButtonBorder;
-            
+
             &.ui-state-hover {
                 background-color: $aquaButtonHover;
             }
-            
+
             &.ui-state-active {
                 background-color: $aquaButtonActive;
             }
@@ -786,11 +786,11 @@ a {
         &.navy-button {
             background-color: $navyButton;
             border-color: $navyButtonBorder;
-            
+
             &.ui-state-hover {
                 background-color: $navyButtonHover;
             }
-            
+
             &.ui-state-active {
                 background-color: $navyButtonActive;
             }
@@ -804,11 +804,11 @@ a {
         &.black-button {
             background-color: $blackButton;
             border-color: $blackButtonBorder;
-            
+
             &.ui-state-hover {
                 background-color: $blackButtonHover;
             }
-            
+
             &.ui-state-active {
                 background-color: $blackButtonActive;
             }
@@ -822,17 +822,17 @@ a {
         &.gray-button {
             background-color: $greyButton;
             border-color: $greyButtonBorder;
-            
+
             &.ui-button {
                 span.ui-button-text {
                     color: $greyButtonText;
                 }
             }
-            
+
             &.ui-state-hover {
                 background-color: $greyButtonHover;
             }
-            
+
             &.ui-state-active {
                 background-color: $greyButtonActive;
             }

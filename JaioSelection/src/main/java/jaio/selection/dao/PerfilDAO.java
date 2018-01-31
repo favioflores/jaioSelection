@@ -42,7 +42,7 @@ public class PerfilDAO extends HibernateUtil implements Serializable {
 
         return lstPerfiles;
     }
-    
+
     public List<Perfil> obtenerPerfilesXEmpresa(String id) {
 
         List<Perfil> lstPerfiles = new ArrayList<>();
@@ -66,7 +66,7 @@ public class PerfilDAO extends HibernateUtil implements Serializable {
 
         return lstPerfiles;
     }
-    
+
     public List<Perfil> obtenerPerfilesXArea(String idArea) {
 
         List<Perfil> lstPerfiles = new ArrayList<>();

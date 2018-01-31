@@ -23,8 +23,8 @@ import javax.mail.internet.MimeMultipart;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-public class MailSender extends Thread implements Serializable{
-/*    
+public class MailSender extends Thread implements Serializable {
+    /*    
     private List lstCorreos = new ArrayList();
     
     private Log log = LogFactory.getLog(MailSender.class);
@@ -228,5 +228,5 @@ public class MailSender extends Thread implements Serializable{
         }
 
     }
-  */  
+     */
 }

@@ -21,7 +21,7 @@
     width: 400px;
     margin: 0 auto;
     text-align: center;
-    
+
     #login-container {
         margin-top: 20px;
         box-sizing: border-box;;
@@ -31,45 +31,45 @@
         padding: 2em;
         text-align: center;
         color: #4f575b;
-        
+
         .title {
             font-size: 20px;
             display: block;
             margin-bottom: 10px;
         }
-        
+
         .remember-me {
             display: inline-block;
             vertical-align: middle;
             margin-right: 10px;
         }
-        
+
         .ui-chkbox {
             height: 16px;
             vertical-align: middle;
         }
-        
+
         a {
             color: #4f575b;
             text-decoration: none;
             vertical-align: middle;
             font-size: 16px;
         }
-                
+
         input {
             font-size: 1em;
             color: #4f575b;
         }
-        
+
         .ui-g-12, .ui-g-6 {
             padding: .8em;
         }
-        
+
         .ui-button {
             font-size: 16px;
         }
     }    
-    
+
     .login-footer {
         color: #ffffff;
         font-size: $fontSize;
@@ -81,10 +81,10 @@
     .login-body {
         padding-top: 50px;
     }
-    
+
     #login-wrapper {
         width: 320px;
-        
+
         #login-container {
             height: 350px;
         }

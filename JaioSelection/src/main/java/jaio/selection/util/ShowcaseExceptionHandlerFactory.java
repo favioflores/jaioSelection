@@ -19,27 +19,27 @@ import java.io.Serializable;
 import javax.faces.context.ExceptionHandler;
 import javax.faces.context.ExceptionHandlerFactory;
 
-public class ShowcaseExceptionHandlerFactory extends ExceptionHandlerFactory implements Serializable{
+public class ShowcaseExceptionHandlerFactory extends ExceptionHandlerFactory implements Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
-	private ExceptionHandlerFactory base;
-    
+    private ExceptionHandlerFactory base;
+
     private ShowcaseExceptionHandler cached;
-    
+
     public ShowcaseExceptionHandlerFactory(ExceptionHandlerFactory base) {
         this.base = base;
     }
-    
+
     @Override
     public ExceptionHandler getExceptionHandler() {
-        if(cached == null) {
+        if (cached == null) {
             cached = new ShowcaseExceptionHandler(base.getExceptionHandler());
         }
-        
+
         return cached;
     }
 }

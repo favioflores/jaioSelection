@@ -13,7 +13,7 @@ html {
 
 .wrapper {
     padding: 0;
-    
+
     .topbar {
         @include transition(left .3s);
         position: fixed;
@@ -25,21 +25,21 @@ html {
         box-sizing: border-box;
         color: #ffffff;
         z-index: 101;
-        
+
         .topbar-title {
             display: inline-block;
             font-size: 20px;
             margin: 5px 0 0 15px;
             vertical-align: top;
         }
-                
+
         #topbar-icons {
             float: right;
             display: block;
             -moz-animation-duration: .5s;
             -webkit-animation-duration: .5s;
             animation-duration: .5s;
-            
+
             a {
                 position: relative;
                 color: $topbarItemColor;
@@ -47,21 +47,21 @@ html {
                 display: inline-block;
                 text-decoration: none;
                 @include transition(color .3s);
-                
+
                 &:hover {
                     color: $topbarItemHoverColor;
                 }
-                
+
                 span {
                     &.topbar-icon {
                         font-size: 28px;
                     }
-                    
+
                     &.topbar-item-text {
                         font-size: 20px;
                         display: none;
                     }
-                    
+
                     &.topbar-badge {
                         position: absolute;
                         font-size: 10px;
@@ -74,13 +74,13 @@ html {
                     }
                 }
             }
-            
+
             .topbar-search {
                 padding: 0;
                 position: relative;
                 display: inline-block;
                 top: -4px;
-                
+
                 input {
                     display: inline-block;
                     border: 0 none;
@@ -99,14 +99,14 @@ html {
                     &::-moz-placeholder { color:#ffffff; opacity: .7; @include transition(opacity .3s);}
                     &:-ms-input-placeholder { color:#ffffff; opacity: .7; @include transition(opacity .3s);}
                 }
-                
+
                 .topbar-search-icon {
                     font-size: 18px;
                     position: absolute;
                     top: -1px;
                     right: 0px;
                 }
-                
+
                 &:hover {
                     input {
                         border-bottom-color: $topbarItemHoverColor;
@@ -115,14 +115,14 @@ html {
                         &::-moz-placeholder {opacity: 1}
                         &:-ms-input-placeholder {opacity: 1}
                     }
-                    
+
                     .topbar-search-icon {
                         color: $topbarItemHoverColor;
                     }
                 }
             }
         }
-        
+
         #omega-menu-button {
             display: inline-block;
             font-size: 28px;
@@ -130,12 +130,12 @@ html {
             text-decoration: none;
             color: #ffffff;
             @include transition(color .3s);
-            
+
             &:hover {
                 color: $topbarItemHoverColor;
             }
         }
-        
+
         #options-menu-button {
             display: none;
             font-size: 28px;
@@ -143,40 +143,40 @@ html {
             text-decoration: none;
             color: #ffffff;
             @include transition(color .3s);
-            
+
             &:hover {
                 color: $topbarItemHoverColor;
             }
         }
     }
-    
+
     .sidebar {
         position: fixed;
         width: 250px;
-    	height: 100%;
+        height: 100%;
         z-index: 102;
         @include transition(margin-left .3s);
         @include background-gradient-top2bottom(#4e5159, #1f2023);
-                
+
         .logo {
             text-align: center;
             height: 50px;
             box-sizing: border-box;
             padding-top: .7em;
         }
-        
+
         .profile {
             display: block;
             text-decoration: none;
             text-align: center;
             padding: 20px 0;
-            
+
             img {
                 display: block;
                 width: 56px;
                 margin: 0 auto;
             }
-            
+
             > a {
                 display: inline-block;
                 margin-bottom: 10px;
@@ -187,34 +187,34 @@ html {
                 .username {
                     display: inline-block;
                     margin-top: 8px;
-                    
+
                     &:before {
                         content: "";
                         display: block;
                     }
                 }
-                
+
                 i {
                     display: inline-block;
                     font-size: 16px;
                 }
-                
+
                 &:hover {
                     color: $menuitemHoverColor;
                 }
             }
-            
+
             > ul {
                 margin-bottom: -20px;
                 display: none;
                 background-color: $menuitemActiveBgColor;
                 text-align: left;
-                
+
                 li {
                     a {
                         border: 0 none;
                     }
-                    
+
                     &:last-child {
                         > a {
                             border: 0 none;
@@ -223,17 +223,17 @@ html {
                 }
             }
         }
-        
+
         .sidebar-scroll-content {
             display: block;
             height: 100%;
             position: relative;
-                
+
             .menu-container {
                 padding-bottom: 80px;
             }
         }
-                
+
         ul {
             list-style-type: none;
             margin: 0;
@@ -251,11 +251,11 @@ html {
                     box-sizing: border-box;
                     border-top: 1px solid $menuitemBorderColor;
                     @include transition(padding-left .3s);
-                    
+
                     span {
                         margin-left: .3em;
                     }
-                    
+
                     .menu-badge {
                         position: absolute;
                         right: 15px;
@@ -265,51 +265,51 @@ html {
                         background-color: $menuitemBadgeBgColor;
                         @include border-radius(50%);
                     }
-                    
+
                     .fa:last-child {
                         float: right;
                         font-size: 16px;
                     }
-                    
+
                     &:hover {
                         padding-left: 20px;
                         color: $menuitemHoverColor;
-                        
+
                         .menu-badge {
                             color: #ffffff;
                         }
                     }
                 }
-                
+
                 &.active-menuitem {
                     > a {
                         border-bottom: 0 none;
                         background-color: $menuitemActiveBgColor;
                         color: $menuitemActiveColor;
 
-                        
+
                         .fa:last-child {
                             @include icon-override("\f106");
                             font-size: 16px;
                         }
                     }
-                    
+
                     > ul {
                         background-color: $menuitemActiveBgColor;
                     }
                 }
-                
+
                 > ul {
                     display: none;
                     padding-left: 20px;
-                    
+
                     li {
                         a {
                             padding: 10px 15px;
                             font-size: $submenuFontSize;
                             border-top: 0 none;
                         }
-                        
+
                         &:last-child {
                             > a {
                                 border-bottom: 0 none;
@@ -317,7 +317,7 @@ html {
                         } 
                     }
                 } 
-                
+
                 &:last-child {
                     > a {
                         border-bottom: 1px solid $menuitemBorderColor;
@@ -326,28 +326,28 @@ html {
             } 
         }
     }
-        
+
     .main {
         @include transition(margin-left .3s);
         margin-left: 250px;
         padding: 50px 16px 16px 16px;
     }
-    
+
     .footer {
         margin-left: 250px;
         height: 40px;
         background-color: #ffffff;
         padding: .7em 1.5em 0em 1.5em;
-        
+
         img {
             vertical-align: middle;
         }
-        
+
         .footer-text {
             vertical-align: middle;
         }
     }
-    
+
 }
 
 /* Responsive */
@@ -357,42 +357,42 @@ html {
             .topbar {
                 left: 0;
             }
-            
+
             .main {
                 margin-left: 0;
             }
-            
+
             .sidebar {
                 margin-left: -250px;
             }
-            
+
             .footer {
                 margin-left: 0;
             }
         }
     }
 }
-    
+
 @media (max-width: 1024px) {
     .wrapper {        
         .topbar {
             left: 0;
         }
-        
+
         .main {
             margin-left: 0;
         }
-        
+
         .sidebar {
             margin-left: -250px;
             margin-top: 50px;
             width: 250px;
         }
-        
+
         .footer {
             margin-left: 0;
         }
-        
+
         &.sidebar-active-m {
             .sidebar {
                 margin-left: 0;
@@ -405,11 +405,11 @@ html {
     .wrapper {
         .topbar {                        
             text-align: center;
-                        
+
             #options-menu-button {
                 display: inline-block;
             }
-                        
+
             #topbar-icons {
                 display: none;
                 position: absolute;
@@ -419,35 +419,35 @@ html {
                 text-align: left;
                 @include background-gradient-top2bottom(#4e5159, #1f2023);
                 @include border-radius-bottom(3px);
-                
+
                 a {
                     display: block;
                     padding: 10px;
                     margin-left: 0;
                     @include transition(padding-left .3s);
-                    
+
                     &:first-child {
                         height: 18px;
                     }
-                    
+
                     &:hover {
                         color: #007be5;
                         padding-left: 15px;
                     }
-                    
+
                     span {                        
                         &.topbar-item-text {
                             display: inline;
                             font-size: 16px;
                         }
-                        
+
                         &.topbar-icon {
                             font-size: 18px;
                             float: left;
                             margin: 0px 5px 0px 5px;
                             width: 20px;
                         }
-                        
+
                         &.topbar-badge {
                             font-size: 12px;
                             top: 10px;
@@ -455,23 +455,23 @@ html {
                         }
                     }
                 }
-                
+
                 &.topbar-icons-visible {
                     display: block;
                 }
-                
+
                 .topbar-search {
 
                     top: 0px;
                     padding: 10px;
-                    
+
                     input {
                         width: 100%;
                         box-sizing: border-box;
                         border-bottom-width: 1px;
                         border-bottom-color: #cccccc;
                     }
-                    
+
                     .topbar-search-icon {
                         top: 9px;
                         right: 10px;

@@ -131,7 +131,7 @@ public class EmpresaView extends BaseView implements Serializable {
                 objEmpresaBean.setDesc(objEmpresa.getNombre());
 
                 if (Utilitarios.noEsNuloOVacio(objEmpresa.getOrden())) {
-                    objEmpresaBean.setOrden(objEmpresa.getOrden()+"");
+                    objEmpresaBean.setOrden(objEmpresa.getOrden() + "");
                 }
 
                 if (Utilitarios.noEsNuloOVacio(objEmpresa.getImagen())) {

@@ -21,13 +21,13 @@ import jaio.selection.orm.Elemento;
  *
  * @author Favio
  */
-public class EHCacheManager implements Serializable{
+public class EHCacheManager implements Serializable {
 
     private static Log log = LogFactory.getLog(EHCacheManager.class);
     private static final CacheManager cacheManager;
     private static Ehcache elementosCache;
 
-    static{
+    static {
 
         ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
 
@@ -37,10 +37,11 @@ public class EHCacheManager implements Serializable{
 
     }
 
-    public EHCacheManager(){
+    public EHCacheManager() {
         elementosCache = cacheManager.getEhcache("elementosCache");
     }
-/*
+
+    /*
     public void agregarElemento(Elemento objElemento){
         Element element = new Element(objElemento.getElIdElementoPk(), objElemento);
         elementosCache.put(element);
@@ -85,26 +86,26 @@ public class EHCacheManager implements Serializable{
 
         return Constantes.strVacio;
     }
-      */
-    public static List<Elemento> obtenerElementosPorDefinicion(Integer intIdDefinicion){
+     */
+    public static List<Elemento> obtenerElementosPorDefinicion(Integer intIdDefinicion) {
 
         List<Elemento> lstElementos = new ArrayList();
         try {
 
-             List lst = elementosCache.getKeys();
+            List lst = elementosCache.getKeys();
 
-             Iterator itLst = lst.iterator();
+            Iterator itLst = lst.iterator();
 
-             while(itLst.hasNext()){
-                 Elemento objElemento = (Elemento) elementosCache.get(itLst.next()).getValue();
-                 /*
+            while (itLst.hasNext()) {
+                Elemento objElemento = (Elemento) elementosCache.get(itLst.next()).getValue();
+                /*
                  if(intIdDefinicion.equals(objElemento.getDefinicionTabla().getDtIdDefinicionPk())){
                      lstElementos.add(objElemento);
                  }
                  */
-             }
+            }
 
-             return lstElementos;
+            return lstElementos;
 
         } catch (Exception e) {
             log.error(e);

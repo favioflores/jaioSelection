@@ -18,59 +18,59 @@ import jaio.selection.util.Utilitarios;
 @SessionScoped
 public class SidebarView extends BaseView implements Serializable {
 
-	private static Log log = LogFactory.getLog(SidebarView.class);
+    private static Log log = LogFactory.getLog(SidebarView.class);
 
-	private static final long serialVersionUID = -1L;
+    private static final long serialVersionUID = -1L;
 
-	private String descripcion;
-	private String avatar;
+    private String descripcion;
+    private String avatar;
 
-	public String getAvatar() {
-		return avatar;
-	}
+    public String getAvatar() {
+        return avatar;
+    }
 
-	public void setAvatar(String avatar) {
-		this.avatar = avatar;
-	}
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
 
-	public String getDescripcion() {
-		return descripcion;
-	}
+    public String getDescripcion() {
+        return descripcion;
+    }
 
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
-	}
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
 
-	@PostConstruct
-	public void init() {
+    @PostConstruct
+    public void init() {
 
-		try {
+        try {
 
-			UsuarioBean usuario = (UsuarioBean) Utilitarios.obtenerSession(Constantes.SESSION_USUARIO);
-			descripcion = usuario.getStrDescripcion();
+            UsuarioBean usuario = (UsuarioBean) Utilitarios.obtenerSession(Constantes.SESSION_USUARIO);
+            descripcion = usuario.getStrDescripcion();
 
-			int hora = Integer.parseInt(Utilitarios.obtenerFechaHoraSistema(Constantes.HH24));
+            int hora = Integer.parseInt(Utilitarios.obtenerFechaHoraSistema(Constantes.HH24));
 
-			if (hora < 12) {
-				mostrarAlerta(INFO, "side.bienvenida.persona.dia", null, null);
-			} else if (hora < 18) {
-				mostrarAlerta(INFO, "side.bienvenida.persona.tarde", null, null);
-			} else {
-				mostrarAlerta(INFO, "side.bienvenida.persona.noche", null, null);
-			}
+            if (hora < 12) {
+                mostrarAlerta(INFO, "side.bienvenida.persona.dia", null, null);
+            } else if (hora < 18) {
+                mostrarAlerta(INFO, "side.bienvenida.persona.tarde", null, null);
+            } else {
+                mostrarAlerta(INFO, "side.bienvenida.persona.noche", null, null);
+            }
 
-			if (usuario.getStrSexo().equals(Constantes.MASCULINO)) {
-				avatar = "avatar_hombre.png";
-			} else if (usuario.getStrSexo().equals(Constantes.FEMENINO)) {
-				avatar = "avatar_mujer.png";
-			} else {
-				avatar = "avatar_otro.png";
-			}
+            if (usuario.getStrSexo().equals(Constantes.MASCULINO)) {
+                avatar = "avatar_hombre.png";
+            } else if (usuario.getStrSexo().equals(Constantes.FEMENINO)) {
+                avatar = "avatar_mujer.png";
+            } else {
+                avatar = "avatar_otro.png";
+            }
 
-		} catch (Exception e) {
-			log.error(e);
-		}
+        } catch (Exception e) {
+            log.error(e);
+        }
 
-	}
+    }
 
 }

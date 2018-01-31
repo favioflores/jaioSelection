@@ -27,7 +27,7 @@ public class Constantes {
     public static String STR_JPG = ".jpg";
     public static String STR_GIF = ".gif";
     public static String STR_PNG = ".png";
-    public static String STR_JS  = ".js";
+    public static String STR_JS = ".js";
     public static String STR_HTM = ".htm";
     public static String STR_SWF = ".swf";
 
@@ -54,8 +54,8 @@ public class Constantes {
 
     public static Integer INT_ET_ESTADO_CONTRATO_REGISTRADO = 19;
     public static Integer INT_ET_ESTADO_CONTRATO_CONFIRMADO = 20;
-    public static Integer INT_ET_ESTADO_CONTRATO_EXPIRADO   = 21;
-    public static Integer INT_ET_ESTADO_CONTRATO_BLOQUEADO  = 22;
+    public static Integer INT_ET_ESTADO_CONTRATO_EXPIRADO = 21;
+    public static Integer INT_ET_ESTADO_CONTRATO_BLOQUEADO = 22;
 
     public static Integer INT_ET_ESTADO_SELECCION_REGISTRADO = 64;
     public static Integer INT_ET_ESTADO_SELECCION_EN_EJECUCION = 65;
@@ -102,7 +102,7 @@ public class Constantes {
 
     public static Integer INT_ET_ESTADO_TARIFA_REGISTRADO = 25;
     public static Integer INT_ET_ESTADO_TARIFA_CONFIRMADO = 26;
-    public static Integer INT_ET_ESTADO_TARIFA_EXPIRADO   = 27;
+    public static Integer INT_ET_ESTADO_TARIFA_EXPIRADO = 27;
 
     public static Integer INT_ET_ESTADO_TIPO_PROYECTO_ESCALA = 30;
     public static Integer INT_ET_ESTADO_TIPO_PROYECTO_ELECCION = 31;
@@ -168,12 +168,13 @@ public class Constantes {
     public static int FIRST_GREATER = 1;
     public static int SECOND_GREATER = -1;
 
-
-
-    /************/
+    /**
+     * *********
+     */
     /* REPORTES */
-    /************/
-
+    /**
+     * *********
+     */
     public static Integer INT_REPORTE_GRUPAL_CARATULA = 0;
     public static Integer INT_REPORTE_GRUPAL_RESPUESTAS = 8;
     public static Integer INT_REPORTE_GRUPAL_SUMARIO_X_CATEGORIA = 9;
@@ -192,7 +193,6 @@ public class Constantes {
     public static Integer INT_REPORTE_GRUPAL_PROMEDIO_DE_COMPETENCIAS_POR_AREA = 21;
     public static Integer INT_REPORTE_GRUPAL_RESUMEN_DE_EVALUADOS_POR_RELACIONES = 22;
 
-
     public static Integer INT_REPORTE_INDIVIDUAL_CARATULA = 0;
     public static Integer INT_REPORTE_INDIVIDUAL_SUMARIO_X_CATEGORIA = 1;
     public static Integer INT_REPORTE_INDIVIDUAL_SUMARIO_X_CATEGORIA_MISMO = 2;
@@ -202,21 +202,15 @@ public class Constantes {
     public static Integer INT_REPORTE_INDIVIDUAL_ITEM_BAJA_CALIFICACION = 6;
     public static Integer INT_REPORTE_INDIVIDUAL_PREGUNTAS_ABIERTAS = 7;
 
-
-
     public static String STR_INBOX_PRELIMINAR = File.separator + "var" + File.separator + "tmp" + File.separator + "InboxPreliminar";
     public static String STR_INBOX_DEFINITIVO = File.separator + "var" + File.separator + "tmp" + File.separator + "InboxDefinitivo";
 
     //public static String STR_INBOX_PRELIMINAR = File.separator + "InboxPreliminar";
     //public static String STR_INBOX_DEFINITIVO = File.separator + "InboxDefinitivo";
-
     public static int FORMAT_DATE_SHORT = DateFormat.SHORT;
     public static int FORMAT_DATE_MEDIUM = DateFormat.MEDIUM;
     public static int FORMAT_DATE_LONG = DateFormat.LONG;
     public static int FORMAT_DATE_FULL = DateFormat.FULL;
-
-
-
 
     public static String INT_PARAM_GRAF_MEDIDA = "graficoMedida";
 
@@ -224,10 +218,7 @@ public class Constantes {
     public static Integer INT_DT_ESTADO_CONTRATO = 7;
     public static Integer INT_DT_TIPO_CONTRATO = 8;
 
-
-
     public static String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-
 
     public static Integer INTERVAL_SESSION = 30 * 60;
 
@@ -239,31 +230,26 @@ public class Constantes {
     public static String LINEA_COMENTARIO = "COM";
     public static String LINEA_PREGUNTA_ABIERTA = "PRA";
 
-
     public static Charset UTF8_CHARSET = Charset.forName("UTF-8");
 
     public static String ASTERISCO = "*";
     public static String TODO_TEXTO = "%%";
 
-
     public static Integer ET_DIAS_BUSQUEDAS = 100;
-
 
     public static String SESSION_USUARIO = "userSession";
     public static String SESSION_EMPRESA = "empresaSession";
-
 
     public static String MASCULINO = "6";
     public static String FEMENINO = "7";
 
     public static int EL_AREA_ESTADO_REGISTRADO = 8;
-    public static int  EL_AREA_ESTADO_ELIMINADO = 9;
+    public static int EL_AREA_ESTADO_ELIMINADO = 9;
 
     public static int EL_PERFIL_ESTADO_REGISTRADO = 10;
-    public static int  EL_PERFIL_ESTADO_ELIMINADO = 11;
+    public static int EL_PERFIL_ESTADO_ELIMINADO = 11;
 
     public static int EL_EMPRESA_ESTADO_REGISTRADO = 3;
-    public static int  EL_EMPRESA_ESTADO_ELIMINADO = 5;
-
+    public static int EL_EMPRESA_ESTADO_ELIMINADO = 5;
 
 }

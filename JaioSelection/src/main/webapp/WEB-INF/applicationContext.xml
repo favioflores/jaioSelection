@@ -99,8 +99,8 @@
 	<bean id="sidebarView" class="jaio.selection.view.SidebarView" scope="session"/>
 	<bean id="empresaView" class="jaio.selection.view.EmpresaView" scope="request"/>
 
-	<import resource="classpath:jsfSpringScope.xml"/>
- -->
+           <import resource="classpath:jsfSpringScope.xml"/>
+    -->
 
 </beans>
 

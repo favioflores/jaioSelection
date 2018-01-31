@@ -65,12 +65,12 @@ public class Utilitarios {
 
     private static Log log = LogFactory.getLog(Utilitarios.class);
 
-    public static Date obtenerFechaHoraSistema(){
+    public static Date obtenerFechaHoraSistema() {
         return new Date();
     }
 
-    public static String obtenerFechaHoraSistema(String formato){
-    	SimpleDateFormat formateador = new SimpleDateFormat(formato);
+    public static String obtenerFechaHoraSistema(String formato) {
+        SimpleDateFormat formateador = new SimpleDateFormat(formato);
         return formateador.format(new Date());
     }
 
@@ -78,29 +78,29 @@ public class Utilitarios {
         return !noEsNuloOVacio(obj);
     }
 
-    public static UsuarioBean obtenerUsuarioSession(){
-    	try {
-			return (UsuarioBean) obtenerSession(Constantes.SESSION_USUARIO);
-		} catch (Exception e) {
-			log.error(e);
-		}
-    	return null;
+    public static UsuarioBean obtenerUsuarioSession() {
+        try {
+            return (UsuarioBean) obtenerSession(Constantes.SESSION_USUARIO);
+        } catch (Exception e) {
+            log.error(e);
+        }
+        return null;
     }
 
-    public static Usuario obtenerUsuarioEntity(){
+    public static Usuario obtenerUsuarioEntity() {
 
-    	try {
+        try {
 
-    		Usuario usuario = new Usuario();
+            Usuario usuario = new Usuario();
 
-			usuario.setId(obtenerUsuarioSession().getIntUsuarioPk());
+            usuario.setId(obtenerUsuarioSession().getIntUsuarioPk());
 
-    		return usuario;
+            return usuario;
 
-		} catch (Exception e) {
-			log.error(e);
-		}
-    	return null;
+        } catch (Exception e) {
+            log.error(e);
+        }
+        return null;
     }
 
     public static boolean noEsNuloOVacio(Object obj) {
@@ -110,7 +110,7 @@ public class Utilitarios {
         return false;
     }
 
-    public static String formatearFecha(Date dtFecha, String strFormato){
+    public static String formatearFecha(Date dtFecha, String strFormato) {
 
         SimpleDateFormat sdfFormato = new SimpleDateFormat(strFormato);
         return sdfFormato.format(dtFecha);
@@ -118,7 +118,7 @@ public class Utilitarios {
     }
 
     public static byte[] toByteArray(Blob fromBlob) {
-           byte[] resultBytes = null;
+        byte[] resultBytes = null;
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         try {
             resultBytes = fromBlob.getBytes(1L, (int) fromBlob.length());
@@ -126,16 +126,13 @@ public class Utilitarios {
                 resultBytes = toByteArrayImpl(fromBlob, baos);
             }
             return resultBytes;
-        }
-        catch (Throwable e) {
+        } catch (Throwable e) {
             throw new RuntimeException("toByteArray", e);
-        }
-        finally {
+        } finally {
             if (baos != null) {
                 try {
                     baos.close();
-                }
-                catch (IOException ex) {
+                } catch (IOException ex) {
                 }
             }
         }
@@ -148,34 +145,32 @@ public class Utilitarios {
             for (;;) {
                 int dataSize = is.read(buf);
 
-                if (dataSize == -1)
+                if (dataSize == -1) {
                     break;
+                }
                 baos.write(buf, 0, dataSize);
             }
-        }
-        finally {
+        } finally {
             if (is != null) {
                 try {
                     is.close();
-                }
-                catch (IOException ex) {
+                } catch (IOException ex) {
                 }
             }
         }
         return baos.toByteArray();
     }
 
-
-    public static String generarClave(){
+    public static String generarClave() {
 
         String base = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ.";
 
         String contrasena = Constantes.strVacio;
         int longitud = base.length();
 
-        for(int i=0; i< Constantes.INT_LONGITUD_CLAVE_DEFECTO_ACTIVO; i++){
-            int numero = (int)(Math.random()*(longitud));
-            String caracter = base.substring(numero, numero+1);
+        for (int i = 0; i < Constantes.INT_LONGITUD_CLAVE_DEFECTO_ACTIVO; i++) {
+            int numero = (int) (Math.random() * (longitud));
+            String caracter = base.substring(numero, numero + 1);
             contrasena = contrasena + caracter;
         }
 
@@ -183,16 +178,16 @@ public class Utilitarios {
 
     }
 
-    public static String generaIDReporte(){
+    public static String generaIDReporte() {
 
         String base = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
         String contrasena = Constantes.strVacio;
         int longitud = base.length();
 
-        for(int i=0; i< Constantes.INT_LONGITUD_ARCHIVOS; i++){
-            int numero = (int)(Math.random()*(longitud));
-            String caracter = base.substring(numero, numero+1);
+        for (int i = 0; i < Constantes.INT_LONGITUD_ARCHIVOS; i++) {
+            int numero = (int) (Math.random() * (longitud));
+            String caracter = base.substring(numero, numero + 1);
             contrasena = contrasena + caracter;
         }
 
@@ -202,53 +197,51 @@ public class Utilitarios {
 
     public static boolean ponerSession(Object object, String strNombre) {
 
-    	try{
-	    	HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
-	        session.setAttribute(strNombre, object);
-	        return true;
-    	}catch (Exception e) {
-			log.error(e);
-		}
+        try {
+            HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+            session.setAttribute(strNombre, object);
+            return true;
+        } catch (Exception e) {
+            log.error(e);
+        }
         return false;
 
     }
 
-
     public static Object obtenerSession(String strNombre) {
 
-    	try{
+        try {
 
-    		HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+            HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
             return session.getAttribute(strNombre);
 
-    	}catch (Exception e) {
-			log.error(e);
-		}
+        } catch (Exception e) {
+            log.error(e);
+        }
         return null;
 
     }
 
-
     public static boolean invalidarSession() {
 
-    	try{
+        try {
 
-    		HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+            HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
             session.invalidate();
 
             return true;
 
-    	}catch (Exception e) {
-			log.error(e);
-		}
+        } catch (Exception e) {
+            log.error(e);
+        }
         return false;
 
     }
 
-    public static String retirarEspacios(String strCadena){
+    public static String retirarEspacios(String strCadena) {
 
-        if(strCadena!=null){
-            while(strCadena.contains(Constantes.strEspacio)){
+        if (strCadena != null) {
+            while (strCadena.contains(Constantes.strEspacio)) {
                 strCadena = strCadena.replaceAll(Constantes.strEspacio, Constantes.strVacio);
             }
         }
@@ -257,17 +250,17 @@ public class Utilitarios {
 
     }
 
-    public static String limpiarTexto(String strCadena){
+    public static String limpiarTexto(String strCadena) {
 
-        if(noEsNuloOVacio(strCadena)){
+        if (noEsNuloOVacio(strCadena)) {
 
-            while(strCadena.contains(Constantes.strDobleEspacio)){
+            while (strCadena.contains(Constantes.strDobleEspacio)) {
                 strCadena = strCadena.replaceAll(Constantes.strDobleEspacio, Constantes.strEspacio);
             }
 
             return strCadena.toUpperCase().trim();
 
-        }else{
+        } else {
             return Constantes.strVacio;
         }
 
@@ -276,46 +269,45 @@ public class Utilitarios {
     public static Color convertColorHexToRgb(String colorStr) {
 
         return new Color(
-                Integer.valueOf( colorStr.substring( 1, 3 ), 16 ),
-                Integer.valueOf( colorStr.substring( 3, 5 ), 16 ),
-                Integer.valueOf( colorStr.substring( 5, 7 ), 16 ));
+                Integer.valueOf(colorStr.substring(1, 3), 16),
+                Integer.valueOf(colorStr.substring(3, 5), 16),
+                Integer.valueOf(colorStr.substring(5, 7), 16));
     }
 
-
-    public static String combinaReportesTemporalesPDF(List<String> list){
+    public static String combinaReportesTemporalesPDF(List<String> list) {
 
         String IdReporteSalida = Utilitarios.generaIDReporte() + Constantes.STR_EXTENSION_PDF;
 
         try {
 
-        Document document = new Document();
+            Document document = new Document();
 
-        OutputStream outputStream;
+            OutputStream outputStream;
 
-        outputStream = new FileOutputStream(Constantes.STR_INBOX_PRELIMINAR + File.separator + IdReporteSalida);
+            outputStream = new FileOutputStream(Constantes.STR_INBOX_PRELIMINAR + File.separator + IdReporteSalida);
 
-        PdfWriter writer = PdfWriter.getInstance(document, outputStream);
+            PdfWriter writer = PdfWriter.getInstance(document, outputStream);
 
-        document.open();
+            document.open();
 
-        PdfContentByte cb = writer.getDirectContent();
+            PdfContentByte cb = writer.getDirectContent();
 
-        for (String strId : list) {
-            InputStream in = new FileInputStream(Constantes.STR_INBOX_PRELIMINAR + File.separator + strId);
-            PdfReader reader = new PdfReader(in);
-            for (int i = 1; i <= reader.getNumberOfPages(); i++) {
-                document.newPage();
-                PdfImportedPage page = writer.getImportedPage(reader, i);
-                cb.addTemplate(page, 0, 0);
+            for (String strId : list) {
+                InputStream in = new FileInputStream(Constantes.STR_INBOX_PRELIMINAR + File.separator + strId);
+                PdfReader reader = new PdfReader(in);
+                for (int i = 1; i <= reader.getNumberOfPages(); i++) {
+                    document.newPage();
+                    PdfImportedPage page = writer.getImportedPage(reader, i);
+                    cb.addTemplate(page, 0, 0);
+                }
+                reader.close();
+                in.close();
             }
-            reader.close();
-            in.close();
-        }
 
-        outputStream.flush();
-        document.close();
-        writer.close();
-        outputStream.close();
+            outputStream.flush();
+            document.close();
+            writer.close();
+            outputStream.close();
 
         } catch (FileNotFoundException ex) {
             log.error(ex);
@@ -324,35 +316,33 @@ public class Utilitarios {
             log.error(ex);
             IdReporteSalida = null;
         } catch (DocumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
         return IdReporteSalida;
 
     }
 
-    public static String obtieneFechaSistema(){
+    public static String obtieneFechaSistema() {
         DateFormat dfDateFull = DateFormat.getDateInstance();
         Date fecha = new Date();
         return dfDateFull.format(fecha);
     }
 
-
-
     public static boolean zipArchivosCualquiera(List<String> lstArchivos, FileOutputStream outPut) {
 
-        boolean blSave=false;
+        boolean blSave = false;
 
         log.debug("Inicia zipArchivos");
 
         try {
 
-            byte[] BUFFER=new byte[1024];
+            byte[] BUFFER = new byte[1024];
 
             ZipOutputStream out = new ZipOutputStream(outPut);
 
-            for (String strArchivo : lstArchivos){
+            for (String strArchivo : lstArchivos) {
 
                 File fl = new File(Constantes.STR_INBOX_PRELIMINAR + File.separator + strArchivo);
 
@@ -364,32 +354,32 @@ public class Utilitarios {
 
                 int count;
 
-                while((count = fi.read(BUFFER)) > 0) {
+                while ((count = fi.read(BUFFER)) > 0) {
                     out.write(BUFFER, 0, count);
                 }
 
                 fi.close();
 
                 try {
-                Files.delete(fl.toPath());
+                    Files.delete(fl.toPath());
                 } catch (NoSuchFileException x) {
-                log.error("%s: no such" + " file or directory%n");
+                    log.error("%s: no such" + " file or directory%n");
                 } catch (DirectoryNotEmptyException x) {
-                log.error("%s not empty%n");
+                    log.error("%s not empty%n");
                 } catch (IOException x) {
-                // File permission problems are caught here.
-                log.error(x);
+                    // File permission problems are caught here.
+                    log.error(x);
                 }
 
             }
 
             out.closeEntry();
             out.close();
-            blSave=true;
+            blSave = true;
 
         } catch (Exception e) {
 
-            blSave=false;
+            blSave = false;
             log.error(e);
 
         }
@@ -399,199 +389,177 @@ public class Utilitarios {
         return blSave;
     }
 
-
     public static String reemplazar(String cadena, String busqueda, String reemplazo) {
-       return cadena.replaceAll(busqueda, reemplazo);
+        return cadena.replaceAll(busqueda, reemplazo);
     }
-
 
     public static String generateRandom(String strNum) {
 
-             StringBuffer strBufRandom = new StringBuffer(strNum);
+        StringBuffer strBufRandom = new StringBuffer(strNum);
 
-             String strReal = Constantes.strVacio;
+        String strReal = Constantes.strVacio;
 
-             char chInitalCharacter = strBufRandom.charAt(0);
+        char chInitalCharacter = strBufRandom.charAt(0);
 
-             char chMiddleCharecter = strBufRandom.charAt(1);
+        char chMiddleCharecter = strBufRandom.charAt(1);
 
-             char chFinalCharecter = strBufRandom.charAt(2);
+        char chFinalCharecter = strBufRandom.charAt(2);
 
-             if (!Character.isDigit(chFinalCharecter)) {
+        if (!Character.isDigit(chFinalCharecter)) {
 
-                    // its character
+            // its character
+            if (chFinalCharecter == Constantes.CH_RANDOM_Z) {
 
-                    if (chFinalCharecter == Constantes.CH_RANDOM_Z) {
+                if (!Character.isDigit(chMiddleCharecter)) {
 
-                           if (!Character.isDigit(chMiddleCharecter)) {
+                    if (chMiddleCharecter == Constantes.CH_RANDOM_Z) {
 
-                                  if (chMiddleCharecter == Constantes.CH_RANDOM_Z) {
+                        if (!Character.isDigit(chInitalCharacter)) {
 
-                                        if (!Character.isDigit(chInitalCharacter)) {
+                            if (chInitalCharacter == Constantes.CH_RANDOM_Z) {
 
-                                               if (chInitalCharacter == Constantes.CH_RANDOM_Z) {
+                                return null;
 
-                                                      return null;
+                            }
 
-                                               }
+                            chMiddleCharecter = Constantes.CH_RANDOM_A;
 
-                                               chMiddleCharecter = Constantes.CH_RANDOM_A;
+                            chFinalCharecter = Constantes.CH_RANDOM_A;
 
-                                               chFinalCharecter = Constantes.CH_RANDOM_A;
+                            strReal = ++chInitalCharacter + Constantes.strVacio + chMiddleCharecter
+                                    + Constantes.strVacio + chFinalCharecter;
 
-                                               strReal = ++chInitalCharacter + Constantes.strVacio + chMiddleCharecter
+                        } else {
 
-                                                            + Constantes.strVacio + chFinalCharecter;
+                            // digit
+                            chInitalCharacter = Constantes.CH_RANDOM_A;
 
-                                        } else {
+                            chMiddleCharecter = Constantes.CH_RANDOM_A;
 
-                                               // digit
+                            chFinalCharecter = Constantes.CH_RANDOM_A;
 
-                                               chInitalCharacter = Constantes.CH_RANDOM_A;
+                            strReal = chInitalCharacter + Constantes.strVacio + chMiddleCharecter
+                                    + Constantes.strVacio + chFinalCharecter;
 
-                                               chMiddleCharecter = Constantes.CH_RANDOM_A;
-
-                                               chFinalCharecter = Constantes.CH_RANDOM_A;
-
-                                               strReal = chInitalCharacter + Constantes.strVacio + chMiddleCharecter
-
-                                                            + Constantes.strVacio + chFinalCharecter;
-
-                                        }
-
-
-
-                                  } else {
-
-                                        chFinalCharecter = Constantes.CH_RANDOM_A;
-
-                                        strReal = chInitalCharacter + Constantes.strVacio + ++chMiddleCharecter + Constantes.strVacio
-
-                                                      + chFinalCharecter;
-
-                                  }
-
-                           } else {
-
-                                  chMiddleCharecter = Constantes.CH_RANDOM_A;
-
-                                  chFinalCharecter = Constantes.CH_RANDOM_A;
-
-                                 strReal = chInitalCharacter + Constantes.strVacio + chMiddleCharecter + Constantes.strVacio
-
-                                               + chFinalCharecter;
-
-                           }
+                        }
 
                     } else {
 
-                           strReal = chInitalCharacter + Constantes.strVacio + chMiddleCharecter + Constantes.strVacio
+                        chFinalCharecter = Constantes.CH_RANDOM_A;
 
-                                        + ++chFinalCharecter;
+                        strReal = chInitalCharacter + Constantes.strVacio + ++chMiddleCharecter + Constantes.strVacio
+                                + chFinalCharecter;
 
                     }
 
-             } else {
+                } else {
+
+                    chMiddleCharecter = Constantes.CH_RANDOM_A;
 
                     chFinalCharecter = Constantes.CH_RANDOM_A;
 
                     strReal = chInitalCharacter + Constantes.strVacio + chMiddleCharecter + Constantes.strVacio
+                            + chFinalCharecter;
 
-                                  + chFinalCharecter;
+                }
 
-             }
+            } else {
 
-             return strReal;
+                strReal = chInitalCharacter + Constantes.strVacio + chMiddleCharecter + Constantes.strVacio
+                        + ++chFinalCharecter;
 
-       }
+            }
 
+        } else {
 
-       public static Date getCurrentDate() {
+            chFinalCharecter = Constantes.CH_RANDOM_A;
 
-             return Calendar.getInstance().getTime();
+            strReal = chInitalCharacter + Constantes.strVacio + chMiddleCharecter + Constantes.strVacio
+                    + chFinalCharecter;
 
-       }
+        }
 
+        return strReal;
 
+    }
 
+    public static Date getCurrentDate() {
 
-public static String truncateTheDecimal (BigDecimal bdData, int iScale){
+        return Calendar.getInstance().getTime();
+
+    }
+
+    public static String truncateTheDecimal(BigDecimal bdData, int iScale) {
 
         String strData = bdData.toPlainString();
 
+        String strEntera = null;
 
+        String strDecimal = null;
 
-             String strEntera = null;
+        int inPos = strData.indexOf(Constantes.STR_POINT);
 
-             String strDecimal = null;
+        if (inPos > 0) {
 
-             int inPos = strData.indexOf(Constantes.STR_POINT);
+            strEntera = strData.substring(Constantes.INT_PARAMETER_ZERO_POS, inPos);
 
-             if(inPos>0){
+            strDecimal = strData.substring(inPos + Constantes.INT_PARAMETER_ONE_POS);
 
-                    strEntera = strData.substring(Constantes.INT_PARAMETER_ZERO_POS, inPos);
+            if (strDecimal.length() > iScale) {
 
-                    strDecimal = strData.substring(inPos + Constantes.INT_PARAMETER_ONE_POS);
+                strDecimal = strDecimal.substring(Constantes.INT_PARAMETER_ZERO_POS, iScale);
 
+            }
 
+        } else {
 
-                    if(strDecimal.length()>iScale){
+            strEntera = strData;
 
-                           strDecimal = strDecimal.substring(Constantes.INT_PARAMETER_ZERO_POS,iScale);
+            strDecimal = Constantes.ZERO;
 
-                    }
+        }
 
-             }else{
+        return strEntera + Constantes.STR_POINT + strDecimal;
 
-                    strEntera = strData;
+    }
 
-                    strDecimal = Constantes.ZERO;
+    public static boolean isNumber(String strNum, boolean blWholeNumber) {
+        String strRegExpWholeNumber = "[\\-\\+]?[0-9]*";
+        String strRegExpDecimalNumber = "[\\-\\+]?[0-9]*\\.?[0-9]*";
+        String strRegExpNotNumber = "[\\-\\+]?[0-9]*\\.+";
+        if (strNum != null) {
+            if (strNum.indexOf("E") != -1 || strNum.indexOf("e") != -1) {
+                Double dblNum = null;
+                try {
+                    dblNum = new Double(strNum);
+                } catch (NumberFormatException nfe) {
+                    // is not a number
+                    return false;
+                }
+                if (dblNum.isNaN()) {
+                    return false;
+                }
+                return true;
+            }
+            if (blWholeNumber) {
+                if (strNum.trim().length() > 0 && strNum.matches(strRegExpWholeNumber) && !strNum.matches(strRegExpNotNumber)) {
+                    return true;
+                }
+            } else {
+                if (strNum.trim().length() > 0 && strNum.matches(strRegExpDecimalNumber) && !strNum.matches(strRegExpNotNumber)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
-             }
+    public static String generaColorHtml() {
 
-             return strEntera + Constantes.STR_POINT + strDecimal;
-
-       }
-
-
-        public static boolean isNumber(String strNum, boolean blWholeNumber) {
-             String strRegExpWholeNumber = "[\\-\\+]?[0-9]*";
-             String strRegExpDecimalNumber = "[\\-\\+]?[0-9]*\\.?[0-9]*";
-             String strRegExpNotNumber = "[\\-\\+]?[0-9]*\\.+";
-             if (strNum != null) {
-                    if (strNum.indexOf("E") != -1 || strNum.indexOf("e") != -1) {
-                           Double dblNum = null;
-                           try {
-                                  dblNum = new Double(strNum);
-                           } catch (NumberFormatException nfe) {
-                                  // is not a number
-                                  return false;
-                           }
-                           if (dblNum.isNaN()) {
-                                  return false;
-                           }
-                           return true;
-                    }
-                    if (blWholeNumber) {
-                           if (strNum.trim().length() > 0 && strNum.matches(strRegExpWholeNumber) && !strNum.matches(strRegExpNotNumber)) {
-                                  return true;
-                           }
-                    } else {
-                           if (strNum.trim().length() > 0 && strNum.matches(strRegExpDecimalNumber) && !strNum.matches(strRegExpNotNumber)) {
-                                  return true;
-                           }
-                    }
-             }
-             return false;
-       }
-
-
-    public static String generaColorHtml(){
-
-        String code ="";
-        String[] letters = {"0","1","2","3","4","5","6","7","8","9","A","B","C","D","E","F"};
-        for (int i = 0; i < 6; i++ ) {
-           code += letters[(int) Math.round(Math.random() * 15)];
+        String code = "";
+        String[] letters = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F"};
+        for (int i = 0; i < 6; i++) {
+            code += letters[(int) Math.round(Math.random() * 15)];
         }
         return code;
     }
@@ -599,7 +567,7 @@ public static String truncateTheDecimal (BigDecimal bdData, int iScale){
     public static String columnExcel(int number) {
         StringBuilder sb = new StringBuilder();
         while (number-- > 0) {
-            sb.append((char)('A' + (number % 26)));
+            sb.append((char) ('A' + (number % 26)));
             number /= 26;
         }
         return sb.reverse().toString();
@@ -607,27 +575,24 @@ public static String truncateTheDecimal (BigDecimal bdData, int iScale){
 
     public static String obtieneDatoCelda(Row row, int c) {
         String strTemp = Constantes.strVacio;
-        try{
-            if(row.getCell(c).getCellType()==Cell.CELL_TYPE_STRING){
+        try {
+            if (row.getCell(c).getCellType() == Cell.CELL_TYPE_STRING) {
                 strTemp = row.getCell(c, Row.CREATE_NULL_AS_BLANK).getStringCellValue();
-            }else if(row.getCell(c).getCellType()==Cell.CELL_TYPE_NUMERIC){
-                strTemp = row.getCell(c, Row.CREATE_NULL_AS_BLANK).getNumericCellValue()+"";
+            } else if (row.getCell(c).getCellType() == Cell.CELL_TYPE_NUMERIC) {
+                strTemp = row.getCell(c, Row.CREATE_NULL_AS_BLANK).getNumericCellValue() + "";
             }
-        }catch(NoSuchElementException e){
+        } catch (NoSuchElementException e) {
             strTemp = Constantes.strVacio;
         }
         return strTemp;
     }
 
-     public static Date sumarRestarDiasFecha(Date fecha, int dias){
-      Calendar calendar = Calendar.getInstance();
-      calendar.setTime(fecha); // Configuramos la fecha que se recibe
-      calendar.add(Calendar.DAY_OF_YEAR, dias);  // numero de días a añadir, o restar en caso de días<0
-      return calendar.getTime(); // Devuelve el objeto Date con los nuevos días añadidos
- }
-
-
-
+    public static Date sumarRestarDiasFecha(Date fecha, int dias) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(fecha); // Configuramos la fecha que se recibe
+        calendar.add(Calendar.DAY_OF_YEAR, dias);  // numero de días a añadir, o restar en caso de días<0
+        return calendar.getTime(); // Devuelve el objeto Date con los nuevos días añadidos
+    }
 
     public static String decodeUTF8(byte[] bytes) {
         return new String(bytes, Constantes.UTF8_CHARSET);
@@ -637,22 +602,7 @@ public static String truncateTheDecimal (BigDecimal bdData, int iScale){
         return string.getBytes(Constantes.UTF8_CHARSET);
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-public void onEndPage(PdfWriter writer, Document document) {
+    public void onEndPage(PdfWriter writer, Document document) {
         final int currentPageNumber = writer.getCurrentPageNumber();
 
         if (currentPageNumber == 1) {
@@ -672,12 +622,12 @@ public void onEndPage(PdfWriter writer, Document document) {
         } catch (DocumentException e) {
             log.error("PDF generation error", e);
         } catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
-    public static int aNumero(String strCadena){
+    public static int aNumero(String strCadena) {
 
         try {
             return Integer.parseInt(strCadena);
@@ -686,16 +636,6 @@ public void onEndPage(PdfWriter writer, Document document) {
         }
 
     }
-
-
-
-
-
-
-
-
-
-
 
     public static List poblarCombo(Integer DT) {
 
@@ -710,14 +650,14 @@ public void onEndPage(PdfWriter writer, Document document) {
         objSelectItem.setLabel("---- Todos ----");
         lstMetodologias.add(objSelectItem);
 
-        while(itLstElementos.hasNext()){
+        while (itLstElementos.hasNext()) {
             Elemento objElemento = (Elemento) itLstElementos.next();
 
             objSelectItem = new SelectItem();
             /*
             objSelectItem.setValue(objElemento.getElIdElementoPk());
             objSelectItem.setLabel(objElemento.getElTxDescripcion());
-*/
+             */
             lstMetodologias.add(objSelectItem);
         }
 
@@ -725,16 +665,14 @@ public void onEndPage(PdfWriter writer, Document document) {
 
     }
 
-
-    public static Date convertStringToDate(String dateString, String formato)
-    {
+    public static Date convertStringToDate(String dateString, String formato) {
 
         DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
         Date startDate;
         try {
             startDate = df.parse(dateString);
 
-        return startDate;
+            return startDate;
         } catch (ParseException ex) {
             log.error(ex);
         }
