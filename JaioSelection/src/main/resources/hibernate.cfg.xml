@@ -27,6 +27,7 @@
     <mapping resource="jaio/selection/orm/InfoConocimiento.hbm.xml"/>
     <mapping resource="jaio/selection/orm/InfoExperiencia.hbm.xml"/>
     <mapping resource="jaio/selection/orm/InfoReferencia.hbm.xml"/>
+    <mapping resource="jaio/selection/orm/ModeloAjustesCalc.hbm.xml"/>
     <mapping resource="jaio/selection/orm/ModeloCompetencia.hbm.xml"/>
     <mapping resource="jaio/selection/orm/ModeloCompetenciaSinonimo.hbm.xml"/>
     <mapping resource="jaio/selection/orm/ModeloComunicado.hbm.xml"/>
