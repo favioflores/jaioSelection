@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -14,9 +13,6 @@ import org.hibernate.service.ServiceRegistryBuilder;
 
 public class HibernateUtil implements Serializable {
 
-    /**
-     *
-     */
     private static final long serialVersionUID = 1L;
     private static final Log log = LogFactory.getLog(HibernateUtil.class);
 

@@ -13,7 +13,6 @@ import org.hibernate.Query;
 import jaio.selection.bean.AreaOrganigramaBean;
 import jaio.selection.bean.PerfilBean;
 import jaio.selection.orm.Area;
-import jaio.selection.orm.Empresa;
 import jaio.selection.util.Constantes;
 import jaio.selection.util.Utilitarios;
 
