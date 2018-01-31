@@ -15,7 +15,7 @@
             <link rel="shortcut icon" type="image/png"
                   href="#{request.contextPath}/resources/omega-layout/images/logo-jaio.png" />
         </f:facet>
-        <title>Jaio Selection</title>
+        <title>#{msg['app']}</title>
     </h:head>
 
     <h:body styleClass="login-body">
@@ -62,7 +62,7 @@
                 </div>
             </h:form>
 
-            <div class="login-footer">Jaio Selection</div>
+            <div class="login-footer">#{msg['app']}</div>
         </div>
 
         <h:outputStylesheet name="css/layout.css" library="omega-layout" />

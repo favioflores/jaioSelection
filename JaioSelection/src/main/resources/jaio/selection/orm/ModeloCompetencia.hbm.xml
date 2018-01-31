@@ -12,6 +12,9 @@
         <property generated="never" lazy="false" name="resena" optimistic-lock="true" type="string" unique="false">
             <column length="2000" name="resena"/>
         </property>
+        <property generated="never" lazy="false" name="color" optimistic-lock="true" type="string" unique="false">
+            <column length="45" name="color"/>
+        </property>
         <set embed-xml="true" fetch="select" inverse="true" lazy="true" mutable="true" name="modeloCompetenciaSinonimos" optimistic-lock="true" sort="unsorted" table="modelo_competencia_sinonimo">
             <key on-delete="noaction">
                 <column name="modelo_competencia_id" not-null="true"/>

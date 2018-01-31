@@ -11,25 +11,26 @@
             <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
             <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
             <meta name="apple-mobile-web-app-capable" content="yes" />
+            <link rel="shortcut icon" type="image/png" href="#{request.contextPath}/resources/omega-layout/images/logo-jaio.png" />
         </f:facet>
-        <title>PrimeFaces Omega</title>
+        <title>#{msg['app']}</title>
     </h:head>
 
     <h:body styleClass="exception-body">
-        <div class="exception-wrapper access">
+        <div class="exception-wrapper expiro">
             <p:graphicImage name="images/access.png" library="omega-layout" />
-            
-            <p class="message-title">Access Denied!</p>
-            <p class="message-summary">Please contact system administrator</p>
-            
-            <p:link outcome="dashboard">
-                <i class="fa fa-DAO"></i>
-                <span>Dashboard</span>
+
+            <p class="message-title">#{msg['app.expiro.sesion']}</p>
+            <p class="message-summary">#{msg['app.expiro.sesion.motivo']}</p>
+
+            <p:link outcome="login">
+                <i class="fa fa-lock"></i>
+                <span>Inicia sesión</span>
             </p:link>
-            
-            <div class="login-footer">PrimeFaces Omega</div>
+
+            <div class="login-footer">#{msg['app']}</div>
         </div>
-        
+
         <h:outputStylesheet name="css/layout.css" library="omega-layout" />
     </h:body>
 
