@@ -27,7 +27,7 @@ public class DNDBateriaView extends BaseView implements Serializable {
      
     @PostConstruct
     public void init() {
-        baterias = bateriaService.createBateria(9);
+//        baterias = bateriaService.createBateria(9);
         droppedBaterias = new ArrayList<ModeloEvaluacion>();
     }
      

@@ -27,15 +27,15 @@
                         <!--INICIO DE CAMPOS DE REGISTRO-->
                         <div class="ui-g-12">
                             <div class="ui-g-3"><p:outputLabel for="formBateria" value="#{msg['bateria.nombreEvaluacion']}"/></div>
-                            <p:inputText id="nomE" value="" required="true" maxlength="200" size="35"></p:inputText>
+                            <p:inputText id="nombreE" required="true" maxlength="200" size="35"></p:inputText>
                         </div>
                         
                         <div class="ui-g-12">
                             <div class="ui-g-2"><p:outputLabel for="formBateria" value="#{msg['bateria.empresa']}"/></div>
-                            <p:selectOneMenu id="lstEmpresas" value="#{crearProcesoView.strEmpresaSeleccionada}" effect="clip" filter="true" filterMatchMode="startsWith" >
-                            <f:selectItem itemLabel="#{msg['proceso.dialog.selecciona.empresa']}" itemValue="" />
-                            <f:selectItems value="#{crearProcesoView.lstEmpresas}" var="emp" itemLabel="#{emp.desc}" itemValue="#{emp.id}"  />
-                            <p:ajax event="itemSelect" process="@this" update=":formBateria:" listener="#{crearProcesoView.seleccionaEmpresa()}"/>
+                            <p:selectOneMenu id="lstEmp" value="#{crearProcesoView.strEmpresaSeleccionada}" effect="clip" filter="true" filterMatchMode="startsWith" >
+                                <f:selectItem itemLabel="#{msg['proceso.dialog.selecciona.empresa']}" itemValue="" />
+                                <f:selectItems value="#{crearProcesoView.lstEmpresas}" var="emp" itemLabel="#{emp.desc}" itemValue="#{emp.id}"  />
+                                <p:ajax event="itemSelect" process="@this" update=":formBateria:" listener="#{crearProcesoView.seleccionaEmpresa()}"/>
                             </p:selectOneMenu>
                         </div>
                         
@@ -49,9 +49,7 @@
                         </div>
                         
                         <div class="ui-g-12">
-                            <div class="ui-g-2">
-                                <p:outputLabel for="formBateria" value="#{msg['bateria.perfil']}" />
-                            </div>                        
+                            <div class="ui-g-2"><p:outputLabel for="formBateria" value="#{msg['bateria.perfil']}" /></div>                        
                             <p:selectOneMenu id="lstPerfil" value="#{crearProcesoView.strPerfilSeleccionado}" effect="clip" filter="true" filterMatchMode="startsWith" >
                             <f:selectItem itemLabel="#{msg['proceso.dialog.selecciona.perfil']}" itemValue="" />
                             <f:selectItems value="#{crearProcesoView.lstPerfil}" var="per" itemLabel="#{per.descripcion}" itemValue="#{per.id}"  />
@@ -118,10 +116,10 @@
                 
                 <!-- PANEL DERECHO -->
                 <div class="ui-g-4">
-                    <!--posible solucion al scroll-->
+                    <!--posible solucion al scroll - Error no se puede jalar item por fuera-->
                     <!--<p:scrollPanel mode="native"  style="height:500px">-->
-                        <p:dataGrid id="listEvaluaciones1" var="listE"  value="#{bateriaView.lstBaterias}" columns="1" >
-                            <p:column>
+                    <p:dataGrid id="listEvaluaciones1" var="listE"  value="#{bateriaView.lstBaterias}" columns="1" rows="4"  paginator="true" >
+                        <p:column>
                         <p:panel id="pnl">
                             <h:outputText value="#{listE.nombre}" style="font-size: 14px;font-family:'latoregular',sans-serif;"/><br/>
                             <h:outputText value="Validez: #{listE.validez}%" style="font-size: 12px;font-family:'latoregular',sans-serif;"/><br/>

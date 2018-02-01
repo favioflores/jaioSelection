@@ -33,7 +33,8 @@
                                              value="#{msg['proceso.boton.nuevo']}" icon="fa fa-plus Fs14" />
                             <p:hotkey id="hotNuevo" bind="shift+n"
                                       actionListener="#{crearProcesoView.abrirCrearBateria}"/>
-
+                            
+                            <!--SELECCIONAR PROCESOS-->
                             <p:dataTable var="pro"  reflow="true" selectionMode="single" emptyMessage="#{msg['no.registros']}" >
                                 <f:facet name="header">
                                     #{msg['proceso.datatable.titulo']}

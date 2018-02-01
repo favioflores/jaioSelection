@@ -16,14 +16,14 @@ import java.util.UUID;
 public class BateriaService extends BaseView implements Serializable {
 
     
-    public List<ModeloEvaluacion> createBateria(int size) {
-        List<ModeloEvaluacion> list = new ArrayList<ModeloEvaluacion>();
-//		for(int i = 0 ; i < size ; i++) {
-////			list.add(new ModeloEvaluacion(getRandomId()));
-//        }
-        
-        return list;
-    }
+//    public List<ModeloEvaluacion> createBateria(int size) {
+//        List<ModeloEvaluacion> list = new ArrayList<ModeloEvaluacion>();
+////		for(int i = 0 ; i < size ; i++) {
+//////			list.add(new ModeloEvaluacion(getRandomId()));
+////        }
+//        
+//        return list;
+//    }
     
     private String getRandomId() {
 		return UUID.randomUUID().toString().substring(0, 8);
