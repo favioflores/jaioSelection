@@ -14,18 +14,30 @@
             <link rel="shortcut icon" type="image/png" href="#{request.contextPath}/resources/omega-layout/images/logo-jaio.png" />
         </f:facet>
         <title>#{msg['app']}</title>
+
+        <script>
+            function toSetAsParent() {
+                var delay = 8000;//1 seconds
+                setTimeout(function () {
+                    parent.window.location.href = '#{request.contextPath}' + '/login.jsf';
+                }, delay);
+            }
+
+        </script>        
+
     </h:head>
 
-    <h:body styleClass="exception-body">
+    <h:body styleClass="exception-body" onload="toSetAsParent();">
         <div class="exception-wrapper expiro">
             <p:graphicImage name="images/access.png" library="omega-layout" />
 
             <p class="message-title">#{msg['app.expiro.sesion']}</p>
             <p class="message-summary">#{msg['app.expiro.sesion.motivo']}</p>
+            <p class="message-summary">#{msg['app.expiro.text.redireccionar']}</p>
 
             <p:link outcome="login">
                 <i class="fa fa-lock"></i>
-                <span>Inicia sesión</span>
+                <span>#{msg['app.expiro.boton.inicio']}</span>
             </p:link>
 
             <div class="login-footer">#{msg['app']}</div>

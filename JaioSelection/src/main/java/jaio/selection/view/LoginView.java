@@ -15,14 +15,15 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import jaio.selection.bean.UsuarioBean;
 import jaio.selection.dao.UsuarioDAO;
 import jaio.selection.orm.Usuario;
 import jaio.selection.util.Constantes;
 import jaio.selection.util.Utilitarios;
+import java.io.IOException;
+import java.util.Date;
+import javax.servlet.http.HttpSession;
 
 @ManagedBean(name = "loginView")
 @RequestScoped
@@ -171,5 +172,20 @@ public class LoginView extends BaseView implements Serializable {
         }
 
     }
+    
+    public void terminarSesion(){ 
+    
+        try {        
+            
+            HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+            session.getAttribute(Constantes.SESSION_USUARIO);
+            session.invalidate();
+            FacesContext.getCurrentInstance().getExternalContext().redirect("iniciar.jsf");
+
+        } catch (IOException ex) {
+            log.error(ex);
+        }
+        
+    } 
 
 }

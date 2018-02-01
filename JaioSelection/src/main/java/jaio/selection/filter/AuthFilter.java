@@ -2,26 +2,22 @@ package jaio.selection.filter;
 
 import jaio.selection.util.Constantes;
 import java.io.IOException;
+import java.io.Serializable;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-@WebFilter(filterName = "AuthFilter", urlPatterns = {"*.xhtml"})
-public class AuthFilter implements Filter {
+public class AuthFilter implements Filter, Serializable {
 
     private static Log log = LogFactory.getLog(AuthFilter.class);
-
-    public AuthFilter() {
-    }
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
