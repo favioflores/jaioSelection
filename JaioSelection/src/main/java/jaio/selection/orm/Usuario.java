@@ -1,12 +1,14 @@
 package jaio.selection.orm;
 
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Usuario  implements java.io.Serializable {
-
+public class Usuario implements java.io.Serializable {
 
     private Integer id;
     private String correo;
@@ -20,7 +22,6 @@ public class Usuario  implements java.io.Serializable {
     public Usuario() {
     }
 
-
     public Usuario(String correo, String nombreCompleto, Date fechaRegistro, int estado, String contrasena) {
         this.correo = correo;
         this.nombreCompleto = nombreCompleto;
@@ -28,6 +29,7 @@ public class Usuario  implements java.io.Serializable {
         this.estado = estado;
         this.contrasena = contrasena;
     }
+
     public Usuario(String correo, String nombreCompleto, Date fechaRegistro, int estado, String contrasena, int sexo) {
         this.correo = correo;
         this.nombreCompleto = nombreCompleto;
@@ -42,12 +44,9 @@ public class Usuario  implements java.io.Serializable {
         return this.id;
     }
 
-
-
     public int getSexo() {
         return sexo;
     }
-
 
     public void setSexo(int sexo) {
         this.sexo = sexo;
@@ -57,6 +56,7 @@ public class Usuario  implements java.io.Serializable {
     public void setId(Integer id) {
         this.id = id;
     }
+
     public String getCorreo() {
         return this.correo;
     }
@@ -64,6 +64,7 @@ public class Usuario  implements java.io.Serializable {
     public void setCorreo(String correo) {
         this.correo = correo;
     }
+
     public String getNombreCompleto() {
         return this.nombreCompleto;
     }
@@ -71,6 +72,7 @@ public class Usuario  implements java.io.Serializable {
     public void setNombreCompleto(String nombreCompleto) {
         this.nombreCompleto = nombreCompleto;
     }
+
     public Date getFechaRegistro() {
         return this.fechaRegistro;
     }
@@ -78,6 +80,7 @@ public class Usuario  implements java.io.Serializable {
     public void setFechaRegistro(Date fechaRegistro) {
         this.fechaRegistro = fechaRegistro;
     }
+
     public int getEstado() {
         return this.estado;
     }
@@ -85,6 +88,7 @@ public class Usuario  implements java.io.Serializable {
     public void setEstado(int estado) {
         this.estado = estado;
     }
+
     public String getContrasena() {
         return this.contrasena;
     }
@@ -92,6 +96,7 @@ public class Usuario  implements java.io.Serializable {
     public void setContrasena(String contrasena) {
         this.contrasena = contrasena;
     }
+
     public Set getEmpresas() {
         return this.empresas;
     }
@@ -101,5 +106,3 @@ public class Usuario  implements java.io.Serializable {
     }
 
 }
-
-

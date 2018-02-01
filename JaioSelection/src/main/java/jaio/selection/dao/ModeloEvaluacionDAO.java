@@ -1,5 +1,4 @@
 package jaio.selection.dao;
-// Generated 06/11/2017 06:08:05 PM by Hibernate Tools 5.1.4.Final
 
 import java.util.List;
 import org.apache.commons.logging.Log;
@@ -149,4 +148,3 @@ public class ModeloEvaluacionDAO extends HibernateUtil implements Serializable {
     }
     
 }
-
