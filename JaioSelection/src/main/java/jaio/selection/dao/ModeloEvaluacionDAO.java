@@ -1,9 +1,7 @@
 package jaio.selection.dao;
 // Generated 06/11/2017 06:08:05 PM by Hibernate Tools 5.1.4.Final
 
-
 import java.util.List;
-import javax.naming.InitialContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.LockMode;
@@ -11,27 +9,30 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Example;
 
 import jaio.selection.orm.ModeloEvaluacion;
+import java.io.Serializable;
+import org.hibernate.Query;
 
 /**
  * DAO object for domain model class ModeloEvaluacion.
  * @see jaio.selection.orm.ModeloEvaluacion
  * @author Hibernate Tools
  */
-public class ModeloEvaluacionDAO {
+public class ModeloEvaluacionDAO extends HibernateUtil implements Serializable {
 
+    private static final long serialVersionUID = 1L;
     private static final Log log = LogFactory.getLog(ModeloEvaluacionDAO.class);
 
     private final SessionFactory sessionFactory = getSessionFactory();
     
-    protected SessionFactory getSessionFactory() {
-        try {
-            return (SessionFactory) new InitialContext().lookup("SessionFactory");
-        }
-        catch (Exception e) {
-            log.error("Could not locate SessionFactory in JNDI", e);
-            throw new IllegalStateException("Could not locate SessionFactory in JNDI");
-        }
-    }
+//    protected SessionFactory getSessionFactory() {
+//        try {
+//            return (SessionFactory) new InitialContext().lookup("SessionFactory");
+//        }
+//        catch (Exception e) {
+//            log.error("Could not locate SessionFactory in JNDI", e);
+//            throw new IllegalStateException("Could not locate SessionFactory in JNDI");
+//        }
+//    }
     
     public void persist(ModeloEvaluacion transientInstance) {
         log.debug("persisting ModeloEvaluacion instance");
@@ -128,6 +129,24 @@ public class ModeloEvaluacionDAO {
             log.error("find by example failed", re);
             throw re;
         }
-    } 
+    }
+    
+    public List<ModeloEvaluacion> obtenerModelos() {
+
+        iniciaSession();
+        try {
+            Query query = session.createQuery("From ModeloEvaluacion");
+
+            return query.list();
+
+        } catch (Exception e) {
+            manejaException(e);
+        } finally {
+            cerrarSession();
+        }
+
+        return null;
+    }
+    
 }
 

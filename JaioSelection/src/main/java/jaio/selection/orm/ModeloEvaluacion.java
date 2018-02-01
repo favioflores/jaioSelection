@@ -1,7 +1,7 @@
 package jaio.selection.orm;
 // Generated 06/11/2017 06:07:26 PM by Hibernate Tools 5.1.4.Final
 
-import java.math.BigDecimal;
+import java.math.BigDecimal;  
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -61,6 +61,10 @@ public class ModeloEvaluacion implements java.io.Serializable {
         this.bateriaEvaluacions_1 = bateriaEvaluacions_1;
         this.modeloPreguntas_1 = modeloPreguntas_1;
         this.modeloAjustesCalc = modeloAjustesCalc;
+    }
+
+    public ModeloEvaluacion(String randomId, String randomBrand, int randomYear, String randomColor, int randomPrice, boolean randomSoldState) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     public Integer getId() {

@@ -9,7 +9,9 @@ import jaio.selection.dao.PerfilDAO;
 import jaio.selection.orm.Area;
 import jaio.selection.orm.Empresa;
 import jaio.selection.orm.Perfil;
+import jaio.selection.util.Constantes;
 import jaio.selection.util.Utilitarios;
+import static jaio.selection.view.BaseView.FATAL;
 import java.io.Serializable;
 
 import javax.annotation.PostConstruct;
@@ -20,6 +22,7 @@ import org.apache.commons.logging.LogFactory;
 import java.util.ArrayList;
 import java.util.List;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 
 @ManagedBean(name = "crearProcesoView")
 @ViewScoped
@@ -218,5 +221,13 @@ public class CrearProcesoView extends BaseView implements Serializable {
             mostrarAlerta(FATAL, "error.inesperado", log, e);
         }
     }
-
+    
+    public void abrirCrearBateria(String idEmpresa) {
+        try {
+            Utilitarios.ponerSession(idEmpresa, Constantes.SESSION_EMPRESA);
+            FacesContext.getCurrentInstance().getExternalContext().redirect("crearBateria.jsf");
+        } catch (Exception e) {
+            mostrarAlerta(FATAL, "error.inesperado", log, e);
+        }
+    }
 }

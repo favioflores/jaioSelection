@@ -1,0 +1,141 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+    
+    <ui:define name="content">
+        
+        
+        <h:form id="formBateria" enctype="multipart/form-data"><p:growl life="4000" />
+            <script type="text/javascript">
+                
+            </script>
+            <div class="ui-g card">
+                
+                <!--TITULO Y CONCEPTO DE OPCION -->
+                <div class="ui-g-12">
+                    <h1>#{msg['bateria.titulo']}</h1>
+                    <p>#{msg['bateria.parrafo']}</p>
+                </div>
+                
+                
+                <!-- PANEL IZQUIERDO-->
+                <div class="ui-g-8">
+                    <p:dataGrid var="emp" value="" columns="1" layout="grid" rows="1" id="regBat">
+                        
+                        <!--INICIO DE CAMPOS DE REGISTRO-->
+                        <div class="ui-g-12">
+                            <div class="ui-g-3"><p:outputLabel for="formBateria" value="#{msg['bateria.nombreEvaluacion']}"/></div>
+                            <p:inputText id="nomE" value="" required="true" maxlength="200" size="35"></p:inputText>
+                        </div>
+                        
+                        <div class="ui-g-12">
+                            <div class="ui-g-2"><p:outputLabel for="formBateria" value="#{msg['bateria.empresa']}"/></div>
+                            <p:selectOneMenu id="lstEmpresas" value="#{crearProcesoView.strEmpresaSeleccionada}" effect="clip" filter="true" filterMatchMode="startsWith" >
+                            <f:selectItem itemLabel="#{msg['proceso.dialog.selecciona.empresa']}" itemValue="" />
+                            <f:selectItems value="#{crearProcesoView.lstEmpresas}" var="emp" itemLabel="#{emp.desc}" itemValue="#{emp.id}"  />
+                            <p:ajax event="itemSelect" process="@this" update=":formBateria:" listener="#{crearProcesoView.seleccionaEmpresa()}"/>
+                            </p:selectOneMenu>
+                        </div>
+                        
+                        <div class="ui-g-12">
+                            <div class="ui-g-2"><p:outputLabel for="formBateria" value="#{msg['bateria.area']}"/></div>
+                            <p:selectOneMenu id="lstAreas" value="#{crearProcesoView.strAreaSeleccionada}" effect="clip" filter="true" filterMatchMode="startsWith" >
+                            <f:selectItem itemLabel="#{msg['proceso.dialog.selecciona.area']}" itemValue="" />
+                            <f:selectItems value="#{crearProcesoView.lstArea}" var="area" itemLabel="#{area.descripcion}" itemValue="#{area.id}"  />
+                            <p:ajax event="itemSelect" process="@this" update=":formBateria:"  listener="#{crearProcesoView.seleccionaArea()}"/>
+                            </p:selectOneMenu>
+                        </div>
+                        
+                        <div class="ui-g-12">
+                            <div class="ui-g-2">
+                                <p:outputLabel for="formBateria" value="#{msg['bateria.perfil']}" />
+                            </div>                        
+                            <p:selectOneMenu id="lstPerfil" value="#{crearProcesoView.strPerfilSeleccionado}" effect="clip" filter="true" filterMatchMode="startsWith" >
+                            <f:selectItem itemLabel="#{msg['proceso.dialog.selecciona.perfil']}" itemValue="" />
+                            <f:selectItems value="#{crearProcesoView.lstPerfil}" var="per" itemLabel="#{per.descripcion}" itemValue="#{per.id}"  />
+                            </p:selectOneMenu>
+                        </div>
+                        <br/><br/>
+                        <!--FIN DE CAMPOS DE REGISTRO-->
+                        
+                        
+                        <!-- PANEL BILLETERA DE EVALUACIONES -->
+                        <div class="ui-g-12">
+                            <p:fieldset id="selectBaterias" style="margin-top:20px">
+                                <p:outputPanel id="dropArea">
+                                    <h:outputText value="!!!Dejalo aquí!!!" rendered="#{empty dNDBateriaView.droppedBaterias}" style="font-size:24px;"  />
+                                    <p:dataTable id="selectedCarsTable" var="bat" value="#{dNDBateriaView.droppedBaterias}" rendered="#{not empty dNDBateriaView.droppedBaterias}">
+                                        <p:column headerText="Id">
+                                            <h:outputText value="#{bat.id}" />
+                                        </p:column>
+
+                                        <p:column headerText="Year">
+                                            <h:outputText value="#{bat.nombre}" />
+                                        </p:column>
+
+                                        <p:column headerText="Brand">
+                                            <h:outputText value="#{bat.validez}" />
+                                        </p:column>
+
+                                        <p:column headerText="Color">
+                                            <h:outputText value="#{bat.confiabilidad}" />
+                                        </p:column>
+
+                                         <p:column style="width:32px">
+                                            <p:commandButton update=":formBateria:display" oncomplete="PF('carDialog').show()" icon="ui-icon-search">
+                                                <f:setPropertyActionListener value="#{bat}" target="#{dNDBateriaView.selectedBateria}" />
+                                            </p:commandButton>
+                                        </p:column>
+                                    </p:dataTable>
+                                </p:outputPanel>
+                            </p:fieldset>
+                        </div>
+                        <!--FIN DE BILLETERA DE EVALUACIONES-->
+                        
+                        
+                        
+                        
+                        <!-- BOTON GRABAR -->
+                        <div class="ui-g-12">
+                            <p:commandButton value="#{msg['bateria.boton.grabar']}" id="guardarBateria" actionListener="#{buttonView.buttonAction}" ajax="false"/>
+                        </div>
+                        <!-- FIN BOTON -->
+                        
+                        
+                        
+                        <!-- PANEL TOTAL DE COMPENTENCIAS -->
+                        <div class="ui-g-12">
+                            <p:dataGrid id="totalCapacidades" var="tCap" value="" columns="2" layout="grid" rows="1">
+                                <h:outputText value="Validez: #{listE.validez}%"/><br/>
+                            </p:dataGrid>
+                        </div>
+                        <!-- FIN PANEL TOTAL -->
+                    </p:dataGrid>
+                </div>
+                <!--FIN PANEL IZQUIERDO-->
+                
+                <!-- PANEL DERECHO -->
+                <div class="ui-g-4">
+                    <!--posible solucion al scroll-->
+                    <!--<p:scrollPanel mode="native"  style="height:500px">-->
+                        <p:dataGrid id="listEvaluaciones1" var="listE"  value="#{bateriaView.lstBaterias}" columns="1" >
+                            <p:column>
+                        <p:panel id="pnl">
+                            <h:outputText value="#{listE.nombre}" style="font-size: 14px;font-family:'latoregular',sans-serif;"/><br/>
+                            <h:outputText value="Validez: #{listE.validez}%" style="font-size: 12px;font-family:'latoregular',sans-serif;"/><br/>
+                            <h:outputText value="Confiabilidad: #{listE.confiabilidad}%" style="font-size: 12px;font-family:'latoregular',sans-serif;"/><br/>
+                            <h:outputText value="Minutos: #{listE.minutosEstimados}" style="font-size: 12px;font-family:'latoregular',sans-serif;"/>
+                        </p:panel>
+                        <p:draggable for="pnl" revert="true" />
+                        </p:column>
+                        </p:dataGrid>
+                    <!--</p:scrollPanel>-->
+                </div>
+                <!-- FIN DE PANEL DERECHO -->
+            </div>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

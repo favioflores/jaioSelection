@@ -130,6 +130,6 @@ public class CrearEmpresaView extends BaseView implements Serializable {
             mostrarAlerta(FATAL, "error.inesperado", log, e);
         }
     }
-
+    
 }
  
