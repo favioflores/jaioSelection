@@ -63,10 +63,6 @@ public class ModeloEvaluacion implements java.io.Serializable {
         this.modeloAjustesCalc = modeloAjustesCalc;
     }
 
-    public ModeloEvaluacion(String randomId, String randomBrand, int randomYear, String randomColor, int randomPrice, boolean randomSoldState) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
     public Integer getId() {
         return this.id;
     }
