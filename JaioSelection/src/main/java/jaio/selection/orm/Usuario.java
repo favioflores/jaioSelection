@@ -8,14 +8,14 @@ import java.util.Set;
 public class Usuario  implements java.io.Serializable {
 
 
-     private Integer id;
-     private String correo;
-     private String nombreCompleto;
-     private Date fechaRegistro;
-     private int estado;
-     private String contrasena;
-     private int sexo;
-     private Set empresas = new HashSet(0);
+    private Integer id;
+    private String correo;
+    private String nombreCompleto;
+    private Date fechaRegistro;
+    private int estado;
+    private String contrasena;
+    private int sexo;
+    private Set empresas = new HashSet(0);
 
     public Usuario() {
     }
@@ -29,13 +29,13 @@ public class Usuario  implements java.io.Serializable {
         this.contrasena = contrasena;
     }
     public Usuario(String correo, String nombreCompleto, Date fechaRegistro, int estado, String contrasena, int sexo) {
-       this.correo = correo;
-       this.nombreCompleto = nombreCompleto;
-       this.fechaRegistro = fechaRegistro;
-       this.estado = estado;
-       this.sexo = sexo;
-       this.contrasena = contrasena;
-       this.empresas = empresas;
+        this.correo = correo;
+        this.nombreCompleto = nombreCompleto;
+        this.fechaRegistro = fechaRegistro;
+        this.estado = estado;
+        this.sexo = sexo;
+        this.contrasena = contrasena;
+        this.empresas = empresas;
     }
 
     public Integer getId() {
@@ -45,16 +45,16 @@ public class Usuario  implements java.io.Serializable {
 
 
     public int getSexo() {
-		return sexo;
-	}
+        return sexo;
+    }
 
 
-	public void setSexo(int sexo) {
-		this.sexo = sexo;
-	}
+    public void setSexo(int sexo) {
+        this.sexo = sexo;
+    }
 
 
-	public void setId(Integer id) {
+    public void setId(Integer id) {
         this.id = id;
     }
     public String getCorreo() {

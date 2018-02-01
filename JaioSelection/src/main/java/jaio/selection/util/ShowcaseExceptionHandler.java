@@ -26,13 +26,13 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ExceptionQueuedEvent;
 import javax.faces.event.ExceptionQueuedEventContext;
 
-public class ShowcaseExceptionHandler extends ExceptionHandlerWrapper implements Serializable{
+public class ShowcaseExceptionHandler extends ExceptionHandlerWrapper implements Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private ExceptionHandler wrapped;
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private ExceptionHandler wrapped;
 
     public ShowcaseExceptionHandler(ExceptionHandler wrapped) {
         this.wrapped = wrapped;
@@ -46,23 +46,22 @@ public class ShowcaseExceptionHandler extends ExceptionHandlerWrapper implements
     @Override
     public void handle() throws FacesException {
         Iterable<ExceptionQueuedEvent> events = this.wrapped.getUnhandledExceptionQueuedEvents();
-        for(Iterator<ExceptionQueuedEvent> it = events.iterator(); it.hasNext();) {
+        for (Iterator<ExceptionQueuedEvent> it = events.iterator(); it.hasNext();) {
             ExceptionQueuedEvent event = it.next();
             ExceptionQueuedEventContext eqec = event.getContext();
-            
-            if(eqec.getException() instanceof ViewExpiredException) {
+
+            if (eqec.getException() instanceof ViewExpiredException) {
                 FacesContext context = eqec.getContext();
-                if(!context.isReleased()) {
+                if (!context.isReleased()) {
                     NavigationHandler navHandler = context.getApplication().getNavigationHandler();
- 
+
                     try {
                         navHandler.handleNavigation(context, null, "DAO?faces-redirect=true&expired=true");
-                    }
-                    finally {
+                    } finally {
                         it.remove();
                     }
                 }
-                
+
             }
         }
 

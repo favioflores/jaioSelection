@@ -8,7 +8,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Query;
 
-import jaio.selection.orm.Area;
 import jaio.selection.orm.Perfil;
 import jaio.selection.util.Constantes;
 import jaio.selection.util.Utilitarios;
@@ -42,7 +41,7 @@ public class PerfilDAO extends HibernateUtil implements Serializable {
 
         return lstPerfiles;
     }
-    
+
     public List<Perfil> obtenerPerfilesXEmpresa(String id) {
 
         List<Perfil> lstPerfiles = new ArrayList<>();
@@ -66,7 +65,7 @@ public class PerfilDAO extends HibernateUtil implements Serializable {
 
         return lstPerfiles;
     }
-    
+
     public List<Perfil> obtenerPerfilesXArea(String idArea) {
 
         List<Perfil> lstPerfiles = new ArrayList<>();

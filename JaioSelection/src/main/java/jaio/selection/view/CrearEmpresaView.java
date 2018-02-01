@@ -42,7 +42,6 @@ public class CrearEmpresaView extends BaseView implements Serializable {
         this.orden = orden;
     }
 
-    
     public StreamedContent getImagenPreview() {
         return imagenPreview;
     }
@@ -109,8 +108,8 @@ public class CrearEmpresaView extends BaseView implements Serializable {
             empresa.setNombre(razon);
             empresa.setFechaRegistro(new Date());
             empresa.setEstado(Constantes.EL_EMPRESA_ESTADO_REGISTRADO);
-            
-            if(Utilitarios.noEsNuloOVacio(orden)){
+
+            if (Utilitarios.noEsNuloOVacio(orden)) {
                 empresa.setOrden(Integer.parseInt(orden));
             }
 
@@ -132,4 +131,3 @@ public class CrearEmpresaView extends BaseView implements Serializable {
     }
     
 }
- 

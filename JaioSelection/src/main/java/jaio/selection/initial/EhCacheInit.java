@@ -22,7 +22,7 @@ import jaio.selection.util.EHCacheManager;
  *
  * @author Favio
  */
-public class EhCacheInit extends HttpServlet implements Serializable{
+public class EhCacheInit extends HttpServlet implements Serializable {
 
     private static Log log = LogFactory.getLog(EhCacheInit.class);
     private EHCacheManager objEHCacheManager;
@@ -32,23 +32,21 @@ public class EhCacheInit extends HttpServlet implements Serializable{
      * @throws ServletException
      */
     @Override
-    public void init(ServletConfig config) throws ServletException{
+    public void init(ServletConfig config) throws ServletException {
 
         log.debug("Cargando CACHE del sistema");
 
         //ElementoDAO objElementoDAO = new ElementoDAO();
-
         //List lstElementos = objElementoDAO.obtenListaElemento();
+        List lstElementos = null;
 
-        List lstElementos = null ;
-
-        if(!lstElementos.isEmpty()){
+        if (!lstElementos.isEmpty()) {
 
             Iterator itLstElementos = lstElementos.iterator();
 
             objEHCacheManager = new EHCacheManager();
 
-            while(itLstElementos.hasNext()){
+            while (itLstElementos.hasNext()) {
 
                 /*Elemento objElemento = (Elemento) itLstElementos.next();
 
@@ -61,7 +59,6 @@ public class EhCacheInit extends HttpServlet implements Serializable{
 
                 log.debug("Agregando a Cache : CACHE" + objElemento.getElTxDescripcion());
                 objEHCacheManager.agregarElemento(objElemento);*/
-
             }
 
         }

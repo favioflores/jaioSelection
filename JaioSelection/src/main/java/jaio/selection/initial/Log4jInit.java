@@ -11,43 +11,43 @@ import org.apache.log4j.PropertyConfigurator;
 
 public class Log4jInit extends HttpServlet implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
-	@Override
-	public void init(ServletConfig config) throws ServletException {
+    @Override
+    public void init(ServletConfig config) throws ServletException {
 
-		System.out.println("Log4j esta inicializando");
+        System.out.println("Log4j esta inicializando");
 
-		String log4jLocation = config.getInitParameter("log4j-init-file") + File.separator + "log4j.properties";
+        String log4jLocation = config.getInitParameter("log4j-init-file") + File.separator + "log4j.properties";
 
-		ServletContext sc = config.getServletContext();
+        ServletContext sc = config.getServletContext();
 
-		if (log4jLocation.isEmpty()) {
-			System.err.println("No Log4j Properties Location");
-			BasicConfigurator.configure();
+        if (log4jLocation.isEmpty()) {
+            System.err.println("No Log4j Properties Location");
+            BasicConfigurator.configure();
 
-		} else {
+        } else {
 
-			String log4jProp = sc.getRealPath(log4jLocation);
+            String log4jProp = sc.getRealPath(log4jLocation);
 
-			File properties = new File(log4jProp);
+            File properties = new File(log4jProp);
 
-			if (properties.exists()) {
+            if (properties.exists()) {
 
-				System.out.println("Inicializando Log4j " + log4jProp);
-				PropertyConfigurator.configure(log4jProp);
+                System.out.println("Inicializando Log4j " + log4jProp);
+                PropertyConfigurator.configure(log4jProp);
 
-			} else {
-				System.out.println("Configuracion basica " + log4jProp);
-				BasicConfigurator.configure();
+            } else {
+                System.out.println("Configuracion basica " + log4jProp);
+                BasicConfigurator.configure();
 
-			}
+            }
 
-		}
+        }
 
-	}
+    }
 
 }

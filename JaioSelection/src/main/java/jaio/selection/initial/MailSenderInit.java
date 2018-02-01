@@ -14,21 +14,20 @@ import javax.servlet.http.HttpServlet;
  *
  * @author Favio
  */
-public class MailSenderInit extends HttpServlet implements Serializable{
-    
+public class MailSenderInit extends HttpServlet implements Serializable {
+
     /**
      *
      * @param config
      * @throws ServletException
      */
     @Override
-    public void init(ServletConfig config) throws ServletException{
-        
+    public void init(ServletConfig config) throws ServletException {
+
         /* Iniciar Thread */
-        
         MailSender sender = new MailSender();
         sender.start();
-        
+
     }
-    
+
 }

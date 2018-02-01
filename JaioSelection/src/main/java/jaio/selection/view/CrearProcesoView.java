@@ -150,8 +150,6 @@ public class CrearProcesoView extends BaseView implements Serializable {
 
     }
 
-    
-
     public void seleccionaArea() {
 
         try {

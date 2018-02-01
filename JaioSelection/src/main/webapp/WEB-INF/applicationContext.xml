@@ -1,106 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:tx="http://www.springframework.org/schema/tx"
-	xsi:schemaLocation="
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="
 	http://www.springframework.org/schema/mvc http://www.springframework.org/schema/beans/spring-mvc.xsd
 	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
 	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
 	">
 
-	<bean
-		class="org.springframework.context.annotation.CommonAnnotationBeanPostProcessor" />
-<!--
-	<bean
-		class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor" />
-
-	<context:annotation-config />
-
-	<context:component-scan base-package="jaio.selection.*" />
-
-	<bean id="DataSource"
-		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-		<property name="driverClassName" value="${db.driverClassName}" />
-		<property name="url" value="${db.url}" />
-		<property name="username" value="${db.username}" />
-		<property name="password" value="${db.password}" />
-	</bean>
-
-	<tx:annotation-driven/>
-
-	<bean
-		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="locations">
-			<list>
-				<value>classpath:database.properties</value>
-			</list>
-		</property>
-	</bean>
-
-	<bean id="defaultLobHandler" class="org.springframework.jdbc.support.lob.DefaultLobHandler" />
-
-	<bean id="transactionManager"
-		class="org.springframework.orm.hibernate5.HibernateTransactionManager">
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
-
-	<bean id="sessionFactory"
-		class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
-		<property name="dataSource" ref="DataSource" />
-		<property name="annotatedClasses">
-			<list>
-				<value>jaio.selection.entity.Area</value>
-				<value>jaio.selection.entity.BateriaEvaluacion</value>
-				<value>jaio.selection.entity.BateriaEvaluacionId</value>
-				<value>jaio.selection.entity.BateriaPersonalizada</value>
-				<value>jaio.selection.entity.Candidato</value>
-				<value>jaio.selection.entity.ComunicadoProceso</value>
-				<value>jaio.selection.entity.ComunicadoProcesoId</value>
-				<value>jaio.selection.entity.Definicion</value>
-				<value>jaio.selection.entity.Elemento</value>
-				<value>jaio.selection.entity.Empresa</value>
-				<value>jaio.selection.entity.EvaluacionPerfil</value>
-				<value>jaio.selection.entity.EvaluacionPerfilId</value>
-				<value>jaio.selection.entity.InfoAcademica</value>
-				<value>jaio.selection.entity.InfoConocimiento</value>
-				<value>jaio.selection.entity.InfoExperiencia</value>
-				<value>jaio.selection.entity.InfoReferencia</value>
-				<value>jaio.selection.entity.ModeloCompetencia</value>
-				<value>jaio.selection.entity.ModeloCompetenciaSinonimo</value>
-				<value>jaio.selection.entity.ModeloComunicado</value>
-				<value>jaio.selection.entity.ModeloEvaluacion</value>
-				<value>jaio.selection.entity.ModeloEvaluacionXCompetencia</value>
-				<value>jaio.selection.entity.ModeloEvaluacionXCompetenciaId</value>
-				<value>jaio.selection.entity.ModeloLibro</value>
-				<value>jaio.selection.entity.ModeloPregunta</value>
-				<value>jaio.selection.entity.ModeloRespuesta</value>
-				<value>jaio.selection.entity.Notificaciones</value>
-				<value>jaio.selection.entity.Perfil</value>
-				<value>jaio.selection.entity.ProcesoSeleccion</value>
-				<value>jaio.selection.entity.Usuario</value>
-			</list>
-		</property>
-		<property name="hibernateProperties">
-			<props>
-				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
-				<prop key="hibernate.show_sql">true</prop>
-				<prop key="hibernate.format_sql">true</prop>
-				<prop key="hibernate.generate_statistics">true</prop>
-				<prop key="hibernate.hbm2ddl.auto">update</prop>
-				<prop key="hibernate.connection.autocommit">false</prop>
-				<prop key="hibernate.current_session_context_class">org.springframework.orm.hibernate5.SpringSessionContext</prop>
-			</props>
-		</property>
-	</bean>
-
-
-	<bean id="loginView" class="jaio.selection.view.LoginView" scope="request"  />
-	<bean id="sidebarView" class="jaio.selection.view.SidebarView" scope="session"/>
-	<bean id="empresaView" class="jaio.selection.view.EmpresaView" scope="request"/>
-
-	<import resource="classpath:jsfSpringScope.xml"/>
- -->
+    <bean class="org.springframework.context.annotation.CommonAnnotationBeanPostProcessor" />
 
 </beans>
 
