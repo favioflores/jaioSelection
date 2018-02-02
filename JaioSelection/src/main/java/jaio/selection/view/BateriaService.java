@@ -1,16 +1,13 @@
 package jaio.selection.view;
 
+import jaio.selection.bean.BateriaBean;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-
-import jaio.selection.orm.ModeloEvaluacion;
-import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.UUID;
 
 @ManagedBean(name = "bateriaService")
 @ViewScoped
@@ -18,14 +15,14 @@ public class BateriaService extends BaseView implements Serializable {
 
     private String nombre;
     private int minutosEstimados;
-    private BigDecimal validez;
-    private BigDecimal confiabilidad;
+    private String validez;
+    private String confiabilidad;
     
     
-    public List<ModeloEvaluacion> createBateria(int size) {
-        List<ModeloEvaluacion> list = new ArrayList<ModeloEvaluacion>();
+    public List<BateriaBean> createBateria(int size) {
+        List<BateriaBean> list = new ArrayList<BateriaBean>();
 		for(int i = 0 ; i < size ; i++) {
-                    list.add(new ModeloEvaluacion(getNombre(), getMinutosEstimados()
+                    list.add(new BateriaBean(getNombre(), getMinutosEstimados()
                             , getValidez(), getConfiabilidad()));
         }
         
@@ -48,19 +45,19 @@ public class BateriaService extends BaseView implements Serializable {
         this.minutosEstimados = minutosEstimados;
     }
 
-    public BigDecimal getValidez() {
+    public String getValidez() {
         return this.validez;
     }
 
-    public void setValidez(BigDecimal validez) {
+    public void setValidez(String validez) {
         this.validez = validez;
     }
 
-    public BigDecimal getConfiabilidad() {
+    public String getConfiabilidad() {
         return this.confiabilidad;
     }
 
-    public void setConfiabilidad(BigDecimal confiabilidad) {
+    public void setConfiabilidad(String confiabilidad) {
         this.confiabilidad = confiabilidad;
     }
     
