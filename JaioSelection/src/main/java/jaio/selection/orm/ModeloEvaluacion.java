@@ -1,7 +1,6 @@
 package jaio.selection.orm;
 // Generated 06/11/2017 06:07:26 PM by Hibernate Tools 5.1.4.Final
 
-import java.math.BigDecimal;  
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -15,8 +14,8 @@ public class ModeloEvaluacion implements java.io.Serializable {
     private ModeloLibro modeloLibro;
     private String nombre;
     private int minutosEstimados;
-    private BigDecimal validez;
-    private BigDecimal confiabilidad;
+    private String validez;
+    private String confiabilidad;
     private Date fechaCreacion;
     private int estado;
     private byte limiteTiempo;
@@ -32,14 +31,7 @@ public class ModeloEvaluacion implements java.io.Serializable {
     public ModeloEvaluacion() {
     }
     
-    public ModeloEvaluacion(String nombre ,int minutosEstimados ,BigDecimal validez ,BigDecimal confiabilidad){
-        this.nombre = nombre;
-        this.minutosEstimados = minutosEstimados;
-        this.validez = validez;
-        this.confiabilidad = confiabilidad;
-    }
-
-    public ModeloEvaluacion(ModeloLibro modeloLibro, String nombre, int horasEstimadas, int minutosEstimados, BigDecimal validez, BigDecimal confiabilidad, Date fechaCreacion, int estado, byte limiteTiempo, byte[] instructivo) {
+    public ModeloEvaluacion(ModeloLibro modeloLibro, String nombre, int horasEstimadas, int minutosEstimados, String validez, String confiabilidad, Date fechaCreacion, int estado, byte limiteTiempo, byte[] instructivo) {
         this.modeloLibro = modeloLibro;
         this.nombre = nombre;
         this.minutosEstimados = minutosEstimados;
@@ -51,7 +43,7 @@ public class ModeloEvaluacion implements java.io.Serializable {
         this.instructivo = instructivo;
     }
 
-    public ModeloEvaluacion(ModeloLibro modeloLibro, String nombre, int horasEstimadas, int minutosEstimados, BigDecimal validez, BigDecimal confiabilidad, Date fechaCreacion, int estado, byte limiteTiempo, byte[] instructivo, Set modeloEvaluacionXCompetencias, Set bateriaEvaluacions, Set modeloEvaluacionXCompetencias_1, Set modeloPreguntas, Set bateriaEvaluacions_1, Set modeloPreguntas_1, Set modeloAjustesCalc) {
+    public ModeloEvaluacion(ModeloLibro modeloLibro, String nombre, int horasEstimadas, int minutosEstimados, String validez, String confiabilidad, Date fechaCreacion, int estado, byte limiteTiempo, byte[] instructivo, Set modeloEvaluacionXCompetencias, Set bateriaEvaluacions, Set modeloEvaluacionXCompetencias_1, Set modeloPreguntas, Set bateriaEvaluacions_1, Set modeloPreguntas_1, Set modeloAjustesCalc) {
         this.modeloLibro = modeloLibro;
         this.nombre = nombre;
         this.minutosEstimados = minutosEstimados;
@@ -70,10 +62,10 @@ public class ModeloEvaluacion implements java.io.Serializable {
         this.modeloAjustesCalc = modeloAjustesCalc;
     }
 
-    public Integer getId() {
-        return this.id;
+    public Integer getId(){
+     return this.id;
     }
-
+            
     public void setId(Integer id) {
         this.id = id;
     }
@@ -102,19 +94,19 @@ public class ModeloEvaluacion implements java.io.Serializable {
         this.minutosEstimados = minutosEstimados;
     }
 
-    public BigDecimal getValidez() {
+    public String getValidez() {
         return this.validez;
     }
 
-    public void setValidez(BigDecimal validez) {
+    public void setValidez(String validez) {
         this.validez = validez;
     }
 
-    public BigDecimal getConfiabilidad() {
+    public String getConfiabilidad() {
         return this.confiabilidad;
     }
 
-    public void setConfiabilidad(BigDecimal confiabilidad) {
+    public void setConfiabilidad(String confiabilidad) {
         this.confiabilidad = confiabilidad;
     }
 

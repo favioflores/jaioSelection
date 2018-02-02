@@ -28,7 +28,7 @@
                 
                 <!-- PANEL IZQUIERDO-->
                 <div class="ui-g-8">
-                    <p:dataGrid var="emp" value="" columns="1" layout="grid" rows="1" id="regBat">
+                    <p:dataGrid var="emp" value="" columns="1" layout="grid" rows="1" id="Emp">
                         
                         <!--INICIO DE CAMPOS DE REGISTRO-->
                         <div class="ui-g-12">
@@ -69,8 +69,8 @@
                         <div class="ui-g-12">
                             <p:fieldset id="selectBaterias" style="margin-top:20px">
                                 <p:outputPanel id="dropArea">
-                                    <h:outputText value="!!!Dejalo aquí!!!" rendered="#{empty dNDBateriaView.droppedBaterias}" style="font-size:24px;"  />
-                                    <p:dataTable id="selectedCarsTable" var="bat" value="#{dNDBateriaView.droppedBaterias}" rendered="#{not empty dNDBateriaView.droppedBaterias}">
+                                    <h:outputText value="!!!Dejalo aquí!!!" rendered="#{empty bateriaView.droppedBaterias}" style="font-size:24px;"  />
+                                    <p:dataTable id="selectedCarsTable" var="bat" value="#{bateriaView.droppedBaterias}" rendered="#{not empty bateriaView.droppedBaterias}">
                                         <p:column headerText="Id">
                                             <h:outputText value="#{bat.id}" />
                                         </p:column>
@@ -88,17 +88,15 @@
                                         </p:column>
 
                                          <p:column style="width:32px">
-                                            <p:commandButton update=":formBateria:display" oncomplete="PF('carDialog').show()" icon="ui-icon-search">
-                                                <f:setPropertyActionListener value="#{bat}" target="#{dNDBateriaView.selectedBateria}" />
-                                            </p:commandButton>
+                                            
                                         </p:column>
                                     </p:dataTable>
                                 </p:outputPanel>
                             </p:fieldset>
                         </div>
                         
-                        <p:droppable for="selectBaterias" tolerance="touch" activeStyleClass="ui-state-highlight" datasource="listEvaluaciones1" onDrop="handleDrop">
-                            <p:ajax listener="#{dNDBateriaView.onBateriaDrop}" update="dropArea listEvaluaciones1" />
+                        <p:droppable for="selectBaterias" tolerance="touch" activeStyleClass="ui-state-highlight" datasource="listEvaluaciones" onDrop="handleDrop">
+                            <p:ajax listener="#{bateriaView.onBateriaDrop}" update=":formBateria:listEvaluaciones" />
                         </p:droppable>
                         <!--FIN DE BILLETERA DE EVALUACIONES-->
                         
@@ -121,10 +119,7 @@
                 
                 <!-- PANEL DERECHO -->
                 <div class="ui-g-4">
-                    <!--posible solucion al scroll - Error no se puede jalar item por fuera-->
-                    <!--<p:scrollPanel mode="native"  style="height:500px">-->
-                    <p:dataGrid id="listEvaluaciones1" var="listE"  value="#{bateriaView.lstBaterias}" columns="1" rows="4"  paginator="true" >
-                        <p:column>
+                    <p:dataGrid id="listEvaluaciones" var="listE"  value="#{bateriaView.lstBaterias}" columns="1" rows="4"  paginator="true" >
                         <p:panel id="pnl">
                             <h:outputText value="#{listE.nombre}" style="font-size: 14px;font-family:'latoregular',sans-serif;"/><br/>
                             <h:outputText value="Validez: #{listE.validez}%" style="font-size: 12px;font-family:'latoregular',sans-serif;"/><br/>
@@ -132,9 +127,7 @@
                             <h:outputText value="Minutos: #{listE.minutosEstimados}" style="font-size: 12px;font-family:'latoregular',sans-serif;"/>
                         </p:panel>
                         <p:draggable for="pnl" revert="true" />
-                        </p:column>
-                        </p:dataGrid>
-                    <!--</p:scrollPanel>-->
+                    </p:dataGrid>
                 </div>
                 <!-- FIN DE PANEL DERECHO -->
             </div>

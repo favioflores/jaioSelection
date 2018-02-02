@@ -14,6 +14,8 @@ import org.apache.commons.logging.LogFactory;
 import jaio.selection.bean.BateriaBean;
 import jaio.selection.dao.ModeloEvaluacionDAO;
 import jaio.selection.orm.ModeloEvaluacion;
+import javax.faces.bean.ManagedProperty;
+import org.primefaces.event.DragDropEvent;
 
 @ManagedBean(name = "bateriaView")
 @ViewScoped
@@ -25,10 +27,20 @@ public class BateriaView extends BaseView implements Serializable {
     //lista para traer info al panel
     private List<BateriaBean> lstBaterias;
     
+    @ManagedProperty("#{bateriaService}")
+    private BateriaService bateriaService;
+ 
+    private List<BateriaBean> baterias;
+     
+    private List<BateriaBean> droppedBaterias;
+     
+    private BateriaBean selectedBateria;
+    
     
     @PostConstruct
     public void init() {
         limpiar();
+        baterias = bateriaService.createBateria(9);
         obtenerModelosEvaluaciones();
     }
     
@@ -62,6 +74,31 @@ public class BateriaView extends BaseView implements Serializable {
         } catch (Exception e) {
             mostrarAlerta(FATAL, "error.inesperado", log, e);
         }
+    }
+    public void onBateriaDrop(DragDropEvent ddEvent) {
+        BateriaBean model = ((BateriaBean) ddEvent.getData());
+        droppedBaterias.add(model);
+        baterias.remove(model);
+    }
+     
+    public void setBateriaService(BateriaService bateriaService) {
+        this.bateriaService = bateriaService;
+    }
+ 
+    public List<BateriaBean> getBaterias() {
+        return baterias;
+    }
+ 
+    public List<BateriaBean> getDroppedBaterias() {
+        return droppedBaterias;
+    }    
+ 
+    public BateriaBean getSelectedBateria() {
+        return selectedBateria;
+    }
+ 
+    public void setSelectedBateria(BateriaBean selectedCar) {
+        this.selectedBateria = selectedCar;
     }
    
 }

@@ -12,10 +12,17 @@ public class BateriaBean implements Serializable {
     private ModeloLibro modeloLibro;
     private String nombre;
     private int minutosEstimados;
-    private BigDecimal validez;
-    private BigDecimal confiabilidad;
+    private String validez;
+    private String confiabilidad;
     
     public BateriaBean(){}
+    
+    public BateriaBean(String nombre ,int minutosEstimados ,String validez ,String confiabilidad){
+        this.nombre = nombre;
+        this.minutosEstimados = minutosEstimados;
+        this.validez = validez;
+        this.confiabilidad = confiabilidad;
+    }
     
     public Integer getId() {
         return this.id;
@@ -49,19 +56,19 @@ public class BateriaBean implements Serializable {
         this.minutosEstimados = minutosEstimados;
     }
 
-    public BigDecimal getValidez() {
+    public String getValidez() {
         return this.validez;
     }
 
-    public void setValidez(BigDecimal validez) {
+    public void setValidez(String validez) {
         this.validez = validez;
     }
 
-    public BigDecimal getConfiabilidad() {
+    public String getConfiabilidad() {
         return this.confiabilidad;
     }
 
-    public void setConfiabilidad(BigDecimal confiabilidad) {
+    public void setConfiabilidad(String confiabilidad) {
         this.confiabilidad = confiabilidad;
     }
 
