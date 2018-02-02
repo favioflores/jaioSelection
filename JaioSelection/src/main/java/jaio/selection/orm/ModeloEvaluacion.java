@@ -31,6 +31,13 @@ public class ModeloEvaluacion implements java.io.Serializable {
 
     public ModeloEvaluacion() {
     }
+    
+    public ModeloEvaluacion(String nombre ,int minutosEstimados ,BigDecimal validez ,BigDecimal confiabilidad){
+        this.nombre = nombre;
+        this.minutosEstimados = minutosEstimados;
+        this.validez = validez;
+        this.confiabilidad = confiabilidad;
+    }
 
     public ModeloEvaluacion(ModeloLibro modeloLibro, String nombre, int horasEstimadas, int minutosEstimados, BigDecimal validez, BigDecimal confiabilidad, Date fechaCreacion, int estado, byte limiteTiempo, byte[] instructivo) {
         this.modeloLibro = modeloLibro;

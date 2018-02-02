@@ -7,10 +7,10 @@
     <ui:define name="content">
         <h:form id="formProceso" enctype="multipart/form-data">
             <p:growl life="4000" />
-            <div class="ui-g">
+            
 
-                <div class="ui-g-12">
-                    <div class="card">
+                <div class="ui-g card">
+                    <div class="ui-g-12">
 
                         <p:panelGrid columns="1" columnClasses="ui-grid-col" layout="grid" styleClass="ui-panelgrid-blank" style="border:0px none; background-color:transparent;">
 
@@ -60,7 +60,7 @@
                         </p:panelGrid>
                     </div>
                 </div>
-            </div>
+            
         </h:form>
         <p:dialog header="#{msg['proceso.dialog.titulo']}"
                   widgetVar="dlgNuevo" modal="true" resizable="false"

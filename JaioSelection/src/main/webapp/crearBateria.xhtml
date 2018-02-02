@@ -6,8 +6,14 @@
     
     <ui:define name="content">
         
-        
-        <h:form id="formBateria" enctype="multipart/form-data"><p:growl life="4000" />
+     <script type="text/javascript">
+        function handleDrop(event, ui) {
+            var droppedCar = ui.draggable;
+            droppedCar.fadeOut('fast');
+        }
+    </script>   
+        <h:form id="formBateria" enctype="multipart/form-data">
+            <p:growl life="4000" />
             <script type="text/javascript">
                 
             </script>
@@ -75,7 +81,7 @@
 
                                         <p:column headerText="Brand">
                                             <h:outputText value="#{bat.validez}" />
-                                        </p:column>
+                                        </p:column> 
 
                                         <p:column headerText="Color">
                                             <h:outputText value="#{bat.confiabilidad}" />
@@ -90,18 +96,11 @@
                                 </p:outputPanel>
                             </p:fieldset>
                         </div>
+                        
+                        <p:droppable for="selectBaterias" tolerance="touch" activeStyleClass="ui-state-highlight" datasource="listEvaluaciones1" onDrop="handleDrop">
+                            <p:ajax listener="#{dNDBateriaView.onBateriaDrop}" update="dropArea listEvaluaciones1" />
+                        </p:droppable>
                         <!--FIN DE BILLETERA DE EVALUACIONES-->
-                        
-                        
-                        
-                        
-                        <!-- BOTON GRABAR -->
-                        <div class="ui-g-12">
-                            <p:commandButton value="#{msg['bateria.boton.grabar']}" id="guardarBateria" actionListener="#{buttonView.buttonAction}" ajax="false"/>
-                        </div>
-                        <!-- FIN BOTON -->
-                        
-                        
                         
                         <!-- PANEL TOTAL DE COMPENTENCIAS -->
                         <div class="ui-g-12">
@@ -110,6 +109,12 @@
                             </p:dataGrid>
                         </div>
                         <!-- FIN PANEL TOTAL -->
+                        
+                         <!-- BOTON GRABAR -->
+                        <div class="ui-g-12">
+                            <p:commandButton value="#{msg['bateria.boton.grabar']}" id="guardarBateria" actionListener="#{buttonView.buttonAction}" ajax="false"/>
+                        </div>
+                        <!-- FIN BOTON -->
                     </p:dataGrid>
                 </div>
                 <!--FIN PANEL IZQUIERDO-->
