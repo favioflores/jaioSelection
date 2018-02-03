@@ -15,15 +15,16 @@ public class BateriaService extends BaseView implements Serializable {
 
     private String nombre;
     private int minutosEstimados;
-    private String validez;
-    private String confiabilidad;
+    private BigDecimal validez;
+    private BigDecimal confiabilidad;
     
     
     public List<BateriaBean> createBateria(int size) {
         List<BateriaBean> list = new ArrayList<BateriaBean>();
 		for(int i = 0 ; i < size ; i++) {
                     list.add(new BateriaBean(getNombre(), getMinutosEstimados()
-                            , getValidez(), getConfiabilidad()));
+//                            , getValidez(), getConfiabilidad()
+                    ));
         }
         
         return list;
@@ -45,19 +46,19 @@ public class BateriaService extends BaseView implements Serializable {
         this.minutosEstimados = minutosEstimados;
     }
 
-    public String getValidez() {
-        return this.validez;
+    public BigDecimal getValidez() {
+        return validez;
     }
 
-    public void setValidez(String validez) {
+    public void setValidez(BigDecimal validez) {
         this.validez = validez;
     }
 
-    public String getConfiabilidad() {
-        return this.confiabilidad;
+    public BigDecimal getConfiabilidad() {
+        return confiabilidad;
     }
 
-    public void setConfiabilidad(String confiabilidad) {
+    public void setConfiabilidad(BigDecimal confiabilidad) {
         this.confiabilidad = confiabilidad;
     }
     

@@ -29,7 +29,6 @@ import javax.faces.context.FacesContext;
 public class CrearProcesoView extends BaseView implements Serializable {
 
     private static Log log = LogFactory.getLog(CrearProcesoView.class);
-
     private static final long serialVersionUID = -1L;
 
     private List<EmpresaBean> lstEmpresas;
@@ -93,48 +92,39 @@ public class CrearProcesoView extends BaseView implements Serializable {
     }
 
     public void limpiar() {
-
         lstEmpresas = new ArrayList<>();
         lstArea = new ArrayList<>();
         lstPerfil = new ArrayList<>();
         strEmpresaSeleccionada = null;
-
         poblarEmpresas();
-
     }
     
+    /**
+     * metodo que trae la empresa seleccionada
+     */
     public void seleccionaEmpresa() {
-
         try {
             if (Utilitarios.noEsNuloOVacio(strEmpresaSeleccionada) && !strEmpresaSeleccionada.equals("-1")) {
-
                 EmpresaDAO objEmpresaDAO = new EmpresaDAO();
                 Empresa objEmpresa = objEmpresaDAO.obtenerEmpresa(strEmpresaSeleccionada);
                 poblarArea();
                 mostrarAlerta(INFO, "proceso.seleccion.empresa", null, null, objEmpresa.getNombre());
-                
             } else {
                 mostrarAlerta(ERROR, "error.inesperado", null, null);
-                
             }
-
         } catch (Exception e) {
             mostrarAlerta(FATAL, "error.inesperado", log, e);
         }
-
     }
     
-
+    /**
+     * metodo que trae las empresas
+     */
     public void poblarEmpresas() {
-
         try {
-
             lstEmpresas = new ArrayList<>();
-
             EmpresaDAO objEmpresaDAO = new EmpresaDAO();
-
             List<Empresa> lstEmpresa = objEmpresaDAO.obtenerEmpresasOrdenNombre();
-
             lstEmpresa.stream().map((objEmpresa) -> {
                 EmpresaBean objEmpresaBean = new EmpresaBean();
                 objEmpresaBean.setId(objEmpresa.getId().toString());
@@ -143,19 +133,18 @@ public class CrearProcesoView extends BaseView implements Serializable {
             }).forEachOrdered((objEmpresaBean) -> {
                 lstEmpresas.add(objEmpresaBean);
             });
-
         } catch (Exception e) {
             mostrarAlerta(FATAL, "error.inesperado", log, e);
         }
 
     }
 
+    /**
+     * metodo que trae la area seleccionada
+     */
     public void seleccionaArea() {
-
         try {
-
             if (Utilitarios.noEsNuloOVacio(strAreaSeleccionada)) {
-
                 if (!strAreaSeleccionada.equals("-1")) {
                     AreaDAO objAreaDAO = new AreaDAO();
                     Area objArea = objAreaDAO.obtenerArea(strAreaSeleccionada);
@@ -165,23 +154,20 @@ public class CrearProcesoView extends BaseView implements Serializable {
             } else {
                 mostrarAlerta(ERROR, "error.inesperado", null, null);
             }
-
         } catch (Exception e) {
             mostrarAlerta(FATAL, "error.inesperado", log, e);
         }
-
     }
-
+    
+    /**
+     * metodo que trae las areas por empresa
+     */
     public void poblarArea() {
-
         try {
-
             if (Utilitarios.noEsNuloOVacio(strEmpresaSeleccionada) && !strEmpresaSeleccionada.equals("-1")) {
-
                 lstArea = new ArrayList<>();
-
+                
                 AreaDAO objAreaDAO = new AreaDAO();
-
                 List<Area> lstAreas = objAreaDAO.obtenerAreasXEmpresa(strEmpresaSeleccionada);
 
                 for (Area objArea : lstAreas) {
@@ -190,38 +176,37 @@ public class CrearProcesoView extends BaseView implements Serializable {
                     objAreaBean.setDescripcion(objArea.getDescripcion());
                     lstArea.add(objAreaBean);
                 };
-
             }
         } catch (Exception e) {
             mostrarAlerta(FATAL, "error.inesperado", log, e);
         }
     }
 
+    /**
+     * metodo que trae los perfiles por area
+     */
     public void poblarPerfil() {
-
         try {
-
             if (Utilitarios.noEsNuloOVacio(strAreaSeleccionada) && !strAreaSeleccionada.equals("-1")) {
-
                 lstPerfil = new ArrayList<>();
-
                 PerfilDAO objPerfilDAO = new PerfilDAO();
-
                 List<Perfil> lstPerfiles = objPerfilDAO.obtenerPerfilesXArea(strAreaSeleccionada);
-
                 for (Perfil objPerfil : lstPerfiles) {
                     PerfilBean objPerfilBean = new PerfilBean();
                     objPerfilBean.setId(objPerfil.getId().toString());
                     objPerfilBean.setDescripcion(objPerfil.getNombre());
                     lstPerfil.add(objPerfilBean);
                 };
-
             }
         } catch (Exception e) {
             mostrarAlerta(FATAL, "error.inesperado", log, e);
         }
     }
     
+    /**
+     * metodo para ir a la pantalla Crear Bateria
+     * @param idEmpresa <code>String</code>
+     */
     public void abrirCrearBateria(String idEmpresa) {
         try {
             Utilitarios.ponerSession(idEmpresa, Constantes.SESSION_EMPRESA);

@@ -97,8 +97,8 @@ public class BateriaView extends BaseView implements Serializable {
         return selectedBateria;
     }
  
-    public void setSelectedBateria(BateriaBean selectedCar) {
-        this.selectedBateria = selectedCar;
+    public void setSelectedBateria(BateriaBean selectedBateria) {
+        this.selectedBateria = selectedBateria;
     }
    
 }

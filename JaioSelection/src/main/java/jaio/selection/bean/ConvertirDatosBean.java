@@ -4,7 +4,7 @@ import java.io.Serializable;
 import jaio.selection.orm.ModeloLibro;
 import java.math.BigDecimal;
 
-public class BateriaBean implements Serializable {
+public class ConvertirDatosBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
     
@@ -15,14 +15,14 @@ public class BateriaBean implements Serializable {
     private BigDecimal validez;
     private BigDecimal confiabilidad;
     
-    public BateriaBean(){}
+    public ConvertirDatosBean(){}
     
-    public BateriaBean(String nombre ,int minutosEstimados){
+    public ConvertirDatosBean(String nombre ,int minutosEstimados){
         this.nombre = nombre;
         this.minutosEstimados = minutosEstimados;
     }
     
-    public BateriaBean(String nombre ,int minutosEstimados ,BigDecimal validez ,BigDecimal confiabilidad){
+    public ConvertirDatosBean(String nombre ,int minutosEstimados ,BigDecimal validez ,BigDecimal confiabilidad){
         this.nombre = nombre;
         this.minutosEstimados = minutosEstimados;
         this.validez = validez;
