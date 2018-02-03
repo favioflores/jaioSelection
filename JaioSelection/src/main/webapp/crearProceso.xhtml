@@ -7,37 +7,39 @@
     <ui:define name="content">
         <h:form id="formProceso" enctype="multipart/form-data">
             <p:growl life="4000" />
-            
-                <div class="ui-g card">//panel
+                <!-- panel-->
+                <div class="ui-g card">
                     <div class="ui-g-12">
-                        <p:panelGrid columns="1" columnClasses="ui-grid-col" layout="grid" styleClass="ui-panelgrid-blank" style="border:0px none; background-color:transparent;">
-
-                            <div class="ui-g-12">//cabezera de formulario
+                        <p:panelGrid columns="1" columnClasses="ui-grid-col" layout="grid" styleClass="ui-panelgrid-blank" 
+                                     style="border:0px none; background-color:transparent;">
+                            
+                            <!-- cabezera de formulario-->
+                            <div class="ui-g-12">
                                 <h1>#{msg['proceso.titulo']}</h1>
                                 <p>#{msg['proceso.parrafo']}</p>
                             </div>
                             
-                            //seleccionar empresa
+                            <!-- seleccionar empresa -->
                             <p:outputLabel for="lstEmpresas" value="#{msg['proceso.lista.empresa']}" />
                             <p:selectOneMenu id="lstEmpresas" value="#{crearProcesoView.strEmpresaSeleccionada}" 
                                                         effect="clip" filter="true" filterMatchMode="startsWith" >
                                 <f:selectItem itemLabel="#{msg['proceso.selecciona.empresa']}" itemValue="-1" />
                                 <f:selectItems value="#{crearProcesoView.lstEmpresas}" var="emp" itemLabel="#{emp.desc}" itemValue="#{emp.id}"  />
-                                <p:ajax event="itemSelect" process="@this" update=":formProceso:,:formCrear:"  listener="#{crearProcesoView.seleccionaEmpresa()}"/>
+                                <p:ajax event="itemSelect" process="@this" update=":formProceso:"  listener="#{crearProcesoView.seleccionaEmpresa()}"/>
                             </p:selectOneMenu>
 
-                            //ir a pantalla crearBateria
+                            <!-- ir a pantalla crearBateria-->
                             <p:outputLabel value="#{msg['proceso.nuevo.proceso']}" />
                             <p:commandButton id="btnNuevoProceso" styleClass="aqua-button"
                                              actionListener="#{crearProcesoView.abrirCrearBateria}"
                                              value="#{msg['proceso.boton.nuevo']}" icon="fa fa-plus Fs14" />
                             
-                            //evento abrir crearBateria
+                            <!-- evento abrir crearBateria-->
                             <p:hotkey id="hotNuevo" bind="shift+n" actionListener="#{crearProcesoView.abrirCrearBateria}"/>
                             
                             
-                            //POR REMODELAR
-                            //Tabala donde debe mostrarse lista de baterias creadas
+                            <!-- POR REMODELAR-->
+                            <!-- Tabala donde debe mostrarse lista de baterias creadas-->
                             <p:dataTable var="pro"  reflow="true" selectionMode="single" emptyMessage="#{msg['no.registros']}" >
                                 <f:facet name="header">
                                     #{msg['proceso.datatable.titulo']}

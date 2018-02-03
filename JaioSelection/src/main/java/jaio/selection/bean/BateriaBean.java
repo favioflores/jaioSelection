@@ -8,33 +8,27 @@ public class BateriaBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
     
-    private Integer id;
     private ModeloLibro modeloLibro;
+    private String id;
     private String nombre;
-    private int minutosEstimados;
-    private BigDecimal validez;
-    private BigDecimal confiabilidad;
+    private String minutosEstimados;
+    private String validez;
+    private String confiabilidad;
     
-    public BateriaBean(){}
     
-    public BateriaBean(String nombre ,int minutosEstimados){
+    public BateriaBean(){
+    }
+    
+    public BateriaBean(String nombre ,String minutosEstimados){
         this.nombre = nombre;
         this.minutosEstimados = minutosEstimados;
     }
     
-    public BateriaBean(String nombre ,int minutosEstimados ,BigDecimal validez ,BigDecimal confiabilidad){
+    public BateriaBean(String nombre ,String minutosEstimados ,String validez ,String confiabilidad){
         this.nombre = nombre;
         this.minutosEstimados = minutosEstimados;
         this.validez = validez;
         this.confiabilidad = confiabilidad;
-    }
-    
-    public Integer getId() {
-        return this.id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
     
     public ModeloLibro getModeloLibro() {
@@ -44,7 +38,15 @@ public class BateriaBean implements Serializable {
     public void setModeloLibro(ModeloLibro modeloLibro) {
         this.modeloLibro = modeloLibro;
     }
+    
+    public String getId() {
+        return this.id;
+    }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+    
     public String getNombre() {
         return this.nombre;
     }
@@ -53,27 +55,27 @@ public class BateriaBean implements Serializable {
         this.nombre = nombre;
     }
 
-    public int getMinutosEstimados() {
+    public String getMinutosEstimados() {
         return this.minutosEstimados;
     }
 
-    public void setMinutosEstimados(int minutosEstimados) {
+    public void setMinutosEstimados(String minutosEstimados) {
         this.minutosEstimados = minutosEstimados;
     }
 
-    public BigDecimal getValidez() {
+    public String getValidez() {
         return this.validez;
     }
 
-    public void setValidez(BigDecimal validez) {
+    public void setValidez(String validez) {
         this.validez = validez;
     }
 
-    public BigDecimal getConfiabilidad() {
+    public String getConfiabilidad() {
         return this.confiabilidad;
     }
 
-    public void setConfiabilidad(BigDecimal confiabilidad) {
+    public void setConfiabilidad(String confiabilidad) {
         this.confiabilidad = confiabilidad;
     }
 

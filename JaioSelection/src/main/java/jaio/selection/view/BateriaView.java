@@ -12,6 +12,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import jaio.selection.bean.BateriaBean;
+import jaio.selection.bean.ConvertirDatosBean;
+import jaio.selection.util.Constantes;
 import jaio.selection.dao.ModeloEvaluacionDAO;
 import jaio.selection.orm.ModeloEvaluacion;
 import javax.faces.bean.ManagedProperty;
@@ -24,11 +26,11 @@ public class BateriaView extends BaseView implements Serializable {
     private static Log log = LogFactory.getLog(BateriaView.class);
     private static final long serialVersionUID = -1L;
 
-    //lista para traer info al panel
+    //lista para evaluaciones de bd
     private List<BateriaBean> lstBaterias;
     
-    @ManagedProperty("#{bateriaService}")
-    private BateriaService bateriaService;
+//    @ManagedProperty("#{bateriaService}")
+//    private BateriaService bateriaService;
  
     private List<BateriaBean> baterias;
      
@@ -39,9 +41,8 @@ public class BateriaView extends BaseView implements Serializable {
     
     @PostConstruct
     public void init() {
-        limpiar();
-        baterias = bateriaService.createBateria(9);
         obtenerModelosEvaluaciones();
+        droppedBaterias = new ArrayList<BateriaBean>();
     }
     
     
@@ -58,32 +59,38 @@ public class BateriaView extends BaseView implements Serializable {
         lstBaterias = new ArrayList<>();
     }
     
-    public void obtenerModelosEvaluaciones() {
+    public List obtenerModelosEvaluaciones() {
         try {
             lstBaterias = new ArrayList<>();
             ModeloEvaluacionDAO objModelosDao = new ModeloEvaluacionDAO();
-            for(ModeloEvaluacion objModeloEvaluacion : objModelosDao.obtenerModelos()){
+            ConvertirDatosBean convertirDatos = new ConvertirDatosBean();
+            List<ModeloEvaluacion> listaEvaluacionesBD = objModelosDao.obtenerModelos();
+            for(ModeloEvaluacion objModeloEvaluacion : listaEvaluacionesBD){
                 BateriaBean objBateriaBean = new BateriaBean();
-                objBateriaBean.setId(objModeloEvaluacion.getId());
+                String id = convertirDatos.convertirObjetAString(objModeloEvaluacion.getId(), Constantes.Tipo_dato_int);
+                String validez = convertirDatos.convertirObjetAString(objModeloEvaluacion.getValidez(), Constantes.Tipo_dato_BigDecimal);
+                String confiabilidad = convertirDatos.convertirObjetAString(objModeloEvaluacion.getConfiabilidad(), Constantes.Tipo_dato_BigDecimal);
+                String minutosEstimados = convertirDatos.convertirObjetAString(objModeloEvaluacion.getMinutosEstimados(), Constantes.Tipo_dato_int);
+                objBateriaBean.setId(id);
                 objBateriaBean.setNombre(objModeloEvaluacion.getNombre());
-                objBateriaBean.setValidez(objModeloEvaluacion.getValidez());
-                objBateriaBean.setConfiabilidad(objModeloEvaluacion.getConfiabilidad());
-                objBateriaBean.setMinutosEstimados(objModeloEvaluacion.getMinutosEstimados());
+                objBateriaBean.setValidez(validez);
+                objBateriaBean.setConfiabilidad(confiabilidad);
+                objBateriaBean.setMinutosEstimados(minutosEstimados);
                 lstBaterias.add(objBateriaBean);
             }
         } catch (Exception e) {
             mostrarAlerta(FATAL, "error.inesperado", log, e);
         }
+        return lstBaterias;
     }
-    public void onBateriaDrop(DragDropEvent ddEvent) {
+    
+    public void cargarBilleteraBaterias(DragDropEvent ddEvent) {
         BateriaBean model = ((BateriaBean) ddEvent.getData());
         droppedBaterias.add(model);
-        baterias.remove(model);
+        lstBaterias.remove(model);
     }
      
-    public void setBateriaService(BateriaService bateriaService) {
-        this.bateriaService = bateriaService;
-    }
+   
  
     public List<BateriaBean> getBaterias() {
         return baterias;

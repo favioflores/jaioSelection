@@ -1,81 +1,48 @@
 package jaio.selection.bean;
 
+import jaio.selection.util.Utilitarios;
+import jaio.selection.util.Constantes;
 import java.io.Serializable;
-import jaio.selection.orm.ModeloLibro;
 import java.math.BigDecimal;
 
 public class ConvertirDatosBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
     
-    private Integer id;
-    private ModeloLibro modeloLibro;
-    private String nombre;
-    private int minutosEstimados;
-    private BigDecimal validez;
-    private BigDecimal confiabilidad;
-    
-    public ConvertirDatosBean(){}
-    
-    public ConvertirDatosBean(String nombre ,int minutosEstimados){
-        this.nombre = nombre;
-        this.minutosEstimados = minutosEstimados;
+    public String convertirObjetAString(Object dato, String tipo) {
+        String nuevoDato = "";
+        if(Utilitarios.noEsNuloOVacio(dato)){
+            if(Constantes.Tipo_dato_int.equals(tipo)){
+                int valor = (int)dato;
+                nuevoDato = Integer.toString(valor);
+            }else if(Constantes.Tipo_dato_BigDecimal.equals(tipo)){
+                BigDecimal valor = (BigDecimal)dato;
+                nuevoDato = valor.toString();
+            }else if(Constantes.Tipo_dato_long.equals(tipo)){
+                Long valor = (Long)dato;
+                nuevoDato = Long.toString(valor);
+            }else if(Constantes.Tipo_dato_short.equals(tipo)){
+                Short valor = (Short)dato;
+                nuevoDato = Short.toString(valor);
+            }
+        }
+        return nuevoDato;
     }
     
-    public ConvertirDatosBean(String nombre ,int minutosEstimados ,BigDecimal validez ,BigDecimal confiabilidad){
-        this.nombre = nombre;
-        this.minutosEstimados = minutosEstimados;
-        this.validez = validez;
-        this.confiabilidad = confiabilidad;
+    public Object convertirStringAObject(String dato, String tipo) {
+        Object nuevoDato=null;
+        if(Utilitarios.noEsNuloOVacio(dato)){
+            if(Constantes.Tipo_dato_int.equals(tipo)){
+                nuevoDato = Integer.parseInt(dato);
+            }else if(Constantes.Tipo_dato_BigDecimal.equals(tipo)){
+                nuevoDato = new BigDecimal(dato);
+            }else if(Constantes.Tipo_dato_long.equals(tipo)){
+                nuevoDato = Long.parseLong(dato);
+            }else if(Constantes.Tipo_dato_short.equals(tipo)){
+                nuevoDato = Short.parseShort(dato);
+            }
+        }
+        return nuevoDato;
     }
-    
-    public Integer getId() {
-        return this.id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-    
-    public ModeloLibro getModeloLibro() {
-        return this.modeloLibro;
-    }
-
-    public void setModeloLibro(ModeloLibro modeloLibro) {
-        this.modeloLibro = modeloLibro;
-    }
-
-    public String getNombre() {
-        return this.nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public int getMinutosEstimados() {
-        return this.minutosEstimados;
-    }
-
-    public void setMinutosEstimados(int minutosEstimados) {
-        this.minutosEstimados = minutosEstimados;
-    }
-
-    public BigDecimal getValidez() {
-        return this.validez;
-    }
-
-    public void setValidez(BigDecimal validez) {
-        this.validez = validez;
-    }
-
-    public BigDecimal getConfiabilidad() {
-        return this.confiabilidad;
-    }
-
-    public void setConfiabilidad(BigDecimal confiabilidad) {
-        this.confiabilidad = confiabilidad;
-    }
-
     
 }

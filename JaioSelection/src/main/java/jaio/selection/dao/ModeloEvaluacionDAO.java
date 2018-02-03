@@ -130,20 +130,20 @@ public class ModeloEvaluacionDAO extends HibernateUtil implements Serializable {
         }
     }
     
+    /**
+     * metodo para traer lista de evaluaciones
+     * @return 
+     */
     public List<ModeloEvaluacion> obtenerModelos() {
-
         iniciaSession();
         try {
             Query query = session.createQuery("From ModeloEvaluacion");
-
             return query.list();
-
         } catch (Exception e) {
             manejaException(e);
         } finally {
             cerrarSession();
         }
-
         return null;
     }
     

@@ -251,5 +251,12 @@ public class Constantes {
 
     public static int EL_EMPRESA_ESTADO_REGISTRADO = 3;
     public static int EL_EMPRESA_ESTADO_ELIMINADO = 5;
+    
+    //TIPO DE DATOS
+    public static String Tipo_dato_int = "int";
+    public static String Tipo_dato_BigDecimal = "BigDecimal";
+    public static String Tipo_dato_long = "long";
+    public static String Tipo_dato_short = "short";
+    
 
 }

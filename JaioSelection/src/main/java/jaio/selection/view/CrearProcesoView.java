@@ -110,7 +110,7 @@ public class CrearProcesoView extends BaseView implements Serializable {
                 poblarArea();
                 mostrarAlerta(INFO, "proceso.seleccion.empresa", null, null, objEmpresa.getNombre());
             } else {
-                mostrarAlerta(ERROR, "error.inesperado", null, null);
+                limpiar(); 
             }
         } catch (Exception e) {
             mostrarAlerta(FATAL, "error.inesperado", log, e);
