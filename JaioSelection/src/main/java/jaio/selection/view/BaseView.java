@@ -28,7 +28,7 @@ public abstract class BaseView implements Serializable {
     public static final Severity WARN = FacesMessage.SEVERITY_WARN;
     public static final Severity FATAL = FacesMessage.SEVERITY_FATAL;
 
-    public String msg(String key, Object... params) {
+    public static String msg(String key, Object... params) {
 
         String result = null;
 

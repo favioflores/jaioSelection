@@ -157,7 +157,7 @@ public class EmpresaView extends BaseView implements Serializable {
 
         try {
             Utilitarios.ponerSession(idEmpresa, Constantes.SESSION_EMPRESA);
-            FacesContext.getCurrentInstance().getExternalContext().redirect("organigrama.jsf");
+            FacesContext.getCurrentInstance().getExternalContext().redirect("modificarOrganigrama.jsf");
         } catch (Exception e) {
             mostrarAlerta(FATAL, "error.inesperado", log, e);
         }

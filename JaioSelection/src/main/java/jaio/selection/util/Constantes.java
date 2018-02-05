@@ -252,4 +252,22 @@ public class Constantes {
     public static int EL_EMPRESA_ESTADO_REGISTRADO = 3;
     public static int EL_EMPRESA_ESTADO_ELIMINADO = 5;
 
+    public static int XLSX_FILA_EMPRESA = 1;
+    public static int XLSX_COLUMNA_EMPRESA = 3;
+    public static int XLSX_FILA_CABECERA_DATOS = 2;
+    public static int XLSX_FILA_INICIO_DATOS = 3;
+    public static int XLSX_COLUMNA_ID = 1;
+    public static int XLSX_COLUMNA_TIPO_REGISTRO = 2;
+    public static int XLSX_COLUMNA_NOMBRE_REGISTRO = 3;
+    public static int XLSX_COLUMNA_DEPENDENCIA = 4;
+
+    public static Integer TIPO_INTEGER = 0;
+    public static Integer TIPO_STRING = 1;
+    public static Integer TIPO_BIGDECIMAL = 3;
+    public static Integer TIPO_DATE = 4;
+    public static Integer TIPO_BOOLEAN = 5;
+
+    public static String XLSX_ORG_MASIVO_COLUMNA_TIPO_AREA = "AREA";
+    public static String XLSX_ORG_MASIVO_COLUMNA_TIPO_PERFIL = "PERFIL";
+            
 }

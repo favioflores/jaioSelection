@@ -7,18 +7,18 @@ package jaio.selection.util;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfImportedPage;
 import com.itextpdf.text.pdf.PdfReader;
-import com.itextpdf.text.pdf.PdfStamper;
 import com.itextpdf.text.pdf.PdfWriter;
+import jaio.selection.bean.ErrorExcelBean;
 
 import jaio.selection.bean.UsuarioBean;
 import jaio.selection.orm.Elemento;
 import jaio.selection.orm.Usuario;
+import jaio.selection.view.BaseView;
 
 import java.awt.Color;
 import java.io.ByteArrayOutputStream;
@@ -29,6 +29,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.nio.file.DirectoryNotEmptyException;
 import java.nio.file.Files;
@@ -42,11 +43,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 import java.util.NoSuchElementException;
-import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 import javax.faces.context.FacesContext;
@@ -61,7 +58,7 @@ import org.apache.poi.ss.usermodel.Row;
  *
  * @author Favio
  */
-public class Utilitarios {
+public class Utilitarios extends BaseView implements Serializable {
 
     private static Log log = LogFactory.getLog(Utilitarios.class);
 
@@ -328,6 +325,128 @@ public class Utilitarios {
         DateFormat dfDateFull = DateFormat.getDateInstance();
         Date fecha = new Date();
         return dfDateFull.format(fecha);
+    }
+
+    public static boolean validaValorCeldaXLSX(Object obj, Integer objTipoRequerido, String strEtiqueta, List<ErrorExcelBean> lstError, Cell celda, boolean esRequerido, String... params) {
+
+        ErrorExcelBean objErrorExcelBean = new ErrorExcelBean();
+
+        objErrorExcelBean.setStrFila(celda.getRowIndex());
+        objErrorExcelBean.setStrColumna(celda.getColumnIndex());
+        objErrorExcelBean.setStrEtiqueta(strEtiqueta);
+
+        try {
+
+            if (Utilitarios.esNuloOVacio(obj) && !esRequerido) {
+                return true;
+            }
+
+            if (objTipoRequerido.equals(Constantes.TIPO_INTEGER)) {
+
+                try {
+
+                    if (Utilitarios.esNuloOVacio(obj) && esRequerido) {
+                        objErrorExcelBean.setStrError(msg("organigrama.masivo.error.celda.requerido"));
+                        lstError.add(objErrorExcelBean);
+                        return false;
+                    } else {
+                        
+                        try {
+                            Integer.parseInt(obj.toString());
+                        } catch (Exception e) {
+                            objErrorExcelBean.setStrError(msg("organigrama.masivo.error.celda.integer"));
+                            lstError.add(objErrorExcelBean);
+                            return false;
+                        }
+                        
+                        if (params != null && params.length > 0) {
+
+                            boolean exists = false;
+                            List<String> lstParams = new ArrayList<>();
+
+                            for (int i = 0; i <= params.length; i++) {
+                                if (obj.toString().toUpperCase().equals(params[i])) {
+                                    return true;
+                                }
+                                lstParams.add(params[i]);
+                            }
+
+                            if (!exists) {
+                                objErrorExcelBean.setStrError(msg("organigrama.masivo.error.dato.errado", concatenaCadenas(lstParams)));
+                                lstError.add(objErrorExcelBean);
+                                return false;
+                            } else {
+                                return true;
+                            }
+
+                        } else {
+                            return true;
+                        }
+
+                    }
+                    
+                } catch (Exception e) {
+                    objErrorExcelBean.setStrError(msg("organigrama.masivo.error.celda.lectura.error"));
+                    lstError.add(objErrorExcelBean);
+                    return false;
+                }
+
+            } else if (objTipoRequerido.equals(Constantes.TIPO_STRING)) {
+
+                try {
+
+                    if (Utilitarios.esNuloOVacio(obj) && esRequerido) {
+                        objErrorExcelBean.setStrError(msg("organigrama.masivo.error.celda.requerido"));
+                        lstError.add(objErrorExcelBean);
+                        return false;
+                    } else {
+
+                        if (params != null && params.length > 0) {
+
+                            boolean exists = false;
+                            List<String> lstParams = new ArrayList<>();
+
+                            for (int i = 0; i <= params.length; i++) {
+                                if (obj.toString().toUpperCase().equals(params[i])) {
+                                    return true;
+                                }
+                                lstParams.add(params[i]);
+                            }
+
+                            if (!exists) {
+                                objErrorExcelBean.setStrError(msg("organigrama.masivo.error.dato.errado", concatenaCadenas(lstParams)));
+                                lstError.add(objErrorExcelBean);
+                                return false;
+                            } else {
+                                return true;
+                            }
+
+                        } else {
+                            return true;
+                        }
+                    }
+
+                } catch (Exception e) {
+                    objErrorExcelBean.setStrError(msg("organigrama.masivo.error.celda.lectura.error"));
+                    lstError.add(objErrorExcelBean);
+                    return false;
+                }
+
+            }
+
+        } catch (Exception e) {
+            objErrorExcelBean.setStrError(msg("organigrama.masivo.error.celda.lectura.error"));
+            return false;
+        }
+
+        return true;
+
+    }
+
+    public static String concatenaCadenas(List<String> lstTexto) {
+        String temp;
+        temp = String.join(" - ", lstTexto);
+        return temp;
     }
 
     public static boolean zipArchivosCualquiera(List<String> lstArchivos, FileOutputStream outPut) {

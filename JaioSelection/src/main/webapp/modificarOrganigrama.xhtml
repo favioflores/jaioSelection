@@ -47,22 +47,32 @@
 
             <p:growl id="growl" life="4000" />
 
-            <div class="ui-g">
+            <div class="ui-g card">
                 <div class="ui-g-12">
-                    <div class="card">
+
+                    <p:panelGrid columns="1" columnClasses="ui-grid-col" layout="grid" styleClass="ui-panelgrid-blank" style="border:0px none; background-color:transparent;">
                         <h1>#{msg['organigrama.titulo']}</h1>
-                        <p>#{msg['organigrama.parrafo']}</p>
+                        <p>#{msg['organigrama.parrafo1']}</p>
+
 
                         <p:button value="#{msg['organigrama.volver']}"
                                   outcome="crearEmpresa" icon="fa fa-angle-left" />
 
-                        <p:commandButton value="#{msg['organigrama.verHistorial']}"
-                                         disabled="true" actionListener="#{organigramaView.verHistorial}" />
+                        <p:column colspan="2">
+                            <p>#{msg['organigrama.parrafo2']}</p>
+
+                            <p:commandButton value="#{msg['organigrama.boton.descarga.masivo']}" ajax="false" icon="fa fa-download"  >
+                                <p:fileDownload value="#{organigramaView.fileExport}" />
+                            </p:commandButton>
+                        </p:column>
+
+                        <p:fileUpload widgetVar="inputFile" value="#{organigramaView.inputFile}" mode="advanced" dragDropSupport="fale" multiple="false" sizeLimit="2000000" allowTypes="/(\.|\/)(xls)$/"  disabled="#{importarCuestionariosView.intIdEstadoProyecto==37}"
+                                      cancelLabel="Cancelar" uploadLabel="#{msg['organigrama.boton.upload.masivo']}" label="#{msg['organigrama.boton.buscar.masivo']}" auto="true"
+                                      fileUploadListener="#{organigramaView.cargaOrganigramaMasivo}" immediate="true" />
 
                         <br /> <br /> <br />
 
-
-                        <p:organigram id="organigrama" widgetVar="organigrama"
+                        <p:organigram id="organigrama" widgetVar="organigrama" 
                                       value="#{organigramaView.rootNode}" var="node" zoom="false"
                                       leafNodeConnectorHeight="0" autoScrollToSelection="false"
                                       selection="#{organigramaView.selection}" style="width: 100%">
@@ -138,8 +148,7 @@
                             <p:commandButton value="#{msg['no']}" type="button"
                                              styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
                         </p:confirmDialog>
-
-                    </div>
+                    </p:panelGrid>
                 </div>
             </div>
 
