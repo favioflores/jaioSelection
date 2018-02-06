@@ -13,6 +13,7 @@ public class BateriaPersonalizada implements java.io.Serializable {
     private Integer id;
     private String nombre;
     private Date fechaCreacion;
+    private String nombrePerfil;
     private int estado;
     private String resena;
     private int horasEstimadasTotal;
@@ -68,6 +69,14 @@ public class BateriaPersonalizada implements java.io.Serializable {
 
     public void setFechaCreacion(Date fechaCreacion) {
         this.fechaCreacion = fechaCreacion;
+    }
+    
+    public String getNombrePerfil() {
+        return this.nombrePerfil;
+    }
+
+    public void setNombrePerfil(String nombrePerfil) {
+        this.nombrePerfil = nombrePerfil;
     }
 
     public int getEstado() {

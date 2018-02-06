@@ -25,7 +25,7 @@
                                                         effect="clip" filter="true" filterMatchMode="startsWith" >
                                 <f:selectItem itemLabel="#{msg['proceso.selecciona.empresa']}" itemValue="-1" />
                                 <f:selectItems value="#{crearProcesoView.lstEmpresas}" var="emp" itemLabel="#{emp.desc}" itemValue="#{emp.id}"  />
-                                <p:ajax event="itemSelect" process="@this" update=":formProceso:"  listener="#{crearProcesoView.seleccionaEmpresa()}"/>
+                                <p:ajax event="itemSelect" process="@this" update=":formProceso:"  listener="#{crearProcesoView.cargarRegistros()}"/>
                             </p:selectOneMenu>
 
                             <!-- ir a pantalla crearBateria-->
@@ -40,24 +40,25 @@
                             
                             <!-- POR REMODELAR-->
                             <!-- Tabala donde debe mostrarse lista de baterias creadas-->
-                            <p:dataTable var="pro"  reflow="true" selectionMode="single" emptyMessage="#{msg['no.registros']}" >
+                            <p:dataTable var="proceso" reflow="true" emptyMessage="#{msg['no.registros']}" 
+                                         value="#{crearProcesoView.lstBateriaPersonalizada}" rowKey="demo">
                                 <f:facet name="header">
                                     #{msg['proceso.datatable.titulo']}
                                 </f:facet>
                                 <p:column headerText="#{msg['proceso.datatable.col1']}">
-                                    <h:outputText value="#{car.id}" />
+                                    <h:outputText value="#{proceso.nombre}" />
                                 </p:column>
 
                                 <p:column headerText="#{msg['proceso.datatable.col2']}">
-                                    <h:outputText value="#{car.year}" />
+                                    <h:outputText value="#{proceso.fecha}" />
                                 </p:column>
 
                                 <p:column headerText="#{msg['proceso.datatable.col4']}">
-                                    <h:outputText value="#{car.color}" />
+                                    <h:outputText value="#{proceso.perfil}" />
                                 </p:column>
 
                                 <p:column headerText="#{msg['proceso.datatable.col5']}">
-                                    <h:outputText value="#{car.color}" />
+                                    <h:outputText value="#{proceso.id}" />
                                 </p:column>
                             </p:dataTable>
                             

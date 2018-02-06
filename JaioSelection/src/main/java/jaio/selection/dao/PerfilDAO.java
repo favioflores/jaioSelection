@@ -179,5 +179,19 @@ public class PerfilDAO extends HibernateUtil implements Serializable {
         return false;
 
     }
+    public Perfil obtenerPerfil(String id) {
+        iniciaSession();
+        try {
+            Query query = session.createQuery("From Perfil p where p.id = ? ");
+            query.setString(0, id);
+            Perfil perfil = (Perfil) query.uniqueResult();
+            return perfil;
+        } catch (Exception e) {
+            manejaException(e);
+        } finally {
+            cerrarSession();
+        }
+        return null;
+    }
 
 }

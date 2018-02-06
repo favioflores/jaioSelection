@@ -257,6 +257,7 @@ public class Constantes {
     public static String Tipo_dato_BigDecimal = "BigDecimal";
     public static String Tipo_dato_long = "long";
     public static String Tipo_dato_short = "short";
+    public static String Tipo_dato_byte = "byte";
     
 
 }

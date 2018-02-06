@@ -4,9 +4,11 @@ import jaio.selection.bean.AreaBean;
 import jaio.selection.bean.EmpresaBean;
 import jaio.selection.bean.PerfilBean;
 import jaio.selection.dao.AreaDAO;
+import jaio.selection.dao.BateriaPersonalizadaDAO;
 import jaio.selection.dao.EmpresaDAO;
 import jaio.selection.dao.PerfilDAO;
 import jaio.selection.orm.Area;
+import jaio.selection.orm.BateriaPersonalizada;
 import jaio.selection.orm.Empresa;
 import jaio.selection.orm.Perfil;
 import jaio.selection.util.Constantes;
@@ -37,6 +39,8 @@ public class CrearProcesoView extends BaseView implements Serializable {
     private String strEmpresaSeleccionada;
     private String strPerfilSeleccionado;
     private String strAreaSeleccionada;
+    
+    private List<BateriaPersonalizada> lstBateriaPersonalizada;
 
     public List<AreaBean> getLstArea() {
         return lstArea;
@@ -85,6 +89,14 @@ public class CrearProcesoView extends BaseView implements Serializable {
     public void setLstEmpresas(List<EmpresaBean> lstEmpresas) {
         this.lstEmpresas = lstEmpresas;
     }
+    
+     public void setLstBateriaPersonalizada(List<BateriaPersonalizada> lstBateriaPersonalizada) {
+        this.lstBateriaPersonalizada = lstBateriaPersonalizada;
+    }
+
+    public List<BateriaPersonalizada> getLstBateriaPersonalizada() {
+        return lstBateriaPersonalizada;
+    }
 
     @PostConstruct
     public void init() {
@@ -97,6 +109,13 @@ public class CrearProcesoView extends BaseView implements Serializable {
         lstPerfil = new ArrayList<>();
         strEmpresaSeleccionada = null;
         poblarEmpresas();
+        
+    }
+    
+    public void cargarRegistros(){
+        BateriaPersonalizadaDAO objBateriaPersDAO = new BateriaPersonalizadaDAO();
+        List<BateriaPersonalizada> lstBateriaPer = objBateriaPersDAO.obtenerProcesosRegistrados(strEmpresaSeleccionada);
+        lstBateriaPersonalizada = lstBateriaPer;
     }
     
     /**
@@ -166,7 +185,6 @@ public class CrearProcesoView extends BaseView implements Serializable {
         try {
             if (Utilitarios.noEsNuloOVacio(strEmpresaSeleccionada) && !strEmpresaSeleccionada.equals("-1")) {
                 lstArea = new ArrayList<>();
-                
                 AreaDAO objAreaDAO = new AreaDAO();
                 List<Area> lstAreas = objAreaDAO.obtenerAreasXEmpresa(strEmpresaSeleccionada);
 
@@ -176,6 +194,20 @@ public class CrearProcesoView extends BaseView implements Serializable {
                     objAreaBean.setDescripcion(objArea.getDescripcion());
                     lstArea.add(objAreaBean);
                 };
+            }
+        } catch (Exception e) {
+            mostrarAlerta(FATAL, "error.inesperado", log, e);
+        }
+    }
+    
+    
+    
+    public void seleccionaPerfil(){
+        try {
+            if (Utilitarios.noEsNuloOVacio(strPerfilSeleccionado)) {
+                PerfilDAO objPerfilDao = new PerfilDAO();
+                Perfil objPerfil = objPerfilDao.obtenerPerfil(strPerfilSeleccionado);
+                mostrarAlerta(INFO, "proceso.seleccion.perfil", null, null, objPerfil.getNombre());
             }
         } catch (Exception e) {
             mostrarAlerta(FATAL, "error.inesperado", log, e);
@@ -202,6 +234,8 @@ public class CrearProcesoView extends BaseView implements Serializable {
             mostrarAlerta(FATAL, "error.inesperado", log, e);
         }
     }
+    
+   
     
     /**
      * metodo para ir a la pantalla Crear Bateria

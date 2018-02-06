@@ -24,6 +24,9 @@ public class ConvertirDatosBean implements Serializable {
             }else if(Constantes.Tipo_dato_short.equals(tipo)){
                 Short valor = (Short)dato;
                 nuevoDato = Short.toString(valor);
+            }else if(Constantes.Tipo_dato_byte.equals(tipo)){
+                byte valor = (byte)dato;
+                nuevoDato = Byte.toString(valor);
             }
         }
         return nuevoDato;
