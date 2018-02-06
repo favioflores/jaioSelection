@@ -5,7 +5,7 @@ import java.io.Serializable;
 import jaio.selection.orm.ModeloLibro;
 import java.util.List;
 
-public class BateriaBean implements Serializable {
+public class CompetenciaBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
     
@@ -16,24 +16,24 @@ public class BateriaBean implements Serializable {
     private String confiabilidad;
     private String minutosEstimados;
     private String limiteTiempo;
-    private List<CompetenciaBean> lstCompetencias;
+    private List<ModeloCompetencia> lstCompetencias;
     
     
-    public BateriaBean(){
+    public CompetenciaBean(){
     }
     
-    public BateriaBean(String nombre, String validez, String confiabilidad, String minutosEstimados, String limiteTiempo){
+    public CompetenciaBean(String nombre, String validez, String confiabilidad, String minutosEstimados, String limiteTiempo){
         this.nombre = nombre;
         this.validez = validez;
         this.confiabilidad = confiabilidad;
         this.minutosEstimados = minutosEstimados;
     }
 
-    public List<CompetenciaBean> getLstCompetencias() {
+    public List<ModeloCompetencia> getLstCompetencias() {
         return lstCompetencias;
     }
 
-    public void setLstCompetencias(List<CompetenciaBean> lstCompetencias) {
+    public void setLstCompetencias(List<ModeloCompetencia> lstCompetencias) {
         this.lstCompetencias = lstCompetencias;
     }
     

@@ -23,16 +23,6 @@ public class ModeloEvaluacionDAO extends HibernateUtil implements Serializable {
 
     private final SessionFactory sessionFactory = getSessionFactory();
     
-//    protected SessionFactory getSessionFactory() {
-//        try {
-//            return (SessionFactory) new InitialContext().lookup("SessionFactory");
-//        }
-//        catch (Exception e) {
-//            log.error("Could not locate SessionFactory in JNDI", e);
-//            throw new IllegalStateException("Could not locate SessionFactory in JNDI");
-//        }
-//    }
-    
     public void persist(ModeloEvaluacion transientInstance) {
         log.debug("persisting ModeloEvaluacion instance");
         try {
@@ -130,20 +120,37 @@ public class ModeloEvaluacionDAO extends HibernateUtil implements Serializable {
         }
     }
     
+    /**
+     * metodo para traer lista de evaluaciones
+     * @return 
+     */
     public List<ModeloEvaluacion> obtenerModelos() {
-
         iniciaSession();
         try {
             Query query = session.createQuery("From ModeloEvaluacion");
-
             return query.list();
-
         } catch (Exception e) {
             manejaException(e);
         } finally {
             cerrarSession();
         }
-
+        return null;
+    }
+    
+    public List<ModeloEvaluacion> obtenerCompetenciasXEvaluacion(String id) {
+        iniciaSession();
+        try {
+            Query query = session.createSQLQuery("select mc.nombre from modelo_evaluacion_x_competencia mec " +
+                " join modelo_evaluacion me on me.id = mec.modelo_evaluacion_id " +
+                " join modelo_competencia mc on mc.id = mec.modelo_competencia_id " +
+                " where mec.modelo_evaluacion_id = :id");
+            query.setString("id", id);
+            return query.list();
+        } catch (Exception e) {
+            manejaException(e);
+        } finally {
+            cerrarSession();
+        }
         return null;
     }
     

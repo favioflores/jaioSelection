@@ -78,6 +78,11 @@ public class EmpresaDAO extends HibernateUtil implements Serializable {
         return new ArrayList<Empresa>();
     }
 
+    /**
+     * 
+     * @param id
+     * @return 
+     */
     public Empresa obtenerEmpresa(String id) {
 
         iniciaSession();

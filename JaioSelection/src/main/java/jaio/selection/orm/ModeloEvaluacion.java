@@ -1,7 +1,7 @@
 package jaio.selection.orm;
 // Generated 06/11/2017 06:07:26 PM by Hibernate Tools 5.1.4.Final
 
-import java.math.BigDecimal;  
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -32,13 +32,6 @@ public class ModeloEvaluacion implements java.io.Serializable {
     public ModeloEvaluacion() {
     }
     
-    public ModeloEvaluacion(String nombre ,int minutosEstimados ,BigDecimal validez ,BigDecimal confiabilidad){
-        this.nombre = nombre;
-        this.minutosEstimados = minutosEstimados;
-        this.validez = validez;
-        this.confiabilidad = confiabilidad;
-    }
-
     public ModeloEvaluacion(ModeloLibro modeloLibro, String nombre, int horasEstimadas, int minutosEstimados, BigDecimal validez, BigDecimal confiabilidad, Date fechaCreacion, int estado, byte limiteTiempo, byte[] instructivo) {
         this.modeloLibro = modeloLibro;
         this.nombre = nombre;
@@ -70,10 +63,10 @@ public class ModeloEvaluacion implements java.io.Serializable {
         this.modeloAjustesCalc = modeloAjustesCalc;
     }
 
-    public Integer getId() {
-        return this.id;
+    public Integer getId(){
+     return this.id;
     }
-
+            
     public void setId(Integer id) {
         this.id = id;
     }
