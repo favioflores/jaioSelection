@@ -649,7 +649,7 @@ public class OrganigramaView extends BaseView implements Serializable {
     public void cargaOrganigramaMasivo(FileUploadEvent event) {
 
         List<ErrorExcelBean> lstErrorExcelBeans = new ArrayList<>();
-        
+
         if (event.getFile() == null) {
             mostrarAlerta(ERROR, "organigrama.masivo.archivo.vacio", null, null);
         } else {
@@ -660,18 +660,18 @@ public class OrganigramaView extends BaseView implements Serializable {
                 xlsxMasivo = new HSSFWorkbook(event.getFile().getInputstream());
 
                 validaCabeceraMasivo(xlsxMasivo, lstErrorExcelBeans);
-                
+
                 if (lstErrorExcelBeans.isEmpty()) {
                     validaOrganigramaMasivo(xlsxMasivo, lstErrorExcelBeans);
-                }else{
+                } else {
                     mostrarAlerta(WARN, "organigrama.masivo.archivo.procesoOkConErrores", null, null);
                     return;
                 }
-                
+
                 if (lstErrorExcelBeans.isEmpty()) {
                     //procesaOrganigramaMasivo(xlsxMasivo);
                     mostrarAlerta(INFO, "organigrama.masivo.archivo.procesoOk", null, null);
-                }else{
+                } else {
                     mostrarAlerta(WARN, "organigrama.masivo.archivo.procesoOkConErrores", null, null);
                     return;
                 }
@@ -685,6 +685,26 @@ public class OrganigramaView extends BaseView implements Serializable {
 
         }
 
+    }
+
+    private List<ErrorExcelBean> validaCabeceraMasivo(HSSFWorkbook xlsMasivo, List lstErrores) {
+
+        try {
+
+            HSSFSheet hoja = xlsMasivo.getSheetAt(0);
+            Iterator<Row> filas = hoja.iterator();
+
+            while (filas.hasNext()) {
+
+                Row row = filas.next();
+
+            }
+            
+        } catch (Exception ex) {
+            mostrarAlerta(FATAL, "error.inesperado", log, ex);
+        }
+        
+        return lstErrores;
     }
 
     private List<ErrorExcelBean> validaOrganigramaMasivo(HSSFWorkbook xlsMasivo, List lstErrores) {
@@ -715,7 +735,9 @@ public class OrganigramaView extends BaseView implements Serializable {
         } catch (Exception e) {
             mostrarAlerta(FATAL, "error.inesperado", log, e);
         }
-
+        
+        return lstErrores;
+        
     }
 
 }
