@@ -670,11 +670,12 @@ public class OrganigramaView extends BaseView implements Serializable {
 
                 if (lstErrorExcelBeans.isEmpty()) {
                     //procesaOrganigramaMasivo(xlsxMasivo);
-                    mostrarAlerta(INFO, "organigrama.masivo.archivo.procesoOk", null, null);
                 } else {
                     mostrarAlerta(WARN, "organigrama.masivo.archivo.procesoOkConErrores", null, null);
                     return;
                 }
+
+                mostrarAlerta(INFO, "organigrama.masivo.archivo.procesoOk", null, null);
 
                 inputFile = null;
                 fileImport = null;
@@ -694,16 +695,28 @@ public class OrganigramaView extends BaseView implements Serializable {
             HSSFSheet hoja = xlsMasivo.getSheetAt(0);
             Iterator<Row> filas = hoja.iterator();
 
-            while (filas.hasNext()) {
+            filas.next();
 
-                Row row = filas.next();
+            Row row = filas.next();
 
-            }
-            
+            String strId = Utilitarios.obtieneDatoCelda(row, Constantes.XLSX_COLUMNA_ID);
+            String strRegistro = Utilitarios.obtieneDatoCelda(row, Constantes.XLSX_COLUMNA_TIPO_REGISTRO);
+            String strNombre = Utilitarios.obtieneDatoCelda(row, Constantes.XLSX_COLUMNA_NOMBRE_REGISTRO);
+            String strDependencia = Utilitarios.obtieneDatoCelda(row, Constantes.XLSX_COLUMNA_DEPENDENCIA);
+
+            Utilitarios.validaValorCeldaXLSX(strId, Constantes.TIPO_STRING, msg("organigrama.masivo.columna.id"), lstErrores, row.getCell(Constantes.XLSX_COLUMNA_ID), true,
+                    Constantes.XLSX_ORG_MASIVO_CAB_ID);
+            Utilitarios.validaValorCeldaXLSX(strRegistro, Constantes.TIPO_STRING, msg("organigrama.masivo.columna.tipoRegistro"), lstErrores, row.getCell(Constantes.XLSX_COLUMNA_TIPO_REGISTRO), true,
+                    Constantes.XLSX_ORG_MASIVO_CAB_TIPO_REGISTRO);
+            Utilitarios.validaValorCeldaXLSX(strNombre, Constantes.TIPO_STRING, msg("organigrama.masivo.columna.nombreRegistro"), lstErrores, row.getCell(Constantes.XLSX_COLUMNA_NOMBRE_REGISTRO), true,
+                    Constantes.XLSX_ORG_MASIVO_CAB_NOMBRE_REGISTRO);
+            Utilitarios.validaValorCeldaXLSX(strDependencia, Constantes.TIPO_STRING, msg("organigrama.masivo.columna.dependencia"), lstErrores, row.getCell(Constantes.XLSX_COLUMNA_DEPENDENCIA), true,
+                    Constantes.XLSX_ORG_MASIVO_CAB_DEPENDENCIA);
+
         } catch (Exception ex) {
             mostrarAlerta(FATAL, "error.inesperado", log, ex);
         }
-        
+
         return lstErrores;
     }
 
@@ -713,6 +726,8 @@ public class OrganigramaView extends BaseView implements Serializable {
 
             HSSFSheet hoja = xlsMasivo.getSheetAt(0);
             Iterator<Row> filas = hoja.iterator();
+            filas.next();
+            filas.next();
 
             while (filas.hasNext()) {
 
@@ -735,9 +750,9 @@ public class OrganigramaView extends BaseView implements Serializable {
         } catch (Exception e) {
             mostrarAlerta(FATAL, "error.inesperado", log, e);
         }
-        
+
         return lstErrores;
-        
+
     }
 
 }
