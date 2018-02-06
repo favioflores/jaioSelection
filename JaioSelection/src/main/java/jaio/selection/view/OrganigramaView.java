@@ -1,16 +1,13 @@
 package jaio.selection.view;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
@@ -18,14 +15,12 @@ import javax.faces.context.FacesContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.primefaces.component.organigram.OrganigramHelper;
-import org.primefaces.event.organigram.OrganigramNodeCollapseEvent;
 import org.primefaces.event.organigram.OrganigramNodeDragDropEvent;
-import org.primefaces.event.organigram.OrganigramNodeExpandEvent;
-import org.primefaces.event.organigram.OrganigramNodeSelectEvent;
 import org.primefaces.model.DefaultOrganigramNode;
 import org.primefaces.model.OrganigramNode;
 
 import jaio.selection.bean.AreaOrganigramaBean;
+import jaio.selection.bean.ErrorExcelBean;
 import jaio.selection.bean.PerfilBean;
 import jaio.selection.dao.AreaDAO;
 import jaio.selection.dao.EmpresaDAO;
@@ -35,6 +30,13 @@ import jaio.selection.orm.Empresa;
 import jaio.selection.orm.Perfil;
 import jaio.selection.util.Constantes;
 import jaio.selection.util.Utilitarios;
+import java.util.List;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Row;
+import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.StreamedContent;
+import org.primefaces.model.UploadedFile;
 
 @ManagedBean(name = "organigramaView")
 @ViewScoped
@@ -44,6 +46,7 @@ public class OrganigramaView extends BaseView implements Serializable {
 
     private static final long serialVersionUID = -1L;
 
+    private List<ErrorExcelBean> lstErrores;
     private OrganigramNode rootNode;
     private OrganigramNode selection;
     private String area;
@@ -52,6 +55,24 @@ public class OrganigramaView extends BaseView implements Serializable {
     private AreaDAO objAreaDAO = new AreaDAO();
     private PerfilDAO objPerfilDAO = new PerfilDAO();
     private String idEmpresa;
+    private StreamedContent fileImport;
+    private UploadedFile inputFile;
+
+    public UploadedFile getInputFile() {
+        return inputFile;
+    }
+
+    public void setInputFile(UploadedFile inputFile) {
+        this.inputFile = inputFile;
+    }
+
+    public StreamedContent getFileImport() {
+        return fileImport;
+    }
+
+    public void setFileImport(StreamedContent fileImport) {
+        this.fileImport = fileImport;
+    }
 
     public OrganigramNode getRootNode() {
         return rootNode;
@@ -94,6 +115,7 @@ public class OrganigramaView extends BaseView implements Serializable {
 
         try {
 
+            limpiar();
             mostrarAlerta(INFO, "organigrama.modificando", null, null);
 
             if (Utilitarios.esNuloOVacio(Utilitarios.obtenerSession(Constantes.SESSION_EMPRESA))) {
@@ -115,6 +137,12 @@ public class OrganigramaView extends BaseView implements Serializable {
         } catch (Exception e) {
             mostrarAlerta(FATAL, "error.inesperado", log, e);
         }
+    }
+
+    public void limpiar() {
+        inputFile = null;
+        fileImport = null;
+        lstErrores.clear();
     }
 
     protected void armarMapaBD(String idEmpresa) {
@@ -611,6 +639,72 @@ public class OrganigramaView extends BaseView implements Serializable {
         } catch (Exception e) {
             log.error(e);
         }
+    }
+
+    public void fileExport() {
+
+    }
+
+    public void cargaOrganigramaMasivo(FileUploadEvent event) {
+
+        if (event.getFile() == null) {
+            mostrarAlerta(ERROR, "organigrama.masivo.archivo.vacio", null, null);
+        } else {
+
+            HSSFWorkbook xlsxMasivo;
+
+            try {
+                xlsxMasivo = new HSSFWorkbook(event.getFile().getInputstream());
+
+                lstErrores.clear();
+                //lstErrores = validaOrganigramaMasivo(xlsxMasivo, lstErrores);
+
+                if (lstErrores.isEmpty()) {
+                    procesaOrganigramaMasivo(xlsxMasivo, lstErrores);
+                    mostrarAlerta(INFO, "organigrama.masivo.archivo.procesoOk", null, null);
+                }
+
+                inputFile = null;
+                fileImport = null;
+
+            } catch (Exception ex) {
+                mostrarAlerta(FATAL, "error.inesperado", log, ex);
+            }
+
+        }
+
+    }
+
+    private void procesaOrganigramaMasivo(HSSFWorkbook xlsMasivo, List lstErrores) {
+
+        try {
+
+            HSSFSheet hoja = xlsMasivo.getSheetAt(0);
+            Iterator<Row> filas = hoja.iterator();
+
+            while (filas.hasNext()) {
+
+                Row row = filas.next();
+
+                String strId = Utilitarios.obtieneDatoCelda(row, Constantes.XLSX_COLUMNA_ID);
+                String strRegistro = Utilitarios.obtieneDatoCelda(row, Constantes.XLSX_COLUMNA_TIPO_REGISTRO);
+                String strNombre = Utilitarios.obtieneDatoCelda(row, Constantes.XLSX_COLUMNA_NOMBRE_REGISTRO);
+                String strDependencia = Utilitarios.obtieneDatoCelda(row, Constantes.XLSX_COLUMNA_DEPENDENCIA);
+
+                /* ID */
+                Utilitarios.validaValorCeldaXLSX(strId, Constantes.TIPO_INTEGER, msg("organigrama.masivo.columna.id"), lstErrores, row.getCell(Constantes.XLSX_COLUMNA_ID), true);
+                Utilitarios.validaValorCeldaXLSX(strRegistro, Constantes.TIPO_STRING, msg("organigrama.masivo.columna.tipoRegistro"), lstErrores, row.getCell(Constantes.XLSX_COLUMNA_TIPO_REGISTRO), true,
+                        Constantes.XLSX_ORG_MASIVO_COLUMNA_TIPO_AREA,
+                        Constantes.XLSX_ORG_MASIVO_COLUMNA_TIPO_PERFIL);
+                Utilitarios.validaValorCeldaXLSX(strNombre, Constantes.TIPO_STRING, msg("organigrama.masivo.columna.nombreRegistro"), lstErrores, row.getCell(Constantes.XLSX_COLUMNA_NOMBRE_REGISTRO), true);
+                Utilitarios.validaValorCeldaXLSX(strDependencia, Constantes.TIPO_INTEGER, msg("organigrama.masivo.columna.dependencia"), lstErrores, row.getCell(Constantes.XLSX_COLUMNA_DEPENDENCIA), false);
+
+            }
+
+        } catch (Exception e) {
+            mostrarAlerta(FATAL, "error.inesperado", log, e);
+        }
+
     }
 
 }
