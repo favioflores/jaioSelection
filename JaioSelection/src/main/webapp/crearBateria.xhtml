@@ -22,7 +22,7 @@
                     <p:button value="#{msg['organigrama.volver']}"
                               outcome="crearProceso" icon="fa fa-angle-left" />
                     <p:commandButton value="limpiar" id="limpiar" update=":formBateria:"
-                                     actionListener="#{bateriaView.limpiar()}" ajax="true"/>
+                                     actionListener="#{crarBateriaView.limpiar()}" ajax="true"/>
                 </div>
 
                 <!--panel izquierdo-->
@@ -66,38 +66,37 @@
                     </p:dataGrid>
                     <br/>
 
-                    <!--BILLETERA DE BATERIAS-->
+                    <!--BILLETERA DE EVALUACIONES-->
                     <p:fieldset id="evaluacionesSeleccionadas" style="margin-top:0px;margin-left:0px;margin-right:0px;">
                         <!--BILLETERA DE EVALUACIONES-->
-                        <p:dataGrid id="listDropBat" var="bat" value="#{bateriaView.droppedBaterias}" columns="2"  
-                                    emptyMessage="#{msg['bateria.arratreSuEvaluacion']}">
-                            <p:panel id="panelB">
+                        <p:dataGrid id="listDropBat" var="bat" value="#{crarBateriaView.droppedBaterias}" columns="2" emptyMessage="#{msg['bateria.arratreSuEvaluacion']}">
+                            <p:panel id="panelBilleteraDeEvaluaciones">
                                 <h:outputText value="#{bat.nombre}" style="font-size: 14px;font-family:'latoregular',sans-serif;"/><br/>
                                 <h:outputText value="Validez: #{bat.validez}%" style="font-size: 12px;font-family:'latoregular',sans-serif;"/><br/>
                                 <h:outputText value="Confiabilidad: #{bat.confiabilidad}%" style="font-size: 12px;font-family:'latoregular',sans-serif;"/><br/>
                                 <h:outputText value="Minutos: #{bat.minutosEstimados}" style="font-size: 12px;font-family:'latoregular',sans-serif;"/>
                             </p:panel>
+                            <p:draggable for="panelBilleteraDeEvaluaciones" revert="true" />
                         </p:dataGrid>
 
                     </p:fieldset>
 
                     <br/>
                     <!--BILLETERA DE COMPETENCIAS-->
-                    <p:dataGrid id="listaCompent" var="listC" value="#{bateriaView.competencias}" columns="1" 
+                    <p:dataGrid id="listaCompent" var="listC" value="#{crarBateriaView.competencias}" columns="1" 
                                 emptyMessage="#{msg['bateria.noHayCompetencias']}">
                         <h:outputText value="#{listC.nombre}" style="font-size: 14px;font-family:'latoregular',sans-serif;"/><br/>
                     </p:dataGrid>
 
-
-                    <!--EVENTO GET DE EVALUACIONES-->
+                    <!--CARGAR EVALUACIONES A LA BILLETERA-->
                     <p:droppable for="evaluacionesSeleccionadas" tolerance="touch" activeStyleClass="ui-state-highlight" datasource="listaEvaluaciones" onDrop="handleDrop">
-                        <p:ajax listener="#{bateriaView.cargarBilleteraBaterias}" update="listDropBat,listaCompent listaEvaluaciones" />
+                        <p:ajax listener="#{crarBateriaView.cargarBilleteraDeBaterias}" update="listDropBat,listaCompent listaEvaluaciones" />
                     </p:droppable>
 
                     <!--BOTON GRABAR-->
                     <div class="ui-g-12">
                         <p:commandButton value="#{msg['bateria.boton.grabar']}" id="guardarBateria" 
-                                         actionListener="#{bateriaView.grabarBateria(itemNombreE,itemEmpresa, itemArea,itemPerfil, listDropBat)}" ajax="false"/>
+                                         actionListener="#{crarBateriaView.grabarBateria(itemNombreE,itemEmpresa, itemArea,itemPerfil, listDropBat)}" ajax="false"/>
                     </div>
 
                     <!--</p:dataGrid>-->
@@ -105,15 +104,15 @@
 
                 <!--PANEL DERECHO-->
                 <div class="ui-g-4">
-                    <p:dataGrid id="listaEvaluaciones" var="listE"  value="#{bateriaView.lstBaterias}" columns="1" rows="4"  paginator="true" >
-                        <p:panel id="pnl">
+                    <p:dataGrid id="listaEvaluaciones" var="listE"  value="#{crarBateriaView.lstBaterias}" columns="1" rows="4"  paginator="true" >
+                        <p:panel id="panelDeEvaluaciones">
                             <h:outputText value="#{listE.nombre}" style="font-size: 14px;font-family:'latoregular',sans-serif;"/><br/>
                             <h:outputText value="Validez: #{listE.validez}%" style="font-size: 12px;font-family:'latoregular',sans-serif;"/><br/>
                             <h:outputText value="Confiabilidad: #{listE.confiabilidad}%" style="font-size: 12px;font-family:'latoregular',sans-serif;"/><br/>
                             <h:outputText value="Minutos Estimados: #{listE.minutosEstimados}" style="font-size: 12px;font-family:'latoregular',sans-serif;"/><br/>
                             <h:outputText value="Tiempo Limite: #{listE.limiteTiempo}" style="font-size: 12px;font-family:'latoregular',sans-serif;"/>
                         </p:panel>
-                        <p:draggable for="pnl" revert="true" />
+                        <p:draggable for="panelDeEvaluaciones" revert="true" />
                     </p:dataGrid>
                 </div>
 

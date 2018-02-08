@@ -21,15 +21,16 @@ import java.util.HashMap;
 import java.util.Map;
 import org.primefaces.event.DragDropEvent;
 
-@ManagedBean(name = "bateriaView")
+@ManagedBean(name = "crarBateriaView")
 @ViewScoped
-public class BateriaView extends BaseView implements Serializable {
+public class CrearBateriaView extends BaseView implements Serializable {
 
-    private static Log log = LogFactory.getLog(BateriaView.class);
+    private static Log log = LogFactory.getLog(CrearBateriaView.class);
     private static final long serialVersionUID = -1L;
 
     private List<BateriaBean> lstBaterias;
-    private List<ModeloEvaluacion> competencias;
+//    private List<ModeloEvaluacion> droppedCompetencias;
+    private List<BateriaBean> droppedCompetencias;
     private List<BateriaBean> droppedBaterias;
     private Map mapCompetenciasSeleccionadas;
     
@@ -42,7 +43,7 @@ public class BateriaView extends BaseView implements Serializable {
     public void limpiar() {
         lstBaterias = new ArrayList<>();
         droppedBaterias = new ArrayList<BateriaBean>();
-        competencias = new ArrayList<ModeloEvaluacion>();
+        droppedCompetencias = new ArrayList<BateriaBean>();
         mapCompetenciasSeleccionadas = new HashMap();
         obtenerModelosEvaluaciones();
         CrearProcesoView processView = new CrearProcesoView();
@@ -75,23 +76,28 @@ public class BateriaView extends BaseView implements Serializable {
         return lstBaterias;
     }
     
-    public void cargarBilleteraBaterias(DragDropEvent ddEvent) {
+    public void cargarBilleteraDeBaterias(DragDropEvent ddEvent) {
         BateriaBean model = ((BateriaBean) ddEvent.getData());
         droppedBaterias.add(model);
-        ModeloEvaluacionDAO objModelosDao = new ModeloEvaluacionDAO();
-        List<ModeloEvaluacion> lstCompBD = objModelosDao.obtenerCompetenciasXEvaluacion(model.getId());
-        competencias = lstCompBD;
-        
-        for(CompetenciaBean objCompetenciaBean  : model.getLstCompetencias()){
-            
-            if (!mapCompetenciasSeleccionadas.containsKey(objCompetenciaBean.getNombre())){
-                mapCompetenciasSeleccionadas.put("", "");
-            }
-        
-        }
-        
+        droppedCompetencias.add(model);
+//        ModeloEvaluacionDAO objModelosDao = new ModeloEvaluacionDAO();
+//        List<ModeloEvaluacion> lstCompBD = objModelosDao.obtenerCompetenciasXEvaluacion(model.getId());
+//        droppedCompetencias = lstCompBD;
+//        for(CompetenciaBean objCompetenciaBean  : model.getLstCompetencias()){
+//            if (!mapCompetenciasSeleccionadas.containsKey(objCompetenciaBean.getNombre())){
+//                mapCompetenciasSeleccionadas.put("", "");
+//            }
+//        }
         lstBaterias.remove(model);
     }
+    
+    public void vaciarBilleteraDeBaterias(DragDropEvent ddEvent){
+        BateriaBean model = ((BateriaBean) ddEvent.getData());
+        lstBaterias.add(model);
+        droppedBaterias.remove(model);
+        droppedCompetencias.remove(model);
+    }
+    
     
     public void grabarBateria(String itemNombreE,String itemEmpresa, String itemArea, 
             String itemPerfil, List<BateriaBean> listBaterias){
@@ -110,8 +116,8 @@ public class BateriaView extends BaseView implements Serializable {
         this.lstBaterias = lstBaterias;
     }
 
-    public List<ModeloEvaluacion> getCompetencias() {
-        return competencias;
+    public List<BateriaBean> getCompetencias() {
+        return droppedCompetencias;
     }
  
     public List<BateriaBean> getDroppedBaterias() {

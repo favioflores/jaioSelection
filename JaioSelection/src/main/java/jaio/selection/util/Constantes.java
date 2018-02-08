@@ -258,6 +258,7 @@ public class Constantes {
     public static String Tipo_dato_long = "long";
     public static String Tipo_dato_short = "short";
     public static String Tipo_dato_byte = "byte";
+    public static String Tipo_dato_date = "date";
     
 
     public static int XLSX_FILA_EMPRESA = 1;

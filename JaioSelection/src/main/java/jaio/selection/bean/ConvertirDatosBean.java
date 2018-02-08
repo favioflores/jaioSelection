@@ -4,6 +4,8 @@ import jaio.selection.util.Utilitarios;
 import jaio.selection.util.Constantes;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class ConvertirDatosBean implements Serializable {
 
@@ -27,7 +29,13 @@ public class ConvertirDatosBean implements Serializable {
             }else if(Constantes.Tipo_dato_byte.equals(tipo)){
                 byte valor = (byte)dato;
                 nuevoDato = Byte.toString(valor);
+            }else if(Constantes.Tipo_dato_date.equals(tipo)){
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                Date valor = (Date)dato;
+                nuevoDato = sdf.format(valor);
             }
+                
+                
         }
         return nuevoDato;
     }
