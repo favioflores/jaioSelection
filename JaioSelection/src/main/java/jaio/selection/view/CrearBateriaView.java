@@ -37,20 +37,20 @@ public class CrearBateriaView extends BaseView implements Serializable {
     @PostConstruct
     public void init() {
         limpiar();
-        obtenerModelosEvaluaciones();
+        obtenerModelosDeEvaluaciones();
     }
 
     public void limpiar() {
         lstBaterias = new ArrayList<>();
-        droppedBaterias = new ArrayList<BateriaBean>();
-        droppedCompetencias = new ArrayList<BateriaBean>();
+        droppedBaterias = new ArrayList<>();
+        droppedCompetencias = new ArrayList<>();
         mapCompetenciasSeleccionadas = new HashMap();
-        obtenerModelosEvaluaciones();
+        obtenerModelosDeEvaluaciones();
         CrearProcesoView processView = new CrearProcesoView();
         processView.limpiar();
     }
     
-    public List obtenerModelosEvaluaciones() {
+    public List obtenerModelosDeEvaluaciones() {
         try {
             ModeloEvaluacionDAO objModelosDao = new ModeloEvaluacionDAO();
             ConvertirDatosBean convertirDatos = new ConvertirDatosBean();
