@@ -30,6 +30,7 @@ import jaio.selection.orm.Empresa;
 import jaio.selection.orm.Perfil;
 import jaio.selection.util.Constantes;
 import jaio.selection.util.Utilitarios;
+import java.util.ArrayList;
 import java.util.List;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -647,6 +648,8 @@ public class OrganigramaView extends BaseView implements Serializable {
 
     public void cargaOrganigramaMasivo(FileUploadEvent event) {
 
+        List<ErrorExcelBean> lstErrorExcelBeans = new ArrayList<>();
+
         if (event.getFile() == null) {
             mostrarAlerta(ERROR, "organigrama.masivo.archivo.vacio", null, null);
         } else {
@@ -656,12 +659,21 @@ public class OrganigramaView extends BaseView implements Serializable {
             try {
                 xlsxMasivo = new HSSFWorkbook(event.getFile().getInputstream());
 
-                lstErrores.clear();
-                //lstErrores = validaOrganigramaMasivo(xlsxMasivo, lstErrores);
+                validaCabeceraMasivo(xlsxMasivo, lstErrorExcelBeans);
 
-                if (lstErrores.isEmpty()) {
-                    procesaOrganigramaMasivo(xlsxMasivo, lstErrores);
+                if (lstErrorExcelBeans.isEmpty()) {
+                    validaOrganigramaMasivo(xlsxMasivo, lstErrorExcelBeans);
+                } else {
+                    mostrarAlerta(WARN, "organigrama.masivo.archivo.procesoOkConErrores", null, null);
+                    return;
+                }
+
+                if (lstErrorExcelBeans.isEmpty()) {
+                    //procesaOrganigramaMasivo(xlsxMasivo);
                     mostrarAlerta(INFO, "organigrama.masivo.archivo.procesoOk", null, null);
+                } else {
+                    mostrarAlerta(WARN, "organigrama.masivo.archivo.procesoOkConErrores", null, null);
+                    return;
                 }
 
                 inputFile = null;
@@ -675,7 +687,27 @@ public class OrganigramaView extends BaseView implements Serializable {
 
     }
 
-    private void procesaOrganigramaMasivo(HSSFWorkbook xlsMasivo, List lstErrores) {
+    private List<ErrorExcelBean> validaCabeceraMasivo(HSSFWorkbook xlsMasivo, List lstErrores) {
+
+        try {
+
+            HSSFSheet hoja = xlsMasivo.getSheetAt(0);
+            Iterator<Row> filas = hoja.iterator();
+
+            while (filas.hasNext()) {
+
+                Row row = filas.next();
+
+            }
+            
+        } catch (Exception ex) {
+            mostrarAlerta(FATAL, "error.inesperado", log, ex);
+        }
+        
+        return lstErrores;
+    }
+
+    private List<ErrorExcelBean> validaOrganigramaMasivo(HSSFWorkbook xlsMasivo, List lstErrores) {
 
         try {
 
@@ -691,7 +723,6 @@ public class OrganigramaView extends BaseView implements Serializable {
                 String strNombre = Utilitarios.obtieneDatoCelda(row, Constantes.XLSX_COLUMNA_NOMBRE_REGISTRO);
                 String strDependencia = Utilitarios.obtieneDatoCelda(row, Constantes.XLSX_COLUMNA_DEPENDENCIA);
 
-                /* ID */
                 Utilitarios.validaValorCeldaXLSX(strId, Constantes.TIPO_INTEGER, msg("organigrama.masivo.columna.id"), lstErrores, row.getCell(Constantes.XLSX_COLUMNA_ID), true);
                 Utilitarios.validaValorCeldaXLSX(strRegistro, Constantes.TIPO_STRING, msg("organigrama.masivo.columna.tipoRegistro"), lstErrores, row.getCell(Constantes.XLSX_COLUMNA_TIPO_REGISTRO), true,
                         Constantes.XLSX_ORG_MASIVO_COLUMNA_TIPO_AREA,
@@ -704,7 +735,9 @@ public class OrganigramaView extends BaseView implements Serializable {
         } catch (Exception e) {
             mostrarAlerta(FATAL, "error.inesperado", log, e);
         }
-
+        
+        return lstErrores;
+        
     }
 
 }
