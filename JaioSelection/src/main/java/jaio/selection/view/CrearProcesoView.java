@@ -35,9 +35,9 @@ public class CrearProcesoView extends BaseView implements Serializable {
     private static Log log = LogFactory.getLog(CrearProcesoView.class);
     private static final long serialVersionUID = -1L;
     
-    private List<EmpresaBean> lstEmpresas;
-    private List<PerfilBean> lstPerfil;
-    private List<AreaBean> lstArea;
+    public List<EmpresaBean> lstEmpresas;
+    public List<PerfilBean> lstPerfil;
+    public List<AreaBean> lstArea;
     private String strEmpresaSeleccionada;
     private String strPerfilSeleccionado;
     private String strAreaSeleccionada;

@@ -1,5 +1,6 @@
 package jaio.selection.view;
 
+import static com.sun.faces.util.CollectionsUtils.map;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,14 +15,23 @@ import org.apache.commons.logging.LogFactory;
 import jaio.selection.bean.BateriaBean;
 import jaio.selection.bean.CompetenciaBean;
 import jaio.selection.bean.ConvertirDatosBean;
+import jaio.selection.bean.ModeloCompetenciaBean;
+import jaio.selection.dao.ModeloCompetenciaDAO;
 import jaio.selection.util.Constantes;
 import jaio.selection.dao.ModeloEvaluacionDAO;
+import jaio.selection.orm.ModeloCompetencia;
 import jaio.selection.orm.ModeloEvaluacion;
+import jaio.selection.util.Utilitarios;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 import org.primefaces.event.DragDropEvent;
 
-@ManagedBean(name = "crarBateriaView")
+@ManagedBean(name = "crearBateriaView")
 @ViewScoped
 public class CrearBateriaView extends BaseView implements Serializable {
 
@@ -29,10 +39,12 @@ public class CrearBateriaView extends BaseView implements Serializable {
     private static final long serialVersionUID = -1L;
 
     private List<BateriaBean> lstBaterias;
-//    private List<ModeloEvaluacion> droppedCompetencias;
-    private List<BateriaBean> droppedCompetencias;
     private List<BateriaBean> droppedBaterias;
-    private Map mapCompetenciasSeleccionadas;
+    private List<ModeloCompetenciaBean> droppedCompetencias;
+    private Map mapCompetenciasSeleccionadas = new HashMap();
+    
+    String nombreEvaluacion = new String();
+    CrearProcesoView processView = new CrearProcesoView();
     
     @PostConstruct
     public void init() {
@@ -41,13 +53,14 @@ public class CrearBateriaView extends BaseView implements Serializable {
     }
 
     public void limpiar() {
+        processView.limpiar();
         lstBaterias = new ArrayList<>();
         droppedBaterias = new ArrayList<>();
         droppedCompetencias = new ArrayList<>();
         mapCompetenciasSeleccionadas = new HashMap();
+        nombreEvaluacion = new String();
         obtenerModelosDeEvaluaciones();
-        CrearProcesoView processView = new CrearProcesoView();
-        processView.limpiar();
+        
     }
     
     public List obtenerModelosDeEvaluaciones() {
@@ -78,16 +91,24 @@ public class CrearBateriaView extends BaseView implements Serializable {
     
     public void cargarBilleteraDeBaterias(DragDropEvent ddEvent) {
         BateriaBean model = ((BateriaBean) ddEvent.getData());
+        ModeloCompetenciaDAO objMCDao = new ModeloCompetenciaDAO();
+        ConvertirDatosBean convertirDatos = new ConvertirDatosBean();
         droppedBaterias.add(model);
-        droppedCompetencias.add(model);
-//        ModeloEvaluacionDAO objModelosDao = new ModeloEvaluacionDAO();
-//        List<ModeloEvaluacion> lstCompBD = objModelosDao.obtenerCompetenciasXEvaluacion(model.getId());
-//        droppedCompetencias = lstCompBD;
-//        for(CompetenciaBean objCompetenciaBean  : model.getLstCompetencias()){
-//            if (!mapCompetenciasSeleccionadas.containsKey(objCompetenciaBean.getNombre())){
-//                mapCompetenciasSeleccionadas.put("", "");
-//            }
-//        }
+        List lstCompetencias = objMCDao.obtenerCompetenciasXEvaluacion(model.getId());
+        Iterator it = lstCompetencias.iterator();
+            while (it.hasNext()) {
+                Object obj[] = (Object[]) it.next();
+                ModeloCompetenciaBean objModeloCompetencia = new ModeloCompetenciaBean();
+                objModeloCompetencia.setNombre(obj[0].toString());
+                String id = convertirDatos.convertirObjetAString(obj[1], Constantes.Tipo_dato_int);
+                objModeloCompetencia.setId(id);
+                if (!mapCompetenciasSeleccionadas.containsKey(objModeloCompetencia.getId())){
+                    mapCompetenciasSeleccionadas.put(objModeloCompetencia.getId(),objModeloCompetencia.getNombre());
+                    ModeloCompetenciaBean objCompetencia = new ModeloCompetenciaBean();
+                    objCompetencia.setNombre(objModeloCompetencia.getNombre());
+                    droppedCompetencias.add(objCompetencia);
+                }   
+            }
         lstBaterias.remove(model);
     }
     
@@ -95,16 +116,22 @@ public class CrearBateriaView extends BaseView implements Serializable {
         BateriaBean model = ((BateriaBean) ddEvent.getData());
         lstBaterias.add(model);
         droppedBaterias.remove(model);
-        droppedCompetencias.remove(model);
     }
     
     
-    public void grabarBateria(String itemNombreE,String itemEmpresa, String itemArea, 
-            String itemPerfil, List<BateriaBean> listBaterias){
+    public void grabarBateria(){
         try {
-            mostrarAlerta(INFO, "proceso.seleccion.perfil", null, null,itemEmpresa);
+            if (Utilitarios.noEsNuloOVacio(nombreEvaluacion)){
+                if (Utilitarios.noEsNuloOVacio(nombreEvaluacion)){
+                    
+                }else{
+                    mostrarAlerta(INFO, "Seleccione Empresa", null, null);    
+                }
+            }else{
+                mostrarAlerta(INFO, "Ingrese Nombre de Evaluación", null, null);
+            }
         } catch (Exception e) {
-            mostrarAlerta(FATAL, "error.inesperado", log, e);
+             mostrarAlerta(FATAL, "error.inesperado", log, e);
         }
     }
     
@@ -116,12 +143,28 @@ public class CrearBateriaView extends BaseView implements Serializable {
         this.lstBaterias = lstBaterias;
     }
 
-    public List<BateriaBean> getCompetencias() {
-        return droppedCompetencias;
-    }
- 
     public List<BateriaBean> getDroppedBaterias() {
         return droppedBaterias;
+    }
+    
+    public void setDroppedBaterias(List<BateriaBean> droppedBaterias) {
+        this.droppedBaterias = droppedBaterias;
+    }
+    
+    public List<ModeloCompetenciaBean> getDroppedCompetencias() {
+        return droppedCompetencias;
+    }
+    
+    public void setDroppedCompetencias(List<ModeloCompetenciaBean> droppedCompetencias) {
+        this.droppedCompetencias = droppedCompetencias;
+    }
+
+    public String getNombreEvaluacion() {
+        return nombreEvaluacion;
+    }
+
+    public void setNombreEvaluacion(String nombreEvaluacion) {
+        this.nombreEvaluacion = nombreEvaluacion;
     }
    
 }
