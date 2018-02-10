@@ -2,22 +2,22 @@
 <!-- Generated 06/11/2017 06:07:28 PM by Hibernate Tools 5.1.4.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping auto-import="true" default-access="property" default-cascade="none" default-lazy="true">
     <class catalog="JaioSelectionDB" dynamic-insert="false" dynamic-update="false" mutable="true" name="jaio.selection.orm.EvaluacionPerfil" optimistic-lock="version" polymorphism="implicit" select-before-update="false" table="evaluacion_perfil">
-        <composite-id class="jaio.selection.orm.EvaluacionPerfilId" mapped="false" name="id" unsaved-value="undefined">
-            <key-property name="perfilId" type="int">
-                <column name="perfil_id"/>
-            </key-property>
-            <key-property name="bateriaPersonalizadaId" type="int">
+        <composite-id class="jaio.selection.orm.EvaluacionPerfil" mapped="false" name="id" unsaved-value="undefined">
+            <key-property name="bateriaPersonalizada" type="int">
                 <column name="bateria_personalizada_id"/>
             </key-property>
             <key-property name="estado" type="int">
                 <column name="estado"/>
             </key-property>
+            <key-property name="procesoSeleccion" type="int">
+                <column name="proceso_seleccion_id"/>
+            </key-property>
         </composite-id>
         <many-to-one class="jaio.selection.orm.BateriaPersonalizada" embed-xml="true" fetch="select" insert="false" name="bateriaPersonalizada" not-found="exception" optimistic-lock="true" unique="false" update="false">
             <column name="bateria_personalizada_id" not-null="true"/>
         </many-to-one>
-        <many-to-one class="jaio.selection.orm.Perfil" embed-xml="true" fetch="select" insert="false" name="perfil" not-found="exception" optimistic-lock="true" unique="false" update="false">
-            <column name="perfil_id" not-null="true"/>
+        <many-to-one class="jaio.selection.orm.ProcesoSeleccion" embed-xml="true" fetch="select" insert="false" name="procesoSeleccion" not-found="exception" optimistic-lock="true" unique="false" update="false">
+            <column name="proceso_seleccion_id" not-null="true"/>
         </many-to-one>
     </class>
 </hibernate-mapping>

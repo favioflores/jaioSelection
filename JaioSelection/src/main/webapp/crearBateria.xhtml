@@ -24,7 +24,7 @@
 
         <h:form id="formBateria" enctype="multipart/form-data">
             <f:metadata>
-                <f:viewParam name="id" value="#{crearBateriaView.id}"/>
+                <f:viewParam name="id" value="#{crearBateriaView.empresa}"/>
                 <!--<f:viewAction action="#{crearBateriaView.init}" />-->
             </f:metadata>
             <p:growl life="4000" />
@@ -50,6 +50,8 @@
                             <p:inputText id="nombreEvaluacion" value="#{crearBateriaView.nombreEvaluacion}" maxlength="200" size="35" 
                                          placeholder="#{msg['bateria.ingreseNombreEvaluacion']}"
                                          label="#{msg['bateria.ingreseNombreEvaluacion']}"
+                                         required="true"
+                                         requiredMessage="#{msg['bateria.noIngresoNombreEvaluacion']}"
                                          ></p:inputText>
                         </div>
                         <!--EMPRESA-->

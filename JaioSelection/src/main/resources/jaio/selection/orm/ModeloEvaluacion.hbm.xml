@@ -40,7 +40,7 @@
             </key>
             <one-to-many class="jaio.selection.orm.ModeloEvaluacionXCompetencia" embed-xml="true" not-found="exception"/>
         </set>
-        <set embed-xml="true" fetch="select" inverse="true" lazy="true" mutable="true" name="bateriaEvaluacions" optimistic-lock="true" sort="unsorted" table="bateria_evaluacion">
+        <set embed-xml="true" fetch="select" inverse="true" lazy="true" mutable="true" name="bateriaEvaluacion" optimistic-lock="true" sort="unsorted" table="bateria_evaluacion">
             <key on-delete="noaction">
                 <column name="modelo_evaluacion_id" not-null="true"/>
             </key>

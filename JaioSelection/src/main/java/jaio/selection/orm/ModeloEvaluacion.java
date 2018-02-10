@@ -18,7 +18,7 @@ public class ModeloEvaluacion implements java.io.Serializable {
     private byte limiteTiempo;
     private byte[] instructivo;
     private Set modeloEvaluacionXCompetencias = new HashSet(0);
-    private Set bateriaEvaluacions = new HashSet(0);
+    private Set bateriaEvaluacion = new HashSet(0);
     private Set modeloPreguntas = new HashSet(0);
     private Set modeloAjustesCalc = new HashSet(0);
 
@@ -37,7 +37,7 @@ public class ModeloEvaluacion implements java.io.Serializable {
         this.instructivo = instructivo;
     }
 
-    public ModeloEvaluacion(ModeloLibro modeloLibro, String nombre, int horasEstimadas, int minutosEstimados, BigDecimal validez, BigDecimal confiabilidad, Date fechaCreacion, int estado, byte limiteTiempo, byte[] instructivo, Set modeloEvaluacionXCompetencias, Set bateriaEvaluacions, Set modeloEvaluacionXCompetencias_1, Set modeloPreguntas, Set bateriaEvaluacions_1, Set modeloPreguntas_1, Set modeloAjustesCalc) {
+    public ModeloEvaluacion(ModeloLibro modeloLibro, String nombre, int horasEstimadas, int minutosEstimados, BigDecimal validez, BigDecimal confiabilidad, Date fechaCreacion, int estado, byte limiteTiempo, byte[] instructivo, Set modeloEvaluacionXCompetencias, Set bateriaEvaluacion, Set modeloPreguntas, Set modeloAjustesCalc) {
         this.modeloLibro = modeloLibro;
         this.nombre = nombre;
         this.minutosEstimados = minutosEstimados;
@@ -48,7 +48,7 @@ public class ModeloEvaluacion implements java.io.Serializable {
         this.limiteTiempo = limiteTiempo;
         this.instructivo = instructivo;
         this.modeloEvaluacionXCompetencias = modeloEvaluacionXCompetencias;
-        this.bateriaEvaluacions = bateriaEvaluacions;
+        this.bateriaEvaluacion = bateriaEvaluacion;
         this.modeloPreguntas = modeloPreguntas;
         this.modeloAjustesCalc = modeloAjustesCalc;
     }
@@ -133,12 +133,12 @@ public class ModeloEvaluacion implements java.io.Serializable {
         this.modeloEvaluacionXCompetencias = modeloEvaluacionXCompetencias;
     }
 
-    public Set getBateriaEvaluacions() {
-        return this.bateriaEvaluacions;
+    public Set getBateriaEvaluacion() {
+        return this.bateriaEvaluacion;
     }
 
-    public void setBateriaEvaluacions(Set bateriaEvaluacions) {
-        this.bateriaEvaluacions = bateriaEvaluacions;
+    public void setBateriaEvaluacion(Set bateriaEvaluacion) {
+        this.bateriaEvaluacion = bateriaEvaluacion;
     }
 
     public Set getModeloPreguntas() {

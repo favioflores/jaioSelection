@@ -8,16 +8,18 @@ public class EvaluacionPerfil implements java.io.Serializable {
 
     private EvaluacionPerfilId id;
     private BateriaPersonalizada bateriaPersonalizada;
-    private Perfil perfil;
+    private int estado;
+    private ProcesoSeleccion procesoSeleccion;
     
 
     public EvaluacionPerfil() {
     }
 
-    public EvaluacionPerfil(EvaluacionPerfilId id, BateriaPersonalizada bateriaPersonalizada, Perfil perfil) {
+    public EvaluacionPerfil(EvaluacionPerfilId id, BateriaPersonalizada bateriaPersonalizada, int estado,ProcesoSeleccion procesoSeleccion) {
         this.id = id;
         this.bateriaPersonalizada = bateriaPersonalizada;
-        this.perfil = perfil;
+        this.estado = estado;
+        this.procesoSeleccion = procesoSeleccion;
     }
 
     public EvaluacionPerfilId getId() {
@@ -36,12 +38,20 @@ public class EvaluacionPerfil implements java.io.Serializable {
         this.bateriaPersonalizada = bateriaPersonalizada;
     }
 
-    public Perfil getPerfil() {
-        return this.perfil;
+    public int getEstado() {
+        return estado;
     }
 
-    public void setPerfil(Perfil perfil) {
-        this.perfil = perfil;
+    public void setEstado(int estado) {
+        this.estado = estado;
+    }
+    
+    public ProcesoSeleccion getProcesoSeleccion() {
+        return procesoSeleccion;
     }
 
+    public void setProcesoSeleccion(ProcesoSeleccion procesoSeleccion) {
+        this.procesoSeleccion = procesoSeleccion;
+    }
+    
 }

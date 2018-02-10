@@ -143,25 +143,32 @@ public class ModeloEvaluacionDAO extends HibernateUtil implements Serializable {
         return null;
     }
     
-    public boolean grabarBateria(BateriaPersonalizada bateriaPersonalizada, ProcesoSeleccion objProcesoSeleccion,BateriaEvaluacion bateriaEvaluacion) {
+    public void grabarBateriaPersonalizada(BateriaPersonalizada bateriaPersonalizada) {
         iniciaSession();
-        boolean grabado = false;
         try {
-            
             session.save(bateriaPersonalizada);
-            
-//            session.save(evaluacionPerfil);
-//            session.save(bateriaEvaluacion);
-            
             guardarCambios();
             log.debug("Grago correctamente");
         } catch (Exception e) {
+            manejaException(e);
             rollback(e);
         } finally {
-            grabado = true;
             cerrarSession();
         }
-        return grabado;
+    }
+    
+    public void grabarBateriaEvaluacion(BateriaEvaluacion bateriaEvaluacion){
+        iniciaSession();
+        try {
+            session.save(bateriaEvaluacion);
+            guardarCambios();
+            log.debug("Grago correctamente");
+        } catch (Exception e) {
+            manejaException(e);
+            rollback(e);
+        } finally {
+            cerrarSession();
+        }
     }
     
 }

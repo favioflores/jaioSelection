@@ -18,6 +18,7 @@ public class ProcesoSeleccion implements java.io.Serializable {
     private Set candidatos = new HashSet(0);
     private Set notificacioneses = new HashSet(0);
     private Set comunicadoProcesos = new HashSet(0);
+    private Set evaluacionPerfil = new HashSet(0);
 
     public ProcesoSeleccion() {
     }
@@ -29,7 +30,7 @@ public class ProcesoSeleccion implements java.io.Serializable {
         this.estado = estado;
     }
 
-    public ProcesoSeleccion(Perfil perfil, Date fechaRegistro, String descripcion, int estado, Set candidatos, Set notificacioneses, Set candidatos_1, Set comunicadoProcesos, Set comunicadoProcesos_1, Set notificacioneses_1) {
+    public ProcesoSeleccion(Perfil perfil, Date fechaRegistro, String descripcion, int estado, Set candidatos, Set notificacioneses, Set comunicadoProcesos, Set evaluacionPerfil) {
         this.perfil = perfil;
         this.fechaRegistro = fechaRegistro;
         this.descripcion = descripcion;
@@ -37,6 +38,7 @@ public class ProcesoSeleccion implements java.io.Serializable {
         this.candidatos = candidatos;
         this.notificacioneses = notificacioneses;
         this.comunicadoProcesos = comunicadoProcesos;
+        this.evaluacionPerfil = evaluacionPerfil;
     }
 
     public Integer getId() {
@@ -101,6 +103,14 @@ public class ProcesoSeleccion implements java.io.Serializable {
 
     public void setComunicadoProcesos(Set comunicadoProcesos) {
         this.comunicadoProcesos = comunicadoProcesos;
+    }
+
+    public Set getEvaluacionPerfil() {
+        return evaluacionPerfil;
+    }
+
+    public void setEvaluacionPerfil(Set evaluacionPerfil) {
+        this.evaluacionPerfil = evaluacionPerfil;
     }
 
 }
