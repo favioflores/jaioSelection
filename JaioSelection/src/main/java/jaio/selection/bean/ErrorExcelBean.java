@@ -6,8 +6,17 @@ public class ErrorExcelBean implements Serializable{
 
     private String strEtiqueta;
     private String strError;
-    private int strFila;
-    private int strColumna;
+    private String strFila;
+    private String strColumna;
+    private String strValor;
+
+    public String getStrValor() {
+        return strValor;
+    }
+
+    public void setStrValor(String strValor) {
+        this.strValor = strValor;
+    }
 
     public String getStrEtiqueta() {
         return strEtiqueta;
@@ -25,22 +34,22 @@ public class ErrorExcelBean implements Serializable{
         this.strError = strError;
     }
 
-    public int getStrFila() {
+    public String getStrFila() {
         return strFila;
     }
 
-    public void setStrFila(int strFila) {
+    public void setStrFila(String strFila) {
         this.strFila = strFila;
     }
 
-    public int getStrColumna() {
+    public String getStrColumna() {
         return strColumna;
     }
 
-    public void setStrColumna(int strColumna) {
+    public void setStrColumna(String strColumna) {
         this.strColumna = strColumna;
     }
-    
+
 }
 
 

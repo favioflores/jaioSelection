@@ -11,7 +11,16 @@ public class PerfilBean implements Serializable {
     private String id;
     private String descripcion;
     private OrganigramNode node;
+    private String dependencia;
 
+    public String getDependencia() {
+        return dependencia;
+    }
+
+    public void setDependencia(String dependencia) {
+        this.dependencia = dependencia;
+    }
+    
     public String getId() {
         return id;
     }

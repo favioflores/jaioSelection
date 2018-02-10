@@ -11,8 +11,8 @@ insert into definicion values (4,'Estado area');
 insert into definicion values (5,'Estado perfil');
 insert into definicion values (6,'Estado evaluación');
 insert into definicion values (7,'Tipo de pregunta');
-
 insert into definicion values (8,'Tipo de respuesta');
+insert into definicion values (9,'Estado del proceso');
 
 select * from elemento;
 insert into elemento values (1,'Vigente',0,true,1);
@@ -38,6 +38,9 @@ insert into elemento values (16,'Numérico',1,true,7);
 insert into elemento values (17,'Texto',1,true,8);
 insert into elemento values (18,'Gráfico',1,true,8);
 insert into elemento values (19,'Numérico',1,true,8);
+
+insert into elemento values (20,'Registrado',1,true,9);
+insert into elemento values (21,'Eliminado',1,true,9);
 
 commit;
 
