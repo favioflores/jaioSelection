@@ -46,6 +46,7 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
+import javax.faces.context.FacesContext;
 import org.primefaces.event.DragDropEvent;
 
 @ManagedBean(name = "crearBateriaView")
@@ -66,6 +67,7 @@ public class CrearBateriaView extends BaseView implements Serializable {
     String strEmpresaSeleccionada;
     String strAreaSeleccionada;
     String strPerfilSeleccionado;
+    String empresa;
 
     @PostConstruct
     public void init() {
@@ -81,14 +83,17 @@ public class CrearBateriaView extends BaseView implements Serializable {
         lstArea = new ArrayList<>();
         lstPerfil = new ArrayList<>();
         nombreEvaluacion = new String();
-        
+        strEmpresaSeleccionada = empresa;
         
         strEmpresaSeleccionada = new String();
         poblarEmpresas();
-        
-        
-        
         obtenerModelosDeEvaluaciones();
+    }
+    
+    public void cargarEmpresa(){
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        Map params = facesContext.getExternalContext().getRequestParameterMap();
+        Integer parametroObtenido= new Integer((String) params.get("nombreParametro"));
     }
 
     public List obtenerModelosDeEvaluaciones() {
@@ -391,4 +396,13 @@ public class CrearBateriaView extends BaseView implements Serializable {
         this.lstArea = lstArea;
     }
 
+    public String getEmpresa() {
+        return empresa;
     }
+
+    public void setEmpresa(String empresa) {
+        this.empresa = empresa;
+    }
+
+    
+}
