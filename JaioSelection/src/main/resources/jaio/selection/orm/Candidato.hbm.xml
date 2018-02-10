@@ -66,25 +66,7 @@
             </key>
             <one-to-many class="jaio.selection.orm.InfoExperiencia" embed-xml="true" not-found="exception"/>
         </set>
-        <set embed-xml="true" fetch="select" inverse="true" lazy="true" mutable="true" name="infoAcademicas_1" optimistic-lock="true" sort="unsorted" table="info_academica">
-            <key on-delete="noaction">
-                <column name="candidato_id" not-null="true"/>
-            </key>
-            <one-to-many class="jaio.selection.orm.InfoAcademica" embed-xml="true" not-found="exception"/>
-        </set>
         <set embed-xml="true" fetch="select" inverse="true" lazy="true" mutable="true" name="infoConocimientos" optimistic-lock="true" sort="unsorted" table="info_conocimiento">
-            <key on-delete="noaction">
-                <column name="candidato_id" not-null="true"/>
-            </key>
-            <one-to-many class="jaio.selection.orm.InfoConocimiento" embed-xml="true" not-found="exception"/>
-        </set>
-        <set embed-xml="true" fetch="select" inverse="true" lazy="true" mutable="true" name="infoExperiencias_1" optimistic-lock="true" sort="unsorted" table="info_experiencia">
-            <key on-delete="noaction">
-                <column name="candidato_id" not-null="true"/>
-            </key>
-            <one-to-many class="jaio.selection.orm.InfoExperiencia" embed-xml="true" not-found="exception"/>
-        </set>
-        <set embed-xml="true" fetch="select" inverse="true" lazy="true" mutable="true" name="infoConocimientos_1" optimistic-lock="true" sort="unsorted" table="info_conocimiento">
             <key on-delete="noaction">
                 <column name="candidato_id" not-null="true"/>
             </key>

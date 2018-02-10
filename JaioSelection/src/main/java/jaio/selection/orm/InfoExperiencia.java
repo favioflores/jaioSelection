@@ -18,7 +18,6 @@ public class InfoExperiencia implements java.io.Serializable {
     private byte[] logro;
     private String cargo;
     private Set infoReferencias = new HashSet(0);
-    private Set infoReferencias_1 = new HashSet(0);
 
     public InfoExperiencia() {
     }
@@ -30,7 +29,7 @@ public class InfoExperiencia implements java.io.Serializable {
         this.cargo = cargo;
     }
 
-    public InfoExperiencia(Candidato candidato, String empresa, Date fechaInicio, Date fechaFin, byte[] logro, String cargo, Set infoReferencias, Set infoReferencias_1) {
+    public InfoExperiencia(Candidato candidato, String empresa, Date fechaInicio, Date fechaFin, byte[] logro, String cargo, Set infoReferencias) {
         this.candidato = candidato;
         this.empresa = empresa;
         this.fechaInicio = fechaInicio;
@@ -38,7 +37,6 @@ public class InfoExperiencia implements java.io.Serializable {
         this.logro = logro;
         this.cargo = cargo;
         this.infoReferencias = infoReferencias;
-        this.infoReferencias_1 = infoReferencias_1;
     }
 
     public Integer getId() {
@@ -103,14 +101,6 @@ public class InfoExperiencia implements java.io.Serializable {
 
     public void setInfoReferencias(Set infoReferencias) {
         this.infoReferencias = infoReferencias;
-    }
-
-    public Set getInfoReferencias_1() {
-        return this.infoReferencias_1;
-    }
-
-    public void setInfoReferencias_1(Set infoReferencias_1) {
-        this.infoReferencias_1 = infoReferencias_1;
     }
 
 }

@@ -23,10 +23,16 @@ import jaio.selection.bean.AreaOrganigramaBean;
 import jaio.selection.bean.ErrorExcelBean;
 import jaio.selection.bean.PerfilBean;
 import jaio.selection.dao.AreaDAO;
+import jaio.selection.dao.BateriaEvaluacionDAO;
 import jaio.selection.dao.EmpresaDAO;
+import jaio.selection.dao.InfoConocimientoDAO;
 import jaio.selection.dao.PerfilDAO;
 import jaio.selection.orm.Area;
+import jaio.selection.orm.BateriaEvaluacion;
+import jaio.selection.orm.BateriaPersonalizada;
 import jaio.selection.orm.Empresa;
+import jaio.selection.orm.EvaluacionPerfil;
+import jaio.selection.orm.InfoConocimiento;
 import jaio.selection.orm.Perfil;
 import jaio.selection.util.Constantes;
 import jaio.selection.util.Utilitarios;
@@ -143,7 +149,7 @@ public class OrganigramaView extends BaseView implements Serializable {
     public void limpiar() {
         inputFile = null;
         fileImport = null;
-        lstErrores.clear();
+        lstErrores = new ArrayList<>();
     }
 
     protected void armarMapaBD(String idEmpresa) {
@@ -686,6 +692,12 @@ public class OrganigramaView extends BaseView implements Serializable {
 
         }
 
+    }
+
+    private List<ErrorExcelBean> procesaOrganigramaMasivo(HSSFWorkbook xlsMasivo, List lstErrores) {
+
+        return null;
+        
     }
 
     private List<ErrorExcelBean> validaCabeceraMasivo(HSSFWorkbook xlsMasivo, List lstErrores) {

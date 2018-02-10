@@ -2163,7 +2163,11 @@ h2 {
     border-bottom: 1px solid #d5d5d5;
     padding: .1em;
     font-size: 24px; }
-
+.card h2 {
+    margin: 0 0 .5em 0;
+    border-bottom: 1px solid #d5d5d5;
+    padding: .1em;
+    font-size: 18px; }
 .ui-g {
     -ms-flex-wrap: wrap; }
 

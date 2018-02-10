@@ -16,7 +16,6 @@ public class ModeloLibro implements java.io.Serializable {
     private String resena;
     private Integer minutosEstimados;
     private Set modeloEvaluacions = new HashSet(0);
-    private Set modeloEvaluacions_1 = new HashSet(0);
 
     public ModeloLibro() {
     }
@@ -32,7 +31,6 @@ public class ModeloLibro implements java.io.Serializable {
         this.resena = resena;
         this.minutosEstimados = minutosEstimados;
         this.modeloEvaluacions = modeloEvaluacions;
-        this.modeloEvaluacions_1 = modeloEvaluacions_1;
     }
 
     public Integer getId() {
@@ -89,14 +87,6 @@ public class ModeloLibro implements java.io.Serializable {
 
     public void setModeloEvaluacions(Set modeloEvaluacions) {
         this.modeloEvaluacions = modeloEvaluacions;
-    }
-
-    public Set getModeloEvaluacions_1() {
-        return this.modeloEvaluacions_1;
-    }
-
-    public void setModeloEvaluacions_1(Set modeloEvaluacions_1) {
-        this.modeloEvaluacions_1 = modeloEvaluacions_1;
     }
 
 }

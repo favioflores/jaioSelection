@@ -17,10 +17,7 @@ public class ProcesoSeleccion implements java.io.Serializable {
     private int estado;
     private Set candidatos = new HashSet(0);
     private Set notificacioneses = new HashSet(0);
-    private Set candidatos_1 = new HashSet(0);
     private Set comunicadoProcesos = new HashSet(0);
-    private Set comunicadoProcesos_1 = new HashSet(0);
-    private Set notificacioneses_1 = new HashSet(0);
 
     public ProcesoSeleccion() {
     }
@@ -39,10 +36,7 @@ public class ProcesoSeleccion implements java.io.Serializable {
         this.estado = estado;
         this.candidatos = candidatos;
         this.notificacioneses = notificacioneses;
-        this.candidatos_1 = candidatos_1;
         this.comunicadoProcesos = comunicadoProcesos;
-        this.comunicadoProcesos_1 = comunicadoProcesos_1;
-        this.notificacioneses_1 = notificacioneses_1;
     }
 
     public Integer getId() {
@@ -101,36 +95,12 @@ public class ProcesoSeleccion implements java.io.Serializable {
         this.notificacioneses = notificacioneses;
     }
 
-    public Set getCandidatos_1() {
-        return this.candidatos_1;
-    }
-
-    public void setCandidatos_1(Set candidatos_1) {
-        this.candidatos_1 = candidatos_1;
-    }
-
     public Set getComunicadoProcesos() {
         return this.comunicadoProcesos;
     }
 
     public void setComunicadoProcesos(Set comunicadoProcesos) {
         this.comunicadoProcesos = comunicadoProcesos;
-    }
-
-    public Set getComunicadoProcesos_1() {
-        return this.comunicadoProcesos_1;
-    }
-
-    public void setComunicadoProcesos_1(Set comunicadoProcesos_1) {
-        this.comunicadoProcesos_1 = comunicadoProcesos_1;
-    }
-
-    public Set getNotificacioneses_1() {
-        return this.notificacioneses_1;
-    }
-
-    public void setNotificacioneses_1(Set notificacioneses_1) {
-        this.notificacioneses_1 = notificacioneses_1;
     }
 
 }

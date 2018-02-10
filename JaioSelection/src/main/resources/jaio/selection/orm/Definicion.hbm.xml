@@ -15,11 +15,5 @@
             </key>
             <one-to-many class="jaio.selection.orm.Elemento" embed-xml="true" not-found="exception"/>
         </set>
-        <set embed-xml="true" fetch="select" inverse="true" lazy="true" mutable="true" name="elementos_1" optimistic-lock="true" sort="unsorted" table="elemento">
-            <key on-delete="noaction">
-                <column name="definicion_id" not-null="true"/>
-            </key>
-            <one-to-many class="jaio.selection.orm.Elemento" embed-xml="true" not-found="exception"/>
-        </set>
     </class>
 </hibernate-mapping>

@@ -20,7 +20,6 @@ public class ModeloPregunta implements java.io.Serializable {
     private String comentario;
     private byte ejemplo;
     private Set modeloRespuestas = new HashSet(0);
-    private Set modeloRespuestas_1 = new HashSet(0);
 
     public ModeloPregunta() {
     }
@@ -36,7 +35,7 @@ public class ModeloPregunta implements java.io.Serializable {
         this.ejemplo = ejemplo;
     }
 
-    public ModeloPregunta(ModeloEvaluacion modeloEvaluacion, int tipo, String nombre, int orden, int horasEstimadas, int minutosEstimados, byte[] imagen, String comentario, byte ejemplo, Set modeloRespuestas, Set modeloRespuestas_1) {
+    public ModeloPregunta(ModeloEvaluacion modeloEvaluacion, int tipo, String nombre, int orden, int horasEstimadas, int minutosEstimados, byte[] imagen, String comentario, byte ejemplo, Set modeloRespuestas) {
         this.modeloEvaluacion = modeloEvaluacion;
         this.tipo = tipo;
         this.nombre = nombre;
@@ -47,7 +46,6 @@ public class ModeloPregunta implements java.io.Serializable {
         this.comentario = comentario;
         this.ejemplo = ejemplo;
         this.modeloRespuestas = modeloRespuestas;
-        this.modeloRespuestas_1 = modeloRespuestas_1;
     }
 
     public Integer getId() {
@@ -120,14 +118,6 @@ public class ModeloPregunta implements java.io.Serializable {
 
     public void setModeloRespuestas(Set modeloRespuestas) {
         this.modeloRespuestas = modeloRespuestas;
-    }
-
-    public Set getModeloRespuestas_1() {
-        return this.modeloRespuestas_1;
-    }
-
-    public void setModeloRespuestas_1(Set modeloRespuestas_1) {
-        this.modeloRespuestas_1 = modeloRespuestas_1;
     }
 
     public String getComentario() {
