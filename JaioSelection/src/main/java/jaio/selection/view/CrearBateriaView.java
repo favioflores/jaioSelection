@@ -46,6 +46,7 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
+import javax.faces.context.FacesContext;
 import org.primefaces.event.DragDropEvent;
 
 @ManagedBean(name = "crearBateriaView")
