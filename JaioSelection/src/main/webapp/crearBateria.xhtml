@@ -23,6 +23,10 @@
         </style>
 
         <h:form id="formBateria" enctype="multipart/form-data">
+            <f:metadata>
+                <f:viewParam name="id" value="#{crearBateriaView.id}"/>
+                <!--<f:viewAction action="#{crearBateriaView.init}" />-->
+            </f:metadata>
             <p:growl life="4000" />
             <!-- inicio de tarjeta-->
             <div class="ui-g card">

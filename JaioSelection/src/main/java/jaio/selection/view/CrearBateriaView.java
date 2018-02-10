@@ -81,8 +81,13 @@ public class CrearBateriaView extends BaseView implements Serializable {
         lstArea = new ArrayList<>();
         lstPerfil = new ArrayList<>();
         nombreEvaluacion = new String();
+        
+        
         strEmpresaSeleccionada = new String();
         poblarEmpresas();
+        
+        
+        
         obtenerModelosDeEvaluaciones();
     }
 
@@ -386,4 +391,4 @@ public class CrearBateriaView extends BaseView implements Serializable {
         this.lstArea = lstArea;
     }
 
-}
+    }
