@@ -285,6 +285,7 @@ public class CrearBateriaView extends BaseView implements Serializable {
                                     BateriaEvaluacion objBateriaEvaluacion = new BateriaEvaluacion();
                                     
                                     
+                                    
                                     exito = objEvaluacionDAO.grabarBateria(objBateriaPersonalizada,objProcesoSeleccion,objBateriaEvaluacion);
                                     if(exito){
                                         mostrarAlerta(INFO, "bateria.bateriaGuardada", null, null);
