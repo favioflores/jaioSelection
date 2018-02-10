@@ -58,10 +58,12 @@
                         <!--
                         <p:button value="#{msg['organigrama.volver']}"
                                   outcome="crearEmpresa" icon="fa fa-angle-left" /> -->
-                        
+
                         <br/>
                         <h2>#{msg['organigrama.titulo.modelo']}</h2>
+
                         <p>#{msg['organigrama.parrafo3']}</p>
+
                         <p:organigram id="organigrama" widgetVar="organigrama" 
                                       value="#{organigramaView.rootNode}" var="node" zoom="false"
                                       leafNodeConnectorHeight="0" autoScrollToSelection="false"
@@ -141,22 +143,49 @@
 
                         <h2>#{msg['organigrama.titulo.masivo']}</h2>    
 
-                            <p>#{msg['organigrama.parrafo4']}</p>
+                        <p>#{msg['organigrama.parrafo4']}</p>
 
-                            <p:commandButton value=" #{msg['organigrama.boton.descarga.masivo']}" ajax="false" icon="fa fa-download"  >
-                                <p:fileDownload value="#{organigramaView.fileExport}" />
-                            </p:commandButton>
+                        <p:commandButton value=" #{msg['organigrama.boton.descarga.masivo']}" ajax="false" icon="fa fa-download"  >
+                            <p:fileDownload value="#{organigramaView.fileExport}" />
+                        </p:commandButton>
 
-                        <p:fileUpload widgetVar="inputFile" value="#{organigramaView.inputFile}" mode="advanced" dragDropSupport="fale" multiple="false" sizeLimit="2000000" allowTypes="/(\.|\/)(xls)$/"  disabled="#{importarCuestionariosView.intIdEstadoProyecto==37}"
-                                      cancelLabel="Cancelar" uploadLabel="#{msg['organigrama.boton.upload.masivo']}" label="#{msg['organigrama.boton.buscar.masivo']}" auto="true"
+                        <p:fileUpload widgetVar="inputFile" value="#{organigramaView.inputFile}" mode="advanced" dragDropSupport="fale" multiple="false" sizeLimit="2000000" allowTypes="/(\.|\/)(xlsx)$/"
+                                      uploadLabel="#{msg['organigrama.boton.upload.masivo']}" label="#{msg['organigrama.boton.buscar.masivo']}" auto="true"
+                                      update="lstErrores"
                                       fileUploadListener="#{organigramaView.cargaOrganigramaMasivo}" immediate="true" >
-
-                            <f:facet name="header" >
-                                holasd,fsdkfjsdkfksldfklsdjfklsdjfklsdjkl
-                            </f:facet>
                         </p:fileUpload>
 
 
+                        <p:dataTable  id="lstErrores"
+                                      widgetVar="lstErrores"
+                                      value="#{organigramaView.lstErrores}" 
+                                      var="error" 
+                                      reflow="true" 
+                                      emptyMessage="#{msg['no.registros']}" 
+                                      paginator="true"
+                                      rowKey="id"
+                                      >
+                            <f:facet name="header" >
+                                <h:outputText value="#{msg['organigrama.errores.titulo']}" />
+                            </f:facet>
+                            <p:column headerText="#{msg['organigrama.errores.col1']}">
+                                <h:outputText value="#{error.strFila}" />
+                            </p:column>
+                            <p:column headerText="#{msg['organigrama.errores.col2']}">
+                                <h:outputText value="#{error.strColumna}" />
+                            </p:column>
+                            <p:column headerText="#{msg['organigrama.errores.col3']}">
+                                <h:outputText value="#{error.strEtiqueta}" />
+                            </p:column>
+                            <p:column headerText="#{msg['organigrama.errores.col4']}">
+                                <h:outputText value="#{error.strValor}" />
+                            </p:column>
+                            <p:column headerText="#{msg['organigrama.errores.col5']}">
+                                <h:outputText value="#{error.strError}" />
+                            </p:column>
+
+
+                        </p:dataTable>
 
                     </p:panelGrid>
                 </div>

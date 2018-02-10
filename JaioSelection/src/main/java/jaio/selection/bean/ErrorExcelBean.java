@@ -8,6 +8,15 @@ public class ErrorExcelBean implements Serializable{
     private String strError;
     private int strFila;
     private int strColumna;
+    private String strValor;
+
+    public String getStrValor() {
+        return strValor;
+    }
+
+    public void setStrValor(String strValor) {
+        this.strValor = strValor;
+    }
 
     public String getStrEtiqueta() {
         return strEtiqueta;

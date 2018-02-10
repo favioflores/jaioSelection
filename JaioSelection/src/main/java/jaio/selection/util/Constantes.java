@@ -269,14 +269,14 @@ public class Constantes {
     public static int Int_seis = 6;
     
 
-    public static int XLSX_FILA_EMPRESA = 1;
-    public static int XLSX_COLUMNA_EMPRESA = 3;
+    public static int XLSX_FILA_EMPRESA = 0;
+    public static int XLSX_COLUMNA_EMPRESA = 1;
     public static int XLSX_FILA_CABECERA_DATOS = 2;
     public static int XLSX_FILA_INICIO_DATOS = 3;
-    public static int XLSX_COLUMNA_ID = 1;
-    public static int XLSX_COLUMNA_TIPO_REGISTRO = 2;
-    public static int XLSX_COLUMNA_NOMBRE_REGISTRO = 3;
-    public static int XLSX_COLUMNA_DEPENDENCIA = 4;
+    public static int XLSX_COLUMNA_ID = 0;
+    public static int XLSX_COLUMNA_TIPO_REGISTRO = 1;
+    public static int XLSX_COLUMNA_NOMBRE_REGISTRO = 2;
+    public static int XLSX_COLUMNA_DEPENDENCIA = 3;
 
     public static Integer TIPO_INTEGER = 0;
     public static Integer TIPO_STRING = 1;

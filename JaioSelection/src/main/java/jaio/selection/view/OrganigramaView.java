@@ -41,6 +41,10 @@ import java.util.List;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
@@ -64,6 +68,14 @@ public class OrganigramaView extends BaseView implements Serializable {
     private String idEmpresa;
     private StreamedContent fileImport;
     private UploadedFile inputFile;
+
+    public List<ErrorExcelBean> getLstErrores() {
+        return lstErrores;
+    }
+
+    public void setLstErrores(List<ErrorExcelBean> lstErrores) {
+        this.lstErrores = lstErrores;
+    }
 
     public UploadedFile getInputFile() {
         return inputFile;
@@ -660,10 +672,10 @@ public class OrganigramaView extends BaseView implements Serializable {
             mostrarAlerta(ERROR, "organigrama.masivo.archivo.vacio", null, null);
         } else {
 
-            HSSFWorkbook xlsxMasivo;
+            XSSFWorkbook xlsxMasivo;
 
             try {
-                xlsxMasivo = new HSSFWorkbook(event.getFile().getInputstream());
+                xlsxMasivo = new XSSFWorkbook(event.getFile().getInputstream());
 
                 validaCabeceraMasivo(xlsxMasivo, lstErrorExcelBeans);
 
@@ -694,17 +706,17 @@ public class OrganigramaView extends BaseView implements Serializable {
 
     }
 
-    private List<ErrorExcelBean> procesaOrganigramaMasivo(HSSFWorkbook xlsMasivo, List lstErrores) {
+    private List<ErrorExcelBean> procesaOrganigramaMasivo(Workbook xlsMasivo, List lstErrores) {
 
         return null;
         
     }
 
-    private List<ErrorExcelBean> validaCabeceraMasivo(HSSFWorkbook xlsMasivo, List lstErrores) {
+    private List<ErrorExcelBean> validaCabeceraMasivo(XSSFWorkbook xlsMasivo, List lstErrores) {
 
         try {
 
-            HSSFSheet hoja = xlsMasivo.getSheetAt(0);
+            XSSFSheet hoja = xlsMasivo.getSheetAt(0);
             Iterator<Row> filas = hoja.iterator();
 
             filas.next();
@@ -716,13 +728,13 @@ public class OrganigramaView extends BaseView implements Serializable {
             String strNombre = Utilitarios.obtieneDatoCelda(row, Constantes.XLSX_COLUMNA_NOMBRE_REGISTRO);
             String strDependencia = Utilitarios.obtieneDatoCelda(row, Constantes.XLSX_COLUMNA_DEPENDENCIA);
 
-            Utilitarios.validaValorCeldaXLSX(strId, Constantes.TIPO_STRING, msg("organigrama.masivo.columna.id"), lstErrores, row.getCell(Constantes.XLSX_COLUMNA_ID), true,
+            Utilitarios.validaValorCeldaXLSX(strId, Constantes.TIPO_STRING, msg("organigrama.masivo.columna.id"), lstErrores, row, Constantes.XLSX_COLUMNA_ID, true,
                     Constantes.XLSX_ORG_MASIVO_CAB_ID);
-            Utilitarios.validaValorCeldaXLSX(strRegistro, Constantes.TIPO_STRING, msg("organigrama.masivo.columna.tipoRegistro"), lstErrores, row.getCell(Constantes.XLSX_COLUMNA_TIPO_REGISTRO), true,
+            Utilitarios.validaValorCeldaXLSX(strRegistro, Constantes.TIPO_STRING, msg("organigrama.masivo.columna.tipoRegistro"), lstErrores, row, Constantes.XLSX_COLUMNA_TIPO_REGISTRO, true,
                     Constantes.XLSX_ORG_MASIVO_CAB_TIPO_REGISTRO);
-            Utilitarios.validaValorCeldaXLSX(strNombre, Constantes.TIPO_STRING, msg("organigrama.masivo.columna.nombreRegistro"), lstErrores, row.getCell(Constantes.XLSX_COLUMNA_NOMBRE_REGISTRO), true,
+            Utilitarios.validaValorCeldaXLSX(strNombre, Constantes.TIPO_STRING, msg("organigrama.masivo.columna.nombreRegistro"), lstErrores, row, Constantes.XLSX_COLUMNA_NOMBRE_REGISTRO, true,
                     Constantes.XLSX_ORG_MASIVO_CAB_NOMBRE_REGISTRO);
-            Utilitarios.validaValorCeldaXLSX(strDependencia, Constantes.TIPO_STRING, msg("organigrama.masivo.columna.dependencia"), lstErrores, row.getCell(Constantes.XLSX_COLUMNA_DEPENDENCIA), true,
+            Utilitarios.validaValorCeldaXLSX(strDependencia, Constantes.TIPO_STRING, msg("organigrama.masivo.columna.dependencia"), lstErrores, row, Constantes.XLSX_COLUMNA_DEPENDENCIA, true,
                     Constantes.XLSX_ORG_MASIVO_CAB_DEPENDENCIA);
 
         } catch (Exception ex) {
@@ -732,11 +744,11 @@ public class OrganigramaView extends BaseView implements Serializable {
         return lstErrores;
     }
 
-    private List<ErrorExcelBean> validaOrganigramaMasivo(HSSFWorkbook xlsMasivo, List lstErrores) {
+    private List<ErrorExcelBean> validaOrganigramaMasivo(XSSFWorkbook xlsMasivo, List lstErrores) {
 
         try {
 
-            HSSFSheet hoja = xlsMasivo.getSheetAt(0);
+            XSSFSheet hoja = xlsMasivo.getSheetAt(0);
             Iterator<Row> filas = hoja.iterator();
             filas.next();
             filas.next();
@@ -750,12 +762,12 @@ public class OrganigramaView extends BaseView implements Serializable {
                 String strNombre = Utilitarios.obtieneDatoCelda(row, Constantes.XLSX_COLUMNA_NOMBRE_REGISTRO);
                 String strDependencia = Utilitarios.obtieneDatoCelda(row, Constantes.XLSX_COLUMNA_DEPENDENCIA);
 
-                Utilitarios.validaValorCeldaXLSX(strId, Constantes.TIPO_INTEGER, msg("organigrama.masivo.columna.id"), lstErrores, row.getCell(Constantes.XLSX_COLUMNA_ID), true);
-                Utilitarios.validaValorCeldaXLSX(strRegistro, Constantes.TIPO_STRING, msg("organigrama.masivo.columna.tipoRegistro"), lstErrores, row.getCell(Constantes.XLSX_COLUMNA_TIPO_REGISTRO), true,
+                Utilitarios.validaValorCeldaXLSX(strId, Constantes.TIPO_INTEGER, msg("organigrama.masivo.columna.id"), lstErrores, row, Constantes.XLSX_COLUMNA_ID, true);
+                Utilitarios.validaValorCeldaXLSX(strRegistro, Constantes.TIPO_STRING, msg("organigrama.masivo.columna.tipoRegistro"), lstErrores, row, Constantes.XLSX_COLUMNA_TIPO_REGISTRO, true,
                         Constantes.XLSX_ORG_MASIVO_COLUMNA_TIPO_AREA,
                         Constantes.XLSX_ORG_MASIVO_COLUMNA_TIPO_PERFIL);
-                Utilitarios.validaValorCeldaXLSX(strNombre, Constantes.TIPO_STRING, msg("organigrama.masivo.columna.nombreRegistro"), lstErrores, row.getCell(Constantes.XLSX_COLUMNA_NOMBRE_REGISTRO), true);
-                Utilitarios.validaValorCeldaXLSX(strDependencia, Constantes.TIPO_INTEGER, msg("organigrama.masivo.columna.dependencia"), lstErrores, row.getCell(Constantes.XLSX_COLUMNA_DEPENDENCIA), false);
+                Utilitarios.validaValorCeldaXLSX(strNombre, Constantes.TIPO_STRING, msg("organigrama.masivo.columna.nombreRegistro"), lstErrores, row, Constantes.XLSX_COLUMNA_NOMBRE_REGISTRO, true);
+                Utilitarios.validaValorCeldaXLSX(strDependencia, Constantes.TIPO_INTEGER, msg("organigrama.masivo.columna.dependencia"), lstErrores, row, Constantes.XLSX_COLUMNA_DEPENDENCIA, false);
 
             }
 

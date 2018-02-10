@@ -48,7 +48,6 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 import javax.faces.context.FacesContext;
@@ -58,6 +57,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.util.CellReference;
 
 /**
  *
@@ -332,18 +332,20 @@ public class Utilitarios extends BaseView implements Serializable {
         return dfDateFull.format(fecha);
     }
 
-    public static boolean validaValorCeldaXLSX(Object obj, Integer objTipoRequerido, String strEtiqueta, List<ErrorExcelBean> lstError, Cell celda, boolean esRequerido, String... params) {
+    public static boolean validaValorCeldaXLSX(Object obj, Integer objTipoRequerido, String strEtiqueta, List<ErrorExcelBean> lstError, Row row, Integer column, boolean esRequerido, String... params) {
 
         ErrorExcelBean objErrorExcelBean = new ErrorExcelBean();
-
-        objErrorExcelBean.setStrFila(celda.getRowIndex());
-        objErrorExcelBean.setStrColumna(celda.getColumnIndex());
-        objErrorExcelBean.setStrEtiqueta(strEtiqueta);
 
         try {
 
             if (Utilitarios.esNuloOVacio(obj) && !esRequerido) {
                 return true;
+            } else {
+                objErrorExcelBean.setStrFila(row.getRowNum());
+                
+                //objErrorExcelBean.setStrColumna((CellReference.convertNumToColString(column.intValue())));
+                objErrorExcelBean.setStrEtiqueta(strEtiqueta);
+                objErrorExcelBean.setStrValor(obj.toString());
             }
 
             if (objTipoRequerido.equals(Constantes.TIPO_INTEGER)) {
@@ -705,7 +707,7 @@ public class Utilitarios extends BaseView implements Serializable {
             } else if (row.getCell(c).getCellType() == Cell.CELL_TYPE_NUMERIC) {
                 strTemp = row.getCell(c, Row.CREATE_NULL_AS_BLANK).getNumericCellValue() + "";
             }
-        } catch (NoSuchElementException e) {
+        } catch (Exception e) {
             strTemp = Constantes.strVacio;
         }
         return strTemp;
@@ -823,5 +825,5 @@ public class Utilitarios extends BaseView implements Serializable {
 
         return sortedMap;
     }
-    
+
 }
