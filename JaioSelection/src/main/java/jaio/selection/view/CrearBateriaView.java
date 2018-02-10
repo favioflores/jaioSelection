@@ -16,6 +16,7 @@ import jaio.selection.bean.BateriaBean;
 import jaio.selection.bean.ConvertirDatosBean;
 import jaio.selection.bean.EmpresaBean;
 import jaio.selection.bean.ModeloCompetenciaBean;
+import jaio.selection.bean.ModeloEvaluacionBean;
 import jaio.selection.bean.PerfilBean;
 import jaio.selection.dao.AreaDAO;
 import jaio.selection.dao.EmpresaDAO;
@@ -68,6 +69,8 @@ public class CrearBateriaView extends BaseView implements Serializable {
     String strAreaSeleccionada;
     String strPerfilSeleccionado;
     String empresa;
+    
+    ConvertirDatosBean convertirDatos = new ConvertirDatosBean();
 
     @PostConstruct
     public void init() {
@@ -99,7 +102,6 @@ public class CrearBateriaView extends BaseView implements Serializable {
     public List obtenerModelosDeEvaluaciones() {
         try {
             ModeloEvaluacionDAO objModelosDao = new ModeloEvaluacionDAO();
-            ConvertirDatosBean convertirDatos = new ConvertirDatosBean();
             List<ModeloEvaluacion> listaEvaluacionesBD = objModelosDao.obtenerModelos();
             for (ModeloEvaluacion objModeloEvaluacion : listaEvaluacionesBD) {
                 BateriaBean objBateriaBean = new BateriaBean();
@@ -225,7 +227,6 @@ public class CrearBateriaView extends BaseView implements Serializable {
     public void cargarBilleteraDeBaterias(DragDropEvent ddEvent) {
         BateriaBean model = ((BateriaBean) ddEvent.getData());
         ModeloCompetenciaDAO objMCDao = new ModeloCompetenciaDAO();
-        ConvertirDatosBean convertirDatos = new ConvertirDatosBean();
         droppedBaterias.add(model);
         List lstCompetencias = objMCDao.obtenerCompetenciasXEvaluacion(model.getId());
         Iterator it = lstCompetencias.iterator();
@@ -261,14 +262,14 @@ public class CrearBateriaView extends BaseView implements Serializable {
         try {
             ModeloEvaluacionDAO objEvaluacionDAO = new ModeloEvaluacionDAO();
             boolean exito = false;
-            if (Utilitarios.noEsNuloOVacio(nombreEvaluacion)) {
                 if (Utilitarios.noEsNuloOVacio(strEmpresaSeleccionada)) {
                     if (Utilitarios.noEsNuloOVacio(strAreaSeleccionada)) {
                         if (Utilitarios.noEsNuloOVacio(strPerfilSeleccionado)) {
                             if (Utilitarios.noEsNuloOVacio(droppedBaterias)) {
                                 if (Utilitarios.noEsNuloOVacio(droppedCompetencias)) {
                                     ConvertirDatosBean objBean = new ConvertirDatosBean();
-
+//                                    int perfil = Integer.parseInt(strPerfilSeleccionado);
+                                    
                                     BateriaPersonalizada objBateriaPersonalizada = new BateriaPersonalizada();
                                     objBateriaPersonalizada.setNombre(nombreEvaluacion);
                                     objBateriaPersonalizada.setFechaCreacion(new Date());
@@ -276,23 +277,41 @@ public class CrearBateriaView extends BaseView implements Serializable {
                                     objBateriaPersonalizada.setResena(nombreEvaluacion);
                                     objBateriaPersonalizada.setHorasEstimadasTotal(Constantes.Int_cinco);
                                     objBateriaPersonalizada.setMinutosEstimadosTotal(Constantes.Int_cinco);
+                                    objEvaluacionDAO.grabarBateriaPersonalizada(objBateriaPersonalizada);
                                     
-                                    ProcesoSeleccion objProcesoSeleccion = new ProcesoSeleccion();
-                                    objProcesoSeleccion.setFechaRegistro(new Date());
-                                    objProcesoSeleccion.setDescripcion(nombreEvaluacion);
-                                    objProcesoSeleccion.setEstado(Constantes.Int_seis);
-                                    
-                                    BateriaEvaluacion objBateriaEvaluacion = new BateriaEvaluacion();
-                                    
-                                    
-                                    
-                                    exito = objEvaluacionDAO.grabarBateria(objBateriaPersonalizada,objProcesoSeleccion,objBateriaEvaluacion);
-                                    if(exito){
-                                        mostrarAlerta(INFO, "bateria.bateriaGuardada", null, null);
-                                        limpiar();
-                                    } else {
-                                        mostrarAlerta(INFO, "Ocurrio un Error al Guardar Bateria.", null, null);
+                                    for (BateriaBean droppedBateria : droppedBaterias) {
+                                        ModeloEvaluacion objModeloEvaluacion = new ModeloEvaluacion();
+                                        objModeloEvaluacion.setId(Integer.parseInt(droppedBateria.getId()));
+                                        BateriaEvaluacion objBateriaEvaluacion = new BateriaEvaluacion();
+                                        objBateriaEvaluacion.setBateriaPersonalizada(objBateriaPersonalizada);
+                                        objBateriaEvaluacion.setModeloEvaluacion(objModeloEvaluacion);
+                                        objEvaluacionDAO.grabarBateriaEvaluacion(objBateriaEvaluacion);
+                                        
                                     }
+
+                                    
+//                                    EvaluacionPerfil objEvaluacionPerfil = new EvaluacionPerfil();
+//                                    objEvaluacionPerfil.setEstado(Constantes.Int_seis);
+//                                    objBateriaPersonalizada.getEvaluacionPerfil().add(objEvaluacionPerfil);
+//                                    
+//                                    ProcesoSeleccion objProcesoSeleccion = new ProcesoSeleccion();
+//                                    objProcesoSeleccion.setFechaRegistro(new Date());
+//                                    objProcesoSeleccion.setDescripcion(nombreEvaluacion);
+//                                    objProcesoSeleccion.setEstado(Constantes.Int_seis);
+//                                    objProcesoSeleccion.getEvaluacionPerfil().add(objEvaluacionPerfil);
+                                    //falta agregar el perfil
+                                    
+                                    
+                                    
+
+                                    
+                                    
+//                                    if(exito){
+//                                        mostrarAlerta(INFO, "bateria.bateriaGuardada", null, null);
+                                        limpiar();
+//                                    } else {
+//                                        mostrarAlerta(INFO, "Ocurrio un Error al Guardar Bateria.", null, null);
+//                                    }
 
                                 } else {
                                     mostrarAlerta(ERROR, "bateria.noSeleccionoCompetencias", null, null);
@@ -309,9 +328,7 @@ public class CrearBateriaView extends BaseView implements Serializable {
                 } else {
                     mostrarAlerta(ERROR, "bateria.noSeleccionoEmpresa", null, null);
                 }
-            } else {
-                mostrarAlerta(ERROR, "bateria.noIngresoNombreEvaluacion", null, null);
-            }
+            
         } catch (Exception e) {
             mostrarAlerta(FATAL, "error.inesperado", log, e);
         }
