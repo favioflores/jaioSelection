@@ -9,6 +9,7 @@ public class EvaluacionPerfil implements java.io.Serializable {
     private EvaluacionPerfilId id;
     private BateriaPersonalizada bateriaPersonalizada;
     private Perfil perfil;
+    
 
     public EvaluacionPerfil() {
     }

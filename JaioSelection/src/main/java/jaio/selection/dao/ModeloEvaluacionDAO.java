@@ -1,5 +1,9 @@
 package jaio.selection.dao;
 
+import jaio.selection.orm.BateriaEvaluacion;
+import jaio.selection.orm.BateriaPersonalizada;
+import jaio.selection.orm.EvaluacionPerfil;
+import jaio.selection.orm.EvaluacionPerfilId;
 import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -9,6 +13,7 @@ import org.hibernate.criterion.Example;
 
 import jaio.selection.orm.ModeloEvaluacion;
 import java.io.Serializable;
+import java.util.Date;
 import org.hibernate.Query;
 
 /**
@@ -137,21 +142,25 @@ public class ModeloEvaluacionDAO extends HibernateUtil implements Serializable {
         return null;
     }
     
-    public List<ModeloEvaluacion> obtenerCompetenciasXEvaluacion(String id) {
+    public boolean grabarBateria(BateriaPersonalizada bateriaPersonalizada, EvaluacionPerfilId evaluacionPerfilId,BateriaEvaluacion bateriaEvaluacion) {
         iniciaSession();
+        boolean grabado = false;
         try {
-            Query query = session.createSQLQuery("select mc.nombre from modelo_evaluacion_x_competencia mec " +
-                " join modelo_evaluacion me on me.id = mec.modelo_evaluacion_id " +
-                " join modelo_competencia mc on mc.id = mec.modelo_competencia_id " +
-                " where mec.modelo_evaluacion_id = :id");
-            query.setString("id", id);
-            return query.list();
+            
+            session.save(bateriaPersonalizada);
+            
+//            session.save(evaluacionPerfil);
+//            session.save(bateriaEvaluacion);
+            
+            guardarCambios();
+            log.debug("Grago correctamente");
         } catch (Exception e) {
-            manejaException(e);
+            rollback(e);
         } finally {
+            grabado = true;
             cerrarSession();
         }
-        return null;
+        return grabado;
     }
     
 }
