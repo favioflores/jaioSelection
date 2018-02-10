@@ -22,8 +22,7 @@
                                          value="#{msg['organizacion.boton.nuevo']}" icon="fa fa-plus" />
                         <p:hotkey id="hotNuevo" bind="shift+n"
                                   onstart="PF('dlgNuevo').show();" />
-                        <br/>
-                        <br/>
+
                         <p:dataGrid var="emp" value="#{empresaView.lstEmpresas}"
                                     columns="3" layout="grid" rows="6" paginator="true" id="emp"
                                     paginatorPosition="bottom" lazy="true"  

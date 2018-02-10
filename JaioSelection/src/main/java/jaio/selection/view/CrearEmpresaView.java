@@ -18,7 +18,9 @@ import jaio.selection.dao.EmpresaDAO;
 import jaio.selection.orm.Empresa;
 import jaio.selection.util.Constantes;
 import jaio.selection.util.Utilitarios;
+import java.util.Map;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 
 @ManagedBean(name = "crearEmpresaView")
 @ViewScoped
@@ -129,5 +131,5 @@ public class CrearEmpresaView extends BaseView implements Serializable {
             mostrarAlerta(FATAL, "error.inesperado", log, e);
         }
     }
-    
+
 }
