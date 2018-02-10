@@ -42,11 +42,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.Map;
-
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
-
 import org.primefaces.event.DragDropEvent;
 
 @ManagedBean(name = "crearBateriaView")
@@ -67,7 +66,7 @@ public class CrearBateriaView extends BaseView implements Serializable {
     String strEmpresaSeleccionada;
     String strAreaSeleccionada;
     String strPerfilSeleccionado;
-    
+
     @PostConstruct
     public void init() {
         limpiar();
