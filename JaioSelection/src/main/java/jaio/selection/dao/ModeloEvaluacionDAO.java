@@ -12,6 +12,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Example;
 
 import jaio.selection.orm.ModeloEvaluacion;
+import jaio.selection.orm.ProcesoSeleccion;
 import java.io.Serializable;
 import java.util.Date;
 import org.hibernate.Query;
@@ -142,7 +143,7 @@ public class ModeloEvaluacionDAO extends HibernateUtil implements Serializable {
         return null;
     }
     
-    public boolean grabarBateria(BateriaPersonalizada bateriaPersonalizada, EvaluacionPerfilId evaluacionPerfilId,BateriaEvaluacion bateriaEvaluacion) {
+    public boolean grabarBateria(BateriaPersonalizada bateriaPersonalizada, ProcesoSeleccion objProcesoSeleccion,BateriaEvaluacion bateriaEvaluacion) {
         iniciaSession();
         boolean grabado = false;
         try {
