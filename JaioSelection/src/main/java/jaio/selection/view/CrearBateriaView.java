@@ -31,6 +31,7 @@ import jaio.selection.orm.EvaluacionPerfil;
 import jaio.selection.orm.EvaluacionPerfilId;
 import jaio.selection.orm.ModeloEvaluacion;
 import jaio.selection.orm.Perfil;
+import jaio.selection.orm.ProcesoSeleccion;
 import jaio.selection.util.Utilitarios;
 import static jaio.selection.view.BaseView.ERROR;
 import static jaio.selection.view.BaseView.FATAL;
@@ -255,13 +256,15 @@ public class CrearBateriaView extends BaseView implements Serializable {
                                     objBateriaPersonalizada.setHorasEstimadasTotal(Constantes.Int_cinco);
                                     objBateriaPersonalizada.setMinutosEstimadosTotal(Constantes.Int_cinco);
                                     
-                                    EvaluacionPerfilId objEvaluacionPerfilId = new EvaluacionPerfilId();
-                                    int idP = (int) objBean.convertirStringAObject(strPerfilSeleccionado, Constantes.Tipo_dato_int);
-                                    objEvaluacionPerfilId.setPerfilId((idP));
+                                    ProcesoSeleccion objProcesoSeleccion = new ProcesoSeleccion();
+                                    objProcesoSeleccion.setFechaRegistro(new Date());
+                                    objProcesoSeleccion.setDescripcion(nombreEvaluacion);
+                                    objProcesoSeleccion.setEstado(Constantes.Int_seis);
                                     
                                     BateriaEvaluacion objBateriaEvaluacion = new BateriaEvaluacion();
                                     
-                                    exito = objEvaluacionDAO.grabarBateria(objBateriaPersonalizada,objEvaluacionPerfilId,objBateriaEvaluacion);
+                                    
+                                    exito = objEvaluacionDAO.grabarBateria(objBateriaPersonalizada,objProcesoSeleccion,objBateriaEvaluacion);
                                     if(exito){
                                         mostrarAlerta(INFO, "bateria.bateriaGuardada", null, null);
                                         limpiar();
