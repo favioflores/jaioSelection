@@ -1,5 +1,9 @@
 package jaio.selection.dao;
 
+import jaio.selection.orm.BateriaEvaluacion;
+import jaio.selection.orm.BateriaPersonalizada;
+import jaio.selection.orm.EvaluacionPerfil;
+import jaio.selection.orm.EvaluacionPerfilId;
 import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -9,6 +13,7 @@ import org.hibernate.criterion.Example;
 
 import jaio.selection.orm.ModeloEvaluacion;
 import java.io.Serializable;
+import java.util.Date;
 import org.hibernate.Query;
 
 /**
@@ -137,6 +142,25 @@ public class ModeloEvaluacionDAO extends HibernateUtil implements Serializable {
         return null;
     }
     
-    
+    public boolean grabarBateria(BateriaPersonalizada bateriaPersonalizada, EvaluacionPerfilId evaluacionPerfilId,BateriaEvaluacion bateriaEvaluacion) {
+        iniciaSession();
+        boolean grabado = false;
+        try {
+            
+            session.save(bateriaPersonalizada);
+            
+//            session.save(evaluacionPerfil);
+//            session.save(bateriaEvaluacion);
+            
+            guardarCambios();
+            log.debug("Grago correctamente");
+        } catch (Exception e) {
+            rollback(e);
+        } finally {
+            grabado = true;
+            cerrarSession();
+        }
+        return grabado;
+    }
     
 }

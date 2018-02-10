@@ -38,9 +38,9 @@ public class CrearProcesoView extends BaseView implements Serializable {
     public List<EmpresaBean> lstEmpresas;
     public List<PerfilBean> lstPerfil;
     public List<AreaBean> lstArea;
-    private String strEmpresaSeleccionada;
-    private String strPerfilSeleccionado;
-    private String strAreaSeleccionada;
+    public String strEmpresaSeleccionada;
+    public String strPerfilSeleccionado;
+    public String strAreaSeleccionada;
     
     private List<BateriaPersonalizadaBean> lstBateriaPersonalizadaBeans;
     
@@ -118,7 +118,7 @@ public class CrearProcesoView extends BaseView implements Serializable {
      * metodo para cargar los procesos por empresa
      */
     public void cargarBateriaPersonalizada() {
-        lstBateriaPersonalizadaBeans = new ArrayList<BateriaPersonalizadaBean>();
+        lstBateriaPersonalizadaBeans = new ArrayList<>();
         if (Utilitarios.noEsNuloOVacio(strEmpresaSeleccionada)){
             BateriaPersonalizadaDAO objBateriaPersonalizadaDAO = new BateriaPersonalizadaDAO();
             List lstBaterias = objBateriaPersonalizadaDAO.obtenerProcesosRegistrados(strEmpresaSeleccionada);
