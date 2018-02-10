@@ -5,7 +5,7 @@ import java.io.Serializable;
 import jaio.selection.orm.ModeloLibro;
 import java.util.List;
 
-public class ModeloCompetenciaBean implements Serializable {
+public class ModeloCompetenciaBean implements Serializable, Comparable<ModeloCompetenciaBean> {
 
     private static final long serialVersionUID = 1L;
     
@@ -44,6 +44,11 @@ public class ModeloCompetenciaBean implements Serializable {
 
     public void setColor(String color) {
         this.color = color;
+    }
+
+    @Override
+    public int compareTo(ModeloCompetenciaBean o) {
+         return this.getNombre().compareTo(o.getNombre());
     }
 
     

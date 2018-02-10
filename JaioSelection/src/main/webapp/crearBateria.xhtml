@@ -11,6 +11,17 @@
                 droppedCar.fadeOut('fast');
             }
         </script>
+        <style>
+            .circulo {
+                width: 15px;
+                height: 15px;
+                -moz-border-radius: 50%;
+                -webkit-border-radius: 50%;
+                border-radius: 50%;
+                background: #5cb85c;
+            }
+        </style>
+
         <h:form id="formBateria" enctype="multipart/form-data">
             <f:metadata>
                 <f:viewParam name="id" value="#{crearBateriaView.id}"/>
@@ -23,8 +34,8 @@
                 <div class="ui-g-12">
                     <h1>#{msg['bateria.titulo']}</h1>
                     <p>#{msg['bateria.parrafo']}</p>
-                    <p:button value="#{msg['organigrama.volver']}" outcome="crearProceso" icon="fa fa-angle-left" />
-                    <p:commandButton value="limpiar" id="limpiar" update=":formBateria:" ajax="true"
+                    <p:button value="#{msg['organigrama.volver']}" outcome="crearProceso" icon="fa fa-angle-left" styleClass="aqua-button" />
+                    <p:commandButton value="limpiar" id="limpiar" update=":formBateria:" ajax="true" styleClass="aqua-button"
                                      actionListener="#{crearBateriaView.limpiar()}"/>
                 </div>
 
@@ -33,7 +44,7 @@
                     <p:dataGrid id="datosEmpresa" var="datosEmpresa" value="" columns="1" layout="grid">
                         <!--NOMBRE EVALUACION-->
                         <div class="ui-g-12">
-                            <div class="ui-g-3">
+                            <div class="ui-g-3"> 
                                 <p:outputLabel for="formBateria" value="#{msg['bateria.nombreEvaluacion']}"/>
                             </div>
                             <p:inputText id="nombreEvaluacion" value="#{crearBateriaView.nombreEvaluacion}" maxlength="200" size="35" 
@@ -81,7 +92,7 @@
                     <!--BILLETERA DE EVALUACIONES-->
                     <p:fieldset id="evaluacionesSeleccionadas">
                         <!--BILLETERA DE EVALUACIONES-->
-                        <p:dataGrid id="listDropBaterias" var="bat" value="#{crearBateriaView.droppedBaterias}" style="border-style: none" columns="2" emptyMessage="#{msg['bateria.arratreSuEvaluacion']}">
+                        <p:dataGrid id="listDropBaterias" var="bat" value="#{crearBateriaView.droppedBaterias}" style="border-style: none; border:5px;" columns="2" emptyMessage="#{msg['bateria.arratreSuEvaluacion']}">
                             <p:panel id="panelBilleteraDeEvaluaciones">
                                 <h:outputText value="#{bat.nombre}" style="font-size: 14px;font-family:'latoregular',sans-serif;"/><br/>
                                 <h:outputText value="Validez: #{bat.validez}%" style="font-size: 12px;font-family:'latoregular',sans-serif;"/><br/>
@@ -89,7 +100,7 @@
                                 <h:outputText value="Minutos: #{bat.minutosEstimados}" style="font-size: 12px;font-family:'latoregular',sans-serif;"/>
                             </p:panel>
                             <!--inicio prueba-->
-                            <p:draggable for="panelBilleteraDeEvaluaciones" revert="true" />
+                            <p:draggable for="panelBilleteraDeEvaluaciones" revert="true" />    
                             <!--fin prueba-->
                         </p:dataGrid>
                     </p:fieldset>
@@ -98,7 +109,16 @@
                     <!--BILLETERA DE COMPETENCIAS-->
                     <p:dataGrid id="listDropCompetencias" var="listC" value="#{crearBateriaView.droppedCompetencias}" columns="3" 
                                 emptyMessage="#{msg['bateria.noHayCompetencias']}">
-                        <h:outputText value="#{listC.nombre}" style="font-size: 14px;font-family:'latoregular',sans-serif;"/><br/>
+
+                        <h:panelGrid columns="2" style="border: 2px;">
+                            <div class="circulo" style="background: #{listC.color}">
+                           </div>
+ 
+                                <p:outputPanel style="font-size: 14px;font-family:'latoregular',sans-serif;">
+                                    #{listC.nombre}
+                                </p:outputPanel>
+                        </h:panelGrid>
+
                     </p:dataGrid>
 
                     <!--CARGAR EVALUACIONES A LA BILLETERA-->
@@ -106,12 +126,10 @@
                         <p:ajax listener="#{crearBateriaView.cargarBilleteraDeBaterias}" update="listDropBaterias,listDropCompetencias listaEvaluaciones" />
                     </p:droppable>
 
+                    <br/>
                     <!--BOTON GRABAR-->
-                    <div class="ui-g-12">
-                        <p:commandButton value="#{msg['bateria.boton.grabar']}" id="guardarBateria" styleClass="navy-button"
+                        <p:commandButton value="#{msg['bateria.boton.grabar']}" id="guardarBateria" styleClass="aqua-button"
                                          actionListener="#{crearBateriaView.grabarBateria()}" update=":formBateria:"/>
-                    </div>
-
                     <!--</p:dataGrid>-->
                 </div>
 
@@ -130,9 +148,9 @@
                         </p:dataGrid>
                     </fieldset>
                     <!--DEVOLVER EVALUACIONES DE LA BILLETERA-->
-<!--                    <p:droppable for="evaluaciones"  tolerance="touch" activeStyleClass="ui-state-highlight" datasource="listDropBaterias" onDrop="">
-                        <p:ajax listener="#{crearBateriaView.vaciarBilleteraDeBaterias}" update="listaEvaluaciones listDropBaterias" />
-                    </p:droppable>-->
+                    <!--                    <p:droppable for="evaluaciones"  tolerance="touch" activeStyleClass="ui-state-highlight" datasource="listDropBaterias" onDrop="">
+                                            <p:ajax listener="#{crearBateriaView.vaciarBilleteraDeBaterias}" update="listaEvaluaciones listDropBaterias" />
+                                        </p:droppable>-->
                 </div>
 
             </div>
