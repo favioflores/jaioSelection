@@ -28,9 +28,8 @@
 
                         <!-- ir a pantalla crearBateria-->
                         <p:outputLabel value="#{msg['proceso.nuevo.proceso']}" />
-                        <p:commandButton id="btnNuevoProceso" styleClass="aqua-button"
-                                         actionListener="#{crearProcesoView.abrirCrearBateria}"
-                                         value="#{msg['proceso.boton.nuevo']}" icon="fa fa-plus Fs14" />
+                        <p:button value="#{msg['proceso.boton.nuevo']}" outcome="crearBateria" 
+                                  icon="fa fa-plus Fs14" styleClass="aqua-button" />
 
                         <!-- evento abrir crearBateria-->
                         <p:hotkey id="hotNuevo" bind="shift+n" actionListener="#{crearProcesoView.abrirCrearBateria}"/>
@@ -54,16 +53,6 @@
                                 <h:outputText value="" />
                             </p:column>
                         </p:dataTable>
-
-
-<!--                         <p:dataGrid id="listaEvaluaciones" var="listE"  value="#{crearProcesoView.lstBateriaPersonalizadaBeans}" columns="1">
-<p:panel id="panelDeEvaluaciones">
-    <h:outputText value="#{listE.nombre}" style="font-size: 14px;font-family:'latoregular',sans-serif;"/><br/>
-    <h:outputText value="#{listE.nombre}%" style="font-size: 12px;font-family:'latoregular',sans-serif;"/><br/>
-    <h:outputText value="#{listE.fechaCreacion}%" style="font-size: 12px;font-family:'latoregular',sans-serif;"/><br/>
-    <h:outputText value="#{listE.nombrePerfil}" style="font-size: 12px;font-family:'latoregular',sans-serif;"/><br/>
-</p:panel>
-</p:dataGrid>-->
                 </div>
             </div>
         </h:form>
