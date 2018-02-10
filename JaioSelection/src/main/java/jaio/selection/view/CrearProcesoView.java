@@ -248,18 +248,4 @@ public class CrearProcesoView extends BaseView implements Serializable {
             mostrarAlerta(FATAL, "error.inesperado", log, e);
         }
     }
-
-    /**
-     * metodo para ir a la pantalla Crear Bateria
-     *
-     * @param idEmpresa <code>String</code>
-     */
-    public void abrirCrearBateria(String idEmpresa) {
-        try {
-            Utilitarios.ponerSession(idEmpresa, Constantes.SESSION_EMPRESA);
-            FacesContext.getCurrentInstance().getExternalContext().redirect("crearBateria.jsf");
-        } catch (Exception e) {
-            mostrarAlerta(FATAL, "error.inesperado", log, e);
-        }
-    }
 }

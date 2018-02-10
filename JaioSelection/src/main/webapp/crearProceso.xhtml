@@ -28,14 +28,17 @@
 
                             <!-- ir a pantalla crearBateria-->
                             <p:outputLabel value="#{msg['proceso.nuevo.proceso']}" />
-                            <p:commandButton id="btnNuevoProceso" styleClass="aqua-button"
-                                             actionListener="#{crearProcesoView.abrirCrearBateria}"
-                                             value="#{msg['proceso.boton.nuevo']}" icon="fa fa-plus Fs14" />
+                            <p:commandButton value="limpiar" id="limpiar" update=":formBateria:" ajax="true"
+                                             actionListener="#{crearBateriaView.abrirCrearBateria()}" />
+                            
+                            <p:button outcome="crearBateria" styleClass="aqua-button" value="#{msg['proceso.boton.nuevo']}" icon="fa fa-plus Fs14" >
+                                <f:param name="id" value="#{crearProcesoView.strEmpresaSeleccionada}" />
+                            </p:button>
                             
                             <!-- evento abrir crearBateria-->
                             <p:hotkey id="hotNuevo" bind="shift+n" actionListener="#{crearProcesoView.abrirCrearBateria}"/>
                             
-                            
+                            </p:panelGrid>
                             <!--TABLA DE PROCESOS REGISTRADOS POR EMPRESA-->
                             <p:dataTable var="lstPro" reflow="true" emptyMessage="#{msg['no.registros']}" 
                                          value="#{crearProcesoView.lstBateriaPersonalizadaBeans}" rowKey="demo">
@@ -53,17 +56,7 @@
                                     <h:outputText value="" />
                                 </p:column>
                             </p:dataTable>
-                            
-                        </p:panelGrid>
-                        
-<!--                         <p:dataGrid id="listaEvaluaciones" var="listE"  value="#{crearProcesoView.lstBateriaPersonalizadaBeans}" columns="1">
-                        <p:panel id="panelDeEvaluaciones">
-                            <h:outputText value="#{listE.nombre}" style="font-size: 14px;font-family:'latoregular',sans-serif;"/><br/>
-                            <h:outputText value="#{listE.nombre}%" style="font-size: 12px;font-family:'latoregular',sans-serif;"/><br/>
-                            <h:outputText value="#{listE.fechaCreacion}%" style="font-size: 12px;font-family:'latoregular',sans-serif;"/><br/>
-                            <h:outputText value="#{listE.nombrePerfil}" style="font-size: 12px;font-family:'latoregular',sans-serif;"/><br/>
-                        </p:panel>
-                    </p:dataGrid>-->
+
                     </div>
                 </div>
         </h:form>

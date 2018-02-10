@@ -39,7 +39,11 @@ import static jaio.selection.view.BaseView.INFO;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.context.FacesContext;
+import javax.persistence.Entity;
 import org.primefaces.event.DragDropEvent;
 
 @ManagedBean(name = "crearBateriaView")
@@ -49,7 +53,7 @@ public class CrearBateriaView extends BaseView implements Serializable {
     private static Log log = LogFactory.getLog(CrearBateriaView.class);
     private static final long serialVersionUID = -1L;
 
-    private Map mapCompetenciasSeleccionadas = new HashMap();
+    private Map mapCompetenciasSeleccionadas = new LinkedHashMap();
     private List<BateriaBean> lstBaterias;
     private List<BateriaBean> droppedBaterias;
     private List<ModeloCompetenciaBean> droppedCompetencias;
@@ -61,6 +65,16 @@ public class CrearBateriaView extends BaseView implements Serializable {
     String strAreaSeleccionada;
     String strPerfilSeleccionado;
     
+    @ManagedProperty(value ="#{id}")
+    String id;
+    
+    public void abrirCrearBateria() {
+        try {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("crearBateria.jsf");
+        } catch (Exception e) {
+            mostrarAlerta(FATAL, "error.inesperado", log, e);
+        }
+    }
     
     @PostConstruct
     public void init() {
@@ -68,7 +82,7 @@ public class CrearBateriaView extends BaseView implements Serializable {
     }
 
     public void limpiar() {
-        mapCompetenciasSeleccionadas = new HashMap();
+        mapCompetenciasSeleccionadas = new LinkedHashMap();
         lstBaterias = new ArrayList<>();
         droppedBaterias = new ArrayList<>();
         droppedCompetencias = new ArrayList<>();
@@ -76,8 +90,15 @@ public class CrearBateriaView extends BaseView implements Serializable {
         lstArea = new ArrayList<>();
         lstPerfil = new ArrayList<>();
         nombreEvaluacion = new String();
+        
+        
+        strEmpresaSeleccionada = id;
+        
         strEmpresaSeleccionada = new String();
         poblarEmpresas();
+        
+        
+        
         obtenerModelosDeEvaluaciones();
     }
     
@@ -375,4 +396,13 @@ public class CrearBateriaView extends BaseView implements Serializable {
         this.lstArea = lstArea;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+    
+    
 }
