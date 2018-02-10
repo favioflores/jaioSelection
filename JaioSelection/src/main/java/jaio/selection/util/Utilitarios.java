@@ -40,9 +40,14 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -350,7 +355,7 @@ public class Utilitarios extends BaseView implements Serializable {
                         lstError.add(objErrorExcelBean);
                         return false;
                     } else {
-                        
+
                         try {
                             Integer.parseInt(obj.toString());
                         } catch (Exception e) {
@@ -358,7 +363,7 @@ public class Utilitarios extends BaseView implements Serializable {
                             lstError.add(objErrorExcelBean);
                             return false;
                         }
-                        
+
                         if (params != null && params.length > 0) {
 
                             boolean exists = false;
@@ -384,7 +389,7 @@ public class Utilitarios extends BaseView implements Serializable {
                         }
 
                     }
-                    
+
                 } catch (Exception e) {
                     objErrorExcelBean.setStrError(msg("organigrama.masivo.error.celda.lectura.error"));
                     lstError.add(objErrorExcelBean);
@@ -799,4 +804,24 @@ public class Utilitarios extends BaseView implements Serializable {
 
     }
 
+    public static LinkedHashMap<String, String> sortByValue(LinkedHashMap<String, String> unsortMap) {
+
+        List<Map.Entry<String, String>> list
+                = new LinkedList<Map.Entry<String, String>>(unsortMap.entrySet());
+
+        Collections.sort(list, new Comparator<Map.Entry<String, String>>() {
+            public int compare(Map.Entry<String, String> o1,
+                    Map.Entry<String, String> o2) {
+                return (o1.getValue()).compareTo(o2.getValue());
+            }
+        });
+
+        LinkedHashMap<String, String> sortedMap = new LinkedHashMap<String, String>();
+        for (Map.Entry<String, String> entry : list) {
+            sortedMap.put(entry.getKey(), entry.getValue());
+        }
+
+        return sortedMap;
+    }
+    
 }
