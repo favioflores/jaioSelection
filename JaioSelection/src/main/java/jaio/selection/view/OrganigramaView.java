@@ -1,5 +1,6 @@
 package jaio.selection.view;
 
+import jaio.selection.bean.AreaBean;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
@@ -23,26 +24,17 @@ import jaio.selection.bean.AreaOrganigramaBean;
 import jaio.selection.bean.ErrorExcelBean;
 import jaio.selection.bean.PerfilBean;
 import jaio.selection.dao.AreaDAO;
-import jaio.selection.dao.BateriaEvaluacionDAO;
 import jaio.selection.dao.EmpresaDAO;
-import jaio.selection.dao.InfoConocimientoDAO;
 import jaio.selection.dao.PerfilDAO;
 import jaio.selection.orm.Area;
-import jaio.selection.orm.BateriaEvaluacion;
-import jaio.selection.orm.BateriaPersonalizada;
 import jaio.selection.orm.Empresa;
-import jaio.selection.orm.EvaluacionPerfil;
-import jaio.selection.orm.InfoConocimiento;
 import jaio.selection.orm.Perfil;
 import jaio.selection.util.Constantes;
 import jaio.selection.util.Utilitarios;
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.primefaces.event.FileUploadEvent;
@@ -677,23 +669,40 @@ public class OrganigramaView extends BaseView implements Serializable {
             try {
                 xlsxMasivo = new XSSFWorkbook(event.getFile().getInputstream());
 
+                /**
+                 * VALIDA LA CABECERA
+                 */
                 validaCabeceraMasivo(xlsxMasivo, lstErrorExcelBeans);
 
+                /**
+                 * VALIDA EL CONTENIDO
+                 */
                 if (lstErrorExcelBeans.isEmpty()) {
                     validaOrganigramaMasivo(xlsxMasivo, lstErrorExcelBeans);
                 } else {
-                    mostrarAlerta(WARN, "organigrama.masivo.archivo.procesoOkConErrores", null, null);
+                    lstErrores = lstErrorExcelBeans;
+                    mostrarAlerta(WARN, "organigrama.masivo.archivo.procesoConErrores", null, null);
                     return;
                 }
 
+                /**
+                 * PROCESA LSO REGISTROS
+                 */
                 if (lstErrorExcelBeans.isEmpty()) {
-                    //procesaOrganigramaMasivo(xlsxMasivo);
+                    procesaOrganigramaMasivo(xlsxMasivo, lstErrorExcelBeans);
                 } else {
-                    mostrarAlerta(WARN, "organigrama.masivo.archivo.procesoOkConErrores", null, null);
+                    lstErrores = lstErrorExcelBeans;
+                    mostrarAlerta(WARN, "organigrama.masivo.archivo.procesoConErrores", null, null);
                     return;
                 }
 
-                mostrarAlerta(INFO, "organigrama.masivo.archivo.procesoOk", null, null);
+                if (!lstErrorExcelBeans.isEmpty()) {
+                    lstErrores = lstErrorExcelBeans;
+                    mostrarAlerta(WARN, "organigrama.masivo.archivo.procesoConErrores", null, null);
+                    return;
+                } else {
+                    mostrarAlerta(INFO, "organigrama.masivo.archivo.procesoOk", null, null);
+                }
 
                 inputFile = null;
                 fileImport = null;
@@ -706,13 +715,127 @@ public class OrganigramaView extends BaseView implements Serializable {
 
     }
 
-    private List<ErrorExcelBean> procesaOrganigramaMasivo(Workbook xlsMasivo, List lstErrores) {
+    private List<ErrorExcelBean> procesaOrganigramaMasivo(XSSFWorkbook xlsMasivo, List<ErrorExcelBean> lstErrores) {
 
-        return null;
-        
+        try {
+
+            XSSFSheet hoja = xlsMasivo.getSheetAt(0);
+            Iterator<Row> filas = hoja.iterator();
+
+            filas.next();
+            filas.next();
+
+            Map<String, String> mpArea = new HashMap();
+            Map<String, String> mpPerfil = new HashMap();
+
+            // RECORRE AREAS Y VALIDA SOLO AUTENTICAS
+            while (filas.hasNext()) {
+
+                Row row = filas.next();
+
+                String strId = Utilitarios.obtieneDatoCelda(row, Constantes.XLSX_COLUMNA_ID);
+                String strRegistro = Utilitarios.obtieneDatoCelda(row, Constantes.XLSX_COLUMNA_TIPO_REGISTRO);
+                String strNombre = Utilitarios.obtieneDatoCelda(row, Constantes.XLSX_COLUMNA_NOMBRE_REGISTRO);
+
+                ErrorExcelBean objErrorExcelBean = new ErrorExcelBean();
+                objErrorExcelBean.setStrFila((row.getRowNum() + 1) + "");
+
+                if (strRegistro.toUpperCase().equals(Constantes.XLSX_ORG_MASIVO_COLUMNA_TIPO_AREA)) {
+
+                    boolean esError = false;
+
+                    if (mpArea.containsKey(strId)) {
+                        objErrorExcelBean.setStrValor(strId);
+                        objErrorExcelBean.setStrEtiqueta(msg("organigrama.masivo.columna.id"));
+                        objErrorExcelBean.setStrColumna(CellReference.convertNumToColString(Constantes.XLSX_COLUMNA_ID));
+                        objErrorExcelBean.setStrError(msg("organigrama.masivo.error.area.id.duplicado"));
+                        esError = true;
+                        lstErrores.add(objErrorExcelBean);
+                    }
+
+                    if (mpArea.containsValue(strNombre)) {
+                        objErrorExcelBean.setStrValor(strNombre);
+                        objErrorExcelBean.setStrEtiqueta(msg("organigrama.masivo.columna.nombreRegistro"));
+                        objErrorExcelBean.setStrColumna(CellReference.convertNumToColString(Constantes.XLSX_COLUMNA_NOMBRE_REGISTRO));
+                        objErrorExcelBean.setStrError(msg("organigrama.masivo.error.area.nombre.duplicado"));
+                        esError = true;
+                        lstErrores.add(objErrorExcelBean);
+                    }
+
+                    if (!esError) {
+                        mpArea.put(strId, strNombre);
+                    }
+
+                }
+
+            }
+
+            // RECORRE PERFILES Y VALIDA SOLO AUTENTICAS
+            filas = hoja.iterator();
+            filas.next();
+            filas.next();
+
+            while (filas.hasNext()) {
+
+                Row row = filas.next();
+
+                String strId = Utilitarios.obtieneDatoCelda(row, Constantes.XLSX_COLUMNA_ID);
+                String strRegistro = Utilitarios.obtieneDatoCelda(row, Constantes.XLSX_COLUMNA_TIPO_REGISTRO);
+                String strNombre = Utilitarios.obtieneDatoCelda(row, Constantes.XLSX_COLUMNA_NOMBRE_REGISTRO);
+                String strDependencia = Utilitarios.obtieneDatoCelda(row, Constantes.XLSX_COLUMNA_DEPENDENCIA);
+
+                ErrorExcelBean objErrorExcelBean = new ErrorExcelBean();
+                objErrorExcelBean.setStrFila((row.getRowNum() + 1) + "");
+
+                if (strRegistro.toUpperCase().equals(Constantes.XLSX_ORG_MASIVO_COLUMNA_TIPO_PERFIL)) {
+
+                    boolean esError = false;
+
+                    if (mpPerfil.containsKey(strId)) {
+                        objErrorExcelBean.setStrValor(strId);
+                        objErrorExcelBean.setStrEtiqueta(msg("organigrama.masivo.columna.id"));
+                        objErrorExcelBean.setStrColumna(CellReference.convertNumToColString(Constantes.XLSX_COLUMNA_ID));
+                        objErrorExcelBean.setStrError(msg("organigrama.masivo.error.perfil.id.duplicado"));
+                        esError = true;
+                        lstErrores.add(objErrorExcelBean);
+                    }
+
+                    if (mpPerfil.containsValue(strNombre)) {
+                        objErrorExcelBean.setStrValor(strNombre);
+                        objErrorExcelBean.setStrEtiqueta(msg("organigrama.masivo.columna.nombreRegistro"));
+                        objErrorExcelBean.setStrColumna(CellReference.convertNumToColString(Constantes.XLSX_COLUMNA_NOMBRE_REGISTRO));
+                        objErrorExcelBean.setStrError(msg("organigrama.masivo.error.perfil.nombre.duplicado"));
+                        esError = true;
+                        lstErrores.add(objErrorExcelBean);
+                    }
+
+                    if (!mpArea.containsKey(strDependencia)) {
+                        objErrorExcelBean.setStrValor(strDependencia);
+                        objErrorExcelBean.setStrEtiqueta(msg("organigrama.masivo.columna.dependencia"));
+                        objErrorExcelBean.setStrColumna(CellReference.convertNumToColString(Constantes.XLSX_COLUMNA_DEPENDENCIA));
+                        objErrorExcelBean.setStrError(msg("organigrama.masivo.error.perfil.dependencia.noexiste"));
+
+                        esError = true;
+                        lstErrores.add(objErrorExcelBean);
+                    }
+
+                    if (!esError) {
+                        mpPerfil.put(strId, strNombre);
+                    }
+
+                }
+
+            }
+
+        } catch (Exception ex) {
+            mostrarAlerta(FATAL, "error.inesperado", log, ex);
+        }
+
+        return lstErrores;
+
     }
 
-    private List<ErrorExcelBean> validaCabeceraMasivo(XSSFWorkbook xlsMasivo, List lstErrores) {
+    private List<ErrorExcelBean> validaCabeceraMasivo(XSSFWorkbook xlsMasivo, List<ErrorExcelBean> lstErrores) {
 
         try {
 
@@ -744,7 +867,7 @@ public class OrganigramaView extends BaseView implements Serializable {
         return lstErrores;
     }
 
-    private List<ErrorExcelBean> validaOrganigramaMasivo(XSSFWorkbook xlsMasivo, List lstErrores) {
+    private List<ErrorExcelBean> validaOrganigramaMasivo(XSSFWorkbook xlsMasivo, List<ErrorExcelBean> lstErrores) {
 
         try {
 

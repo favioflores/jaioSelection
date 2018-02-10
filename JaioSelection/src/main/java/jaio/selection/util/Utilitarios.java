@@ -341,9 +341,8 @@ public class Utilitarios extends BaseView implements Serializable {
             if (Utilitarios.esNuloOVacio(obj) && !esRequerido) {
                 return true;
             } else {
-                objErrorExcelBean.setStrFila(row.getRowNum());
-                
-                //objErrorExcelBean.setStrColumna((CellReference.convertNumToColString(column.intValue())));
+                objErrorExcelBean.setStrFila((row.getRowNum()+1)+"");
+                objErrorExcelBean.setStrColumna(CellReference.convertNumToColString(column));
                 objErrorExcelBean.setStrEtiqueta(strEtiqueta);
                 objErrorExcelBean.setStrValor(obj.toString());
             }
@@ -371,7 +370,7 @@ public class Utilitarios extends BaseView implements Serializable {
                             boolean exists = false;
                             List<String> lstParams = new ArrayList<>();
 
-                            for (int i = 0; i <= params.length; i++) {
+                            for (int i = 0; i < params.length; i++) {
                                 if (obj.toString().toUpperCase().equals(params[i])) {
                                     return true;
                                 }
@@ -413,7 +412,7 @@ public class Utilitarios extends BaseView implements Serializable {
                             boolean exists = false;
                             List<String> lstParams = new ArrayList<>();
 
-                            for (int i = 0; i <= params.length; i++) {
+                            for (int i = 0; i < params.length; i++) {
                                 if (obj.toString().toUpperCase().equals(params[i])) {
                                     return true;
                                 }
@@ -703,7 +702,7 @@ public class Utilitarios extends BaseView implements Serializable {
         String strTemp = Constantes.strVacio;
         try {
             if (row.getCell(c).getCellType() == Cell.CELL_TYPE_STRING) {
-                strTemp = row.getCell(c, Row.CREATE_NULL_AS_BLANK).getStringCellValue();
+                strTemp = row.getCell(c, Row.CREATE_NULL_AS_BLANK).getStringCellValue().trim();
             } else if (row.getCell(c).getCellType() == Cell.CELL_TYPE_NUMERIC) {
                 strTemp = row.getCell(c, Row.CREATE_NULL_AS_BLANK).getNumericCellValue() + "";
             }
