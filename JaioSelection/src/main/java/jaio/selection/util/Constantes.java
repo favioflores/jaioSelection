@@ -251,7 +251,7 @@ public class Constantes {
 
     public static int EL_EMPRESA_ESTADO_REGISTRADO = 3;
     public static int EL_EMPRESA_ESTADO_ELIMINADO = 5;
-    
+
     //TIPO DE DATOS
     public static String Tipo_dato_int = "int";
     public static String Tipo_dato_BigDecimal = "BigDecimal";
@@ -286,5 +286,11 @@ public class Constantes {
 
     public static String XLSX_ORG_MASIVO_COLUMNA_TIPO_AREA = "AREA";
     public static String XLSX_ORG_MASIVO_COLUMNA_TIPO_PERFIL = "PERFIL";
-            
+
+    public static String XLSX_ORG_MASIVO_CAB_ID = "ID";
+    public static String XLSX_ORG_MASIVO_CAB_TIPO_REGISTRO = "TIPO DE REGISTRO";
+    public static String XLSX_ORG_MASIVO_CAB_NOMBRE_REGISTRO = "NOMBRE DE REGISTRO";
+    public static String XLSX_ORG_MASIVO_CAB_DEPENDENCIA = "DEPENDENCIA";
+    
+    
 }

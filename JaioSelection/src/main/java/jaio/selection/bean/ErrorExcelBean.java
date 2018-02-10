@@ -4,19 +4,10 @@ import java.io.Serializable;
 
 public class ErrorExcelBean implements Serializable{
 
-    private int intNum;
     private String strEtiqueta;
     private String strError;
     private int strFila;
     private int strColumna;
-
-    public int getIntNum() {
-        return intNum;
-    }
-
-    public void setIntNum(int intNum) {
-        this.intNum = intNum;
-    }
 
     public String getStrEtiqueta() {
         return strEtiqueta;

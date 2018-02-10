@@ -30,29 +30,11 @@
             </key>
             <one-to-many class="jaio.selection.orm.Notificaciones" embed-xml="true" not-found="exception"/>
         </set>
-        <set embed-xml="true" fetch="select" inverse="true" lazy="true" mutable="true" name="candidatos_1" optimistic-lock="true" sort="unsorted" table="candidato">
-            <key on-delete="noaction">
-                <column name="proceso_seleccion_id" not-null="true"/>
-            </key>
-            <one-to-many class="jaio.selection.orm.Candidato" embed-xml="true" not-found="exception"/>
-        </set>
         <set embed-xml="true" fetch="select" inverse="true" lazy="true" mutable="true" name="comunicadoProcesos" optimistic-lock="true" sort="unsorted" table="comunicado_proceso">
             <key on-delete="noaction">
                 <column name="proceso_seleccion_id" not-null="true"/>
             </key>
             <one-to-many class="jaio.selection.orm.ComunicadoProceso" embed-xml="true" not-found="exception"/>
-        </set>
-        <set embed-xml="true" fetch="select" inverse="true" lazy="true" mutable="true" name="comunicadoProcesos_1" optimistic-lock="true" sort="unsorted" table="comunicado_proceso">
-            <key on-delete="noaction">
-                <column name="proceso_seleccion_id" not-null="true"/>
-            </key>
-            <one-to-many class="jaio.selection.orm.ComunicadoProceso" embed-xml="true" not-found="exception"/>
-        </set>
-        <set embed-xml="true" fetch="select" inverse="true" lazy="true" mutable="true" name="notificacioneses_1" optimistic-lock="true" sort="unsorted" table="notificaciones">
-            <key on-delete="noaction">
-                <column name="proceso_seleccion_id" not-null="true"/>
-            </key>
-            <one-to-many class="jaio.selection.orm.Notificaciones" embed-xml="true" not-found="exception"/>
         </set>
     </class>
 </hibernate-mapping>

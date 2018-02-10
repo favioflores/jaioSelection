@@ -18,7 +18,6 @@ public class ModeloComunicado implements java.io.Serializable {
     private Date fechaActualizacion;
     private int estado;
     private Set comunicadoProcesos = new HashSet(0);
-    private Set comunicadoProcesos_1 = new HashSet(0);
 
     public ModeloComunicado() {
     }
@@ -32,7 +31,7 @@ public class ModeloComunicado implements java.io.Serializable {
         this.estado = estado;
     }
 
-    public ModeloComunicado(String nombre, String asunto, byte[] contenido, Date fechaRegistro, Date fechaActualizacion, int estado, Set comunicadoProcesos, Set comunicadoProcesos_1) {
+    public ModeloComunicado(String nombre, String asunto, byte[] contenido, Date fechaRegistro, Date fechaActualizacion, int estado, Set comunicadoProcesos) {
         this.nombre = nombre;
         this.asunto = asunto;
         this.contenido = contenido;
@@ -40,7 +39,6 @@ public class ModeloComunicado implements java.io.Serializable {
         this.fechaActualizacion = fechaActualizacion;
         this.estado = estado;
         this.comunicadoProcesos = comunicadoProcesos;
-        this.comunicadoProcesos_1 = comunicadoProcesos_1;
     }
 
     public Integer getId() {
@@ -106,13 +104,5 @@ public class ModeloComunicado implements java.io.Serializable {
     public void setComunicadoProcesos(Set comunicadoProcesos) {
         this.comunicadoProcesos = comunicadoProcesos;
     }
-
-    public Set getComunicadoProcesos_1() {
-        return this.comunicadoProcesos_1;
-    }
-
-    public void setComunicadoProcesos_1(Set comunicadoProcesos_1) {
-        this.comunicadoProcesos_1 = comunicadoProcesos_1;
-    }
-
+    
 }

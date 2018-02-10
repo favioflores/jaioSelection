@@ -23,10 +23,16 @@ import jaio.selection.bean.AreaOrganigramaBean;
 import jaio.selection.bean.ErrorExcelBean;
 import jaio.selection.bean.PerfilBean;
 import jaio.selection.dao.AreaDAO;
+import jaio.selection.dao.BateriaEvaluacionDAO;
 import jaio.selection.dao.EmpresaDAO;
+import jaio.selection.dao.InfoConocimientoDAO;
 import jaio.selection.dao.PerfilDAO;
 import jaio.selection.orm.Area;
+import jaio.selection.orm.BateriaEvaluacion;
+import jaio.selection.orm.BateriaPersonalizada;
 import jaio.selection.orm.Empresa;
+import jaio.selection.orm.EvaluacionPerfil;
+import jaio.selection.orm.InfoConocimiento;
 import jaio.selection.orm.Perfil;
 import jaio.selection.util.Constantes;
 import jaio.selection.util.Utilitarios;
@@ -143,7 +149,7 @@ public class OrganigramaView extends BaseView implements Serializable {
     public void limpiar() {
         inputFile = null;
         fileImport = null;
-        lstErrores.clear();
+        lstErrores = new ArrayList<>();
     }
 
     protected void armarMapaBD(String idEmpresa) {
@@ -670,11 +676,12 @@ public class OrganigramaView extends BaseView implements Serializable {
 
                 if (lstErrorExcelBeans.isEmpty()) {
                     //procesaOrganigramaMasivo(xlsxMasivo);
-                    mostrarAlerta(INFO, "organigrama.masivo.archivo.procesoOk", null, null);
                 } else {
                     mostrarAlerta(WARN, "organigrama.masivo.archivo.procesoOkConErrores", null, null);
                     return;
                 }
+
+                mostrarAlerta(INFO, "organigrama.masivo.archivo.procesoOk", null, null);
 
                 inputFile = null;
                 fileImport = null;
@@ -687,6 +694,12 @@ public class OrganigramaView extends BaseView implements Serializable {
 
     }
 
+    private List<ErrorExcelBean> procesaOrganigramaMasivo(HSSFWorkbook xlsMasivo, List lstErrores) {
+
+        return null;
+        
+    }
+
     private List<ErrorExcelBean> validaCabeceraMasivo(HSSFWorkbook xlsMasivo, List lstErrores) {
 
         try {
@@ -694,16 +707,28 @@ public class OrganigramaView extends BaseView implements Serializable {
             HSSFSheet hoja = xlsMasivo.getSheetAt(0);
             Iterator<Row> filas = hoja.iterator();
 
-            while (filas.hasNext()) {
+            filas.next();
 
-                Row row = filas.next();
+            Row row = filas.next();
 
-            }
-            
+            String strId = Utilitarios.obtieneDatoCelda(row, Constantes.XLSX_COLUMNA_ID);
+            String strRegistro = Utilitarios.obtieneDatoCelda(row, Constantes.XLSX_COLUMNA_TIPO_REGISTRO);
+            String strNombre = Utilitarios.obtieneDatoCelda(row, Constantes.XLSX_COLUMNA_NOMBRE_REGISTRO);
+            String strDependencia = Utilitarios.obtieneDatoCelda(row, Constantes.XLSX_COLUMNA_DEPENDENCIA);
+
+            Utilitarios.validaValorCeldaXLSX(strId, Constantes.TIPO_STRING, msg("organigrama.masivo.columna.id"), lstErrores, row.getCell(Constantes.XLSX_COLUMNA_ID), true,
+                    Constantes.XLSX_ORG_MASIVO_CAB_ID);
+            Utilitarios.validaValorCeldaXLSX(strRegistro, Constantes.TIPO_STRING, msg("organigrama.masivo.columna.tipoRegistro"), lstErrores, row.getCell(Constantes.XLSX_COLUMNA_TIPO_REGISTRO), true,
+                    Constantes.XLSX_ORG_MASIVO_CAB_TIPO_REGISTRO);
+            Utilitarios.validaValorCeldaXLSX(strNombre, Constantes.TIPO_STRING, msg("organigrama.masivo.columna.nombreRegistro"), lstErrores, row.getCell(Constantes.XLSX_COLUMNA_NOMBRE_REGISTRO), true,
+                    Constantes.XLSX_ORG_MASIVO_CAB_NOMBRE_REGISTRO);
+            Utilitarios.validaValorCeldaXLSX(strDependencia, Constantes.TIPO_STRING, msg("organigrama.masivo.columna.dependencia"), lstErrores, row.getCell(Constantes.XLSX_COLUMNA_DEPENDENCIA), true,
+                    Constantes.XLSX_ORG_MASIVO_CAB_DEPENDENCIA);
+
         } catch (Exception ex) {
             mostrarAlerta(FATAL, "error.inesperado", log, ex);
         }
-        
+
         return lstErrores;
     }
 
@@ -713,6 +738,8 @@ public class OrganigramaView extends BaseView implements Serializable {
 
             HSSFSheet hoja = xlsMasivo.getSheetAt(0);
             Iterator<Row> filas = hoja.iterator();
+            filas.next();
+            filas.next();
 
             while (filas.hasNext()) {
 
@@ -735,9 +762,9 @@ public class OrganigramaView extends BaseView implements Serializable {
         } catch (Exception e) {
             mostrarAlerta(FATAL, "error.inesperado", log, e);
         }
-        
+
         return lstErrores;
-        
+
     }
 
 }

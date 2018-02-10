@@ -20,8 +20,6 @@ public class BateriaPersonalizada implements java.io.Serializable {
     private int minutosEstimadosTotal;
     private Set bateriaEvaluacions = new HashSet(0);
     private Set evaluacionPerfils = new HashSet(0);
-    private Set evaluacionPerfils_1 = new HashSet(0);
-    private Set bateriaEvaluacions_1 = new HashSet(0);
 
     public BateriaPersonalizada() {
     }
@@ -34,7 +32,7 @@ public class BateriaPersonalizada implements java.io.Serializable {
         this.minutosEstimadosTotal = minutosEstimadosTotal;
     }
 
-    public BateriaPersonalizada(String nombre, Date fechaCreacion, int estado, String resena, int horasEstimadasTotal, int minutosEstimadosTotal, Set bateriaEvaluacions, Set evaluacionPerfils, Set evaluacionPerfils_1, Set bateriaEvaluacions_1) {
+    public BateriaPersonalizada(String nombre, Date fechaCreacion, int estado, String resena, int horasEstimadasTotal, int minutosEstimadosTotal, Set bateriaEvaluacions, Set evaluacionPerfils) {
         this.nombre = nombre;
         this.fechaCreacion = fechaCreacion;
         this.estado = estado;
@@ -43,8 +41,6 @@ public class BateriaPersonalizada implements java.io.Serializable {
         this.minutosEstimadosTotal = minutosEstimadosTotal;
         this.bateriaEvaluacions = bateriaEvaluacions;
         this.evaluacionPerfils = evaluacionPerfils;
-        this.evaluacionPerfils_1 = evaluacionPerfils_1;
-        this.bateriaEvaluacions_1 = bateriaEvaluacions_1;
     }
 
     public Integer getId() {
@@ -126,21 +122,5 @@ public class BateriaPersonalizada implements java.io.Serializable {
     public void setEvaluacionPerfils(Set evaluacionPerfils) {
         this.evaluacionPerfils = evaluacionPerfils;
     }
-
-    public Set getEvaluacionPerfils_1() {
-        return this.evaluacionPerfils_1;
-    }
-
-    public void setEvaluacionPerfils_1(Set evaluacionPerfils_1) {
-        this.evaluacionPerfils_1 = evaluacionPerfils_1;
-    }
-
-    public Set getBateriaEvaluacions_1() {
-        return this.bateriaEvaluacions_1;
-    }
-
-    public void setBateriaEvaluacions_1(Set bateriaEvaluacions_1) {
-        this.bateriaEvaluacions_1 = bateriaEvaluacions_1;
-    }
-
+ 
 }

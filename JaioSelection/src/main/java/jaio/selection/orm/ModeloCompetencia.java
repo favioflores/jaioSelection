@@ -15,8 +15,6 @@ public class ModeloCompetencia implements java.io.Serializable {
     private String color;
     private Set modeloCompetenciaSinonimos = new HashSet(0);
     private Set modeloEvaluacionXCompetencias = new HashSet(0);
-    private Set modeloCompetenciaSinonimos_1 = new HashSet(0);
-    private Set modeloEvaluacionXCompetencias_1 = new HashSet(0);
 
     public ModeloCompetencia() {
     }
@@ -31,8 +29,6 @@ public class ModeloCompetencia implements java.io.Serializable {
         this.color = color;
         this.modeloCompetenciaSinonimos = modeloCompetenciaSinonimos;
         this.modeloEvaluacionXCompetencias = modeloEvaluacionXCompetencias;
-        this.modeloCompetenciaSinonimos_1 = modeloCompetenciaSinonimos_1;
-        this.modeloEvaluacionXCompetencias_1 = modeloEvaluacionXCompetencias_1;
     }
 
     public Integer getId() {
@@ -81,22 +77,6 @@ public class ModeloCompetencia implements java.io.Serializable {
 
     public void setModeloEvaluacionXCompetencias(Set modeloEvaluacionXCompetencias) {
         this.modeloEvaluacionXCompetencias = modeloEvaluacionXCompetencias;
-    }
-
-    public Set getModeloCompetenciaSinonimos_1() {
-        return this.modeloCompetenciaSinonimos_1;
-    }
-
-    public void setModeloCompetenciaSinonimos_1(Set modeloCompetenciaSinonimos_1) {
-        this.modeloCompetenciaSinonimos_1 = modeloCompetenciaSinonimos_1;
-    }
-
-    public Set getModeloEvaluacionXCompetencias_1() {
-        return this.modeloEvaluacionXCompetencias_1;
-    }
-
-    public void setModeloEvaluacionXCompetencias_1(Set modeloEvaluacionXCompetencias_1) {
-        this.modeloEvaluacionXCompetencias_1 = modeloEvaluacionXCompetencias_1;
     }
 
 }

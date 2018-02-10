@@ -12,7 +12,6 @@ public class Definicion implements java.io.Serializable {
     private Integer id;
     private String descripcion;
     private Set elementos = new HashSet(0);
-    private Set elementos_1 = new HashSet(0);
 
     public Definicion() {
     }
@@ -24,7 +23,6 @@ public class Definicion implements java.io.Serializable {
     public Definicion(String descripcion, Set elementos, Set elementos_1) {
         this.descripcion = descripcion;
         this.elementos = elementos;
-        this.elementos_1 = elementos_1;
     }
 
     public Integer getId() {
@@ -49,14 +47,6 @@ public class Definicion implements java.io.Serializable {
 
     public void setElementos(Set elementos) {
         this.elementos = elementos;
-    }
-
-    public Set getElementos_1() {
-        return this.elementos_1;
-    }
-
-    public void setElementos_1(Set elementos_1) {
-        this.elementos_1 = elementos_1;
     }
 
 }

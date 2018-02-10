@@ -29,10 +29,7 @@ public class Candidato implements java.io.Serializable {
     private byte esFinalista;
     private Set infoAcademicas = new HashSet(0);
     private Set infoExperiencias = new HashSet(0);
-    private Set infoAcademicas_1 = new HashSet(0);
     private Set infoConocimientos = new HashSet(0);
-    private Set infoExperiencias_1 = new HashSet(0);
-    private Set infoConocimientos_1 = new HashSet(0);
 
     public Candidato() {
     }
@@ -51,7 +48,7 @@ public class Candidato implements java.io.Serializable {
         this.esFinalista = esFinalista;
     }
 
-    public Candidato(ProcesoSeleccion procesoSeleccion, String nombre, String apellidoParterno, String apellidoMaterno, String nroDocumento, int tipoDocumento, String movil, String telefono, String direccion, Date fechaNacimiento, int distrito, String correo, int estado, int prioridad, byte esApto, byte esFinalista, Set infoAcademicas, Set infoExperiencias, Set infoAcademicas_1, Set infoConocimientos, Set infoExperiencias_1, Set infoConocimientos_1) {
+    public Candidato(ProcesoSeleccion procesoSeleccion, String nombre, String apellidoParterno, String apellidoMaterno, String nroDocumento, int tipoDocumento, String movil, String telefono, String direccion, Date fechaNacimiento, int distrito, String correo, int estado, int prioridad, byte esApto, byte esFinalista, Set infoAcademicas, Set infoExperiencias, Set infoConocimientos) {
         this.procesoSeleccion = procesoSeleccion;
         this.nombre = nombre;
         this.apellidoParterno = apellidoParterno;
@@ -70,10 +67,7 @@ public class Candidato implements java.io.Serializable {
         this.esFinalista = esFinalista;
         this.infoAcademicas = infoAcademicas;
         this.infoExperiencias = infoExperiencias;
-        this.infoAcademicas_1 = infoAcademicas_1;
         this.infoConocimientos = infoConocimientos;
-        this.infoExperiencias_1 = infoExperiencias_1;
-        this.infoConocimientos_1 = infoConocimientos_1;
     }
 
     public Integer getId() {
@@ -228,36 +222,12 @@ public class Candidato implements java.io.Serializable {
         this.infoExperiencias = infoExperiencias;
     }
 
-    public Set getInfoAcademicas_1() {
-        return this.infoAcademicas_1;
-    }
-
-    public void setInfoAcademicas_1(Set infoAcademicas_1) {
-        this.infoAcademicas_1 = infoAcademicas_1;
-    }
-
     public Set getInfoConocimientos() {
         return this.infoConocimientos;
     }
 
     public void setInfoConocimientos(Set infoConocimientos) {
         this.infoConocimientos = infoConocimientos;
-    }
-
-    public Set getInfoExperiencias_1() {
-        return this.infoExperiencias_1;
-    }
-
-    public void setInfoExperiencias_1(Set infoExperiencias_1) {
-        this.infoExperiencias_1 = infoExperiencias_1;
-    }
-
-    public Set getInfoConocimientos_1() {
-        return this.infoConocimientos_1;
-    }
-
-    public void setInfoConocimientos_1(Set infoConocimientos_1) {
-        this.infoConocimientos_1 = infoConocimientos_1;
     }
 
 }
