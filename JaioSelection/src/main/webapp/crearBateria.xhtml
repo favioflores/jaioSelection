@@ -86,53 +86,63 @@
                     <br/>
 
                     <!--BILLETERA DE EVALUACIONES-->
-                    <p:fieldset id="evaluacionesSeleccionadas">
+                    <p:fieldset id="evaluacionesSeleccionadas" legend="#{msg['proceso.dialog.bateria.seleccionadas']}">
                         <!--BILLETERA DE EVALUACIONES-->
-                        <p:dataGrid id="listDropBaterias" var="bat" value="#{crearBateriaView.droppedBaterias}" style="border-style: none; border:5px;" columns="2" emptyMessage="#{msg['bateria.arratreSuEvaluacion']}">
-                            <p:panel id="panelBilleteraDeEvaluaciones">
-                                <h:outputText value="#{bat.nombre}" style="font-size: 14px;font-family:'latoregular',sans-serif;"/><br/>
-                                <h:outputText value="Validez: #{bat.validez}%" style="font-size: 12px;font-family:'latoregular',sans-serif;"/><br/>
-                                <h:outputText value="Confiabilidad: #{bat.confiabilidad}%" style="font-size: 12px;font-family:'latoregular',sans-serif;"/><br/>
-                                <h:outputText value="Minutos: #{bat.minutosEstimados}" style="font-size: 12px;font-family:'latoregular',sans-serif;"/>
-                            </p:panel>
-                            <!--inicio prueba-->
-                            <p:draggable for="panelBilleteraDeEvaluaciones" revert="true" />    
-                            <!--fin prueba-->
-                        </p:dataGrid>
+                        <p:outputPanel id="dropArea">
+
+                            <p:dataGrid id="listDropBaterias" widgetVar="listDropBaterias" var="bat" value="#{crearBateriaView.droppedBaterias}" style="border-style: none; border:5px;" columns="2" 
+                                        emptyMessage="#{msg['bateria.arratreSuEvaluacion']}"
+                                        rendered="#{not empty crearBateriaView.droppedBaterias}"  >
+                                <p:panel id="panelBilleteraDeEvaluaciones">
+                                    <h:outputText value="#{bat.nombre}" style="font-size: 14px;font-family:'latoregular',sans-serif;"/><br/>
+                                    <h:outputText value="Validez: #{bat.validez}%" style="font-size: 12px;font-family:'latoregular',sans-serif;"/><br/>
+                                    <h:outputText value="Confiabilidad: #{bat.confiabilidad}%" style="font-size: 12px;font-family:'latoregular',sans-serif;"/><br/>
+                                    <h:outputText value="Minutos: #{bat.minutosEstimados}" style="font-size: 12px;font-family:'latoregular',sans-serif;"/>
+                                </p:panel>
+                                <!--inicio prueba-->
+                                <p:draggable for="panelBilleteraDeEvaluaciones" revert="true" />    
+                                <!--fin prueba-->
+                            </p:dataGrid>
+
+                            <h:outputText value="#{msg['bateria.arratreSuEvaluacion']}" style="font-size:22px;"
+                                          rendered="#{empty crearBateriaView.droppedBaterias}"  />
+
+                        </p:outputPanel>
                     </p:fieldset>
 
                     <br/>
                     <!--BILLETERA DE COMPETENCIAS-->
-                    <p:dataGrid id="listDropCompetencias" var="listC" value="#{crearBateriaView.droppedCompetencias}" columns="3" 
-                                emptyMessage="#{msg['bateria.noHayCompetencias']}">
 
-                        <h:panelGrid columns="2" style="border: 2px;">
-                            <div class="circulo" style="background: #{listC.color}">
-                           </div>
- 
+                        <p:dataGrid id="listDropCompetencias" var="listC"  value="#{crearBateriaView.droppedCompetencias}" style="border-style: none;" columns="3" 
+                                    emptyMessage="#{msg['bateria.noHayCompetencias']}">
+                            <f:facet name="footer" >Resumen de evaluaciones</f:facet>
+                            <h:panelGrid columns="2" >
+                                <div class="circulo" style="background: #{listC.color}">
+                                </div>
+
                                 <p:outputPanel style="font-size: 14px;font-family:'latoregular',sans-serif;">
                                     #{listC.nombre}
                                 </p:outputPanel>
-                        </h:panelGrid>
+                            </h:panelGrid>
 
-                    </p:dataGrid>
+                        </p:dataGrid>
 
                     <!--CARGAR EVALUACIONES A LA BILLETERA-->
                     <p:droppable for="evaluacionesSeleccionadas"  tolerance="touch" activeStyleClass="ui-state-highlight" datasource="listaEvaluaciones" onDrop="handleDrop">
-                        <p:ajax listener="#{crearBateriaView.cargarBilleteraDeBaterias}" update="listDropBaterias,listDropCompetencias listaEvaluaciones" />
+                        <p:ajax listener="#{crearBateriaView.cargarBilleteraDeBaterias}" update="dropArea,listDropCompetencias,listaEvaluaciones" />
                     </p:droppable>
 
                     <br/>
                     <!--BOTON GRABAR-->
-                        <p:commandButton value="#{msg['bateria.boton.grabar']}" id="guardarBateria" styleClass="aqua-button"
-                                         actionListener="#{crearBateriaView.grabarBateria()}" update=":formBateria:"/>
+                    <p:commandButton value="#{msg['bateria.boton.grabar']}" id="guardarBateria" styleClass="aqua-button"
+                                     actionListener="#{crearBateriaView.grabarBateria()}" update=":formBateria:"/>
                     <!--</p:dataGrid>-->
                 </div>
 
                 <!--PANEL DERECHO-->
                 <div class="ui-g-4">
-                    <fieldset id="evaluaciones" style="border-style: none;">
-                        <p:dataGrid id="listaEvaluaciones" var="listE"  value="#{crearBateriaView.lstBaterias}" columns="1" rows="5"  paginator="true" paginatorPosition="bottom" >
+                    <p:fieldset id="evaluaciones" legend="#{msg['proceso.dialog.bateria.biblioteca']}" style="border-style: none;"  >
+                        <p:dataGrid id="listaEvaluaciones" var="listE"  value="#{crearBateriaView.lstBaterias}" columns="1" rows="5"  paginator="true" >
                             <p:panel id="panelDeEvaluaciones">
                                 <h:outputText value="#{listE.nombre}" style="font-size: 14px;font-family:'latoregular',sans-serif;"/><br/>
                                 <h:outputText value="Validez: #{listE.validez}%" style="font-size: 12px;font-family:'latoregular',sans-serif;"/><br/>
@@ -142,7 +152,7 @@
                             </p:panel>
                             <p:draggable for="panelDeEvaluaciones" revert="true" />
                         </p:dataGrid>
-                    </fieldset>
+                    </p:fieldset>
                     <!--DEVOLVER EVALUACIONES DE LA BILLETERA-->
                     <!--                    <p:droppable for="evaluaciones"  tolerance="touch" activeStyleClass="ui-state-highlight" datasource="listDropBaterias" onDrop="">
                                             <p:ajax listener="#{crearBateriaView.vaciarBilleteraDeBaterias}" update="listaEvaluaciones listDropBaterias" />
