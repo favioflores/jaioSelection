@@ -142,9 +142,9 @@ public class ModeloEvaluacionDAO extends HibernateUtil implements Serializable {
     }
 
     public void grabarBateriaPersonalizada(BateriaPersonalizada objBateriaPersonalizada, List<BateriaBean> droppedBaterias,String strPerfilSeleccionado ) {
-
         try {
             iniciaSession();
+
             session.save(objBateriaPersonalizada);
             
             for (BateriaBean droppedBateria : droppedBaterias) {
@@ -193,20 +193,6 @@ public class ModeloEvaluacionDAO extends HibernateUtil implements Serializable {
             objBateriaPersonalizada.getEvaluacionPerfil().add(objEvaluacionPerfil);
             session.save(objEvaluacionPerfil);
             
-            guardarCambios();
-            log.debug("Grago correctamente");
-        } catch (Exception e) {
-            manejaException(e);
-            rollback(e);
-        } finally {
-            cerrarSession();
-        }
-    }
-
-    public void grabarBateriaEvaluacion(BateriaEvaluacion bateriaEvaluacion) {
-        iniciaSession();
-        try {
-            session.save(bateriaEvaluacion);
             guardarCambios();
             log.debug("Grago correctamente");
         } catch (Exception e) {

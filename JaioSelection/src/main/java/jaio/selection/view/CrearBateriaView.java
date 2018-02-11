@@ -261,12 +261,9 @@ public class CrearBateriaView extends BaseView implements Serializable {
     public void grabarBateria() {
         try {
             ModeloEvaluacionDAO objEvaluacionDAO = new ModeloEvaluacionDAO();
-            boolean exito = false;
             if (Utilitarios.noEsNuloOVacio(droppedBaterias)) {
                 if (Utilitarios.noEsNuloOVacio(droppedCompetencias)) {
-                    ConvertirDatosBean objBean = new ConvertirDatosBean();
                     
-
                     BateriaPersonalizada objBateriaPersonalizada = new BateriaPersonalizada();
                     objBateriaPersonalizada.setNombre(nombreEvaluacion);
                     objBateriaPersonalizada.setFechaCreacion(new Date());
@@ -274,26 +271,18 @@ public class CrearBateriaView extends BaseView implements Serializable {
                     objBateriaPersonalizada.setResena(nombreEvaluacion);
                     objBateriaPersonalizada.setHorasEstimadasTotal(Constantes.Int_cinco);
                     objBateriaPersonalizada.setMinutosEstimadosTotal(Constantes.Int_cinco);
-
-
-                    objEvaluacionDAO.grabarBateriaPersonalizada(objBateriaPersonalizada, droppedBaterias,strPerfilSeleccionado );
-
                     
-//                                    if(exito){
-//                                        mostrarAlerta(INFO, "bateria.bateriaGuardada", null, null);
-                        limpiar();
-//                                    } else {
-//                                        mostrarAlerta(INFO, "Ocurrio un Error al Guardar Bateria.", null, null);
-//                                    }
-
+                    objEvaluacionDAO.grabarBateriaPersonalizada(objBateriaPersonalizada, droppedBaterias,strPerfilSeleccionado );
+                    
+                    limpiar();
+                    mostrarAlerta(INFO, "bateria.bateriaGuardada", null, null);
+                    
                 } else {
                     mostrarAlerta(ERROR, "bateria.noSeleccionoCompetencias", null, null);
                 }
             } else {
                 mostrarAlerta(ERROR, "bateria.noSeleccionoEvaluaciones", null, null);
             }
-                        
-            
         } catch (Exception e) {
             mostrarAlerta(FATAL, "error.inesperado", log, e);
         }
