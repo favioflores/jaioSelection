@@ -26,6 +26,7 @@ import jaio.selection.dao.ModeloEvaluacionDAO;
 import jaio.selection.dao.PerfilDAO;
 import jaio.selection.orm.Area;
 import jaio.selection.orm.BateriaEvaluacion;
+import jaio.selection.orm.BateriaEvaluacionId;
 import jaio.selection.orm.BateriaPersonalizada;
 import jaio.selection.orm.Empresa;
 import jaio.selection.orm.EvaluacionPerfil;
@@ -277,18 +278,9 @@ public class CrearBateriaView extends BaseView implements Serializable {
                                     objBateriaPersonalizada.setResena(nombreEvaluacion);
                                     objBateriaPersonalizada.setHorasEstimadasTotal(Constantes.Int_cinco);
                                     objBateriaPersonalizada.setMinutosEstimadosTotal(Constantes.Int_cinco);
-                                    objEvaluacionDAO.grabarBateriaPersonalizada(objBateriaPersonalizada);
                                     
-                                    for (BateriaBean droppedBateria : droppedBaterias) {
-                                        ModeloEvaluacion objModeloEvaluacion = new ModeloEvaluacion();
-                                        objModeloEvaluacion.setId(Integer.parseInt(droppedBateria.getId()));
-                                        BateriaEvaluacion objBateriaEvaluacion = new BateriaEvaluacion();
-                                        objBateriaEvaluacion.setBateriaPersonalizada(objBateriaPersonalizada);
-                                        objBateriaEvaluacion.setModeloEvaluacion(objModeloEvaluacion);
-                                        objEvaluacionDAO.grabarBateriaEvaluacion(objBateriaEvaluacion);
-                                        
-                                    }
-
+                                    
+                                    objEvaluacionDAO.grabarBateriaPersonalizada(objBateriaPersonalizada, droppedBaterias);
                                     
 //                                    EvaluacionPerfil objEvaluacionPerfil = new EvaluacionPerfil();
 //                                    objEvaluacionPerfil.setEstado(Constantes.Int_seis);

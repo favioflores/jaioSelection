@@ -1,9 +1,9 @@
 package jaio.selection.dao;
 
+import jaio.selection.bean.BateriaBean;
 import jaio.selection.orm.BateriaEvaluacion;
+import jaio.selection.orm.BateriaEvaluacionId;
 import jaio.selection.orm.BateriaPersonalizada;
-import jaio.selection.orm.EvaluacionPerfil;
-import jaio.selection.orm.EvaluacionPerfilId;
 import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -12,13 +12,12 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Example;
 
 import jaio.selection.orm.ModeloEvaluacion;
-import jaio.selection.orm.ProcesoSeleccion;
 import java.io.Serializable;
-import java.util.Date;
 import org.hibernate.Query;
 
 /**
  * DAO object for domain model class ModeloEvaluacion.
+ *
  * @see jaio.selection.orm.ModeloEvaluacion
  * @author Hibernate Tools
  */
@@ -28,55 +27,51 @@ public class ModeloEvaluacionDAO extends HibernateUtil implements Serializable {
     private static final Log log = LogFactory.getLog(ModeloEvaluacionDAO.class);
 
     private final SessionFactory sessionFactory = getSessionFactory();
-    
+
     public void persist(ModeloEvaluacion transientInstance) {
         log.debug("persisting ModeloEvaluacion instance");
         try {
             sessionFactory.getCurrentSession().persist(transientInstance);
             log.debug("persist successful");
-        }
-        catch (RuntimeException re) {
+        } catch (RuntimeException re) {
             log.error("persist failed", re);
             throw re;
         }
     }
-    
+
     public void attachDirty(ModeloEvaluacion instance) {
         log.debug("attaching dirty ModeloEvaluacion instance");
         try {
             sessionFactory.getCurrentSession().saveOrUpdate(instance);
             log.debug("attach successful");
-        }
-        catch (RuntimeException re) {
+        } catch (RuntimeException re) {
             log.error("attach failed", re);
             throw re;
         }
     }
-    
+
     public void attachClean(ModeloEvaluacion instance) {
         log.debug("attaching clean ModeloEvaluacion instance");
         try {
             sessionFactory.getCurrentSession().lock(instance, LockMode.NONE);
             log.debug("attach successful");
-        }
-        catch (RuntimeException re) {
+        } catch (RuntimeException re) {
             log.error("attach failed", re);
             throw re;
         }
     }
-    
+
     public void delete(ModeloEvaluacion persistentInstance) {
         log.debug("deleting ModeloEvaluacion instance");
         try {
             sessionFactory.getCurrentSession().delete(persistentInstance);
             log.debug("delete successful");
-        }
-        catch (RuntimeException re) {
+        } catch (RuntimeException re) {
             log.error("delete failed", re);
             throw re;
         }
     }
-    
+
     public ModeloEvaluacion merge(ModeloEvaluacion detachedInstance) {
         log.debug("merging ModeloEvaluacion instance");
         try {
@@ -84,51 +79,48 @@ public class ModeloEvaluacionDAO extends HibernateUtil implements Serializable {
                     .merge(detachedInstance);
             log.debug("merge successful");
             return result;
-        }
-        catch (RuntimeException re) {
+        } catch (RuntimeException re) {
             log.error("merge failed", re);
             throw re;
         }
     }
-    
-    public ModeloEvaluacion findById( java.lang.Integer id) {
+
+    public ModeloEvaluacion findById(java.lang.Integer id) {
         log.debug("getting ModeloEvaluacion instance with id: " + id);
         try {
             ModeloEvaluacion instance = (ModeloEvaluacion) sessionFactory.getCurrentSession()
                     .get("jaio.selection.orm.ModeloEvaluacion", id);
-            if (instance==null) {
+            if (instance == null) {
                 log.debug("get successful, no instance found");
-            }
-            else {
+            } else {
                 log.debug("get successful, instance found");
             }
             return instance;
-        }
-        catch (RuntimeException re) {
+        } catch (RuntimeException re) {
             log.error("get failed", re);
             throw re;
         }
     }
-    
+
     public List findByExample(ModeloEvaluacion instance) {
         log.debug("finding ModeloEvaluacion instance by example");
         try {
             List results = sessionFactory.getCurrentSession()
                     .createCriteria("jaio.selection.orm.ModeloEvaluacion")
                     .add(Example.create(instance))
-            .list();
+                    .list();
             log.debug("find by example successful, result size: " + results.size());
             return results;
-        }
-        catch (RuntimeException re) {
+        } catch (RuntimeException re) {
             log.error("find by example failed", re);
             throw re;
         }
     }
-    
+
     /**
      * metodo para traer lista de evaluaciones
-     * @return 
+     *
+     * @return
      */
     public List<ModeloEvaluacion> obtenerModelos() {
         iniciaSession();
@@ -142,11 +134,33 @@ public class ModeloEvaluacionDAO extends HibernateUtil implements Serializable {
         }
         return null;
     }
-    
-    public void grabarBateriaPersonalizada(BateriaPersonalizada bateriaPersonalizada) {
-        iniciaSession();
+
+    public void grabarBateriaPersonalizada(BateriaPersonalizada objBateriaPersonalizada, List<BateriaBean> droppedBaterias) {
+
         try {
-            session.save(bateriaPersonalizada);
+            iniciaSession();
+            
+            session.save(objBateriaPersonalizada);
+            
+            for (BateriaBean droppedBateria : droppedBaterias) {
+
+                ModeloEvaluacion objModeloEvaluacion = new ModeloEvaluacion();
+                objModeloEvaluacion.setId(Integer.parseInt(droppedBateria.getId()));
+
+                BateriaEvaluacionId objBateriaEvaluacionId = new BateriaEvaluacionId();
+                objBateriaEvaluacionId.setBateriaPersonalizadaId(objBateriaPersonalizada.getId());
+                objBateriaEvaluacionId.setModeloEvaluacionId(objModeloEvaluacion.getId());
+
+                BateriaEvaluacion objBateriaEvaluacion = new BateriaEvaluacion();
+                objBateriaEvaluacion.setBateriaPersonalizada(objBateriaPersonalizada);
+                objBateriaEvaluacion.setModeloEvaluacion(objModeloEvaluacion);
+                objBateriaEvaluacion.setId(objBateriaEvaluacionId);
+
+                objModeloEvaluacion.getBateriaEvaluacion().add(objBateriaEvaluacion);
+
+                session.save(objBateriaEvaluacion);
+            }
+            
             guardarCambios();
             log.debug("Grago correctamente");
         } catch (Exception e) {
@@ -156,8 +170,8 @@ public class ModeloEvaluacionDAO extends HibernateUtil implements Serializable {
             cerrarSession();
         }
     }
-    
-    public void grabarBateriaEvaluacion(BateriaEvaluacion bateriaEvaluacion){
+
+    public void grabarBateriaEvaluacion(BateriaEvaluacion bateriaEvaluacion) {
         iniciaSession();
         try {
             session.save(bateriaEvaluacion);
@@ -170,5 +184,5 @@ public class ModeloEvaluacionDAO extends HibernateUtil implements Serializable {
             cerrarSession();
         }
     }
-    
+
 }
