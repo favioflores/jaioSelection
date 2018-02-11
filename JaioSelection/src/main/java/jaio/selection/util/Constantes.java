@@ -260,6 +260,21 @@ public class Constantes {
     public static String Tipo_dato_byte = "byte";
     public static String Tipo_dato_date = "date";
     
+    //tabla definiciones
+    public static int INT_ESTADO_USUARIO_VIGENTE = 1;
+    public static int INT_ESTADO_USUARIO_CADUCADO = 2;
+    public static int INT_ESTADO_EMPRESA_REGISTRADO = 3;
+    public static int INT_ESTADO_EMPRESA_ELIMINADO = 5;
+    public static int INT_TIPO_SEXO_MASCULINO = 6;
+    public static int INT_TIPO_SEXO_FEMENINO = 7;
+    public static int INT_ESTADO_AREA_REGISTRADO = 8;
+    public static int INT_ESTADO_AREA_ELIMINADO = 9;
+    public static int INT_ESTADO_EVALUACION_ACTIVO = 12;
+    public static int INT_ESTADO_EVALUACION_INACTIVO = 13;
+    public static int INT_ESTADO_PROCESO_REGISTRADO = 20;
+    public static int INT_ESTADO_PROCESO_ELIMINADO = 21;
+    
+    
     //NUMEROS TIPO INT
     public static int Int_uno = 1;
     public static int Int_dos = 2;

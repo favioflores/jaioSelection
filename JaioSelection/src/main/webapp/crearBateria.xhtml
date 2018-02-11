@@ -34,9 +34,11 @@
                 <div class="ui-g-12">
                     <h1>#{msg['bateria.titulo']}</h1>
                     <p>#{msg['bateria.parrafo']}</p>
-                    <p:button value="#{msg['organigrama.volver']}" outcome="crearProceso" icon="fa fa-angle-left" styleClass="aqua-button" />
-                    <p:commandButton value="limpiar" id="limpiar" update=":formBateria:" ajax="true" styleClass="aqua-button"
-                                     actionListener="#{crearBateriaView.limpiar()}"/>
+                    <p:button value="#{msg['organigrama.volver']}" outcome="crearProceso" icon="fa fa-angle-left" styleClass="aqua-button"/>
+                    <p:commandButton value="Limpiar" update=":formBateria:" process="@this" ajax="true" style="margin-right:20px;" 
+                                     actionListener="#{crearBateriaView.limpiar()}" styleClass="aqua-button">
+                        <p:resetInput target=":formBateria:" />
+                    </p:commandButton>
                 </div>
 
                 <!--panel izquierdo-->
@@ -59,8 +61,8 @@
                             <div class="ui-g-2">
                                 <p:outputLabel for="formBateria" value="#{msg['bateria.empresa']}"/>
                             </div>
-                            <p:selectOneMenu id="listaEmpresa" value="#{crearBateriaView.strEmpresaSeleccionada}" effect="clip" filter="true" 
-                                             filterMatchMode="startsWith" >
+                            <p:selectOneMenu id="listaEmpresa" value="#{crearBateriaView.strEmpresaSeleccionada}" effect="clip" filterMatchMode="startsWith"
+                                             filter="true" required="true" requiredMessage="#{msg['bateria.noSeleccionoEmpresa']}">
                                 <f:selectItem itemLabel="#{msg['proceso.dialog.selecciona.empresa']}"/>
                                 <f:selectItems id="empresa" value="#{crearBateriaView.lstEmpresas}" var="emp" itemLabel="#{emp.desc}" itemValue="#{emp.id}"/>
                                 <p:ajax event="itemSelect" process="@this" update=":formBateria:" listener="#{crearBateriaView.seleccionaEmpresa()}"/>
@@ -71,7 +73,8 @@
                             <div class="ui-g-2">
                                 <p:outputLabel for="formBateria" value="#{msg['bateria.area']}"/>
                             </div>
-                            <p:selectOneMenu id="listaArea" value="#{crearBateriaView.strAreaSeleccionada}" effect="clip" filter="true" filterMatchMode="startsWith" >
+                            <p:selectOneMenu id="listaArea" value="#{crearBateriaView.strAreaSeleccionada}" effect="clip" filterMatchMode="startsWith"
+                                             filter="true" required="true" requiredMessage="#{msg['bateria.noSeleccionoArea']}">
                                 <f:selectItem itemLabel="#{msg['proceso.dialog.selecciona.area']}"/>
                                 <f:selectItems id="area" value="#{crearBateriaView.lstArea}" var="area" itemLabel="#{area.descripcion}" itemValue="#{area.id}"  />
                                 <p:ajax event="itemSelect" process="@this" update=":formBateria:"  listener="#{crearBateriaView.seleccionaArea()}"/>
@@ -82,7 +85,8 @@
                             <div class="ui-g-2">
                                 <p:outputLabel for="formBateria" value="#{msg['bateria.perfil']}" />
                             </div>
-                            <p:selectOneMenu id="listaPerfil" value="#{crearBateriaView.strPerfilSeleccionado}" effect="clip" filter="true" filterMatchMode="startsWith" >
+                            <p:selectOneMenu id="listaPerfil" value="#{crearBateriaView.strPerfilSeleccionado}" effect="clip" filterMatchMode="startsWith"
+                                             filter="true" required="true" requiredMessage="#{msg['bateria.noSeleccionoPerfil']}">
                                 <f:selectItem itemLabel="#{msg['proceso.dialog.selecciona.perfil']}"/>
                                 <f:selectItems id="perfil" value="#{crearBateriaView.lstPerfil}" var="perfil" itemLabel="#{perfil.descripcion}" itemValue="#{perfil.id}"/>
                                 <p:ajax event="itemSelect" process="@this" update=":formBateria:"  listener="#{crearBateriaView.seleccionaPerfil()}"/>
