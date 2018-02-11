@@ -4,6 +4,8 @@ import jaio.selection.bean.BateriaBean;
 import jaio.selection.orm.BateriaEvaluacion;
 import jaio.selection.orm.BateriaEvaluacionId;
 import jaio.selection.orm.BateriaPersonalizada;
+import jaio.selection.orm.EvaluacionPerfil;
+import jaio.selection.orm.EvaluacionPerfilId;
 import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -12,7 +14,11 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Example;
 
 import jaio.selection.orm.ModeloEvaluacion;
+import jaio.selection.orm.Perfil;
+import jaio.selection.orm.ProcesoSeleccion;
+import jaio.selection.util.Constantes;
 import java.io.Serializable;
+import java.util.Date;
 import org.hibernate.Query;
 
 /**
@@ -135,7 +141,7 @@ public class ModeloEvaluacionDAO extends HibernateUtil implements Serializable {
         return null;
     }
 
-    public void grabarBateriaPersonalizada(BateriaPersonalizada objBateriaPersonalizada, List<BateriaBean> droppedBaterias) {
+    public void grabarBateriaPersonalizada(BateriaPersonalizada objBateriaPersonalizada, List<BateriaBean> droppedBaterias,String strPerfilSeleccionado ) {
 
         try {
             iniciaSession();
@@ -160,6 +166,36 @@ public class ModeloEvaluacionDAO extends HibernateUtil implements Serializable {
 
                 session.save(objBateriaEvaluacion);
             }
+            
+            
+            ProcesoSeleccion objProcesoSeleccion = new ProcesoSeleccion();
+            EvaluacionPerfil objEvaluacionPerfil = new EvaluacionPerfil();
+            
+            Perfil objPerfil = new Perfil();
+            objPerfil.setId(Integer.parseInt(strPerfilSeleccionado));
+            
+            EvaluacionPerfilId objEvaluacionPerfilId = new EvaluacionPerfilId();
+            objEvaluacionPerfilId.setPerfilId(objPerfil.getId());
+            objEvaluacionPerfilId.setBateriaPersonalizadaId(objBateriaPersonalizada.getId());
+            objEvaluacionPerfilId.setEstado(Constantes.INT_ESTADO_EVALUACION_ACTIVO);
+            
+            objEvaluacionPerfil.setEstado(Constantes.INT_ESTADO_EVALUACION_ACTIVO);
+            objEvaluacionPerfil.setBateriaPersonalizada(objBateriaPersonalizada);
+            objEvaluacionPerfil.setProcesoSeleccion(objProcesoSeleccion);
+            objEvaluacionPerfil.setId(objEvaluacionPerfilId);
+   
+            objProcesoSeleccion.setFechaRegistro(new Date());
+            objProcesoSeleccion.setDescripcion("descripcion de prueba");
+            objProcesoSeleccion.setEstado(Constantes.INT_ESTADO_PROCESO_REGISTRADO);
+            objProcesoSeleccion.setPerfil(objPerfil);
+            
+            objBateriaPersonalizada.getEvaluacionPerfil().add(objEvaluacionPerfil);
+            objProcesoSeleccion.getEvaluacionPerfil().add(objEvaluacionPerfil);
+            
+            session.save(objProcesoSeleccion);
+            
+            session.save(objEvaluacionPerfil);
+            
             
             guardarCambios();
             log.debug("Grago correctamente");
