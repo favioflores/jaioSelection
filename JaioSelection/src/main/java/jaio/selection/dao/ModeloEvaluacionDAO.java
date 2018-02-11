@@ -145,7 +145,6 @@ public class ModeloEvaluacionDAO extends HibernateUtil implements Serializable {
 
         try {
             iniciaSession();
-            
             session.save(objBateriaPersonalizada);
             
             for (BateriaBean droppedBateria : droppedBaterias) {
@@ -163,10 +162,9 @@ public class ModeloEvaluacionDAO extends HibernateUtil implements Serializable {
                 objBateriaEvaluacion.setId(objBateriaEvaluacionId);
 
                 objModeloEvaluacion.getBateriaEvaluacion().add(objBateriaEvaluacion);
-
+                objBateriaPersonalizada.getBateriaEvaluacion().add(objBateriaEvaluacion);
                 session.save(objBateriaEvaluacion);
             }
-            
             
             ProcesoSeleccion objProcesoSeleccion = new ProcesoSeleccion();
             EvaluacionPerfil objEvaluacionPerfil = new EvaluacionPerfil();
@@ -174,8 +172,16 @@ public class ModeloEvaluacionDAO extends HibernateUtil implements Serializable {
             Perfil objPerfil = new Perfil();
             objPerfil.setId(Integer.parseInt(strPerfilSeleccionado));
             
+            objProcesoSeleccion.setFechaRegistro(new Date());
+            objProcesoSeleccion.setDescripcion("descripcion de prueba");
+            objProcesoSeleccion.setEstado(Constantes.INT_ESTADO_PROCESO_REGISTRADO);
+            objProcesoSeleccion.setPerfil(objPerfil);
+            
+            objProcesoSeleccion.getEvaluacionPerfil().add(objEvaluacionPerfil);
+            session.save(objProcesoSeleccion);
+            
             EvaluacionPerfilId objEvaluacionPerfilId = new EvaluacionPerfilId();
-            objEvaluacionPerfilId.setPerfilId(objPerfil.getId());
+            objEvaluacionPerfilId.setProcesoSeleccionId(objProcesoSeleccion.getId());
             objEvaluacionPerfilId.setBateriaPersonalizadaId(objBateriaPersonalizada.getId());
             objEvaluacionPerfilId.setEstado(Constantes.INT_ESTADO_EVALUACION_ACTIVO);
             
@@ -183,19 +189,9 @@ public class ModeloEvaluacionDAO extends HibernateUtil implements Serializable {
             objEvaluacionPerfil.setBateriaPersonalizada(objBateriaPersonalizada);
             objEvaluacionPerfil.setProcesoSeleccion(objProcesoSeleccion);
             objEvaluacionPerfil.setId(objEvaluacionPerfilId);
-   
-            objProcesoSeleccion.setFechaRegistro(new Date());
-            objProcesoSeleccion.setDescripcion("descripcion de prueba");
-            objProcesoSeleccion.setEstado(Constantes.INT_ESTADO_PROCESO_REGISTRADO);
-            objProcesoSeleccion.setPerfil(objPerfil);
             
             objBateriaPersonalizada.getEvaluacionPerfil().add(objEvaluacionPerfil);
-            objProcesoSeleccion.getEvaluacionPerfil().add(objEvaluacionPerfil);
-            
-            session.save(objProcesoSeleccion);
-            
             session.save(objEvaluacionPerfil);
-            
             
             guardarCambios();
             log.debug("Grago correctamente");
