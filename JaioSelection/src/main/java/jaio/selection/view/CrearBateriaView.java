@@ -86,10 +86,10 @@ public class CrearBateriaView extends BaseView implements Serializable {
         lstEmpresas = new ArrayList<>();
         lstArea = new ArrayList<>();
         lstPerfil = new ArrayList<>();
-        nombreEvaluacion = new String();
-        strEmpresaSeleccionada = empresa;
-        
-        strEmpresaSeleccionada = new String();
+        nombreEvaluacion = null;
+        strEmpresaSeleccionada = null;
+        strAreaSeleccionada = null;
+        strPerfilSeleccionado = null;
         poblarEmpresas();
         obtenerModelosDeEvaluaciones();
     }
@@ -165,7 +165,6 @@ public class CrearBateriaView extends BaseView implements Serializable {
                 lstArea = new ArrayList<>();
                 AreaDAO objAreaDAO = new AreaDAO();
                 List<Area> lstAreas = objAreaDAO.obtenerAreasXEmpresa(strEmpresaSeleccionada);
-
                 for (Area objArea : lstAreas) {
                     AreaBean objAreaBean = new AreaBean();
                     objAreaBean.setId(objArea.getId().toString());
@@ -263,63 +262,37 @@ public class CrearBateriaView extends BaseView implements Serializable {
         try {
             ModeloEvaluacionDAO objEvaluacionDAO = new ModeloEvaluacionDAO();
             boolean exito = false;
-                if (Utilitarios.noEsNuloOVacio(strEmpresaSeleccionada)) {
-                    if (Utilitarios.noEsNuloOVacio(strAreaSeleccionada)) {
-                        if (Utilitarios.noEsNuloOVacio(strPerfilSeleccionado)) {
-                            if (Utilitarios.noEsNuloOVacio(droppedBaterias)) {
-                                if (Utilitarios.noEsNuloOVacio(droppedCompetencias)) {
-                                    ConvertirDatosBean objBean = new ConvertirDatosBean();
-//                                    int perfil = Integer.parseInt(strPerfilSeleccionado);
-                                    
-                                    BateriaPersonalizada objBateriaPersonalizada = new BateriaPersonalizada();
-                                    objBateriaPersonalizada.setNombre(nombreEvaluacion);
-                                    objBateriaPersonalizada.setFechaCreacion(new Date());
-                                    objBateriaPersonalizada.setEstado(Constantes.Int_seis);
-                                    objBateriaPersonalizada.setResena(nombreEvaluacion);
-                                    objBateriaPersonalizada.setHorasEstimadasTotal(Constantes.Int_cinco);
-                                    objBateriaPersonalizada.setMinutosEstimadosTotal(Constantes.Int_cinco);
-                                    
-                                    
-                                    objEvaluacionDAO.grabarBateriaPersonalizada(objBateriaPersonalizada, droppedBaterias);
-                                    
-//                                    EvaluacionPerfil objEvaluacionPerfil = new EvaluacionPerfil();
-//                                    objEvaluacionPerfil.setEstado(Constantes.Int_seis);
-//                                    objBateriaPersonalizada.getEvaluacionPerfil().add(objEvaluacionPerfil);
-//                                    
-//                                    ProcesoSeleccion objProcesoSeleccion = new ProcesoSeleccion();
-//                                    objProcesoSeleccion.setFechaRegistro(new Date());
-//                                    objProcesoSeleccion.setDescripcion(nombreEvaluacion);
-//                                    objProcesoSeleccion.setEstado(Constantes.Int_seis);
-//                                    objProcesoSeleccion.getEvaluacionPerfil().add(objEvaluacionPerfil);
-                                    //falta agregar el perfil
-                                    
-                                    
-                                    
+            if (Utilitarios.noEsNuloOVacio(droppedBaterias)) {
+                if (Utilitarios.noEsNuloOVacio(droppedCompetencias)) {
+                    ConvertirDatosBean objBean = new ConvertirDatosBean();
+                    
 
-                                    
-                                    
+                    BateriaPersonalizada objBateriaPersonalizada = new BateriaPersonalizada();
+                    objBateriaPersonalizada.setNombre(nombreEvaluacion);
+                    objBateriaPersonalizada.setFechaCreacion(new Date());
+                    objBateriaPersonalizada.setEstado(Constantes.INT_ESTADO_PROCESO_REGISTRADO);
+                    objBateriaPersonalizada.setResena(nombreEvaluacion);
+                    objBateriaPersonalizada.setHorasEstimadasTotal(Constantes.Int_cinco);
+                    objBateriaPersonalizada.setMinutosEstimadosTotal(Constantes.Int_cinco);
+
+
+                    objEvaluacionDAO.grabarBateriaPersonalizada(objBateriaPersonalizada, droppedBaterias,strPerfilSeleccionado );
+
+                    
 //                                    if(exito){
 //                                        mostrarAlerta(INFO, "bateria.bateriaGuardada", null, null);
-                                        limpiar();
+                        limpiar();
 //                                    } else {
 //                                        mostrarAlerta(INFO, "Ocurrio un Error al Guardar Bateria.", null, null);
 //                                    }
 
-                                } else {
-                                    mostrarAlerta(ERROR, "bateria.noSeleccionoCompetencias", null, null);
-                                }
-                            } else {
-                                mostrarAlerta(ERROR, "bateria.noSeleccionoEvaluaciones", null, null);
-                            }
-                        } else {
-                            mostrarAlerta(ERROR, "bateria.noSeleccionoPerfil", null, null);
-                        }
-                    } else {
-                        mostrarAlerta(ERROR, "bateria.noSeleccionoArea", null, null);
-                    }
                 } else {
-                    mostrarAlerta(ERROR, "bateria.noSeleccionoEmpresa", null, null);
+                    mostrarAlerta(ERROR, "bateria.noSeleccionoCompetencias", null, null);
                 }
+            } else {
+                mostrarAlerta(ERROR, "bateria.noSeleccionoEvaluaciones", null, null);
+            }
+                        
             
         } catch (Exception e) {
             mostrarAlerta(FATAL, "error.inesperado", log, e);
