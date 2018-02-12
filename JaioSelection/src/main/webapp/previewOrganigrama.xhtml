@@ -1,0 +1,98 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+
+    <ui:define name="content">
+        <h:form id="formOrganigramaPopup">
+
+            <style>
+                .ui-organigram .ui-organigram-node {
+                    background: #356aa0; /* Old browsers */
+                    background: -moz-linear-gradient(top, #356aa0 0%, #356aa0 100%);
+                    /* FF3.6-15 */
+                    background: -webkit-linear-gradient(top, #356aa0 0%, #356aa0 100%);
+                    /* Chrome10-25,Safari5.1-6 */
+                    background: linear-gradient(to bottom, #356aa0 0%, #356aa0 100%);
+                    /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+                    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#356aa0',
+                        endColorstr='#356aa0', GradientType=0); /* IE6-9 */
+                }
+
+                .ui-organigram .ui-organigram-node.area {
+                    background: #ff0084; /* Old browsers */
+                    background: -moz-linear-gradient(top, #ff0084 0%, #ff0084 100%);
+                    /* FF3.6-15 */
+                    background: -webkit-linear-gradient(top, #ff0084 0%, #ff0084 100%);
+                    /* Chrome10-25,Safari5.1-6 */
+                    background: linear-gradient(to bottom, #ff0084 0%, #ff0084 100%);
+                    /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+                    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff0084',
+                        endColorstr='#ff0084', GradientType=0); /* IE6-9 */
+                }
+
+                .ui-organigram .ui-organigram-node.perfil {
+                    background: #f9c667; /* Old browsers */
+                    background: -moz-linear-gradient(top, #f9c667 0%, #eab448 90%);
+                    /* FF3.6-15 */
+                    background: -webkit-linear-gradient(top, #f9c667 0%, #eab448 90%);
+                    /* Chrome10-25,Safari5.1-6 */
+                    background: linear-gradient(to bottom, #f9c667 0%, #eab448 90%);
+                    /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+                    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f9c667',
+                        endColorstr='#eab448', GradientType=0); /* IE6-9 */
+                }
+
+            </style>
+
+            <div class="ui-g card">
+                <div class="ui-g-12">
+
+
+                    <i id="customheader" class="fa fa-fw fa-car" style="display:none"></i>
+                    
+                    <h1>#{msg['organigrama.titulo']}</h1>
+                    <p>#{msg['organigrama.parrafo1']}</p>
+                    <p>#{msg['organigrama.parrafo2']}</p>
+
+                    <br/>
+                    <h2>#{msg['organigrama.titulo.modelo']}</h2>
+
+                    <p>#{msg['organigrama.parrafo3']}</p>
+
+                    <p:organigram id="organigramaPreview" 
+                                  widgetVar="organigramaPreview" 
+                                  value="#{organigramaView.rootNodePreview}" 
+                                  var="node" 
+                                  zoom="false"
+                                  leafNodeConnectorHeight="0" 
+                                  autoScrollToSelection="false" 
+                                  style="width: 100%">
+
+                        <p:organigramNode>
+                            <h:outputText value="#{node.data}" />
+                        </p:organigramNode>
+
+                        <p:organigramNode type="root" style="border-radius: 10px;">
+                            <h:outputText value="#{node.data}" />
+                        </p:organigramNode>
+
+                        <p:organigramNode type="area" styleClass="area"
+                                          style="border-radius: 10px;" icon="fa fa-suitcase">
+                            <h:outputText value="#{node.data}" />
+                        </p:organigramNode>
+
+                        <p:organigramNode type="perfil" styleClass="perfil"
+                                          icon="fa fa-user">
+                            <h:outputText value="#{node.data}" />
+                        </p:organigramNode>
+                    </p:organigram>
+                    
+                </div>
+            </div>
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

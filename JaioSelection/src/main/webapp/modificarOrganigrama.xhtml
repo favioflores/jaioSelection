@@ -168,7 +168,7 @@
                                   update="lstError" 
                                   fileUploadListener="#{organigramaView.cargaOrganigramaMasivo}">
                     </p:fileUpload>
-                    
+
                     <br/>
 
                     <p:dataTable  id="lstError"
@@ -180,8 +180,8 @@
                                   rowKey="id"
                                   rows="10"
                                   reflow="true"
-                                  rowsPerPageTemplate="10,30,50"
-                                  >
+                                  rowsPerPageTemplate="10,30,50" >
+                        
                         <f:facet name="header" >
                             <h:outputText value="#{msg['organigrama.errores.titulo']}" />
                         </f:facet>
@@ -200,7 +200,6 @@
                         <p:column headerText="#{msg['organigrama.errores.col5']}">
                             <h:outputText value="#{error.strError}" />
                         </p:column>
-
 
                     </p:dataTable>
 
