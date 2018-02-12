@@ -44,6 +44,7 @@
                         endColorstr='#eab448', GradientType=0); /* IE6-9 */
                 }
 
+
             </style>
 
             <p:growl id="growl" life="4000" />
@@ -53,160 +54,222 @@
 
 
                     <h1>#{msg['organigrama.titulo']}</h1>
-                    <p>#{msg['organigrama.parrafo1']}</p>
-                    <p>#{msg['organigrama.parrafo2']}</p>
+                    <p align="justify">#{msg['organigrama.parrafo1']}</p>
+                    <p align="justify">#{msg['organigrama.parrafo2']}</p>
 
                     <!--
                     <p:button value="#{msg['organigrama.volver']}"
                               outcome="crearEmpresa" icon="fa fa-angle-left" /> -->
 
-                    <br/>
-                    <h2>#{msg['organigrama.titulo.modelo']}</h2>
+                    <p:tabView style="margin-bottom:40px">
+                        <p:tab title="#{msg['organigrama.titulo.modelo']}">
 
-                    <p>#{msg['organigrama.parrafo3']}</p>
+                            <br/>
 
-                    <p:organigram id="organigrama" widgetVar="organigrama" 
-                                  value="#{organigramaView.rootNode}" var="node" zoom="false"
-                                  leafNodeConnectorHeight="0" autoScrollToSelection="false"
-                                  selection="#{organigramaView.selection}" style="width: 100%">
+                            <h2>#{msg['organigrama.titulo.modelo']}</h2>
 
-                        <p:ajax event="contextmenu" process="@this" />
+                            <p align="justify">#{msg['organigrama.parrafo3']}</p>
 
-                        <p:ajax event="dragdrop" process="@this" update=":formOrganigrama:"
-                                listener="#{organigramaView.moverNodo}" />
-                        <!--  
-                        <p:ajax event="select" process="@this" update="@form:growl"
-                                listener="#\{organigramView.nodeSelectListener}" />
-                        -->
+                            <br/>
 
-                        <p:organigramNode>
-                            <h:outputText value="#{node.data}" />
-                        </p:organigramNode>
+                            <p:organigram id="organigrama" widgetVar="organigrama" 
+                                          value="#{organigramaView.rootNode}" var="node" zoom="false"
+                                          leafNodeConnectorHeight="0" autoScrollToSelection="false"
+                                          rendered="#{organigramaView.esPreliminar==false}"
+                                          selection="#{organigramaView.selection}" style="width: 100%">
 
-                        <p:organigramNode type="root" style="border-radius: 10px;">
-                            <h:outputText value="#{node.data}" />
-                        </p:organigramNode>
+                                <p:ajax event="contextmenu" process="@this" />
 
-                        <p:organigramNode type="area" styleClass="area"
-                                          style="border-radius: 10px;" icon="fa fa-suitcase">
-                            <h:outputText value="#{node.data}" />
-                        </p:organigramNode>
+                                <p:ajax event="dragdrop" process="@this" update=":formOrganigrama:"
+                                        listener="#{organigramaView.moverNodo}" />
+                                <!--  
+                                <p:ajax event="select" process="@this" update="@form:growl"
+                                        listener="#\{organigramView.nodeSelectListener}" />
+                                -->
 
-                        <p:organigramNode type="perfil" styleClass="perfil"
-                                          icon="fa fa-user">
-                            <h:outputText value="#{node.data}" />
-                        </p:organigramNode>
-                    </p:organigram>
+                                <p:organigramNode>
+                                    <h:outputText value="#{node.data}" />
+                                </p:organigramNode>
 
-                    <p:contextMenu for="organigrama" nodeType="root">
-                        <p:menuitem value="#{msg['organigrama.agregar.area']}"
-                                    icon="ui-icon-plus" update="agregarAreaDialog"
-                                    oncomplete="PF('agregarAreaDialog').show(); return false;" />
-                    </p:contextMenu>
+                                <p:organigramNode type="root" style="border-radius: 10px;">
+                                    <h:outputText value="#{node.data}" />
+                                </p:organigramNode>
 
-                    <p:contextMenu for="organigrama" nodeType="perfil">
-                        <p:menuitem value="#{msg['organigrama.quitar.perfil']}"
-                                    ajax="true" update=":formOrganigrama:" icon="ui-icon-close"
-                                    actionListener="#{organigramaView.quitarPerfil()}">
-                            <!-- 
-                            <p:confirm header="#{msg['organizacion.confirmTitulo']}" 
-                                    message="#{msg['organizacion.confirmQuitarPerfil']}"
-                                    icon="ui-icon-alert" /> -->
-                        </p:menuitem>
-                    </p:contextMenu>
+                                <p:organigramNode type="area" styleClass="area"
+                                                  style="border-radius: 10px;" icon="fa fa-suitcase">
+                                    <h:outputText value="#{node.data}" />
+                                </p:organigramNode>
 
-                    <p:contextMenu for="organigrama" nodeType="area">
-                        <p:menuitem value="#{msg['organigrama.agregar.area']}"
-                                    icon="ui-icon-plus" update="agregarAreaDialog"
-                                    oncomplete="PF('agregarAreaDialog').show(); return false;" />
-                        <p:menuitem value="#{msg['organigrama.agregar.perfil']}"
-                                    icon="ui-icon-plus" update="agregarPerfilDialog"
-                                    oncomplete="PF('agregarPerfilDialog').show(); return false;" />
-                        <p:menuitem value="#{msg['organigrama.quitar.area']}"
-                                    update=":formOrganigrama:" icon="ui-icon-close" ajax="true"
-                                    actionListener="#{organigramaView.quitarArea()}">
-                            <!-- 
-                            <p:confirm header="#{msg['organizacion.confirmTitulo']}" 
-                                    message="#{msg['organizacion.confirmQuitarArea']}" 
-                                    icon="ui-icon-alert" /> -->
-                        </p:menuitem>
-                    </p:contextMenu>
+                                <p:organigramNode type="perfil" styleClass="perfil"
+                                                  icon="fa fa-user">
+                                    <h:outputText value="#{node.data}" />
+                                </p:organigramNode>
+                            </p:organigram>
 
+                            <p:contextMenu for="organigrama" nodeType="root">
+                                <p:menuitem value="#{msg['organigrama.agregar.area']}"
+                                            icon="ui-icon-plus" update="agregarAreaDialog"
+                                            oncomplete="PF('agregarAreaDialog').show(); return false;" />
+                            </p:contextMenu>
 
+                            <p:contextMenu for="organigrama" nodeType="perfil">
+                                <p:menuitem value="#{msg['organigrama.quitar.perfil']}"
+                                            ajax="true" update=":formOrganigrama:" icon="ui-icon-close"
+                                            actionListener="#{organigramaView.quitarPerfil()}">
+                                    <!-- 
+                                    <p:confirm header="#{msg['organizacion.confirmTitulo']}" 
+                                            message="#{msg['organizacion.confirmQuitarPerfil']}"
+                                            icon="ui-icon-alert" /> -->
+                                </p:menuitem>
+                            </p:contextMenu>
 
-                    <p:confirmDialog global="true" showEffect="fade" hideEffect="clip"
-                                     responsive="true" appendTo="@(body)" closeOnEscape="true	">
-                        <p:commandButton value="#{msg['si']}" type="button"
-                                         styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-                        <p:commandButton value="#{msg['no']}" type="button"
-                                         styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-                    </p:confirmDialog>
-
-                    <br/><br/>
-
-                    <h2>#{msg['organigrama.titulo.masivo']}</h2>    
-
-                    <p>#{msg['organigrama.parrafo4']}</p>
+                            <p:contextMenu for="organigrama" nodeType="area">
+                                <p:menuitem value="#{msg['organigrama.agregar.area']}"
+                                            icon="ui-icon-plus" update="agregarAreaDialog"
+                                            oncomplete="PF('agregarAreaDialog').show(); return false;" />
+                                <p:menuitem value="#{msg['organigrama.agregar.perfil']}"
+                                            icon="ui-icon-plus" update="agregarPerfilDialog"
+                                            oncomplete="PF('agregarPerfilDialog').show(); return false;" />
+                                <p:menuitem value="#{msg['organigrama.quitar.area']}"
+                                            update=":formOrganigrama:" icon="ui-icon-close" ajax="true"
+                                            actionListener="#{organigramaView.quitarArea()}">
+                                    <!-- 
+                                    <p:confirm header="#{msg['organizacion.confirmTitulo']}" 
+                                            message="#{msg['organizacion.confirmQuitarArea']}" 
+                                            icon="ui-icon-alert" /> -->
+                                </p:menuitem>
+                            </p:contextMenu>
 
 
-                    <p:commandButton value=" #{msg['organigrama.boton.descarga.masivo']}" ajax="false" icon="fa fa-download"  >
-                        <p:fileDownload value="#{organigramaView.fileExport}" />
-                    </p:commandButton>
 
-                    <br/><br/>
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="clip"
+                                             responsive="true" appendTo="@(body)" closeOnEscape="true	">
+                                <p:commandButton value="#{msg['si']}" type="button"
+                                                 styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                <p:commandButton value="#{msg['no']}" type="button"
+                                                 styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                            </p:confirmDialog>
 
-                    <p:fileUpload widgetVar="inputFile" 
-                                  value="#{organigramaView.inputFile}" 
-                                  mode="advanced" 
-                                  dragDropSupport="false" 
-                                  multiple="false" 
-                                  sizeLimit="2000000" allowTypes="/(\.|\/)(xlsx)$/"
-                                  uploadLabel="#{msg['organigrama.boton.masivo.upload']}" 
-                                  cancelLabel="#{msg['organigrama.boton.masivo.cancel']}" 
-                                  label="#{msg['organigrama.boton.masivo.buscar']}" 
-                                  fileLimit="1"
-                                  update="lstError" 
-                                  fileUploadListener="#{organigramaView.cargaOrganigramaMasivo}">
-                    </p:fileUpload>
 
-                    <br/>
+                        </p:tab>
 
-                    <p:dataTable  id="lstError"
-                                  widgetVar="lstError"
-                                  value="#{organigramaView.lstErrores}" 
-                                  var="error" 
-                                  emptyMessage="#{msg['no.registros']}" 
-                                  paginator="true"
-                                  rowKey="id"
-                                  rows="10"
-                                  reflow="true"
-                                  rowsPerPageTemplate="10,30,50" >
-                        
-                        <f:facet name="header" >
-                            <h:outputText value="#{msg['organigrama.errores.titulo']}" />
-                        </f:facet>
-                        <p:column headerText="#{msg['organigrama.errores.col1']}">
-                            <h:outputText value="#{error.strFila}" />
-                        </p:column>
-                        <p:column headerText="#{msg['organigrama.errores.col2']}">
-                            <h:outputText value="#{error.strColumna}" />
-                        </p:column>
-                        <p:column headerText="#{msg['organigrama.errores.col3']}">
-                            <h:outputText value="#{error.strEtiqueta}" />
-                        </p:column>
-                        <p:column headerText="#{msg['organigrama.errores.col4']}">
-                            <h:outputText value="#{error.strValor}" />
-                        </p:column>
-                        <p:column headerText="#{msg['organigrama.errores.col5']}">
-                            <h:outputText value="#{error.strError}" />
-                        </p:column>
 
-                    </p:dataTable>
+                        <p:tab title="#{msg['organigrama.titulo.masivo']}" id="tab2" >
+
+                            <br/>
+
+                            <h2>#{msg['organigrama.titulo.masivo']}</h2>    
+
+                            <p align="justify">#{msg['organigrama.parrafo4']}</p>
+
+
+                            <p:commandButton value=" #{msg['organigrama.boton.descarga.masivo']}" ajax="false" icon="fa fa-download" styleClass="aqua-button"  >
+                                <p:fileDownload value="#{organigramaView.fileExport}" />
+                            </p:commandButton>
+
+                            <br/><br/>
+
+                            <p:fileUpload widgetVar="inputFile" 
+                                          value="#{organigramaView.inputFile}" 
+                                          mode="advanced" 
+                                          dragDropSupport="false" 
+                                          multiple="false" 
+                                          styleClass="aqua-button"
+                                          sizeLimit="2000000" allowTypes="/(\.|\/)(xlsx)$/"
+                                          uploadLabel="#{msg['organigrama.boton.masivo.upload']}" 
+                                          cancelLabel="#{msg['organigrama.boton.masivo.cancel']}" 
+                                          label="#{msg['organigrama.boton.masivo.buscar']}" 
+                                          fileLimit="1"
+                                          update="tab2" 
+                                          fileUploadListener="#{organigramaView.cargaOrganigramaMasivo}" >
+                            </p:fileUpload>
+
+                            <br/>
+
+                            <p:dataTable  id="lstError"
+                                          widgetVar="lstError"
+                                          value="#{organigramaView.lstErrores}" 
+                                          var="error" 
+                                          emptyMessage="#{msg['no.registros']}" 
+                                          paginator="true"
+                                          rowKey="id"
+                                          rows="10"
+                                          reflow="true"
+                                          rendered="#{organigramaView.lstErrores.size()>0}"
+                                          rowsPerPageTemplate="10,30,50" >
+
+                                <f:facet name="header" >
+                                    <h:outputText value="#{msg['organigrama.errores.titulo']}" />
+                                </f:facet>
+                                <p:column headerText="#{msg['organigrama.errores.col1']}">
+                                    <h:outputText value="#{error.strFila}" />
+                                </p:column>
+                                <p:column headerText="#{msg['organigrama.errores.col2']}">
+                                    <h:outputText value="#{error.strColumna}" />
+                                </p:column>
+                                <p:column headerText="#{msg['organigrama.errores.col3']}">
+                                    <h:outputText value="#{error.strEtiqueta}" />
+                                </p:column>
+                                <p:column headerText="#{msg['organigrama.errores.col4']}">
+                                    <h:outputText value="#{error.strValor}" />
+                                </p:column>
+                                <p:column headerText="#{msg['organigrama.errores.col5']}">
+                                    <h:outputText value="#{error.strError}" />
+                                </p:column>
+
+                            </p:dataTable>
+
+                            <br/>
+
+                            <p:commandButton id="btnGuardarPreview"
+                                             value="#{msg['organigrama.masivo.guardarPreview']}" 
+                                             styleClass="aqua-button"
+                                             rendered="#{organigramaView.esPreliminar==true}"
+                                             oncomplete="PF('dialogPreviewOrganigrama').hide();" />
+
+                            <p:commandButton id="btnCancelarPreview"
+                                             value="#{msg['organigrama.masivo.guardarPreview']}" 
+                                             styleClass="red-button"
+                                             rendered="#{organigramaView.esPreliminar==true}"
+                                             oncomplete="PF('dialogPreviewOrganigrama').hide();" />
+
+                            <br/>
+
+                            <p:organigram id="organigramaPreview" 
+                                          widgetVar="organigramaPreview" 
+                                          value="#{organigramaView.rootNodePreview}" 
+                                          var="node" 
+                                          zoom="false"
+                                          leafNodeConnectorHeight="0" 
+                                          autoScrollToSelection="false" 
+                                          rendered="#{organigramaView.esPreliminar==true}"
+                                          style="width: 100%">
+
+                                <p:organigramNode>
+                                    <h:outputText value="#{node.data}" />
+                                </p:organigramNode>
+
+                                <p:organigramNode type="root" style="border-radius: 10px;">
+                                    <h:outputText value="#{node.data}" />
+                                </p:organigramNode>
+
+                                <p:organigramNode type="area" styleClass="area"
+                                                  style="border-radius: 10px;" icon="fa fa-suitcase">
+                                    <h:outputText value="#{node.data}" />
+                                </p:organigramNode>
+
+                                <p:organigramNode type="perfil" styleClass="perfil"
+                                                  icon="fa fa-user">
+                                    <h:outputText value="#{node.data}" />
+                                </p:organigramNode>
+                            </p:organigram>
+
+                        </p:tab>
+
+                    </p:tabView>
 
                 </div>
             </div>
-
-
 
         </h:form>
 
@@ -224,6 +287,7 @@
                                      update=":formOrganigrama:,:frmAgregarArea:"
                                      value="#{msg['organigrama.boton.agregar']}"
                                      actionListener="#{organigramaView.agregarArea()}"
+                                     styleClass="aqua-button"
                                      oncomplete="PF('agregarAreaDialog').hide();" />
                     <p:hotkey id="hotCrear" bind="enter"
                               actionListener="#{organigramaView.agregarArea()}"
@@ -247,7 +311,8 @@
 
                     <p:commandButton id="btnCrear"
                                      update=":formOrganigrama:,:frmAgregarPerfil:"
-                                     value="#{msg['organigrama.boton.agregar']}"
+                                     value="#{msg['organigrama.boton.agregar']}" 
+                                     styleClass="aqua-button"
                                      actionListener="#{organigramaView.agregarPerfil()}"
                                      oncomplete="PF('agregarPerfilDialog').hide();" />
                     <p:hotkey id="hotCrear" bind="enter"
@@ -259,6 +324,8 @@
                 </h:panelGrid>
             </h:form>
         </p:dialog>
+
+
 
     </ui:define>
 

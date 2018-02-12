@@ -63,7 +63,16 @@ public class OrganigramaView extends BaseView implements Serializable {
     private String idEmpresa;
     private StreamedContent fileImport;
     private UploadedFile inputFile;
+    private boolean esPreliminar;
 
+    public boolean isEsPreliminar() {
+        return esPreliminar;
+    }
+
+    public void setEsPreliminar(boolean esPreliminar) {
+        this.esPreliminar = esPreliminar;
+    }
+    
     public OrganigramNode getRootNodePreview() {
         return rootNodePreview;
     }
@@ -165,6 +174,7 @@ public class OrganigramaView extends BaseView implements Serializable {
         inputFile = null;
         fileImport = null;
         lstErrores = new ArrayList<>();
+        esPreliminar = false;
     }
 
     protected void armarMapaBD(String idEmpresa) {
@@ -256,23 +266,13 @@ public class OrganigramaView extends BaseView implements Serializable {
                 }
 
             }
+            
+            esPreliminar = true;
 
         } catch (Exception e) {
             mostrarAlerta(FATAL, "error.inesperado", log, e);
         }
 
-    }
-
-    public void viewCarsCustomized() {
-        Map<String, Object> options = new HashMap<>();
-        options.put("modal", true);
-        options.put("width", 640);
-        options.put("height", 340);
-        options.put("contentWidth", "100%");
-        options.put("contentHeight", "100%");
-        options.put("headerElement", "customheader");
-
-        RequestContext.getCurrentInstance().openDialog("previewOrganigrama", options, null);
     }
 
     protected void grabarPrimeraVez(String idEmpresa) {
@@ -776,6 +776,9 @@ public class OrganigramaView extends BaseView implements Serializable {
                     fileImport = null;
                     return;
                 } else {
+                    RequestContext context = RequestContext.getCurrentInstance();
+                    context.execute("PF('dialogPreviewOrganigrama').show();");
+                    
                     mostrarAlerta(INFO, "organigrama.masivo.archivo.procesoOk", null, null);
                 }
 
@@ -1047,7 +1050,7 @@ public class OrganigramaView extends BaseView implements Serializable {
 
             hAreas = sortedMap;
 
-            if (!lstErrores.isEmpty()) {
+            if (lstErrores.isEmpty()) {
                 armarMapaPreview(hAreas);
             }
 
