@@ -26,15 +26,12 @@ public class BateriaPersonalizadaDAO extends HibernateUtil implements Serializab
      public List obtenerProcesosRegistrados(String id) {
         iniciaSession();
         try {
-            Query query = session.createSQLQuery("select bp.nombre,bp.fecha_creacion,p.nombre as perfil,me.id " +
-                " from bateria_evaluacion be " +
-                " join modelo_evaluacion me on me.id = be.modelo_evaluacion_id " +
-                " join bateria_personalizada bp on bp.id = be.bateria_personalizada_id " +
+            Query query = session.createSQLQuery("select bp.nombre, bp.fecha_creacion, p.nombre as nombrePerfil " +
+                " from bateria_personalizada bp " +
                 " join evaluacion_perfil ep on ep.bateria_personalizada_id = bp.id " +
                 " join proceso_seleccion ps on ps.id = ep.proceso_seleccion_id " +
                 " join perfil p on p.id = ps.perfil_id " +
-                " join empresa e on e.id = p.empresa_id " +
-                " where e.id= :id");
+                " where p.empresa_id = :id");
             query.setString("id", id);
             return query.list();
         } catch (Exception e) {

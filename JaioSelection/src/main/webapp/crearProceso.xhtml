@@ -12,47 +12,46 @@
                     <p:panelGrid columns="1" columnClasses="ui-grid-col" layout="grid" styleClass="ui-panelgrid-blank" 
                                  style="border:0px none; background-color:transparent;">
 
-                        <!-- cabezera de formulario-->
+                        <!--CABECERA-->
                         <div class="ui-g-12">
                             <h1>#{msg['proceso.titulo']}</h1>
                             <p>#{msg['proceso.parrafo']}</p>
                         </div>
 
-                        <!-- seleccionar empresa -->
+                        <!--LISTA DE EMPRESAS-->
                         <p:outputLabel for="lstEmpresas" value="#{msg['proceso.lista.empresa']}" />
-                        <p:selectOneMenu id="lstEmpresas" value="#{crearProcesoView.strEmpresaSeleccionada}" effect="clip" filter="true" filterMatchMode="startsWith" >
+                        <p:selectOneMenu id="lstEmpresas" value="#{crearProcesoView.strEmpresaSeleccionada}" effect="clip" filter="true" 
+                                         filterMatchMode="startsWith" >
                             <f:selectItem itemLabel="#{msg['proceso.selecciona.empresa']}" />
                             <f:selectItems value="#{crearProcesoView.lstEmpresas}" var="emp" itemLabel="#{emp.desc}" itemValue="#{emp.id}"  />
                             <p:ajax event="itemSelect" process="@this" update=":formProceso:"  listener="#{crearProcesoView.cargarBateriaPersonalizada()}"/>
                         </p:selectOneMenu>
 
-                        <!-- ir a pantalla crearBateria-->
+                        <!--CREAR NUEVO PROCESO-->
                         <p:outputLabel value="#{msg['proceso.nuevo.proceso']}" />
-                        <p:button value="#{msg['proceso.boton.nuevo']}" outcome="crearBateria" 
-                                  icon="fa fa-plus Fs14" styleClass="aqua-button" />
-
-                        <!-- evento abrir crearBateria-->
+                        <p:button value="#{msg['proceso.boton.nuevo']}" outcome="crearBateria" icon="fa fa-plus Fs14" styleClass="aqua-button" />
                         
                     </p:panelGrid>
 
-                    <!--TABLA DE PROCESOS REGISTRADOS POR EMPRESA-->
-
-                        <p:dataTable var="lstPro" reflow="true" emptyMessage="#{msg['no.registros']}" 
-                                     value="#{crearProcesoView.lstBateriaPersonalizadaBeans}" rowKey="demo">
-                            <f:facet name="header">#{msg['proceso.datatable.titulo']}</f:facet>
-                            <p:column headerText="#{msg['proceso.datatable.col1']}">
-                                <h:outputText value="#{lstPro.nombre}" />
-                            </p:column>
-                            <p:column headerText="#{msg['proceso.datatable.col2']}">
-                                <h:outputText value="#{lstPro.fechaCreacion}" />
-                            </p:column>
-                            <p:column headerText="#{msg['proceso.datatable.col4']}">
-                                <h:outputText value="#{lstPro.nombrePerfil}" />
-                            </p:column>
-                            <p:column headerText="#{msg['proceso.datatable.col5']}">
-                                <h:outputText value="" />
-                            </p:column>
-                        </p:dataTable>
+                    <!--PROCESOS REGISTRADOS-->
+                    <p:dataTable var="listProcesos" reflow="true" emptyMessage="#{msg['no.registros']}" value="#{crearProcesoView.lstBateriaPersonalizadaBeans}" rowKey="demo">
+                        <f:facet name="header">#{msg['proceso.datatable.titulo']}</f:facet>
+                        <p:column headerText="#{msg['proceso.datatable.col1']}">
+                            <h:outputText value="#{listProcesos.nombre}" />
+                        </p:column>
+                        <p:column headerText="#{msg['proceso.datatable.col2']}">
+                            <h:outputText value="#{listProcesos.fechaCreacion}" />
+                        </p:column>
+                        <p:column headerText="#{msg['proceso.datatable.col4']}">
+                            <h:outputText value="#{listProcesos.nombrePerfil}" />
+                        </p:column>
+                        <p:column headerText="#{msg['proceso.datatable.col5']}" >
+                            <p:commandLink id="verDetalle" ajax="false">
+                                <h:outputText value="#{msg['proceso.ver.detalle']}" />
+                            </p:commandLink>
+                        </p:column>
+                    </p:dataTable>
+                    
                 </div>
             </div>
         </h:form>

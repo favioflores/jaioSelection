@@ -6,25 +6,25 @@ package jaio.selection.orm;
  */
 public class EvaluacionPerfilId implements java.io.Serializable {
 
-    private int perfilId;
+    private int procesoSeleccionId;
     private int bateriaPersonalizadaId;
     private int estado;
 
     public EvaluacionPerfilId() {
     }
 
-    public EvaluacionPerfilId(int perfilId, int bateriaPersonalizadaId, int estado) {
-        this.perfilId = perfilId;
+    public EvaluacionPerfilId(int procesoSeleccionId, int bateriaPersonalizadaId, int estado) {
+        this.procesoSeleccionId = procesoSeleccionId;
         this.bateriaPersonalizadaId = bateriaPersonalizadaId;
         this.estado = estado;
     }
 
-    public int getPerfilId() {
-        return this.perfilId;
+    public int getProcesoSeleccionId() {
+        return this.procesoSeleccionId;
     }
 
-    public void setPerfilId(int perfilId) {
-        this.perfilId = perfilId;
+    public void setProcesoSeleccionId(int procesoSeleccionId) {
+        this.procesoSeleccionId = procesoSeleccionId;
     }
 
     public int getBateriaPersonalizadaId() {
@@ -55,7 +55,7 @@ public class EvaluacionPerfilId implements java.io.Serializable {
         }
         EvaluacionPerfilId castOther = (EvaluacionPerfilId) other;
 
-        return (this.getPerfilId() == castOther.getPerfilId())
+        return (this.getProcesoSeleccionId() == castOther.getProcesoSeleccionId())
                 && (this.getBateriaPersonalizadaId() == castOther.getBateriaPersonalizadaId())
                 && (this.getEstado() == castOther.getEstado());
     }
@@ -63,7 +63,7 @@ public class EvaluacionPerfilId implements java.io.Serializable {
     public int hashCode() {
         int result = 17;
 
-        result = 37 * result + this.getPerfilId();
+        result = 37 * result + this.getProcesoSeleccionId();
         result = 37 * result + this.getBateriaPersonalizadaId();
         result = 37 * result + this.getEstado();
         return result;
