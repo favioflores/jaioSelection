@@ -1,6 +1,5 @@
 package jaio.selection.view;
 
-import jaio.selection.bean.AreaBean;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
@@ -30,13 +29,16 @@ import jaio.selection.orm.Area;
 import jaio.selection.orm.Empresa;
 import jaio.selection.orm.Perfil;
 import jaio.selection.util.Constantes;
+import jaio.selection.util.CustomizeHashMapOrderAreaOrganigramaByIdParent;
 import jaio.selection.util.Utilitarios;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
@@ -51,15 +53,33 @@ public class OrganigramaView extends BaseView implements Serializable {
 
     private List<ErrorExcelBean> lstErrores;
     private OrganigramNode rootNode;
+    private OrganigramNode rootNodePreview;
     private OrganigramNode selection;
     private String area;
     private String perfil;
-    private HashMap<String, AreaOrganigramaBean> hOrganigrama = new LinkedHashMap<String, AreaOrganigramaBean>();
+    private LinkedHashMap<String, AreaOrganigramaBean> hOrganigrama = new LinkedHashMap<>();
     private AreaDAO objAreaDAO = new AreaDAO();
     private PerfilDAO objPerfilDAO = new PerfilDAO();
     private String idEmpresa;
     private StreamedContent fileImport;
     private UploadedFile inputFile;
+    private boolean esPreliminar;
+
+    public boolean isEsPreliminar() {
+        return esPreliminar;
+    }
+
+    public void setEsPreliminar(boolean esPreliminar) {
+        this.esPreliminar = esPreliminar;
+    }
+    
+    public OrganigramNode getRootNodePreview() {
+        return rootNodePreview;
+    }
+
+    public void setRootNodePreview(OrganigramNode rootNodePreview) {
+        this.rootNodePreview = rootNodePreview;
+    }
 
     public List<ErrorExcelBean> getLstErrores() {
         return lstErrores;
@@ -154,6 +174,7 @@ public class OrganigramaView extends BaseView implements Serializable {
         inputFile = null;
         fileImport = null;
         lstErrores = new ArrayList<>();
+        esPreliminar = false;
     }
 
     protected void armarMapaBD(String idEmpresa) {
@@ -189,7 +210,7 @@ public class OrganigramaView extends BaseView implements Serializable {
                             "area" + objAreaOrganigramaBean.getId()));
                 } else {
                     objAreaOrganigramaBean.setNode(addNode(
-                            hOrganigrama.get(objAreaOrganigramaBean.getId_parent().toString()).getNode(), "area",
+                            hOrganigrama.get(objAreaOrganigramaBean.getId_parent()).getNode(), "area",
                             objAreaOrganigramaBean.getDescripcion(), "area" + objAreaOrganigramaBean.getId()));
                 }
 
@@ -199,6 +220,54 @@ public class OrganigramaView extends BaseView implements Serializable {
                 }
 
             }
+
+        } catch (Exception e) {
+            mostrarAlerta(FATAL, "error.inesperado", log, e);
+        }
+
+    }
+
+    protected void armarMapaPreview(HashMap<String, AreaOrganigramaBean> hOrganigrama) {
+
+        try {
+
+            EmpresaDAO objEmpresaDAO = new EmpresaDAO();
+
+            Empresa objEmpresa = objEmpresaDAO.obtenerEmpresa(idEmpresa);
+
+            rootNodePreview = new DefaultOrganigramNode("root", objEmpresa.getNombre(), null);
+            rootNodePreview.setCollapsible(false);
+            rootNodePreview.setDroppable(false);
+            rootNodePreview.setDraggable(false);
+            rootNodePreview.setSelectable(false);
+            rootNodePreview.setType("root");
+
+            Iterator it = hOrganigrama.entrySet().iterator();
+
+            while (it.hasNext()) {
+
+                Map.Entry pair = (Map.Entry) it.next();
+
+                AreaOrganigramaBean objAreaOrganigramaBean = (AreaOrganigramaBean) pair.getValue();
+
+                // ESTE CÓDIGO FUNCIONA PORQUE EL QUERY ORDENA LOS OBJETOS
+                if (Utilitarios.esNuloOVacio(objAreaOrganigramaBean.getId_parent())) {
+                    objAreaOrganigramaBean.setNode(addNode(rootNodePreview, "area", objAreaOrganigramaBean.getDescripcion(),
+                            "area" + objAreaOrganigramaBean.getId()));
+                } else {
+                    objAreaOrganigramaBean.setNode(addNode(
+                            hOrganigrama.get(objAreaOrganigramaBean.getId_parent()).getNode(), "area",
+                            objAreaOrganigramaBean.getDescripcion(), "area" + objAreaOrganigramaBean.getId()));
+                }
+
+                for (PerfilBean objPerfilBean : objAreaOrganigramaBean.getLstPerfiles()) {
+                    objPerfilBean.setNode(addNode(objAreaOrganigramaBean.getNode(), "perfil",
+                            objPerfilBean.getDescripcion(), "perfil" + objPerfilBean.getId()));
+                }
+
+            }
+            
+            esPreliminar = true;
 
         } catch (Exception e) {
             mostrarAlerta(FATAL, "error.inesperado", log, e);
@@ -682,6 +751,8 @@ public class OrganigramaView extends BaseView implements Serializable {
                 } else {
                     lstErrores = lstErrorExcelBeans;
                     mostrarAlerta(WARN, "organigrama.masivo.archivo.procesoConErrores", null, null);
+                    inputFile = null;
+                    fileImport = null;
                     return;
                 }
 
@@ -693,14 +764,21 @@ public class OrganigramaView extends BaseView implements Serializable {
                 } else {
                     lstErrores = lstErrorExcelBeans;
                     mostrarAlerta(WARN, "organigrama.masivo.archivo.procesoConErrores", null, null);
+                    inputFile = null;
+                    fileImport = null;
                     return;
                 }
 
                 if (!lstErrorExcelBeans.isEmpty()) {
                     lstErrores = lstErrorExcelBeans;
                     mostrarAlerta(WARN, "organigrama.masivo.archivo.procesoConErrores", null, null);
+                    inputFile = null;
+                    fileImport = null;
                     return;
                 } else {
+                    RequestContext context = RequestContext.getCurrentInstance();
+                    context.execute("PF('dialogPreviewOrganigrama').show();");
+                    
                     mostrarAlerta(INFO, "organigrama.masivo.archivo.procesoOk", null, null);
                 }
 
@@ -736,6 +814,7 @@ public class OrganigramaView extends BaseView implements Serializable {
                 String strId = Utilitarios.obtieneDatoCelda(row, Constantes.XLSX_COLUMNA_ID);
                 String strRegistro = Utilitarios.obtieneDatoCelda(row, Constantes.XLSX_COLUMNA_TIPO_REGISTRO);
                 String strNombre = Utilitarios.obtieneDatoCelda(row, Constantes.XLSX_COLUMNA_NOMBRE_REGISTRO);
+                String strDependencia = Utilitarios.obtieneDatoCelda(row, Constantes.XLSX_COLUMNA_DEPENDENCIA);
 
                 ErrorExcelBean objErrorExcelBean = new ErrorExcelBean();
                 objErrorExcelBean.setStrFila((row.getRowNum() + 1) + "");
@@ -764,6 +843,50 @@ public class OrganigramaView extends BaseView implements Serializable {
 
                     if (!esError) {
                         mpArea.put(strId, strNombre);
+                    }
+
+                }
+
+            }
+
+            // VALIDA DEPENDENCIA DE LAS AREAS
+            filas = hoja.iterator();
+
+            filas.next();
+            filas.next();
+
+            while (filas.hasNext()) {
+
+                Row row = filas.next();
+
+                String strId = Utilitarios.obtieneDatoCelda(row, Constantes.XLSX_COLUMNA_ID);
+                String strRegistro = Utilitarios.obtieneDatoCelda(row, Constantes.XLSX_COLUMNA_TIPO_REGISTRO);
+                String strDependencia = Utilitarios.obtieneDatoCelda(row, Constantes.XLSX_COLUMNA_DEPENDENCIA);
+
+                ErrorExcelBean objErrorExcelBean = new ErrorExcelBean();
+                objErrorExcelBean.setStrFila((row.getRowNum() + 1) + "");
+
+                if (strRegistro.toUpperCase().equals(Constantes.XLSX_ORG_MASIVO_COLUMNA_TIPO_AREA)) {
+
+                    if (Utilitarios.noEsNuloOVacio(strDependencia)) {
+
+                        if (!mpArea.containsKey(strDependencia)) {
+                            objErrorExcelBean.setStrValor(strDependencia);
+                            objErrorExcelBean.setStrEtiqueta(msg("organigrama.masivo.columna.dependencia"));
+                            objErrorExcelBean.setStrColumna(CellReference.convertNumToColString(Constantes.XLSX_COLUMNA_DEPENDENCIA));
+                            objErrorExcelBean.setStrError(msg("organigrama.masivo.error.area.dependencia.noexiste"));
+
+                            lstErrores.add(objErrorExcelBean);
+                        }
+
+                        if (strId.equals(strDependencia)) {
+                            objErrorExcelBean.setStrValor(strDependencia);
+                            objErrorExcelBean.setStrEtiqueta(msg("organigrama.masivo.columna.dependencia"));
+                            objErrorExcelBean.setStrColumna(CellReference.convertNumToColString(Constantes.XLSX_COLUMNA_DEPENDENCIA));
+                            objErrorExcelBean.setStrError(msg("organigrama.masivo.error.area.dependencia.identica"));
+
+                            lstErrores.add(objErrorExcelBean);
+                        }
                     }
 
                 }
@@ -809,14 +932,16 @@ public class OrganigramaView extends BaseView implements Serializable {
                         lstErrores.add(objErrorExcelBean);
                     }
 
-                    if (!mpArea.containsKey(strDependencia)) {
-                        objErrorExcelBean.setStrValor(strDependencia);
-                        objErrorExcelBean.setStrEtiqueta(msg("organigrama.masivo.columna.dependencia"));
-                        objErrorExcelBean.setStrColumna(CellReference.convertNumToColString(Constantes.XLSX_COLUMNA_DEPENDENCIA));
-                        objErrorExcelBean.setStrError(msg("organigrama.masivo.error.perfil.dependencia.noexiste"));
+                    if (Utilitarios.noEsNuloOVacio(strDependencia)) {
+                        if (!mpArea.containsKey(strDependencia)) {
+                            objErrorExcelBean.setStrValor(strDependencia);
+                            objErrorExcelBean.setStrEtiqueta(msg("organigrama.masivo.columna.dependencia"));
+                            objErrorExcelBean.setStrColumna(CellReference.convertNumToColString(Constantes.XLSX_COLUMNA_DEPENDENCIA));
+                            objErrorExcelBean.setStrError(msg("organigrama.masivo.error.perfil.dependencia.noexiste"));
 
-                        esError = true;
-                        lstErrores.add(objErrorExcelBean);
+                            esError = true;
+                            lstErrores.add(objErrorExcelBean);
+                        }
                     }
 
                     if (!esError) {
@@ -827,12 +952,113 @@ public class OrganigramaView extends BaseView implements Serializable {
 
             }
 
+            if (lstErrores.isEmpty()) {
+                generaPreviewMasivo(xlsMasivo);
+                mostrarAlerta(INFO, "organigrama.masivo.proceso.ok", null, null);
+                mostrarAlerta(WARN, "organigrama.masivo.proceso.preliminar", null, null);
+            }
+
         } catch (Exception ex) {
             mostrarAlerta(FATAL, "error.inesperado", log, ex);
         }
 
         return lstErrores;
 
+    }
+
+    private boolean generaPreviewMasivo(XSSFWorkbook xlsMasivo) {
+        try {
+
+            boolean terminoOk = true;
+
+            XSSFSheet hoja = xlsMasivo.getSheetAt(0);
+            Iterator<Row> filas = hoja.iterator();
+
+            filas.next();
+            filas.next();
+
+            LinkedHashMap<String, AreaOrganigramaBean> hAreas = new LinkedHashMap<>();
+
+            while (filas.hasNext()) {
+
+                Row row = filas.next();
+
+                String strId = Utilitarios.obtieneDatoCelda(row, Constantes.XLSX_COLUMNA_ID);
+                String strRegistro = Utilitarios.obtieneDatoCelda(row, Constantes.XLSX_COLUMNA_TIPO_REGISTRO);
+                String strNombre = Utilitarios.obtieneDatoCelda(row, Constantes.XLSX_COLUMNA_NOMBRE_REGISTRO);
+                String strDependencia = Utilitarios.obtieneDatoCelda(row, Constantes.XLSX_COLUMNA_DEPENDENCIA);
+
+                ErrorExcelBean objErrorExcelBean = new ErrorExcelBean();
+                objErrorExcelBean.setStrFila((row.getRowNum() + 1) + "");
+
+                if (strRegistro.toUpperCase().equals(Constantes.XLSX_ORG_MASIVO_COLUMNA_TIPO_AREA)) {
+
+                    AreaOrganigramaBean objAreaOrganigramaBean = new AreaOrganigramaBean();
+
+                    objAreaOrganigramaBean.setId(strId);
+                    objAreaOrganigramaBean.setDescripcion(strNombre);
+                    objAreaOrganigramaBean.setLstPerfiles(new ArrayList<>());
+
+                    if (Utilitarios.noEsNuloOVacio(strDependencia)) {
+                        objAreaOrganigramaBean.setId_parent(strDependencia);
+                    }
+
+                    hAreas.put(objAreaOrganigramaBean.getId(), objAreaOrganigramaBean);
+
+                }
+
+            }
+
+            // RECORRE PERFILES Y VALIDA SOLO AUTENTICAS
+            filas = hoja.iterator();
+            filas.next();
+            filas.next();
+
+            while (filas.hasNext()) {
+
+                Row row = filas.next();
+
+                String strId = Utilitarios.obtieneDatoCelda(row, Constantes.XLSX_COLUMNA_ID);
+                String strRegistro = Utilitarios.obtieneDatoCelda(row, Constantes.XLSX_COLUMNA_TIPO_REGISTRO);
+                String strNombre = Utilitarios.obtieneDatoCelda(row, Constantes.XLSX_COLUMNA_NOMBRE_REGISTRO);
+                String strDependencia = Utilitarios.obtieneDatoCelda(row, Constantes.XLSX_COLUMNA_DEPENDENCIA);
+
+                ErrorExcelBean objErrorExcelBean = new ErrorExcelBean();
+                objErrorExcelBean.setStrFila((row.getRowNum() + 1) + "");
+
+                if (strRegistro.toUpperCase().equals(Constantes.XLSX_ORG_MASIVO_COLUMNA_TIPO_PERFIL)) {
+
+                    AreaOrganigramaBean objArea = hAreas.get(strDependencia);
+
+                    PerfilBean objPerfilBean = new PerfilBean();
+                    objPerfilBean.setId(strId);
+                    objPerfilBean.setDescripcion(strNombre);
+
+                    objArea.getLstPerfiles().add(objPerfilBean);
+
+                }
+
+            }
+
+            List<Map.Entry<String, AreaOrganigramaBean>> entries = new ArrayList<>(hAreas.entrySet());
+            Collections.sort(entries, new CustomizeHashMapOrderAreaOrganigramaByIdParent());
+
+            LinkedHashMap<String, AreaOrganigramaBean> sortedMap = new LinkedHashMap<>();
+            for (Map.Entry<String, AreaOrganigramaBean> entry : entries) {
+                sortedMap.put(entry.getKey(), entry.getValue());
+            }
+
+            hAreas = sortedMap;
+
+            if (lstErrores.isEmpty()) {
+                armarMapaPreview(hAreas);
+            }
+
+        } catch (Exception ex) {
+            mostrarAlerta(FATAL, "error.inesperado", log, ex);
+        }
+
+        return true;
     }
 
     private List<ErrorExcelBean> validaCabeceraMasivo(XSSFWorkbook xlsMasivo, List<ErrorExcelBean> lstErrores) {

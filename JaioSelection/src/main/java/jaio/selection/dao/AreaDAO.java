@@ -21,9 +21,9 @@ public class AreaDAO extends HibernateUtil implements Serializable {
     private static final long serialVersionUID = 1L;
     private static final Log log = LogFactory.getLog(AreaDAO.class);
 
-    public HashMap<String, AreaOrganigramaBean> obtenerAreasPerfilesRegistrados() throws Exception {
+    public LinkedHashMap<String, AreaOrganigramaBean> obtenerAreasPerfilesRegistrados() throws Exception {
 
-        HashMap<String, AreaOrganigramaBean> hAreas = new LinkedHashMap<String, AreaOrganigramaBean>();
+        LinkedHashMap<String, AreaOrganigramaBean> hAreas = new LinkedHashMap<>();
 
         List lstAreas = new ArrayList();
         List lstPerfiles = new ArrayList();
@@ -62,7 +62,7 @@ public class AreaDAO extends HibernateUtil implements Serializable {
 
             objAreaOrganigramaBean.setId(row[0].toString());
             objAreaOrganigramaBean.setDescripcion(row[1].toString());
-            objAreaOrganigramaBean.setLstPerfiles(new ArrayList<PerfilBean>());
+            objAreaOrganigramaBean.setLstPerfiles(new ArrayList<>());
 
             if (Utilitarios.noEsNuloOVacio(row[2])) {
                 objAreaOrganigramaBean.setId_parent(row[2].toString());

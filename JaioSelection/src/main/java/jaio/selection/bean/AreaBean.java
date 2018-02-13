@@ -2,14 +2,21 @@ package jaio.selection.bean;
 
 import java.io.Serializable;
 
-import org.primefaces.model.OrganigramNode;
-
 public class AreaBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     private String id;
     private String descripcion;
+    private String dependencia;
+
+    public String getDependencia() {
+        return dependencia;
+    }
+
+    public void setDependencia(String dependencia) {
+        this.dependencia = dependencia;
+    }
 
     public String getId() {
         return id;

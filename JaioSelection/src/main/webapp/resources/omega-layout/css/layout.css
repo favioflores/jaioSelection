@@ -3429,6 +3429,15 @@ a.ui-commandlink, a.ui-link {
 .ui-button.ui-state-default.aqua-button.ui-state-active {
     background-color: #087298; }
 
+
+.ui-fileupload-buttonbar .ui-button.ui-state-default.aqua-button {
+    background-color: #0084b4;
+    border-color: #087298; }
+.ui-fileupload-buttonbar .ui-button.ui-state-default.aqua-button.ui-state-hover {
+    background-color: #03A8E4; }
+.ui-fileupload-buttonbar .ui-button.ui-state-default.aqua-button.ui-state-active {
+    background-color: #087298; }
+
 /*Navy Button*/
 .ui-button.ui-state-default.navy-button {
     background-color: #1f3b59;
