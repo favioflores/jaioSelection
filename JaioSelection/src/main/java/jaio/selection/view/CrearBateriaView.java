@@ -83,15 +83,10 @@ public class CrearBateriaView extends BaseView implements Serializable {
         lstArea = new ArrayList<>();
         lstPerfil = new ArrayList<>();
         nombreEvaluacion = null;
-        if(Utilitarios.noEsNuloOVacio(empresa)){
-            strEmpresaSeleccionada = empresa;
-            seleccionaEmpresa();
-        }else {
-            strEmpresaSeleccionada = null;
-            strAreaSeleccionada = null;
-            strPerfilSeleccionado = null;
-            poblarEmpresas();
-        }
+        strEmpresaSeleccionada = empresa;
+        strAreaSeleccionada = null;
+        strPerfilSeleccionado = null;
+        poblarEmpresas();
         obtenerModelosDeEvaluaciones();
     }
 
@@ -110,12 +105,6 @@ public class CrearBateriaView extends BaseView implements Serializable {
         poblarEmpresas();
         obtenerModelosDeEvaluaciones();
     }
-    
-//    public void cargarEmpresa(){
-//        FacesContext facesContext = FacesContext.getCurrentInstance();
-//        Map params = facesContext.getExternalContext().getRequestParameterMap();
-//        Integer parametroObtenido= new Integer((String) params.get("empresa"));
-//    }
 
     public List obtenerModelosDeEvaluaciones() {
         try {
