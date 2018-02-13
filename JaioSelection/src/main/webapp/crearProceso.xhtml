@@ -30,6 +30,11 @@
                         <!--CREAR NUEVO PROCESO-->
                         <p:outputLabel value="#{msg['proceso.nuevo.proceso']}" />
                         <p:button value="#{msg['proceso.boton.nuevo']}" outcome="crearBateria" icon="fa fa-plus Fs14" styleClass="aqua-button" />
+          
+                        <h:commandButton id="submitButton" value="Bateria" action="#{crearBateriaView.outcome}" 
+                                         styleClass="aqua-button">
+                            <f:param name="empresa" value="#{crearProcesoView.strEmpresaSeleccionada}" />
+                        </h:commandButton>
                         
                     </p:panelGrid>
 

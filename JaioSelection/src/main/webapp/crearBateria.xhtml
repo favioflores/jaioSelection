@@ -21,12 +21,7 @@
                 background: #5cb85c;
             }
         </style>
-
         <h:form id="formBateria" enctype="multipart/form-data">
-            <f:metadata>
-                <f:viewParam name="id" value="#{crearBateriaView.empresa}"/>
-                <!--<f:viewAction action="#{crearBateriaView.init}" />-->
-            </f:metadata>
             <p:growl life="4000" />
             <!-- inicio de tarjeta-->
             <div class="ui-g card">
@@ -42,57 +37,62 @@
                 </div>
 
                 <!--panel izquierdo-->
-                <div class="ui-g-8"> 
-                    <p:dataGrid id="datosEmpresa" var="datosEmpresa" value="" columns="1" layout="grid">
-                        <!--NOMBRE EVALUACION-->
+                <div class="ui-g-8">
+                   
+                <h:outputFormat value="Hello,{0}. You are from .">
+                    <f:param value="#{crearBateriaView.empresa}" />
+                </h:outputFormat>
+                    <!--<p:dataGrid id="datosEmpresa" var="datosEmpresa" value="" columns="1" layout="grid">-->
+                    <p:panel  >
+                        <h:panelGrid columns="1" >
                         <div class="ui-g-12">
-                            <div class="ui-g-3"> 
-                                <p:outputLabel for="formBateria" value="#{msg['bateria.nombreEvaluacion']}"/>
-                            </div>
-                            <p:inputText id="nombreEvaluacion" value="#{crearBateriaView.nombreEvaluacion}" maxlength="200" size="35" 
+                            <p:outputLabel for="formBateria" value="#{msg['bateria.nombreEvaluacion']}">
+                                <p:inputText id="nombreEvaluacion" value="#{crearBateriaView.nombreEvaluacion}" maxlength="200" size="35" 
                                          placeholder="#{msg['bateria.ingreseNombreEvaluacion']}"
-                                         label="#{msg['bateria.ingreseNombreEvaluacion']}"
-                                         required="true"
-                                         requiredMessage="#{msg['bateria.noIngresoNombreEvaluacion']}"
-                                         ></p:inputText>
+                                         label="#{msg['bateria.ingreseNombreEvaluacion']}" required="true"
+                                         requiredMessage="#{msg['bateria.noIngresoNombreEvaluacion']}" ></p:inputText>
+                            </p:outputLabel>
                         </div>
                         <!--EMPRESA-->
                         <div class="ui-g-12">
-                            <div class="ui-g-2">
-                                <p:outputLabel for="formBateria" value="#{msg['bateria.empresa']}"/>
-                            </div>
-                            <p:selectOneMenu id="listaEmpresa" value="#{crearBateriaView.strEmpresaSeleccionada}" effect="clip" filterMatchMode="startsWith"
+                            
+                            <p:outputLabel for="formBateria" value="#{msg['bateria.empresa']}"> 
+                            
+                                <p:selectOneMenu id="listaEmpresa" value="#{crearBateriaView.strEmpresaSeleccionada}" effect="clip" filterMatchMode="startsWith"
                                              filter="true" required="true" requiredMessage="#{msg['bateria.noSeleccionoEmpresa']}">
-                                <f:selectItem itemLabel="#{msg['proceso.selecciona.empresa']}"/>
-                                <f:selectItems id="empresa" value="#{crearBateriaView.lstEmpresas}" var="emp" itemLabel="#{emp.desc}" itemValue="#{emp.id}"/>
-                                <p:ajax event="itemSelect" process="@this" update=":formBateria:" listener="#{crearBateriaView.seleccionaEmpresa()}"/>
-                            </p:selectOneMenu>
+                                    <f:selectItem itemLabel="#{msg['proceso.selecciona.empresa']}"/>
+                                    <f:selectItems id="empresa" value="#{crearBateriaView.lstEmpresas}" var="emp" itemLabel="#{emp.desc}" itemValue="#{emp.id}"/>
+                                    <p:ajax event="itemSelect" process="@this" update=":formBateria:" listener="#{crearBateriaView.seleccionaEmpresa()}"/>
+                                </p:selectOneMenu>
+                            
+                        </p:outputLabel>
                         </div>
                         <!--AREA-->
                         <div class="ui-g-12">
-                            <div class="ui-g-2">
-                                <p:outputLabel for="formBateria" value="#{msg['bateria.area']}"/>
-                            </div>
-                            <p:selectOneMenu id="listaArea" value="#{crearBateriaView.strAreaSeleccionada}" effect="clip" filterMatchMode="startsWith"
+                            <p:outputLabel for="formBateria" value="#{msg['bateria.area']}"> 
+                                <p:selectOneMenu id="listaArea" value="#{crearBateriaView.strAreaSeleccionada}" effect="clip" filterMatchMode="startsWith"
                                              filter="true" required="true" requiredMessage="#{msg['bateria.noSeleccionoArea']}">
-                                <f:selectItem itemLabel="#{msg['proceso.selecciona.area']}"/>
-                                <f:selectItems id="area" value="#{crearBateriaView.lstArea}" var="area" itemLabel="#{area.descripcion}" itemValue="#{area.id}"  />
-                                <p:ajax event="itemSelect" process="@this" update=":formBateria:"  listener="#{crearBateriaView.seleccionaArea()}"/>
-                            </p:selectOneMenu>
+                                    <f:selectItem itemLabel="#{msg['proceso.selecciona.area']}"/>
+                                    <f:selectItems id="area" value="#{crearBateriaView.lstArea}" var="area" itemLabel="#{area.descripcion}" itemValue="#{area.id}"  />
+                                    <p:ajax event="itemSelect" process="@this" update=":formBateria:"  listener="#{crearBateriaView.seleccionaArea()}"/>
+                                </p:selectOneMenu>
+                            </p:outputLabel>
                         </div>
                         <!--PERFIL-->
                         <div class="ui-g-12">
-                            <div class="ui-g-2">
-                                <p:outputLabel for="formBateria" value="#{msg['bateria.perfil']}" />
-                            </div>
-                            <p:selectOneMenu id="listaPerfil" value="#{crearBateriaView.strPerfilSeleccionado}" effect="clip" filterMatchMode="startsWith"
+                            <p:outputLabel for="formBateria" value="#{msg['bateria.perfil']}"> 
+                                <p:selectOneMenu id="listaPerfil" value="#{crearBateriaView.strPerfilSeleccionado}" effect="clip" filterMatchMode="startsWith"
                                              filter="true" required="true" requiredMessage="#{msg['bateria.noSeleccionoPerfil']}">
                                 <f:selectItem itemLabel="#{msg['proceso.selecciona.perfil']}"/>
                                 <f:selectItems id="perfil" value="#{crearBateriaView.lstPerfil}" var="perfil" itemLabel="#{perfil.descripcion}" itemValue="#{perfil.id}"/>
                                 <p:ajax event="itemSelect" process="@this" update=":formBateria:"  listener="#{crearBateriaView.seleccionaPerfil()}"/>
                             </p:selectOneMenu>
+                            </p:outputLabel>
                         </div>
-                    </p:dataGrid>
+                        </h:panelGrid>
+                        </p:panel>
+                    <!--</p:dataGrid>-->
+                    <!--FIN DE PANEL EMPRESA-->
                     <br/>
 
                     <!--BILLETERA DE EVALUACIONES-->

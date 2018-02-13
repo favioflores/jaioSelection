@@ -48,17 +48,19 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import org.primefaces.event.DragDropEvent;
 
 @ManagedBean(name = "crearBateriaView")
-@ViewScoped
+@SessionScoped
 public class CrearBateriaView extends BaseView implements Serializable {
 
     private static Log log = LogFactory.getLog(CrearBateriaView.class);
     private static final long serialVersionUID = -1L;
 
     private LinkedHashMap<String, String> mapCompetenciasSeleccionadas = new LinkedHashMap<String, String>();
+    ConvertirDatosBean convertirDatos = new ConvertirDatosBean();
     private List<BateriaBean> lstBaterias;
     private List<BateriaBean> droppedBaterias;
     private List<ModeloCompetenciaBean> droppedCompetencias;
@@ -70,12 +72,27 @@ public class CrearBateriaView extends BaseView implements Serializable {
     String strAreaSeleccionada;
     String strPerfilSeleccionado;
     String empresa;
-    
-    ConvertirDatosBean convertirDatos = new ConvertirDatosBean();
 
     @PostConstruct
     public void init() {
-        limpiar();
+        mapCompetenciasSeleccionadas = new LinkedHashMap<String, String>();
+        lstBaterias = new ArrayList<>();
+        droppedBaterias = new ArrayList<>();
+        droppedCompetencias = new ArrayList<>();
+        lstEmpresas = new ArrayList<>();
+        lstArea = new ArrayList<>();
+        lstPerfil = new ArrayList<>();
+        nombreEvaluacion = null;
+        if(Utilitarios.noEsNuloOVacio(empresa)){
+            strEmpresaSeleccionada = empresa;
+            seleccionaEmpresa();
+        }else {
+            strEmpresaSeleccionada = null;
+            strAreaSeleccionada = null;
+            strPerfilSeleccionado = null;
+            poblarEmpresas();
+        }
+        obtenerModelosDeEvaluaciones();
     }
 
     public void limpiar() {
@@ -94,11 +111,11 @@ public class CrearBateriaView extends BaseView implements Serializable {
         obtenerModelosDeEvaluaciones();
     }
     
-    public void cargarEmpresa(){
-        FacesContext facesContext = FacesContext.getCurrentInstance();
-        Map params = facesContext.getExternalContext().getRequestParameterMap();
-        Integer parametroObtenido= new Integer((String) params.get("nombreParametro"));
-    }
+//    public void cargarEmpresa(){
+//        FacesContext facesContext = FacesContext.getCurrentInstance();
+//        Map params = facesContext.getExternalContext().getRequestParameterMap();
+//        Integer parametroObtenido= new Integer((String) params.get("empresa"));
+//    }
 
     public List obtenerModelosDeEvaluaciones() {
         try {
@@ -375,6 +392,17 @@ public class CrearBateriaView extends BaseView implements Serializable {
     public void setEmpresa(String empresa) {
         this.empresa = empresa;
     }
+   
+    public String outcome(){
+        FacesContext fc = FacesContext.getCurrentInstance();
+        this.empresa = getCountryParam(fc);
+        return "crearBateria";
+    }
+    
+    public String getCountryParam(FacesContext fc){
+        Map<String,String> params = fc.getExternalContext().getRequestParameterMap();
+        return params.get("empresa");
 
+    }
     
 }
