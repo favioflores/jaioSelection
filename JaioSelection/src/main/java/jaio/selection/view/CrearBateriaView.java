@@ -53,7 +53,6 @@ public class CrearBateriaView extends BaseView implements Serializable {
     ConvertirDatosBean convertirDatos = new ConvertirDatosBean();
     private List<BateriaBean> lstBaterias;
     private List<BateriaBean> droppedBaterias;
-    private List<ModeloCompetencia> listaCompetenciasPorModelo;
     private List<ModeloCompetenciaBean> droppedCompetencias;
     public List<EmpresaBean> lstEmpresas;
     public List<AreaBean> lstArea;
@@ -67,7 +66,6 @@ public class CrearBateriaView extends BaseView implements Serializable {
 
     @PostConstruct
     public void init() {
-        listaCompetenciasPorModelo = new ArrayList<>();
         mapCompetenciasSeleccionadas = new LinkedHashMap<String, String>();
         lstBaterias = new ArrayList<>();
         droppedBaterias = new ArrayList<>();
@@ -89,7 +87,6 @@ public class CrearBateriaView extends BaseView implements Serializable {
     }
 
     public void limpiar() {
-        listaCompetenciasPorModelo = new ArrayList<>();
         mapCompetenciasSeleccionadas = new LinkedHashMap<String, String>();
         lstBaterias = new ArrayList<>();
         droppedBaterias = new ArrayList<>();
@@ -122,32 +119,28 @@ public class CrearBateriaView extends BaseView implements Serializable {
                 objBateriaBean.setLstCompetencias(obtenerCompetenciasPorEvaluacion(objBateriaBean));
                 lstBaterias.add(objBateriaBean);
             }
-
         } catch (Exception e) {
             mostrarAlerta(FATAL, "error.inesperado", log, e);
         }
         return lstBaterias;
     }
 
-    public List<ModeloCompetencia> obtenerCompetenciasPorEvaluacion(BateriaBean objBateriaBean) {
-        List<ModeloCompetencia> listaCompetencias = new ArrayList<>();
-        ModeloCompetenciaDAO objMCDao = new ModeloCompetenciaDAO();
+    public List obtenerCompetenciasPorEvaluacion(BateriaBean objBateriaBean) {
+        List contenedorCompetencias = new ArrayList<>();
         try {
-            listaCompetencias = objMCDao.obtenerCompetenciasXEvaluacion(objBateriaBean.getId());
-
+            ModeloCompetenciaDAO objMCDao = new ModeloCompetenciaDAO();
+            List listaCompetencias = objMCDao.obtenerCompetenciasXEvaluacion(objBateriaBean.getId());
             if (Utilitarios.noEsNuloOVacio(listaCompetencias)) {
                 Iterator it = listaCompetencias.iterator();
                 while (it.hasNext()) {
-                    ModeloCompetencia objModeloCompetencia = new ModeloCompetencia();
                     Object obj[] = (Object[]) it.next();
-                    objModeloCompetencia.setNombre(obj[0].toString());
-                    listaCompetenciasPorModelo.add(objModeloCompetencia);
+                    contenedorCompetencias.add(obj[0].toString());
                 }
             }
         } catch (Exception e) {
             mostrarAlerta(FATAL, "error.inesperado", log, e);
         }
-        return listaCompetencias;
+        return contenedorCompetencias;
     }
 
     public void poblarEmpresas() {
@@ -266,61 +259,56 @@ public class CrearBateriaView extends BaseView implements Serializable {
     public void pasarBaterias(BateriaBean objBateriaBean) {
         try {
             droppedBaterias.add(objBateriaBean);
-
-            minutosTotal = 0;
-            for (BateriaBean objBatBean : droppedBaterias) {
-                int mEstimados = Integer.parseInt(objBatBean.getMinutosEstimados());
-                minutosTotal += mEstimados;
-            }
-            ModeloCompetenciaDAO objMCDao = new ModeloCompetenciaDAO();
-            List lstCompetencias = objMCDao.obtenerCompetenciasXEvaluacion(objBateriaBean.getId());
-            Iterator it = lstCompetencias.iterator();
-            while (it.hasNext()) {
-                Object obj[] = (Object[]) it.next();
-                ModeloCompetenciaBean objModeloCompetencia = new ModeloCompetenciaBean();
-                objModeloCompetencia.setNombre(obj[0].toString());
-                objModeloCompetencia.setId(obj[1].toString());
-                objModeloCompetencia.setColor(obj[2].toString());
-                if (!mapCompetenciasSeleccionadas.containsKey(objModeloCompetencia.getId())) {
-                    mapCompetenciasSeleccionadas.put(objModeloCompetencia.getId(), objModeloCompetencia.getNombre());
-                    ModeloCompetenciaBean objCompetencia = new ModeloCompetenciaBean();
-                    objCompetencia.setId(objModeloCompetencia.getId());
-                    objCompetencia.setNombre(objModeloCompetencia.getNombre());
-                    objCompetencia.setColor(objModeloCompetencia.getColor());
-                    droppedCompetencias.add(objCompetencia);
-                    Collections.sort(droppedCompetencias);
-                }
-            }
-
+            contarMinutos();
+            cargarCompetencias(objBateriaBean.getId());
             lstBaterias.remove(objBateriaBean);
         } catch (Exception e) {
             mostrarAlerta(FATAL, "error.inesperado", log, e);
         }
     }
 
-    public void quitarBaterias(BateriaBean objBateriaBean) {
-        try {
-            lstBaterias.add(objBateriaBean);
-            droppedBaterias.remove(objBateriaBean);
-            ModeloCompetenciaDAO objMCDao = new ModeloCompetenciaDAO();
-            List lstCompetencias = objMCDao.obtenerCompetenciasXEvaluacion(objBateriaBean.getId());
-            Iterator it = lstCompetencias.iterator();
-            while (it.hasNext()) {
-                Object obj[] = (Object[]) it.next();
-                ModeloCompetenciaBean objModeloCompetencia = new ModeloCompetenciaBean();
-                objModeloCompetencia.setNombre(obj[0].toString());
-                objModeloCompetencia.setId(obj[1].toString());
-                objModeloCompetencia.setColor(obj[2].toString());
-                if (mapCompetenciasSeleccionadas.containsKey(objModeloCompetencia.getId())) {
-                    mapCompetenciasSeleccionadas.remove(objModeloCompetencia.getId(), objModeloCompetencia.getNombre());
-                    ModeloCompetenciaBean objCompetencia = new ModeloCompetenciaBean();
-                    objCompetencia.setNombre(objModeloCompetencia.getNombre());
-                    objCompetencia.setColor(objModeloCompetencia.getColor());
-                    droppedCompetencias.remove(objCompetencia);
-                }
+    public void cargarCompetencias(String id) {
+        ModeloCompetenciaDAO objMCDao = new ModeloCompetenciaDAO();
+        List lstCompetencias = objMCDao.obtenerCompetenciasXEvaluacion(id);
+        Iterator it = lstCompetencias.iterator();
+        while (it.hasNext()) {
+            Object obj[] = (Object[]) it.next();
+            ModeloCompetenciaBean objModeloCompetencia = new ModeloCompetenciaBean();
+            objModeloCompetencia.setNombre(obj[0].toString());
+            objModeloCompetencia.setId(obj[1].toString());
+            objModeloCompetencia.setColor(obj[2].toString());
+            if (!mapCompetenciasSeleccionadas.containsKey(objModeloCompetencia.getId())) {
+                mapCompetenciasSeleccionadas.put(objModeloCompetencia.getId(), objModeloCompetencia.getNombre());
+                ModeloCompetenciaBean objCompetencia = new ModeloCompetenciaBean();
+                objCompetencia.setId(objModeloCompetencia.getId());
+                objCompetencia.setNombre(objModeloCompetencia.getNombre());
+                objCompetencia.setColor(objModeloCompetencia.getColor());
+                droppedCompetencias.add(objCompetencia);
+                Collections.sort(droppedCompetencias);
             }
+        }
+    }
+
+    public void quitarBaterias(BateriaBean objBateria) {
+        try {
+            lstBaterias.add(objBateria);
+            droppedBaterias.remove(objBateria);
+            droppedCompetencias = new ArrayList<>();
+            mapCompetenciasSeleccionadas = new LinkedHashMap<String, String>();
+            for (BateriaBean objBateriaBean1 : droppedBaterias) {
+                cargarCompetencias(objBateriaBean1.getId());
+            }
+            contarMinutos();
         } catch (Exception e) {
             mostrarAlerta(FATAL, "error.inesperado", log, e);
+        }
+    }
+
+    public void contarMinutos() {
+        minutosTotal = 0;
+        for (BateriaBean objBatBean : droppedBaterias) {
+            int mEstimados = Integer.parseInt(objBatBean.getMinutosEstimados());
+            minutosTotal += mEstimados;
         }
     }
 

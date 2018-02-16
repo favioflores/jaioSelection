@@ -18,24 +18,25 @@ public class BateriaBean implements Serializable {
     private String minutosEstimados;
     private String limiteTiempo;
     private String color;
-    private List<ModeloCompetencia> lstCompetencias;
+    private List lstCompetencias;
     
     
     public BateriaBean(){
     }
     
-    public BateriaBean(String nombre, String validez, String confiabilidad, String minutosEstimados, String limiteTiempo){
+    public BateriaBean(String nombre, String validez, String confiabilidad, String minutosEstimados, String limiteTiempo, List lstCompetencias){
         this.nombre = nombre;
         this.validez = validez;
         this.confiabilidad = confiabilidad;
         this.minutosEstimados = minutosEstimados;
+        this.lstCompetencias = lstCompetencias;
     }
 
-    public List<ModeloCompetencia> getLstCompetencias() {
+    public List getLstCompetencias() {
         return lstCompetencias;
     }
 
-    public void setLstCompetencias(List<ModeloCompetencia> lstCompetencias) {
+    public void setLstCompetencias(List lstCompetencias) {
         this.lstCompetencias = lstCompetencias;
     }
     
