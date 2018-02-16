@@ -48,9 +48,9 @@ public class CrearBateriaView extends BaseView implements Serializable {
 
     private static Log log = LogFactory.getLog(CrearBateriaView.class);
     private static final long serialVersionUID = -1L;
-
-    private LinkedHashMap<String, String> mapCompetenciasSeleccionadas = new LinkedHashMap<String, String>();
     ConvertirDatosBean convertirDatos = new ConvertirDatosBean();
+    
+    private LinkedHashMap<String, String> mapCompetenciasSeleccionadas = new LinkedHashMap<String, String>();
     private List<BateriaBean> lstBaterias;
     private List<BateriaBean> droppedBaterias;
     private List<ModeloCompetenciaBean> droppedCompetencias;
@@ -73,6 +73,7 @@ public class CrearBateriaView extends BaseView implements Serializable {
         lstEmpresas = new ArrayList<>();
         lstArea = new ArrayList<>();
         lstPerfil = new ArrayList<>();
+        minutosTotal = 0;
         nombreEvaluacion = null;
         poblarEmpresas();
         obtenerModelosDeEvaluaciones();
@@ -94,6 +95,7 @@ public class CrearBateriaView extends BaseView implements Serializable {
         lstEmpresas = new ArrayList<>();
         lstArea = new ArrayList<>();
         lstPerfil = new ArrayList<>();
+        minutosTotal = 0;
         nombreEvaluacion = null;
         strEmpresaSeleccionada = null;
         strAreaSeleccionada = null;
