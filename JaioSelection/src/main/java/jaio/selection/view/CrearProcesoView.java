@@ -31,95 +31,110 @@ import javax.faces.context.FacesContext;
 @ManagedBean(name = "crearProcesoView")
 @ViewScoped
 public class CrearProcesoView extends BaseView implements Serializable {
-    
+
     private static Log log = LogFactory.getLog(CrearProcesoView.class);
     private static final long serialVersionUID = -1L;
-    
+
     public List<EmpresaBean> lstEmpresas;
     public List<PerfilBean> lstPerfil;
     public List<AreaBean> lstArea;
     public String strEmpresaSeleccionada;
     public String strPerfilSeleccionado;
     public String strAreaSeleccionada;
-    
+
     private List<BateriaPersonalizadaBean> lstBateriaPersonalizadaBeans;
-    
+
     public List<AreaBean> getLstArea() {
         return lstArea;
     }
-    
+
     public void setLstArea(List<AreaBean> lstArea) {
         this.lstArea = lstArea;
     }
-    
+
     public String getStrAreaSeleccionada() {
         return strAreaSeleccionada;
     }
-    
+
     public void setStrAreaSeleccionada(String strAreaSeleccionada) {
         this.strAreaSeleccionada = strAreaSeleccionada;
     }
-    
+
     public String getStrPerfilSeleccionado() {
         return strPerfilSeleccionado;
     }
-    
+
     public void setStrPerfilSeleccionado(String strPerfilSeleccionado) {
         this.strPerfilSeleccionado = strPerfilSeleccionado;
     }
-    
+
     public String getStrEmpresaSeleccionada() {
         return strEmpresaSeleccionada;
     }
-    
+
     public void setStrEmpresaSeleccionada(String strEmpresaSeleccionada) {
         this.strEmpresaSeleccionada = strEmpresaSeleccionada;
     }
-    
+
     public List<PerfilBean> getLstPerfil() {
         return lstPerfil;
     }
-    
+
     public void setLstPerfil(List<PerfilBean> lstPerfil) {
         this.lstPerfil = lstPerfil;
     }
-    
+
     public List<EmpresaBean> getLstEmpresas() {
         return lstEmpresas;
     }
-    
+
     public void setLstEmpresas(List<EmpresaBean> lstEmpresas) {
         this.lstEmpresas = lstEmpresas;
     }
-    
+
     public List<BateriaPersonalizadaBean> getLstBateriaPersonalizadaBeans() {
         return lstBateriaPersonalizadaBeans;
     }
-    
+
     public void setLstBateriaPersonalizadaBeans(List<BateriaPersonalizadaBean> lstBateriaPersonalizadaBeans) {
         this.lstBateriaPersonalizadaBeans = lstBateriaPersonalizadaBeans;
     }
-    
+
     @PostConstruct
     public void init() {
         limpiar();
     }
-    
+
     public void limpiar() {
         lstEmpresas = new ArrayList<>();
         lstArea = new ArrayList<>();
         lstPerfil = new ArrayList<>();
         strEmpresaSeleccionada = null;
         poblarEmpresas();
-        
+
     }
-    
+
+    public void abrirCrearBateria() {
+
+        try {
+
+            if (Utilitarios.noEsNuloOVacio(strEmpresaSeleccionada)) {
+                Utilitarios.ponerSession(strEmpresaSeleccionada, Constantes.SESSION_BATERIA);
+            }
+
+            FacesContext.getCurrentInstance().getExternalContext().redirect("crearBateria.jsf");
+
+        } catch (Exception e) {
+            mostrarAlerta(FATAL, "error.inesperado", log, e);
+        }
+    }
+
     /**
      * metodo para cargar los procesos por empresa
      */
     public void cargarBateriaPersonalizada() {
         lstBateriaPersonalizadaBeans = new ArrayList<>();
-        if (Utilitarios.noEsNuloOVacio(strEmpresaSeleccionada)){
+        if (Utilitarios.noEsNuloOVacio(strEmpresaSeleccionada)) {
             BateriaPersonalizadaDAO objBateriaPersonalizadaDAO = new BateriaPersonalizadaDAO();
             List lstBaterias = objBateriaPersonalizadaDAO.obtenerProcesosRegistrados(strEmpresaSeleccionada);
             Iterator it = lstBaterias.iterator();
@@ -145,7 +160,7 @@ public class CrearProcesoView extends BaseView implements Serializable {
                 poblarArea();
                 mostrarAlerta(INFO, "proceso.seleccion.empresa", null, null, objEmpresa.getNombre());
             } else {
-                limpiar();                
+                limpiar();
             }
         } catch (Exception e) {
             mostrarAlerta(FATAL, "error.inesperado", log, e);
@@ -171,7 +186,7 @@ public class CrearProcesoView extends BaseView implements Serializable {
         } catch (Exception e) {
             mostrarAlerta(FATAL, "error.inesperado", log, e);
         }
-        
+
     }
 
     /**
@@ -203,7 +218,7 @@ public class CrearProcesoView extends BaseView implements Serializable {
                 lstArea = new ArrayList<>();
                 AreaDAO objAreaDAO = new AreaDAO();
                 List<Area> lstAreas = objAreaDAO.obtenerAreasXEmpresa(strEmpresaSeleccionada);
-                
+
                 for (Area objArea : lstAreas) {
                     AreaBean objAreaBean = new AreaBean();
                     objAreaBean.setId(objArea.getId().toString());
@@ -215,7 +230,7 @@ public class CrearProcesoView extends BaseView implements Serializable {
             mostrarAlerta(FATAL, "error.inesperado", log, e);
         }
     }
-    
+
     public void seleccionaPerfil() {
         try {
             if (Utilitarios.noEsNuloOVacio(strPerfilSeleccionado)) {
@@ -248,4 +263,5 @@ public class CrearProcesoView extends BaseView implements Serializable {
             mostrarAlerta(FATAL, "error.inesperado", log, e);
         }
     }
+
 }

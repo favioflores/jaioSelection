@@ -10,11 +10,13 @@
 
             <div class="ui-g card">
                 <div class="ui-g-12">
-
-                    <p:panelGrid columns="1" columnClasses="ui-grid-col" layout="grid" styleClass="ui-panelgrid-blank" style="border:0px none; background-color:transparent;">
-
+                    <div class="ui-g-12">
                         <h1>#{msg['organizacion.titulo']}</h1>
                         <p>#{msg['organizacion.parrafo']}</p>
+                    </div>
+                    <p:panelGrid columns="1" columnClasses="ui-grid-col" layout="grid" styleClass="ui-panelgrid-blank" style="border:0px none; background-color:transparent;">
+
+                        
 
                         <p:commandButton styleClass="aqua-button"
                                          oncomplete="PF('dlgNuevo').show();"

@@ -144,14 +144,11 @@ public class ModeloEvaluacionDAO extends HibernateUtil implements Serializable {
     public void grabarBateriaPersonalizada(BateriaPersonalizada objBateriaPersonalizada, List<BateriaBean> droppedBaterias,String strPerfilSeleccionado ) {
         try {
             iniciaSession();
-
             session.save(objBateriaPersonalizada);
-            
             for (BateriaBean droppedBateria : droppedBaterias) {
-
                 ModeloEvaluacion objModeloEvaluacion = new ModeloEvaluacion();
                 objModeloEvaluacion.setId(Integer.parseInt(droppedBateria.getId()));
-
+                
                 BateriaEvaluacionId objBateriaEvaluacionId = new BateriaEvaluacionId();
                 objBateriaEvaluacionId.setBateriaPersonalizadaId(objBateriaPersonalizada.getId());
                 objBateriaEvaluacionId.setModeloEvaluacionId(objModeloEvaluacion.getId());
