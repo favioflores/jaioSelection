@@ -72,7 +72,7 @@ public class OrganigramaView extends BaseView implements Serializable {
     public void setEsPreliminar(boolean esPreliminar) {
         this.esPreliminar = esPreliminar;
     }
-    
+
     public OrganigramNode getRootNodePreview() {
         return rootNodePreview;
     }
@@ -252,21 +252,21 @@ public class OrganigramaView extends BaseView implements Serializable {
 
                 // ESTE CÓDIGO FUNCIONA PORQUE EL QUERY ORDENA LOS OBJETOS
                 if (Utilitarios.esNuloOVacio(objAreaOrganigramaBean.getId_parent())) {
-                    objAreaOrganigramaBean.setNode(addNode(rootNodePreview, "area", objAreaOrganigramaBean.getDescripcion(),
+                    objAreaOrganigramaBean.setNode(addNodePreview(rootNodePreview, "area", objAreaOrganigramaBean.getDescripcion(),
                             "area" + objAreaOrganigramaBean.getId()));
                 } else {
-                    objAreaOrganigramaBean.setNode(addNode(
+                    objAreaOrganigramaBean.setNode(addNodePreview(
                             hOrganigrama.get(objAreaOrganigramaBean.getId_parent()).getNode(), "area",
                             objAreaOrganigramaBean.getDescripcion(), "area" + objAreaOrganigramaBean.getId()));
                 }
 
                 for (PerfilBean objPerfilBean : objAreaOrganigramaBean.getLstPerfiles()) {
-                    objPerfilBean.setNode(addNode(objAreaOrganigramaBean.getNode(), "perfil",
+                    objPerfilBean.setNode(addNodePreview(objAreaOrganigramaBean.getNode(), "perfil",
                             objPerfilBean.getDescripcion(), "perfil" + objPerfilBean.getId()));
                 }
 
             }
-            
+
             esPreliminar = true;
 
         } catch (Exception e) {
@@ -344,6 +344,23 @@ public class OrganigramaView extends BaseView implements Serializable {
 
         if (tipo.equals("area")) {
             node.setCollapsible(true);
+        } else if (tipo.equals("perfil")) {
+            node.setCollapsible(false);
+        }
+
+        return node;
+    }
+    
+    protected OrganigramNode addNodePreview(OrganigramNode parent, String tipo, String name, String key) {
+
+        OrganigramNode node = new DefaultOrganigramNode(tipo, name, parent);
+        node.setDroppable(false);
+        node.setDraggable(false);
+        node.setSelectable(false);
+        node.setRowKey(key);
+
+        if (tipo.equals("area")) {
+            node.setCollapsible(false);
         } else if (tipo.equals("perfil")) {
             node.setCollapsible(false);
         }
@@ -775,12 +792,7 @@ public class OrganigramaView extends BaseView implements Serializable {
                     inputFile = null;
                     fileImport = null;
                     return;
-                } else {
-                    RequestContext context = RequestContext.getCurrentInstance();
-                    context.execute("PF('dialogPreviewOrganigrama').show();");
-                    
-                    mostrarAlerta(INFO, "organigrama.masivo.archivo.procesoOk", null, null);
-                }
+                } 
 
                 inputFile = null;
                 fileImport = null;
@@ -1044,6 +1056,7 @@ public class OrganigramaView extends BaseView implements Serializable {
             Collections.sort(entries, new CustomizeHashMapOrderAreaOrganigramaByIdParent());
 
             LinkedHashMap<String, AreaOrganigramaBean> sortedMap = new LinkedHashMap<>();
+            
             for (Map.Entry<String, AreaOrganigramaBean> entry : entries) {
                 sortedMap.put(entry.getKey(), entry.getValue());
             }

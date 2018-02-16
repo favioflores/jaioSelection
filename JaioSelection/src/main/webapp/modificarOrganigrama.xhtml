@@ -2,7 +2,8 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+                xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
     <ui:define name="content">
         <h:form id="formOrganigrama">
@@ -163,7 +164,7 @@
                             <p align="justify">#{msg['organigrama.parrafo4']}</p>
 
 
-                            <p:commandButton value=" #{msg['organigrama.boton.descarga.masivo']}" ajax="false" icon="fa fa-download" styleClass="aqua-button"  >
+                            <p:commandButton value=" #{msg['organigrama.boton.descarga.masivo']}" ajax="false" icon="fa fa-download" >
                                 <p:fileDownload value="#{organigramaView.fileExport}" />
                             </p:commandButton>
 
@@ -186,83 +187,88 @@
 
                             <br/>
 
-                            <p:dataTable  id="lstError"
-                                          widgetVar="lstError"
-                                          value="#{organigramaView.lstErrores}" 
-                                          var="error" 
-                                          emptyMessage="#{msg['no.registros']}" 
-                                          paginator="true"
-                                          rowKey="id"
-                                          rows="10"
-                                          reflow="true"
-                                          rendered="#{organigramaView.lstErrores.size()>0}"
-                                          rowsPerPageTemplate="10,30,50" >
+                            <c:if test="#{organigramaView.lstErrores.size()>0}">
 
-                                <f:facet name="header" >
-                                    <h:outputText value="#{msg['organigrama.errores.titulo']}" />
-                                </f:facet>
-                                <p:column headerText="#{msg['organigrama.errores.col1']}">
-                                    <h:outputText value="#{error.strFila}" />
-                                </p:column>
-                                <p:column headerText="#{msg['organigrama.errores.col2']}">
-                                    <h:outputText value="#{error.strColumna}" />
-                                </p:column>
-                                <p:column headerText="#{msg['organigrama.errores.col3']}">
-                                    <h:outputText value="#{error.strEtiqueta}" />
-                                </p:column>
-                                <p:column headerText="#{msg['organigrama.errores.col4']}">
-                                    <h:outputText value="#{error.strValor}" />
-                                </p:column>
-                                <p:column headerText="#{msg['organigrama.errores.col5']}">
-                                    <h:outputText value="#{error.strError}" />
-                                </p:column>
+                                <h2>#{msg['organigrama.titulo.masivo']}</h2>
 
-                            </p:dataTable>
+                                <br/>
 
-                            <br/>
+                                <p:dataTable  id="lstError"
+                                              widgetVar="lstError"
+                                              value="#{organigramaView.lstErrores}" 
+                                              var="error" 
+                                              emptyMessage="#{msg['no.registros']}" 
+                                              paginator="true"
+                                              rowKey="id"
+                                              rows="10"
+                                              reflow="true"
+                                              rowsPerPageTemplate="10,30,50" >
 
-                            <p:commandButton id="btnGuardarPreview"
-                                             value="#{msg['organigrama.masivo.guardarPreview']}" 
-                                             styleClass="aqua-button"
-                                             rendered="#{organigramaView.esPreliminar==true}"
-                                             oncomplete="PF('dialogPreviewOrganigrama').hide();" />
+                                    <f:facet name="header" >
+                                        <h:outputText value="#{msg['organigrama.errores.titulo']}" />
+                                    </f:facet>
+                                    <p:column headerText="#{msg['organigrama.errores.col1']}">
+                                        <h:outputText value="#{error.strFila}" />
+                                    </p:column>
+                                    <p:column headerText="#{msg['organigrama.errores.col2']}">
+                                        <h:outputText value="#{error.strColumna}" />
+                                    </p:column>
+                                    <p:column headerText="#{msg['organigrama.errores.col3']}">
+                                        <h:outputText value="#{error.strEtiqueta}" />
+                                    </p:column>
+                                    <p:column headerText="#{msg['organigrama.errores.col4']}">
+                                        <h:outputText value="#{error.strValor}" />
+                                    </p:column>
+                                    <p:column headerText="#{msg['organigrama.errores.col5']}">
+                                        <h:outputText value="#{error.strError}" />
+                                    </p:column>
 
-                            <p:commandButton id="btnCancelarPreview"
-                                             value="#{msg['organigrama.masivo.guardarPreview']}" 
-                                             styleClass="red-button"
-                                             rendered="#{organigramaView.esPreliminar==true}"
-                                             oncomplete="PF('dialogPreviewOrganigrama').hide();" />
+                                </p:dataTable>
 
-                            <br/>
+                            </c:if>
 
-                            <p:organigram id="organigramaPreview" 
-                                          widgetVar="organigramaPreview" 
-                                          value="#{organigramaView.rootNodePreview}" 
-                                          var="node" 
-                                          zoom="false"
-                                          leafNodeConnectorHeight="0" 
-                                          autoScrollToSelection="false" 
-                                          rendered="#{organigramaView.esPreliminar==true}"
-                                          style="width: 100%">
+                            <c:if test="#{organigramaView.lstErrores.size()==0 and organigramaView.esPreliminar==true}">
 
-                                <p:organigramNode>
-                                    <h:outputText value="#{node.data}" />
-                                </p:organigramNode>
+                                <h2>#{msg['organigrama.titulo.masivo.preview']}</h2>
 
-                                <p:organigramNode type="root" style="border-radius: 10px;">
-                                    <h:outputText value="#{node.data}" />
-                                </p:organigramNode>
+                                <br/>
 
-                                <p:organigramNode type="area" styleClass="area"
-                                                  style="border-radius: 10px;" icon="fa fa-suitcase">
-                                    <h:outputText value="#{node.data}" />
-                                </p:organigramNode>
+                                <p:commandButton id="btnGuardarPreview"
+                                                 value="#{msg['organigrama.masivo.guardarPreview']}" 
+                                                 rendered="#{organigramaView.esPreliminar==true}" />
 
-                                <p:organigramNode type="perfil" styleClass="perfil"
-                                                  icon="fa fa-user">
-                                    <h:outputText value="#{node.data}" />
-                                </p:organigramNode>
-                            </p:organigram>
+                                <br/><br/>
+
+                                <p:organigram id="organigramaPreview" 
+                                              widgetVar="organigramaPreview" 
+                                              value="#{organigramaView.rootNodePreview}" 
+                                              var="node" 
+                                              zoom="false"
+                                              leafNodeConnectorHeight="0" 
+                                              autoScrollToSelection="false" 
+                                              rendered="#{organigramaView.esPreliminar==true}"
+                                              style="width: 100%">
+
+                                    <p:organigramNode>
+                                        <h:outputText value="#{node.data}" />
+                                    </p:organigramNode>
+
+                                    <p:organigramNode type="root" style="border-radius: 10px;">
+                                        <h:outputText value="#{node.data}" />
+                                    </p:organigramNode>
+
+                                    <p:organigramNode type="area" styleClass="area"
+                                                      style="border-radius: 10px;" icon="fa fa-suitcase">
+                                        <h:outputText value="#{node.data}" />
+                                    </p:organigramNode>
+
+                                    <p:organigramNode type="perfil" styleClass="perfil"
+                                                      icon="fa fa-user">
+                                        <h:outputText value="#{node.data}" />
+                                    </p:organigramNode>
+                                </p:organigram>
+
+                            </c:if>
 
                         </p:tab>
 
