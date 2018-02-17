@@ -62,8 +62,8 @@
                     <p:button value="#{msg['organigrama.volver']}"
                               outcome="crearEmpresa" icon="fa fa-angle-left" /> -->
 
-                    <p:tabView style="margin-bottom:40px">
-                        <p:tab title="#{msg['organigrama.titulo.modelo']}">
+                    <p:tabView id="tab" style="margin-bottom:40px">
+                        <p:tab id="tab1" title="#{msg['organigrama.titulo.modelo']}">
 
                             <br/>
 
@@ -231,18 +231,22 @@
 
                                 <h2>#{msg['organigrama.titulo.masivo.preview']}</h2>
 
-                                <br/>
+                                <p align="justify">#{msg['organigrama.parrafo5']}</p>
+
 
                                 <p:commandButton id="btnGuardarPreview"
                                                  value="#{msg['organigrama.masivo.guardarPreview']}" 
-                                                 rendered="#{organigramaView.esPreliminar==true}" />
+                                                 rendered="#{organigramaView.esPreliminar==true}"
+                                                 actionListener="#{organigramaView.grabarPreview()}"
+                                                 update=":formOrganigrama:"
+                                                 />
 
-                                <br/><br/>
+                                <br/><br/><br/>
 
                                 <p:organigram id="organigramaPreview" 
                                               widgetVar="organigramaPreview" 
                                               value="#{organigramaView.rootNodePreview}" 
-                                              var="node" 
+                                              var="node"  
                                               zoom="false"
                                               leafNodeConnectorHeight="0" 
                                               autoScrollToSelection="false" 
