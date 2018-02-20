@@ -141,13 +141,17 @@ public class ModeloEvaluacionDAO extends HibernateUtil implements Serializable {
         return null;
     }
 
-    public List obtenerModelosXCompetencia(String idCompetencia,StringBuilder sb) {
+    public List obtenerModelosXCompetencia(String idCompetencia, StringBuilder sb) {
         iniciaSession();
         try {
             Query query = session.createSQLQuery("select me.* from modelo_evaluacion me "
                     + " join modelo_evaluacion_x_competencia mec on mec.modelo_evaluacion_id = me.id "
-                    + " join modelo_competencia mc on mc.id = mec.modelo_competencia_id "
-                    + " where mc.id = " + idCompetencia
+                    + " join modelo_competencia mc on mec.modelo_competencia_id = mc.id "
+                    + " where mc.id in((select id from (select id,nombre from modelo_competencia "
+                    + "	union all "
+                    + "	select modelo_competencia_id as id,palabra as nombre from modelo_competencia_sinonimo "
+                    + "	) as T1 where nombre like '"+ idCompetencia + "%' )) "
+                    + "	"
                     + " and me.id not in (" + sb + ")");
             return query.list();
         } catch (Exception e) {
@@ -157,9 +161,8 @@ public class ModeloEvaluacionDAO extends HibernateUtil implements Serializable {
         }
         return null;
     }
-    
-    
-    public List obtenerModelosCompetencia(StringBuilder sb){
+
+    public List obtenerModelosCompetencia(StringBuilder sb) {
         iniciaSession();
         try {
             Query query = session.createSQLQuery("select * from modelo_evaluacion where id not in (" + sb + ");");

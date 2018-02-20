@@ -357,6 +357,8 @@ public class CrearBateriaView extends BaseView implements Serializable {
                     sb.append("'").append(lstId.get(i)).append("'").append(",");
                 }
                 sb.deleteCharAt(sb.length() - 1).toString();
+            }else{
+                sb.append("''");
             }
             if (Utilitarios.noEsNuloOVacio(strCompSeleccionada) && !strCompSeleccionada.equals("-1")) {
                 List listaEvaluacionesBD = objModelosDao.obtenerModelosXCompetencia(strCompSeleccionada, sb);

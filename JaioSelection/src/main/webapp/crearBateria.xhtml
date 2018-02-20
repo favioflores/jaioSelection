@@ -151,9 +151,9 @@
                                 <p:fieldset id="evaluaciones" legend="#{msg['proceso.dialog.bateria.biblioteca']}" style="border-style: none;">
                                     <div class="ui-g-12">
                                         <p:selectOneMenu id="searchCompetencias" value="#{crearBateriaView.strCompSeleccionada}" effect="fade" filterMatchMode="startsWith"
-                                                         filter="true" panelStyle="width:180px" style="width:160px" >
-                                            <f:selectItem itemLabel="" itemValue="-1"/>
-                                            <f:selectItems id="nombreC" value="#{crearBateriaView.lstCompetencia}" var="m" itemLabel="#{m.nombre}" itemValue="#{m.id}"/>
+                                                         filter="true" panelStyle="width:180px" style="width:200px" >
+                                            <f:selectItem itemLabel="#{msg['bateria.ingreseNombreEvaluacion']}" itemValue="-1" />
+                                            <f:selectItems id="nombreC" value="#{crearBateriaView.lstCompetencia}" var="m" itemLabel="#{m.nombre}" itemValue="#{m.nombre}"/>
                                             <p:ajax event="itemSelect" process="@this" update=":formBateria:"  listener="#{crearBateriaView.buscarEvaluacionXCompetencia()}"/>
                                         </p:selectOneMenu>
                                     </div>
