@@ -29,6 +29,9 @@
                 font-weight: bold; 
                 font-family:'latoregular',sans-serif;
             }
+            .NoMasBorde{
+                border: none !important;
+            }
         </style>
         <h:form id="formBateria" enctype="multipart/form-data" >
             <p:growl life="4000" />
@@ -93,6 +96,9 @@
                                             <p:ajax event="itemSelect" process="@this" update=":formBateria:"  listener="#{crearBateriaView.seleccionaPerfil()}"/>
                                         </p:selectOneMenu>
                                     </div>
+                                    <div class="ui-g-12">
+                                        <p:outputLabel value="Tiempo total de evaluación: #{crearBateriaView.minutosTotal}m"/>
+                                    </div>
                                 </p:fieldset>
                                 <br/>
                                 <p:fieldset id="evaluacionesSeleccionadas" legend="#{msg['proceso.dialog.bateria.seleccionadas']}">
@@ -105,9 +111,13 @@
                                                 <h:outputText value="Validez: #{bat.validez}%" class="textPanel"/><br/>
                                                 <h:outputText value="Confiabilidad: #{bat.confiabilidad}%" class="textPanel"/><br/>
                                                 <h:outputText value="Minutos: #{bat.minutosEstimados}" class="textPanel"/><br/>
-                                                <div  class="ui-g-12 ui-lg-1 circulo" style="background: #{bat.color}"></div>
-                                                <br/><br/>
-                                                <p:commandButton value="Retirar" styleClass="red-button" style="margin-bottom:10px; width: 100%;"
+                                                <p:dataGrid var="c" id="colors" columns="12" value="#{bat.lstColores}" emptyMessage="" 
+
+                                                            styleClass="NoMasBorde">
+                                                    <div  class="circulo" style="background: #{c.color};border-style: hidden;border: 0px">
+                                                    </div>
+                                                </p:dataGrid>
+                                                <p:commandButton value="Retirar" styleClass="red-button" style="margin-bottom:10px;width: 100%;"
                                                                  update=":formBateria:" immediate="true" process="@this" actionListener="#{crearBateriaView.quitarBaterias(bat)}"/>
                                             </p:panel>
                                         </p:dataGrid>
@@ -139,19 +149,27 @@
                             </div>
                             <div class="ui-g-12 ui-lg-4">
                                 <p:fieldset id="evaluaciones" legend="#{msg['proceso.dialog.bateria.biblioteca']}" style="border-style: none;">
-                                    <p:dataGrid id="listaEvaluaciones" var="listE"  value="#{crearBateriaView.lstBaterias}" columns="1" rows="4"  paginator="true" >
+                                    <div class="ui-g-12">
+                                        <h:panelGrid columns="1" style="margin-bottom:10px" cellpadding="5">
+                                            <p:selectOneMenu id="searchCompetencias" value="#{crearBateriaView.modeloCompetencia}"  panelStyle="width:180px"
+                                                             effect="fade" var="mc" style="width:160px" filter="true" filterMatchMode="startsWith"  >
+                                                <f:selectItems value="#{crearBateriaView.lstCompetencia}" var="modelC" itemLabel="#{modelC.nombre}" itemValue="#{modelC}" />
+           
+                                            </p:selectOneMenu>
+                                        </h:panelGrid>
+                                    </div>
+                                    <p:dataGrid id="listaEvaluaciones" var="listE"  value="#{crearBateriaView.lstBaterias}" columns="1" rows="4"  paginator="true"  
+                                                paginatorPosition="bottom" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" >
                                         <p:panel id="panelDeEvaluaciones">
                                             <h:outputText value="#{listE.nombre}" class="textTituloPanel"/><br/>
                                             <h:outputText value="Validez: #{listE.validez}%" class="textPanel"/><br/>
                                             <h:outputText value="Confiabilidad: #{listE.confiabilidad}%" class="textPanel"/><br/>
                                             <h:outputText value="Minutos Estimados: #{listE.minutosEstimados}" class="textPanel"/><br/>
                                             <h:outputText value="Tiempo Limite: #{listE.limiteTiempo}" class="textPanel"/><br/>
-                                            
                                             <h:outputLink id="track" value="#">
                                                 <h:outputText value="Competencias" />
                                             </h:outputLink>
                                             <p:tooltip id="toolTipTrack" for="track" value="#{listE.lstCompetencias}" trackMouse="true" />
-                                            
                                             <br/><br/>
                                             <p:commandButton value="Agregar" styleClass="aqua-button" style="margin-bottom:10px; width: 100%;" 
                                                              update=":formBateria:" immediate="true" process="@this" actionListener="#{crearBateriaView.pasarBaterias(listE)}">

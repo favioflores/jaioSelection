@@ -49,7 +49,10 @@ public class CrearBateriaView extends BaseView implements Serializable {
     private static Log log = LogFactory.getLog(CrearBateriaView.class);
     private static final long serialVersionUID = -1L;
     ConvertirDatosBean convertirDatos = new ConvertirDatosBean();
-    
+    private ModeloCompetenciaBean modeloCompetencia;
+    private List<ModeloCompetenciaBean> lstCompetencia = new ArrayList<>();
+    private String competenciaSeleccionada;
+
     private LinkedHashMap<String, String> mapCompetenciasSeleccionadas = new LinkedHashMap<String, String>();
     private List<BateriaBean> lstBaterias;
     private List<BateriaBean> droppedBaterias;
@@ -57,12 +60,14 @@ public class CrearBateriaView extends BaseView implements Serializable {
     public List<EmpresaBean> lstEmpresas;
     public List<AreaBean> lstArea;
     public List<PerfilBean> lstPerfil;
+    public List<ModeloCompetencia> lstColors;
     int minutosTotal = 0;
     String nombreEvaluacion;
     String strEmpresaSeleccionada;
     String strAreaSeleccionada;
     String strPerfilSeleccionado;
     String empresa;
+    String competencia;
 
     @PostConstruct
     public void init() {
@@ -73,10 +78,13 @@ public class CrearBateriaView extends BaseView implements Serializable {
         lstEmpresas = new ArrayList<>();
         lstArea = new ArrayList<>();
         lstPerfil = new ArrayList<>();
+        lstColors = new ArrayList<>();
         minutosTotal = 0;
         nombreEvaluacion = null;
+        competencia = null;
         poblarEmpresas();
         obtenerModelosDeEvaluaciones();
+        cargarNombreDeCompetencias();
         if (Utilitarios.noEsNuloOVacio(Utilitarios.obtenerSession(Constantes.SESSION_BATERIA))) {
             strEmpresaSeleccionada = (String) Utilitarios.obtenerSession(Constantes.SESSION_BATERIA);
             poblarArea();
@@ -95,13 +103,17 @@ public class CrearBateriaView extends BaseView implements Serializable {
         lstEmpresas = new ArrayList<>();
         lstArea = new ArrayList<>();
         lstPerfil = new ArrayList<>();
+        lstColors = new ArrayList<>();
         minutosTotal = 0;
         nombreEvaluacion = null;
         strEmpresaSeleccionada = null;
         strAreaSeleccionada = null;
         strPerfilSeleccionado = null;
+        competencia = null;
+        lstCompetencia = new ArrayList<>();
         poblarEmpresas();
         obtenerModelosDeEvaluaciones();
+        cargarNombreDeCompetencias();
     }
 
     public List obtenerModelosDeEvaluaciones() {
@@ -119,6 +131,7 @@ public class CrearBateriaView extends BaseView implements Serializable {
                 objBateriaBean.setMinutosEstimados(minutosEstimados);
                 objBateriaBean.setLimiteTiempo(limiteTiempo);
                 objBateriaBean.setLstCompetencias(obtenerCompetenciasPorEvaluacion(objBateriaBean));
+                objBateriaBean.setLstColores(lstColors);
                 lstBaterias.add(objBateriaBean);
             }
         } catch (Exception e) {
@@ -129,20 +142,52 @@ public class CrearBateriaView extends BaseView implements Serializable {
 
     public List obtenerCompetenciasPorEvaluacion(BateriaBean objBateriaBean) {
         List contenedorCompetencias = new ArrayList<>();
+        lstColors = new ArrayList<>();
         try {
             ModeloCompetenciaDAO objMCDao = new ModeloCompetenciaDAO();
             List listaCompetencias = objMCDao.obtenerCompetenciasXEvaluacion(objBateriaBean.getId());
             if (Utilitarios.noEsNuloOVacio(listaCompetencias)) {
                 Iterator it = listaCompetencias.iterator();
                 while (it.hasNext()) {
+                    ModeloCompetencia objMC = new ModeloCompetencia();
                     Object obj[] = (Object[]) it.next();
                     contenedorCompetencias.add(obj[0].toString());
+                    objMC.setColor(obj[2].toString());
+                    lstColors.add(objMC);
                 }
             }
         } catch (Exception e) {
             mostrarAlerta(FATAL, "error.inesperado", log, e);
         }
         return contenedorCompetencias;
+    }
+
+    public List buscarXCompetencia() {
+        try {
+            if (Utilitarios.noEsNuloOVacio(competencia)) {
+                ModeloEvaluacionDAO objModelosDao = new ModeloEvaluacionDAO();
+                List listaEvaluacionesBD = objModelosDao.obtenerModelosXCompetencia(competencia);
+                Iterator it = listaEvaluacionesBD.iterator();
+
+                while (it.hasNext()) {
+                    Object obj[] = (Object[]) it.next();
+                    BateriaBean objBateriaBean = new BateriaBean();
+                    objBateriaBean.setId(obj[0].toString());
+                    objBateriaBean.setNombre(obj[1].toString());
+                    objBateriaBean.setMinutosEstimados(obj[2].toString());
+                    objBateriaBean.setValidez(obj[3].toString());
+                    objBateriaBean.setConfiabilidad(obj[4].toString());
+                    objBateriaBean.setLimiteTiempo(obj[7].toString());
+                    objBateriaBean.setLstCompetencias(obtenerCompetenciasPorEvaluacion(objBateriaBean));
+                    objBateriaBean.setLstColores(lstColors);
+                    lstBaterias.add(objBateriaBean);
+                }
+            }
+
+        } catch (Exception e) {
+            mostrarAlerta(FATAL, "error.inesperado", log, e);
+        }
+        return lstBaterias;
     }
 
     public void poblarEmpresas() {
@@ -290,6 +335,23 @@ public class CrearBateriaView extends BaseView implements Serializable {
             }
         }
     }
+    
+    public void cargarNombreDeCompetencias(){
+        try {
+            ModeloEvaluacionDAO objM = new ModeloEvaluacionDAO();
+            List lstNombres = objM.traerNombresDeCompetencias();
+            Iterator it = lstNombres.iterator();
+            while (it.hasNext()) {
+            Object obj[] = (Object[]) it.next();
+            ModeloCompetenciaBean objModeloCompetencia = new ModeloCompetenciaBean();
+            objModeloCompetencia.setNombre(obj[0].toString());
+            lstCompetencia.add(objModeloCompetencia);
+            }
+        } catch (Exception e) {
+            mostrarAlerta(FATAL, "error.inesperado", log, e);
+        }
+        
+    }
 
     public void quitarBaterias(BateriaBean objBateria) {
         try {
@@ -436,4 +498,44 @@ public class CrearBateriaView extends BaseView implements Serializable {
         this.minutosTotal = minutosTotal;
     }
 
+    public List<ModeloCompetencia> getLstColors() {
+        return lstColors;
+    }
+
+    public void setLstColors(List<ModeloCompetencia> lstColors) {
+        this.lstColors = lstColors;
+    }
+
+    public String getCompetencia() {
+        return competencia;
+    }
+
+    public void setCompetencia(String competencia) {
+        this.competencia = competencia;
+    }
+
+    public ModeloCompetenciaBean getModeloCompetencia() {
+        return modeloCompetencia;
+    }
+
+    public void setModeloCompetencia(ModeloCompetenciaBean modeloCompetencia) {
+        this.modeloCompetencia = modeloCompetencia;
+    }
+
+    public List<ModeloCompetenciaBean> getLstCompetencia() {
+        return lstCompetencia;
+    }
+
+    public void setLstCompetencia(List<ModeloCompetenciaBean> lstCompetencia) {
+        this.lstCompetencia = lstCompetencia;
+    }
+
+    public String getCompetenciaSeleccionada() {
+        return competenciaSeleccionada;
+    }
+
+    public void setCompetenciaSeleccionada(String competenciaSeleccionada) {
+        this.competenciaSeleccionada = competenciaSeleccionada;
+    }
+    
 }
