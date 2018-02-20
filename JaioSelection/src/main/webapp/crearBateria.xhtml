@@ -65,7 +65,7 @@
                                     <div class="ui-g-12 ui-lg-10">
                                         <p:selectOneMenu id="listaEmpresa" value="#{crearBateriaView.strEmpresaSeleccionada}" effect="clip" filterMatchMode="startsWith"
                                                          filter="true" required="true" requiredMessage="#{msg['bateria.noSeleccionoEmpresa']}" style="width: 50%;">
-                                            <f:selectItem itemLabel="#{msg['proceso.selecciona.empresa']}" itemValue="-1"/>
+                                            <f:selectItem itemLabel="#{msg['proceso.selecciona.empresa']}" itemValue="-1" />
                                             <f:selectItems id="empresa" value="#{crearBateriaView.lstEmpresas}" var="emp" itemLabel="#{emp.desc}" itemValue="#{emp.id}"/>
                                             <p:ajax event="itemSelect" process="@this" update=":formBateria:" listener="#{crearBateriaView.seleccionaEmpresa()}"/>
                                         </p:selectOneMenu>
@@ -111,9 +111,7 @@
                                                 <h:outputText value="Validez: #{bat.validez}%" class="textPanel"/><br/>
                                                 <h:outputText value="Confiabilidad: #{bat.confiabilidad}%" class="textPanel"/><br/>
                                                 <h:outputText value="Minutos: #{bat.minutosEstimados}" class="textPanel"/><br/>
-                                                <p:dataGrid var="c" id="colors" columns="12" value="#{bat.lstColores}" emptyMessage="" 
-
-                                                            styleClass="NoMasBorde">
+                                                <p:dataGrid var="c" id="colors" columns="12" value="#{bat.lstColores}" emptyMessage="" styleClass="NoMasBorde">
                                                     <div  class="circulo" style="background: #{c.color};border-style: hidden;border: 0px">
                                                     </div>
                                                 </p:dataGrid>
@@ -151,7 +149,7 @@
                                 <p:fieldset id="evaluaciones" legend="#{msg['proceso.dialog.bateria.biblioteca']}" style="border-style: none;">
                                     <div class="ui-g-12">
                                         <p:selectOneMenu id="searchCompetencias" value="#{crearBateriaView.strCompSeleccionada}" effect="fade" filterMatchMode="startsWith"
-                                                         filter="true" panelStyle="width:180px" style="width:200px" >
+                                                         filter="true" panelStyle="width:200px" style="width:220px" >
                                             <f:selectItem itemLabel="#{msg['bateria.ingreseNombreEvaluacion']}" itemValue="-1" />
                                             <f:selectItems id="nombreC" value="#{crearBateriaView.lstCompetencia}" var="m" itemLabel="#{m.nombre}" itemValue="#{m.nombre}"/>
                                             <p:ajax event="itemSelect" process="@this" update=":formBateria:"  listener="#{crearBateriaView.buscarEvaluacionXCompetencia()}"/>
