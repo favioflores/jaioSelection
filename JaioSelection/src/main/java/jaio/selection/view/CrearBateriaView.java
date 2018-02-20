@@ -346,8 +346,6 @@ public class CrearBateriaView extends BaseView implements Serializable {
 
     public List buscarEvaluacionXCompetencia() {
         try {
-            String separator = ",";
-//            String result = "";
             ModeloEvaluacionDAO objModelosDao = new ModeloEvaluacionDAO();
             StringBuilder sb = new StringBuilder();
             if (Utilitarios.noEsNuloOVacio(droppedBaterias) && droppedBaterias.size() > Constantes.Int_zero) {
@@ -355,19 +353,10 @@ public class CrearBateriaView extends BaseView implements Serializable {
                 for (BateriaBean objBateriaBean : droppedBaterias) {
                     lstId.add(objBateriaBean.getId());
                 }
-
                 for (int i = 0; i < lstId.size(); i++) {
                     sb.append("'").append(lstId.get(i)).append("'").append(",");
                 }
                 sb.deleteCharAt(sb.length() - 1).toString();
-//                sb.deleteCharAt( sb.length() -1 ).toString();
-
-//                for (String id : lstId) {
-//                    sb.append(id);
-//                    sb.append(separator);
-//                }
-//                result = sb.toString();
-//                result = result.substring(0, result.length() - separator.length());
             }
             if (Utilitarios.noEsNuloOVacio(strCompSeleccionada) && !strCompSeleccionada.equals("-1")) {
                 List listaEvaluacionesBD = objModelosDao.obtenerModelosXCompetencia(strCompSeleccionada, sb);
