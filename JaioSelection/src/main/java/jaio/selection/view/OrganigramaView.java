@@ -31,6 +31,7 @@ import jaio.selection.orm.Perfil;
 import jaio.selection.util.Constantes;
 import jaio.selection.util.CustomizeHashMapOrderAreaOrganigramaByIdParent;
 import jaio.selection.util.Utilitarios;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -38,8 +39,8 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
 
@@ -58,12 +59,23 @@ public class OrganigramaView extends BaseView implements Serializable {
     private String area;
     private String perfil;
     private LinkedHashMap<String, AreaOrganigramaBean> hOrganigrama = new LinkedHashMap<>();
+    private LinkedHashMap<String, AreaOrganigramaBean> hOrganigramaPreview = new LinkedHashMap<>();
     private AreaDAO objAreaDAO = new AreaDAO();
     private PerfilDAO objPerfilDAO = new PerfilDAO();
     private String idEmpresa;
     private StreamedContent fileImport;
+    private StreamedContent fileExport;
     private UploadedFile inputFile;
     private boolean esPreliminar;
+
+    public StreamedContent getFileExport() {
+        downloadFile();
+        return fileExport;
+    }
+
+    public void setFileExport(StreamedContent fileExport) {
+        this.fileExport = fileExport;
+    }
 
     public boolean isEsPreliminar() {
         return esPreliminar;
@@ -72,7 +84,7 @@ public class OrganigramaView extends BaseView implements Serializable {
     public void setEsPreliminar(boolean esPreliminar) {
         this.esPreliminar = esPreliminar;
     }
-    
+
     public OrganigramNode getRootNodePreview() {
         return rootNodePreview;
     }
@@ -146,8 +158,17 @@ public class OrganigramaView extends BaseView implements Serializable {
 
         try {
 
+            poblarInicio();
+
+        } catch (Exception e) {
+            mostrarAlerta(FATAL, "error.inesperado", log, e);
+        }
+    }
+
+    private void poblarInicio() {
+        try {
+
             limpiar();
-            mostrarAlerta(INFO, "organigrama.modificando", null, null);
 
             if (Utilitarios.esNuloOVacio(Utilitarios.obtenerSession(Constantes.SESSION_EMPRESA))) {
                 FacesContext.getCurrentInstance().getExternalContext().redirect("crearEmpresa.jsf");
@@ -175,6 +196,8 @@ public class OrganigramaView extends BaseView implements Serializable {
         fileImport = null;
         lstErrores = new ArrayList<>();
         esPreliminar = false;
+        hOrganigramaPreview.clear();
+        hOrganigrama.clear();
     }
 
     protected void armarMapaBD(String idEmpresa) {
@@ -227,11 +250,13 @@ public class OrganigramaView extends BaseView implements Serializable {
 
     }
 
-    protected void armarMapaPreview(HashMap<String, AreaOrganigramaBean> hOrganigrama) {
+    protected void armarMapaPreview(LinkedHashMap<String, AreaOrganigramaBean> hOrganigrama) {
 
         try {
 
             EmpresaDAO objEmpresaDAO = new EmpresaDAO();
+
+            hOrganigramaPreview = hOrganigrama;
 
             Empresa objEmpresa = objEmpresaDAO.obtenerEmpresa(idEmpresa);
 
@@ -242,31 +267,25 @@ public class OrganigramaView extends BaseView implements Serializable {
             rootNodePreview.setSelectable(false);
             rootNodePreview.setType("root");
 
-            Iterator it = hOrganigrama.entrySet().iterator();
-
-            while (it.hasNext()) {
-
-                Map.Entry pair = (Map.Entry) it.next();
-
+            for (Map.Entry pair : hOrganigrama.entrySet()) {
                 AreaOrganigramaBean objAreaOrganigramaBean = (AreaOrganigramaBean) pair.getValue();
 
                 // ESTE CÓDIGO FUNCIONA PORQUE EL QUERY ORDENA LOS OBJETOS
                 if (Utilitarios.esNuloOVacio(objAreaOrganigramaBean.getId_parent())) {
-                    objAreaOrganigramaBean.setNode(addNode(rootNodePreview, "area", objAreaOrganigramaBean.getDescripcion(),
+                    objAreaOrganigramaBean.setNode(addNodePreview(rootNodePreview, "area", objAreaOrganigramaBean.getDescripcion(),
                             "area" + objAreaOrganigramaBean.getId()));
                 } else {
-                    objAreaOrganigramaBean.setNode(addNode(
+                    objAreaOrganigramaBean.setNode(addNodePreview(
                             hOrganigrama.get(objAreaOrganigramaBean.getId_parent()).getNode(), "area",
                             objAreaOrganigramaBean.getDescripcion(), "area" + objAreaOrganigramaBean.getId()));
                 }
 
                 for (PerfilBean objPerfilBean : objAreaOrganigramaBean.getLstPerfiles()) {
-                    objPerfilBean.setNode(addNode(objAreaOrganigramaBean.getNode(), "perfil",
+                    objPerfilBean.setNode(addNodePreview(objAreaOrganigramaBean.getNode(), "perfil",
                             objPerfilBean.getDescripcion(), "perfil" + objPerfilBean.getId()));
                 }
-
             }
-            
+
             esPreliminar = true;
 
         } catch (Exception e) {
@@ -344,6 +363,23 @@ public class OrganigramaView extends BaseView implements Serializable {
 
         if (tipo.equals("area")) {
             node.setCollapsible(true);
+        } else if (tipo.equals("perfil")) {
+            node.setCollapsible(false);
+        }
+
+        return node;
+    }
+
+    protected OrganigramNode addNodePreview(OrganigramNode parent, String tipo, String name, String key) {
+
+        OrganigramNode node = new DefaultOrganigramNode(tipo, name, parent);
+        node.setDroppable(false);
+        node.setDraggable(false);
+        node.setSelectable(false);
+        node.setRowKey(key);
+
+        if (tipo.equals("area")) {
+            node.setCollapsible(false);
         } else if (tipo.equals("perfil")) {
             node.setCollapsible(false);
         }
@@ -721,8 +757,31 @@ public class OrganigramaView extends BaseView implements Serializable {
         }
     }
 
-    public void fileExport() {
+    public void downloadFile() {
 
+        try {
+
+            InputStream stream = FacesContext.getCurrentInstance().getExternalContext().getResourceAsStream("/resources/files/FormatoDeOrganigramaMasivo.xlsx");
+            /*
+            XSSFWorkbook wb = new XSSFWorkbook(stream);
+            XSSFSheet sheet = wb.getSheetAt(0);
+            Row row = sheet.getRow(0);
+            Cell cell = row.getCell(3);
+            String cellContents = cell.getStringCellValue();
+            
+            Empresa objEmpresa = (Empresa) Utilitarios.obtenerSession(Constantes.SESSION_EMPRESA);
+                    
+            cell.setCellValue(objEmpresa.getNombre());
+            
+            FileOutputStream fileOut = new FileOutputStream("wb.xls");
+            wb.write(fileOut);
+            fileOut.close();
+            */
+
+            fileExport = new DefaultStreamedContent(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "FormatoDeOrganigramaMasivo.xlsx");
+        } catch (Exception e) {
+            mostrarAlerta(FATAL, "error.inesperado", log, e);
+        }
     }
 
     public void cargaOrganigramaMasivo(FileUploadEvent event) {
@@ -775,11 +834,6 @@ public class OrganigramaView extends BaseView implements Serializable {
                     inputFile = null;
                     fileImport = null;
                     return;
-                } else {
-                    RequestContext context = RequestContext.getCurrentInstance();
-                    context.execute("PF('dialogPreviewOrganigrama').show();");
-                    
-                    mostrarAlerta(INFO, "organigrama.masivo.archivo.procesoOk", null, null);
                 }
 
                 inputFile = null;
@@ -1044,6 +1098,7 @@ public class OrganigramaView extends BaseView implements Serializable {
             Collections.sort(entries, new CustomizeHashMapOrderAreaOrganigramaByIdParent());
 
             LinkedHashMap<String, AreaOrganigramaBean> sortedMap = new LinkedHashMap<>();
+
             for (Map.Entry<String, AreaOrganigramaBean> entry : entries) {
                 sortedMap.put(entry.getKey(), entry.getValue());
             }
@@ -1125,6 +1180,28 @@ public class OrganigramaView extends BaseView implements Serializable {
         }
 
         return lstErrores;
+
+    }
+
+    public void grabarPreview() {
+
+        try {
+
+            EmpresaDAO objEmpresaDAO = new EmpresaDAO();
+
+            Empresa objEmpresa = objEmpresaDAO.obtenerEmpresa(idEmpresa);
+
+            boolean flag = objAreaDAO.grabarPreview(hOrganigramaPreview, objEmpresa);
+
+            if (flag) {
+                mostrarAlerta(INFO, "organigrama.masivo.archivo.previewGraboOk", null, null);
+                poblarInicio();
+            } else {
+                mostrarAlerta(FATAL, "error.inesperado", null, null);
+            }
+        } catch (Exception e) {
+            mostrarAlerta(FATAL, "error.inesperado", log, e);
+        }
 
     }
 

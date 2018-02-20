@@ -13,8 +13,12 @@ import org.hibernate.Query;
 import jaio.selection.bean.AreaOrganigramaBean;
 import jaio.selection.bean.PerfilBean;
 import jaio.selection.orm.Area;
+import jaio.selection.orm.Empresa;
+import jaio.selection.orm.Perfil;
 import jaio.selection.util.Constantes;
 import jaio.selection.util.Utilitarios;
+import java.util.Date;
+import java.util.Map;
 
 public class AreaDAO extends HibernateUtil implements Serializable {
 
@@ -241,6 +245,76 @@ public class AreaDAO extends HibernateUtil implements Serializable {
         }
 
         return null;
+    }
+
+    public boolean grabarPreview(LinkedHashMap<String, AreaOrganigramaBean> hOrganigramaPreview, Empresa objEmpresa) {
+
+        iniciaSession();
+
+        try {
+
+            Query update1 = session.createSQLQuery(
+                    " update perfil set estado = :estadoNuevo where empresa_id = :empresa and estado = :estadoActual ");
+
+            Query update2 = session.createSQLQuery(
+                    " update area set estado = :estadoNuevo where empresa_id = :empresa and estado = :estadoActual ");
+
+            update1.setInteger("estadoNuevo", Constantes.EL_PERFIL_ESTADO_ELIMINADO);
+            update1.setInteger("empresa", objEmpresa.getId());
+            update1.setInteger("estadoActual", Constantes.EL_PERFIL_ESTADO_REGISTRADO);
+
+            update2.setInteger("estadoNuevo", Constantes.EL_AREA_ESTADO_ELIMINADO);
+            update2.setInteger("empresa", objEmpresa.getId());
+            update2.setInteger("estadoActual", Constantes.EL_AREA_ESTADO_REGISTRADO);
+
+            update1.executeUpdate();
+            update2.executeUpdate();
+
+            for (Map.Entry pair : hOrganigramaPreview.entrySet()) {
+
+                AreaOrganigramaBean objAreaOrganigramaBean = (AreaOrganigramaBean) pair.getValue();
+
+                Area objArea = new Area();
+                objArea.setEmpresa(objEmpresa);
+                objArea.setDescripcion(objAreaOrganigramaBean.getDescripcion());
+                objArea.setEstado(Constantes.EL_AREA_ESTADO_REGISTRADO);
+                objArea.setFechaRegistro(new Date());
+
+                for (PerfilBean objPerfilBean : objAreaOrganigramaBean.getLstPerfiles()) {
+
+                    Perfil objPerfil = new Perfil();
+
+                    objPerfil.setArea(objArea);
+                    objPerfil.setNombre(objPerfilBean.getDescripcion());
+                    objPerfil.setFechaRegistro(new Date());
+                    objPerfil.setEstado(Constantes.EL_PERFIL_ESTADO_REGISTRADO);
+                    objPerfil.setEmpresa(objEmpresa);
+
+                    objArea.getPerfils().add(objPerfil);
+
+                }
+
+                if (Utilitarios.noEsNuloOVacio(objAreaOrganigramaBean.getId_parent())) {
+                    objArea.setArea(hOrganigramaPreview.get(objAreaOrganigramaBean.getId_parent()).getObjArea().getArea());
+                }
+
+                session.save(objArea);
+
+                objAreaOrganigramaBean.setObjArea(objArea);
+
+            }
+
+            guardarCambios();
+
+            return true;
+
+        } catch (Exception e) {
+            rollback(e);
+        } finally {
+            cerrarSession();
+        }
+
+        return false;
     }
 
 }

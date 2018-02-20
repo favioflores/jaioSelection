@@ -1,5 +1,6 @@
 package jaio.selection.bean;
 
+import jaio.selection.orm.Area;
 import java.io.Serializable;
 import java.util.List;
 
@@ -14,7 +15,16 @@ public class AreaOrganigramaBean implements Serializable {
     private String id_parent;
     private OrganigramNode node;
     private List<PerfilBean> lstPerfiles;
+    private Area objArea;
 
+    public Area getObjArea() {
+        return objArea;
+    }
+
+    public void setObjArea(Area objArea) {
+        this.objArea = objArea;
+    }
+    
     public String getId() {
         return id;
     }
