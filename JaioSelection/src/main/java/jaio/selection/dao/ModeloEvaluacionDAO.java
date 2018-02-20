@@ -141,15 +141,28 @@ public class ModeloEvaluacionDAO extends HibernateUtil implements Serializable {
         return null;
     }
 
-    public List obtenerModelosXCompetencia(String strcompetencia) {
+    public List obtenerModelosXCompetencia(String idCompetencia,StringBuilder sb) {
         iniciaSession();
         try {
-            Query query = session.createQuery("select me.* from modelo_evaluacion me "
+            Query query = session.createSQLQuery("select me.* from modelo_evaluacion me "
                     + " join modelo_evaluacion_x_competencia mec on mec.modelo_evaluacion_id = me.id "
                     + " join modelo_competencia mc on mc.id = mec.modelo_competencia_id "
-                    + " where mc.nombre like '?%'");
-            query.setString(0, strcompetencia);
-
+                    + " where mc.id = " + idCompetencia
+                    + " and me.id not in (" + sb + ")");
+            return query.list();
+        } catch (Exception e) {
+            manejaException(e);
+        } finally {
+            cerrarSession();
+        }
+        return null;
+    }
+    
+    
+    public List obtenerModelosCompetencia(StringBuilder sb){
+        iniciaSession();
+        try {
+            Query query = session.createSQLQuery("select * from modelo_evaluacion where id not in (" + sb + ");");
             return query.list();
         } catch (Exception e) {
             manejaException(e);
@@ -162,9 +175,8 @@ public class ModeloEvaluacionDAO extends HibernateUtil implements Serializable {
     public List traerNombresDeCompetencias() {
         iniciaSession();
         try {
-            Query query = session.createSQLQuery("select nombre from modelo_competencia "
-                    + " union all "
-                    + " select palabra as nombre from modelo_competencia_sinonimo");
+            Query query = session.createSQLQuery("select id,nombre from modelo_competencia "
+                    + " union all select modelo_competencia_id as id,palabra as nombre from modelo_competencia_sinonimo");
             return query.list();
         } catch (Exception e) {
             manejaException(e);
