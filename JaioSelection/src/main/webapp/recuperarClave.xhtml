@@ -14,7 +14,6 @@
             <meta name="apple-mobile-web-app-capable" content="yes" />
             <link rel="shortcut icon" type="image/png"
                   href="#{request.contextPath}/resources/omega-layout/images/logo-jaio.png" />
-            <script src='https://www.google.com/recaptcha/api.js'></script>
         </f:facet>
         <title>#{msg['app']}</title>
     </h:head>
@@ -25,34 +24,25 @@
             <h:form id="formLogin">
                 <div id="login-container">
                     <p:graphicImage name="images/logo-jaio.png" library="omega-layout" width="50" style="margin-bottom: 20px;" /> 
-                    <span class="title">#{msg['login.iniciar.sesion']}</span>
+                    <span class="title">#{msg['recupera.clave']}</span>
                     <p:growl life="4000" />
                     <p:focus for="ipUsuario" />
                     <div class="ui-g ui-fluid">
                         <div class="ui-g-12">
-                            <p:inputText id="ipUsuario" value="#{loginView.usuario}" style="margin-bottom: 10px;"
+                            <p:inputText id="ipUsuario" value="#{loginView.usuario}"
                                          placeholder="#{msg['login.usuario']}" required="true"
                                          requiredMessage="#{msg['login.usuario.incorrecto']}"
                                          label="#{msg['login.usuario']}"/>
                             <p:message for="ipUsuario" display="tooltip" />
-                            <p:password id="ipPassword" value="#{loginView.contrasena}"
-                                        placeholder="#{msg['login.password']}" feedback="false"
-                                        required="true" style="margin-bottom: 10px;"
-                                        requiredMessage="#{msg['login.password.incorrecto']}"
-                                        label="#{msg['login.password']}" autocomplete="true" />
-                            <p:message for="ipPassword" display="tooltip" />
-                        
-                            <p:link outcome="recuperarClave">#{msg['login.olvide.password']}</p:link>
-                            <br/><br/>
-                            <div id="captcha1" class="g-recaptcha" data-sitekey="6LeGgf4SAAAAAOxdlPnTNQht-IU5UTHQAVdBwvN8"></div>
-                            
                         </div>
+
                         <div class="ui-g-12">
                             <p:commandButton id="btnLogin"
                                              actionListener="#{loginView.iniciarSesion}"
-                                             styleClass="navy-button" value="#{msg['login.ingresar']}"
-                                             update=":formLogin:" />
-                            <p:hotkey id="hotLogin" bind="ENTER"
+                                             styleClass="navy-button" value="#{msg['recupera.clave.sendmail']}"
+                                             update=":formLogin:" style="margin-bottom: 5px;" />
+                            <p:button outcome="login" styleClass="navy-button" value="#{msg['recupera.clave.volver']}"/>
+                            <p:hotkey id="hotLogin" bind="ENTER" 
                                       actionListener="#{loginView.iniciarSesion}" update=":formLogin:" />
                         </div>
                     </div>

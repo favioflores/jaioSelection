@@ -35,7 +35,11 @@ public class AuthFilter implements Filter, Serializable {
             if (validaUri(req)) {
 
                 String reqURI = req.getRequestURI();
-                if (reqURI.contains("/login.jsf")) {
+                if (reqURI.contains("/recuperarClave.jsf") || reqURI.contains("/recuperarClave.xhtml")
+                        || reqURI.contains("/loginEvaluacion.jsf") || reqURI.contains("/loginEvaluacion.xhtml")
+                        || reqURI.contains("/login.jsf") || reqURI.contains("/login.xhtml")
+                        || reqURI.contains("/result.xhtml") || reqURI.contains("/result.jsf")
+                        ) { 
                     chain.doFilter(request, response);
                     log.debug("Sin validacion en login");
                 } else if (ses != null

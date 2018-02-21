@@ -13,6 +13,7 @@ insert into definicion values (6,'Estado evaluación');
 insert into definicion values (7,'Tipo de pregunta');
 insert into definicion values (8,'Tipo de respuesta');
 insert into definicion values (9,'Estado del proceso');
+insert into definicion values (10,'Tipos de ajustes en evaluación');
 
 select * from elemento;
 insert into elemento values (1,'Vigente',0,true,1);
@@ -41,6 +42,10 @@ insert into elemento values (19,'Numérico',1,true,8);
 
 insert into elemento values (20,'Registrado',1,true,9);
 insert into elemento values (21,'Eliminado',1,true,9);
+
+insert into elemento values (22,'Por sexo',1,true,10);
+insert into elemento values (23,'Por nivel educativo',1,true,10);
+insert into elemento values (24,'Por edad',1,true,10);
 
 commit;
 
