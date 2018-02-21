@@ -131,7 +131,7 @@ public class ModeloEvaluacionDAO extends HibernateUtil implements Serializable {
     public List<ModeloEvaluacion> obtenerModelos() {
         iniciaSession();
         try {
-            Query query = session.createQuery("From ModeloEvaluacion");
+            Query query = session.createQuery("From ModeloEvaluacion order by 1 asc");
             return query.list();
         } catch (Exception e) {
             manejaException(e);
@@ -141,14 +141,62 @@ public class ModeloEvaluacionDAO extends HibernateUtil implements Serializable {
         return null;
     }
 
-    public void grabarBateriaPersonalizada(BateriaPersonalizada objBateriaPersonalizada, List<BateriaBean> droppedBaterias,String strPerfilSeleccionado ) {
+    public List obtenerModelosXCompetencia(String idCompetencia, StringBuilder sb) {
+        iniciaSession();
+        try {
+            Query query = session.createSQLQuery("select me.* from modelo_evaluacion me "
+                    + " join modelo_evaluacion_x_competencia mec on mec.modelo_evaluacion_id = me.id "
+                    + " join modelo_competencia mc on mec.modelo_competencia_id = mc.id "
+                    + " where mc.id in((select id from (select id,nombre from modelo_competencia "
+                    + "	union all "
+                    + "	select modelo_competencia_id as id,palabra as nombre from modelo_competencia_sinonimo "
+                    + "	) as T1 where nombre like '"+ idCompetencia + "%' )) "
+                    + "	"
+                    + " and me.id not in (" + sb + ")");
+            return query.list();
+        } catch (Exception e) {
+            manejaException(e);
+        } finally {
+            cerrarSession();
+        }
+        return null;
+    }
+
+    public List obtenerModelosCompetencia(StringBuilder sb) {
+        iniciaSession();
+        try {
+            Query query = session.createSQLQuery("select * from modelo_evaluacion where id not in (" + sb + ");");
+            return query.list();
+        } catch (Exception e) {
+            manejaException(e);
+        } finally {
+            cerrarSession();
+        }
+        return null;
+    }
+
+    public List traerNombresDeCompetencias() {
+        iniciaSession();
+        try {
+            Query query = session.createSQLQuery("select id,nombre from modelo_competencia "
+                    + " union all select modelo_competencia_id as id,palabra as nombre from modelo_competencia_sinonimo");
+            return query.list();
+        } catch (Exception e) {
+            manejaException(e);
+        } finally {
+            cerrarSession();
+        }
+        return null;
+    }
+
+    public void grabarBateriaPersonalizada(BateriaPersonalizada objBateriaPersonalizada, List<BateriaBean> droppedBaterias, String strPerfilSeleccionado) {
         try {
             iniciaSession();
             session.save(objBateriaPersonalizada);
             for (BateriaBean droppedBateria : droppedBaterias) {
                 ModeloEvaluacion objModeloEvaluacion = new ModeloEvaluacion();
                 objModeloEvaluacion.setId(Integer.parseInt(droppedBateria.getId()));
-                
+
                 BateriaEvaluacionId objBateriaEvaluacionId = new BateriaEvaluacionId();
                 objBateriaEvaluacionId.setBateriaPersonalizadaId(objBateriaPersonalizada.getId());
                 objBateriaEvaluacionId.setModeloEvaluacionId(objModeloEvaluacion.getId());
@@ -162,34 +210,34 @@ public class ModeloEvaluacionDAO extends HibernateUtil implements Serializable {
                 objBateriaPersonalizada.getBateriaEvaluacion().add(objBateriaEvaluacion);
                 session.save(objBateriaEvaluacion);
             }
-            
+
             ProcesoSeleccion objProcesoSeleccion = new ProcesoSeleccion();
             EvaluacionPerfil objEvaluacionPerfil = new EvaluacionPerfil();
-            
+
             Perfil objPerfil = new Perfil();
             objPerfil.setId(Integer.parseInt(strPerfilSeleccionado));
-            
+
             objProcesoSeleccion.setFechaRegistro(new Date());
             objProcesoSeleccion.setDescripcion("descripcion de prueba");
             objProcesoSeleccion.setEstado(Constantes.INT_ESTADO_PROCESO_REGISTRADO);
             objProcesoSeleccion.setPerfil(objPerfil);
-            
+
             objProcesoSeleccion.getEvaluacionPerfil().add(objEvaluacionPerfil);
             session.save(objProcesoSeleccion);
-            
+
             EvaluacionPerfilId objEvaluacionPerfilId = new EvaluacionPerfilId();
             objEvaluacionPerfilId.setProcesoSeleccionId(objProcesoSeleccion.getId());
             objEvaluacionPerfilId.setBateriaPersonalizadaId(objBateriaPersonalizada.getId());
             objEvaluacionPerfilId.setEstado(Constantes.INT_ESTADO_EVALUACION_ACTIVO);
-            
+
             objEvaluacionPerfil.setEstado(Constantes.INT_ESTADO_EVALUACION_ACTIVO);
             objEvaluacionPerfil.setBateriaPersonalizada(objBateriaPersonalizada);
             objEvaluacionPerfil.setProcesoSeleccion(objProcesoSeleccion);
             objEvaluacionPerfil.setId(objEvaluacionPerfilId);
-            
+
             objBateriaPersonalizada.getEvaluacionPerfil().add(objEvaluacionPerfil);
             session.save(objEvaluacionPerfil);
-            
+
             guardarCambios();
             log.debug("Grago correctamente");
         } catch (Exception e) {

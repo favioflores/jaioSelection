@@ -1,9 +1,7 @@
 package jaio.selection.bean;
 
-import jaio.selection.orm.ModeloCompetencia;
 import java.io.Serializable;
 import jaio.selection.orm.ModeloLibro;
-import java.util.ArrayList;
 import java.util.List;
 
 public class BateriaBean implements Serializable {
@@ -19,17 +17,19 @@ public class BateriaBean implements Serializable {
     private String limiteTiempo;
     private String color;
     private List lstCompetencias;
+    private List lstColores;
     
     
     public BateriaBean(){
     }
     
-    public BateriaBean(String nombre, String validez, String confiabilidad, String minutosEstimados, String limiteTiempo, List lstCompetencias){
+    public BateriaBean(String nombre, String validez, String confiabilidad, String minutosEstimados, String limiteTiempo, List lstCompetencias, List lstColores){
         this.nombre = nombre;
         this.validez = validez;
         this.confiabilidad = confiabilidad;
         this.minutosEstimados = minutosEstimados;
         this.lstCompetencias = lstCompetencias;
+        this.lstColores = lstColores;
     }
 
     public List getLstCompetencias() {
@@ -105,4 +105,12 @@ public class BateriaBean implements Serializable {
         this.color = color;
     }
 
+    public List getLstColores() {
+        return lstColores;
+    }
+
+    public void setLstColores(List lstColores) {
+        this.lstColores = lstColores;
+    }
+    
 }

@@ -277,6 +277,7 @@ public class Constantes {
     
     
     //NUMEROS TIPO INT
+    public static int Int_zero = 0;
     public static int Int_uno = 1;
     public static int Int_dos = 2;
     public static int Int_tres = 3;
