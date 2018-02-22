@@ -40,30 +40,7 @@
         <mapping resource="jaio/selection/orm/Perfil.hbm.xml"/>
         <mapping resource="jaio/selection/orm/ProcesoSeleccion.hbm.xml"/>
         <mapping resource="jaio/selection/orm/Usuario.hbm.xml"/>
-        <!--
-        <mapping class="jaio.selection.orm.BateriaPersonalizada" />
-        <mapping class="jaio.selection.orm.Candidato" />
-        <mapping class="jaio.selection.orm.ComunicadoProceso" />
-        <mapping class="jaio.selection.orm.Definicion" />
-        <mapping class="jaio.selection.orm.Elemento" />
-        <mapping class="jaio.selection.orm.Empresa" />
-        <mapping class="jaio.selection.orm.EvaluacionPerfil" />
-        <mapping class="jaio.selection.orm.InfoAcademica" />
-        <mapping class="jaio.selection.orm.InfoConocimiento" />
-        <mapping class="jaio.selection.orm.InfoExperiencia" />
-        <mapping class="jaio.selection.orm.InfoReferencia" />
-        <mapping class="jaio.selection.orm.ModeloCompetencia" />
-        <mapping class="jaio.selection.orm.ModeloCompetenciaSinonimo" />
-        <mapping class="jaio.selection.orm.ModeloComunicado" />
-        <mapping class="jaio.selection.orm.ModeloEvaluacion" />
-        <mapping class="jaio.selection.orm.ModeloEvaluacionXCompetencia" />
-        <mapping class="jaio.selection.orm.ModeloLibro" />
-        <mapping class="jaio.selection.orm.ModeloPregunta" />
-        <mapping class="jaio.selection.orm.ModeloRespuesta" />
-        <mapping class="jaio.selection.orm.Notificaciones" />
-        <mapping class="jaio.selection.orm.Perfil" />
-        <mapping class="jaio.selection.orm.ProcesoSeleccion" />
-        <mapping class="jaio.selection.orm.Usuario"/>
-        -->
+        <mapping resource="jaio/selection/orm/Destinatarios.hbm.xml"/>
+        
     </session-factory>
 </hibernate-configuration>

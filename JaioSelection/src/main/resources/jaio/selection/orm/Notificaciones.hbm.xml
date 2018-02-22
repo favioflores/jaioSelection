@@ -27,5 +27,17 @@
         <property generated="never" lazy="false" name="fechaEnvio" optimistic-lock="true" type="date" unique="false">
             <column length="10" name="fecha_envio"/>
         </property>
+        
+        <set embed-xml="true" fetch="select" inverse="true" lazy="true"
+                     mutable="true" cascade="save-update" name="destinatarioss" optimistic-lock="true"
+                     sort="unsorted" table="destinatarios">
+            <key on-delete="noaction">
+                <column name="notificaciones_id" not-null="true" />
+            </key>
+            <one-to-many class="jaio.selection.orm.Destinatarios" embed-xml="true"
+                         not-found="exception" />
+        </set>
+        
     </class>
+    
 </hibernate-mapping>

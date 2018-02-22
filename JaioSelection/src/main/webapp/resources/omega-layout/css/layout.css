@@ -2013,7 +2013,7 @@ html {
 #login-wrapper #login-container {
     margin-top: 20px;
     box-sizing: border-box;
-    height: 300px;
+    height: 450px;
     background-color: #ffffff;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
     padding: 2em;
@@ -2054,7 +2054,7 @@ html {
     #login-wrapper {
         width: 320px; }
     #login-wrapper #login-container {
-        height: 350px; } }
+        height: 450px; } }
 /* Exception */
 .exception-body {
     height: 100%;
