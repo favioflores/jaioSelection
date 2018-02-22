@@ -150,7 +150,7 @@ public class ModeloEvaluacionDAO extends HibernateUtil implements Serializable {
                     + " where mc.id in((select id from (select id,nombre from modelo_competencia "
                     + "	union all "
                     + "	select modelo_competencia_id as id,palabra as nombre from modelo_competencia_sinonimo "
-                    + "	) as T1 where nombre like '"+ idCompetencia + "%' )) "
+                    + "	) as T1 where nombre like '" + idCompetencia + "%' )) "
                     + "	"
                     + " and me.id not in (" + sb + ")");
             return query.list();
@@ -180,6 +180,22 @@ public class ModeloEvaluacionDAO extends HibernateUtil implements Serializable {
         try {
             Query query = session.createSQLQuery("select id,nombre from modelo_competencia "
                     + " union all select modelo_competencia_id as id,palabra as nombre from modelo_competencia_sinonimo");
+            return query.list();
+        } catch (Exception e) {
+            manejaException(e);
+        } finally {
+            cerrarSession();
+        }
+        return null;
+    }
+
+    public List traerAjustesXEvaluacion(String id) {
+        iniciaSession();
+        try {
+            Query query = session.createSQLQuery("select mac.id,mac.concepto,el.descripcion,mac.dato "
+                    + " from modelo_ajustes_calc mac "
+                    + " join elemento el on mac.tipo = el.id "
+                    + " where mac.modelo_evaluacion_id=" + id);
             return query.list();
         } catch (Exception e) {
             manejaException(e);

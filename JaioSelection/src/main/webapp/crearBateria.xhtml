@@ -13,6 +13,7 @@
         </script>
         <style>
             .circulo {
+                margin-right: 5px;
                 width: 15px;
                 height: 15px;
                 -moz-border-radius: 50%;
@@ -32,6 +33,7 @@
             .NoMasBorde{
                 border: none !important;
             }
+
         </style>
         <h:form id="formBateria" enctype="multipart/form-data" >
             <p:growl life="4000" />
@@ -55,7 +57,8 @@
                                     <div class="ui-g-12 ui-lg-9">
                                         <p:inputText id="nombreEvaluacion" value="#{crearBateriaView.nombreEvaluacion}" maxlength="200"
                                                      placeholder="#{msg['bateria.ingreseNombreEvaluacion']}" style="width: 60%;" 
-                                                     required="true" requiredMessage="#{msg['bateria.noIngresoNombreEvaluacion']}" />
+                                                     required="true" requiredMessage="#{msg['bateria.noIngresoNombreEvaluacion']}" 
+                                                     />
                                     </div>
 
                                     <!--EMPRESA-->
@@ -67,7 +70,7 @@
                                                          filter="true" required="true" requiredMessage="#{msg['bateria.noSeleccionoEmpresa']}" style="width: 50%;">
                                             <f:selectItem itemLabel="#{msg['proceso.selecciona.empresa']}" itemValue="-1" />
                                             <f:selectItems id="empresa" value="#{crearBateriaView.lstEmpresas}" var="emp" itemLabel="#{emp.desc}" itemValue="#{emp.id}"/>
-                                            <p:ajax event="itemSelect" process="@this" update=":formBateria:" listener="#{crearBateriaView.seleccionaEmpresa()}"/>
+                                            <p:ajax event="itemSelect" process="@this" update=":formBateria:"  listener="#{crearBateriaView.seleccionaEmpresa()}"/>
                                         </p:selectOneMenu>
                                     </div>
 
@@ -111,10 +114,25 @@
                                                 <h:outputText value="Validez: #{bat.validez}%" class="textPanel"/><br/>
                                                 <h:outputText value="Confiabilidad: #{bat.confiabilidad}%" class="textPanel"/><br/>
                                                 <h:outputText value="Minutos: #{bat.minutosEstimados}" class="textPanel"/><br/>
-                                                <p:dataGrid var="c" id="colors" columns="12" value="#{bat.lstColores}" emptyMessage="" styleClass="NoMasBorde">
-                                                    <div  class="circulo" style="background: #{c.color};border-style: hidden;border: 0px">
-                                                    </div>
-                                                </p:dataGrid>
+
+
+                                                <p:commandLink value="Ajustes" process="@this" onclick="PF('dlg1').show();" />
+                                                <p:dialog header="Dialog" widgetVar="dlg1" modal="true" >
+                                                    <p:dataTable var="ajuste" value="#{bat.lstAjustes}" style="width: 400px;">
+                                                        <p:column headerText="Ajustes de Evaluación">
+                                                            <h:outputText value="#{ajuste.tipo} #{ajuste.concepto}" /><br/>
+                                                            <h:outputText value="#{ajuste.concepto}"/><br/>
+                                                            <h:outputText value="Dato: #{ajuste.dato}" />
+                                                        </p:column>
+                                                    </p:dataTable>
+                                                </p:dialog>
+                                                
+                                                <div class="ui-g-12">
+                                                    <ui:repeat var="colores" value="#{bat.lstColores}" >
+                                                        <div  class="ui-g-1 ui-lg-1 circulo" style="background: #{colores.color};border-style: hidden;border: 0px;"></div>
+                                                    </ui:repeat>
+                                                </div>    
+
                                                 <p:commandButton value="Retirar" styleClass="red-button" style="margin-bottom:10px;width: 100%;"
                                                                  update=":formBateria:" immediate="true" process="@this" actionListener="#{crearBateriaView.quitarBaterias(bat)}"/>
                                             </p:panel>
