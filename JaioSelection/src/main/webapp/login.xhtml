@@ -41,11 +41,16 @@
                                         requiredMessage="#{msg['login.password.incorrecto']}"
                                         label="#{msg['login.password']}" autocomplete="true" />
                             <p:message for="ipPassword" display="tooltip" />
-                        
+
                             <p:link outcome="recuperarClave">#{msg['login.olvide.password']}</p:link>
                             <br/><br/>
-                            <div id="captcha1" class="g-recaptcha" data-sitekey="6LeGgf4SAAAAAOxdlPnTNQht-IU5UTHQAVdBwvN8"></div>
-                            
+                            <div align="center">
+                                <div id="captcha1" 
+                                     class="g-recaptcha" 
+                                     data-sitekey="6LeGgf4SAAAAAOxdlPnTNQht-IU5UTHQAVdBwvN8"
+                                     style="transform:scale(0.77);-webkit-transform:scale(0.77);transform-origin: left top; -webkit-transform-origin: left top;">
+                                </div>
+                            </div>
                         </div>
                         <div class="ui-g-12">
                             <p:commandButton id="btnLogin"
