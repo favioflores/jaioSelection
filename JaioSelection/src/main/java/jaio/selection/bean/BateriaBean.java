@@ -18,18 +18,20 @@ public class BateriaBean implements Serializable {
     private String color;
     private List lstCompetencias;
     private List lstColores;
+    private List<ModeloAjustesCalcBean> lstAjustes;
     
     
     public BateriaBean(){
     }
     
-    public BateriaBean(String nombre, String validez, String confiabilidad, String minutosEstimados, String limiteTiempo, List lstCompetencias, List lstColores){
+    public BateriaBean(String nombre, String validez, String confiabilidad, String minutosEstimados, String limiteTiempo, List lstCompetencias, List lstColores, List<ModeloAjustesCalcBean> lstAjustes){
         this.nombre = nombre;
         this.validez = validez;
         this.confiabilidad = confiabilidad;
         this.minutosEstimados = minutosEstimados;
         this.lstCompetencias = lstCompetencias;
         this.lstColores = lstColores;
+        this.lstAjustes = lstAjustes;
     }
 
     public List getLstCompetencias() {
@@ -111,6 +113,14 @@ public class BateriaBean implements Serializable {
 
     public void setLstColores(List lstColores) {
         this.lstColores = lstColores;
+    }
+
+    public List<ModeloAjustesCalcBean> getLstAjustes() {
+        return lstAjustes;
+    }
+
+    public void setLstAjustes(List<ModeloAjustesCalcBean> lstAjustes) {
+        this.lstAjustes = lstAjustes;
     }
     
 }
