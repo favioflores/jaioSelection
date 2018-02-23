@@ -1,5 +1,6 @@
 package jaio.selection.view;
 
+import jaio.selection.bean.AjusteEvaluacionBean;
 import jaio.selection.bean.AreaBean;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -27,7 +28,6 @@ import jaio.selection.dao.PerfilDAO;
 import jaio.selection.orm.Area;
 import jaio.selection.orm.BateriaPersonalizada;
 import jaio.selection.orm.Empresa;
-import jaio.selection.orm.ModeloAjustesCalc;
 import jaio.selection.orm.ModeloCompetencia;
 import jaio.selection.orm.ModeloEvaluacion;
 import jaio.selection.orm.Perfil;
@@ -47,24 +47,35 @@ public class CrearBateriaView extends BaseView implements Serializable {
 
     private static Log log = LogFactory.getLog(CrearBateriaView.class);
     private static final long serialVersionUID = -1L;
-    ConvertirDatosBean convertirDatos = new ConvertirDatosBean();
+
+    private ConvertirDatosBean convertirDatos = new ConvertirDatosBean();
     private List<ModeloCompetenciaBean> lstCompetencia = new ArrayList<>();
-    String strCompSeleccionada;
+    private String strCompSeleccionada;
     private LinkedHashMap<String, String> mapCompetenciasSeleccionadas = new LinkedHashMap<String, String>();
     private List<BateriaBean> lstBaterias;
     private List<BateriaBean> droppedBaterias;
     private List<ModeloCompetenciaBean> droppedCompetencias;
-    public List<EmpresaBean> lstEmpresas;
-    public List<AreaBean> lstArea;
-    public List<PerfilBean> lstPerfil;
-    public List<ModeloCompetencia> lstColors;
-    int minutosTotal = 0;
-    String nombreEvaluacion;
-    String strEmpresaSeleccionada;
-    String strAreaSeleccionada;
-    String strPerfilSeleccionado;
-    String empresa;
-    String competencia;
+    private List<EmpresaBean> lstEmpresas;
+    private List<AreaBean> lstArea;
+    private List<PerfilBean> lstPerfil;
+    private List<ModeloCompetencia> lstColors;
+    private int minutosTotal = 0;
+    private String nombreEvaluacion;
+    private String strEmpresaSeleccionada;
+    private String strAreaSeleccionada;
+    private String strPerfilSeleccionado;
+    private String empresa;
+    private String competencia;
+
+    private List<ModeloAjustesCalcBean> lstAjustesCalcBean;
+
+    public List<ModeloAjustesCalcBean> getLstAjustesCalcBean() {
+        return lstAjustesCalcBean;
+    }
+
+    public void setLstAjustesCalcBean(List<ModeloAjustesCalcBean> lstAjustesCalcBean) {
+        this.lstAjustesCalcBean = lstAjustesCalcBean;
+    }
 
     @PostConstruct
     public void init() {
@@ -164,19 +175,58 @@ public class CrearBateriaView extends BaseView implements Serializable {
     }
 
     public List obtenerAjustesPorEvaluacion(BateriaBean objBateriaBean) {
-        List listaDeAjustes = new ArrayList<>();
+        List<ModeloAjustesCalcBean> listaDeAjustes = new ArrayList<>();
         try {
             ModeloEvaluacionDAO objMCDao = new ModeloEvaluacionDAO();
             List lstAjustes = objMCDao.traerAjustesXEvaluacion(objBateriaBean.getId());
             if (Utilitarios.noEsNuloOVacio(lstAjustes)) {
                 Iterator it = lstAjustes.iterator();
+
+                String tipo = "", tipoAnt = "";
+
+                ModeloAjustesCalcBean objAjustesCalcBean = new ModeloAjustesCalcBean();
+
                 while (it.hasNext()) {
                     Object obj[] = (Object[]) it.next();
-                    ModeloAjustesCalcBean objAjustesCalcBean = new ModeloAjustesCalcBean();
-                    objAjustesCalcBean.setId(obj[0].toString());
-                    objAjustesCalcBean.setConcepto(obj[1].toString());
-                    objAjustesCalcBean.setTipo(obj[2].toString());
-                    objAjustesCalcBean.setDato(obj[3].toString());
+
+                    tipo = obj[2].toString();
+
+                    if (tipo.equals(tipoAnt)) {
+
+                        AjusteEvaluacionBean objAjusteEvaluacionBean = new AjusteEvaluacionBean();
+
+                        objAjusteEvaluacionBean.setConcepto(obj[1].toString());
+                        objAjusteEvaluacionBean.setDato(obj[3].toString());
+
+                        objAjustesCalcBean.getLstAjusteEvaluacionBean().add(objAjusteEvaluacionBean);
+
+                        tipoAnt = tipo;
+
+                    } else {
+
+                        if (!tipoAnt.equals("")) {
+                            listaDeAjustes.add(objAjustesCalcBean);
+                        }
+
+                        objAjustesCalcBean = new ModeloAjustesCalcBean();
+
+                        objAjustesCalcBean.setTipo(obj[2].toString());
+                        objAjustesCalcBean.setLstAjusteEvaluacionBean(new ArrayList<>());
+
+                        AjusteEvaluacionBean objAjusteEvaluacionBean = new AjusteEvaluacionBean();
+
+                        objAjusteEvaluacionBean.setConcepto(obj[1].toString());
+                        objAjusteEvaluacionBean.setDato(obj[3].toString());
+
+                        objAjustesCalcBean.getLstAjusteEvaluacionBean().add(objAjusteEvaluacionBean);
+
+                        tipoAnt = tipo;
+
+                    }
+
+                }
+
+                if (!lstAjustes.isEmpty()) {
                     listaDeAjustes.add(objAjustesCalcBean);
                 }
             }
@@ -578,6 +628,12 @@ public class CrearBateriaView extends BaseView implements Serializable {
 
     public void setStrCompSeleccionada(String strCompSeleccionada) {
         this.strCompSeleccionada = strCompSeleccionada;
+    }
+
+    public void muestraAjuste(List<ModeloAjustesCalcBean> lstAjustesCalcBean) {
+
+        this.lstAjustesCalcBean = lstAjustesCalcBean;
+
     }
 
 }
