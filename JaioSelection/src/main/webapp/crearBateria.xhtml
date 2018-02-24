@@ -177,7 +177,7 @@
                                             <p:ajax event="itemSelect" process="@this" update=":formBateria:"  listener="#{crearBateriaView.buscarEvaluacionXCompetencia()}"/>
                                         </p:selectOneMenu>
                                     </div>
-                                    <p:dataGrid id="listaEvaluaciones" var="listE"  value="#{crearBateriaView.lstBaterias}" columns="1" rows="4"  paginator="true"  
+                                    <p:dataGrid id="listaEvaluaciones" var="listE"  value="#{crearBateriaView.listaDeEvaluaciones}" columns="1" rows="4"  paginator="true"  
                                                 paginatorPosition="bottom" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" >
                                         <p:panel id="panelDeEvaluaciones">
                                             <h:outputText value="#{listE.nombre}" class="textTituloPanel"/><br/>

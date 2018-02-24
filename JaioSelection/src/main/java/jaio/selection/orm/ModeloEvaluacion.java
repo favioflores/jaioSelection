@@ -10,11 +10,11 @@ public class ModeloEvaluacion implements java.io.Serializable {
     private Integer id;
     private ModeloLibro modeloLibro;
     private String nombre;
-    private int minutosEstimados;
+    private Integer minutosEstimados;
     private BigDecimal validez;
     private BigDecimal confiabilidad;
     private Date fechaCreacion;
-    private int estado;
+    private Integer estado;
     private byte limiteTiempo;
     private byte[] instructivo;
     private Set modeloEvaluacionXCompetencias = new HashSet(0);
@@ -24,8 +24,8 @@ public class ModeloEvaluacion implements java.io.Serializable {
 
     public ModeloEvaluacion() {
     }
-    
-    public ModeloEvaluacion(ModeloLibro modeloLibro, String nombre, int horasEstimadas, int minutosEstimados, BigDecimal validez, BigDecimal confiabilidad, Date fechaCreacion, int estado, byte limiteTiempo, byte[] instructivo) {
+
+    public ModeloEvaluacion(ModeloLibro modeloLibro, String nombre, int horasEstimadas, Integer minutosEstimados, BigDecimal validez, BigDecimal confiabilidad, Date fechaCreacion, Integer estado, byte limiteTiempo, byte[] instructivo) {
         this.modeloLibro = modeloLibro;
         this.nombre = nombre;
         this.minutosEstimados = minutosEstimados;
@@ -37,7 +37,7 @@ public class ModeloEvaluacion implements java.io.Serializable {
         this.instructivo = instructivo;
     }
 
-    public ModeloEvaluacion(ModeloLibro modeloLibro, String nombre, int horasEstimadas, int minutosEstimados, BigDecimal validez, BigDecimal confiabilidad, Date fechaCreacion, int estado, byte limiteTiempo, byte[] instructivo, Set modeloEvaluacionXCompetencias, Set bateriaEvaluacion, Set modeloPreguntas, Set modeloAjustesCalc) {
+    public ModeloEvaluacion(ModeloLibro modeloLibro, String nombre, int horasEstimadas, Integer minutosEstimados, BigDecimal validez, BigDecimal confiabilidad, Date fechaCreacion, Integer estado, byte limiteTiempo, byte[] instructivo, Set modeloEvaluacionXCompetencias, Set bateriaEvaluacion, Set modeloPreguntas, Set modeloAjustesCalc) {
         this.modeloLibro = modeloLibro;
         this.nombre = nombre;
         this.minutosEstimados = minutosEstimados;
@@ -53,10 +53,10 @@ public class ModeloEvaluacion implements java.io.Serializable {
         this.modeloAjustesCalc = modeloAjustesCalc;
     }
 
-    public Integer getId(){
-     return this.id;
+    public Integer getId() {
+        return this.id;
     }
-            
+
     public void setId(Integer id) {
         this.id = id;
     }
@@ -77,11 +77,11 @@ public class ModeloEvaluacion implements java.io.Serializable {
         this.nombre = nombre;
     }
 
-    public int getMinutosEstimados() {
+    public Integer getMinutosEstimados() {
         return this.minutosEstimados;
     }
 
-    public void setMinutosEstimados(int minutosEstimados) {
+    public void setMinutosEstimados(Integer minutosEstimados) {
         this.minutosEstimados = minutosEstimados;
     }
 
