@@ -2,7 +2,8 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+                xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
     <ui:define name="content">
         <script type="text/javascript">
@@ -55,7 +56,7 @@
                                         <p:outputLabel for="formBateria" value="#{msg['bateria.nombreEvaluacion']}"/>
                                     </div>
                                     <div class="ui-g-12 ui-lg-9">
-                                        <p:inputText id="nombreEvaluacion" value="#{crearBateriaView.nombreEvaluacion}" maxlength="200"
+                                        <p:inputText id="nombreEvaluacion" value="#{crearBateriaView.strNombreProceso}" maxlength="200"
                                                      placeholder="#{msg['bateria.ingreseNombreEvaluacion']}" style="width: 60%;" 
                                                      required="true" requiredMessage="#{msg['bateria.noIngresoNombreEvaluacion']}" 
                                                      />
@@ -173,7 +174,7 @@
                                         <p:selectOneMenu id="searchCompetencias" value="#{crearBateriaView.strCompSeleccionada}" effect="fade" filterMatchMode="startsWith"
                                                          filter="true" >
                                             <f:selectItem itemLabel="#{msg['bateria.ingreseNombreEvaluacion']}" itemValue="-1" />
-                                            <f:selectItems id="nombreC" value="#{crearBateriaView.lstCompetencia}" var="m" itemLabel="#{m.nombre}" itemValue="#{m.nombre}"/>
+                                            <f:selectItems id="nombreC" value="#{crearBateriaView.listaCompetenciasTotal}" var="m" itemLabel="#{m.nombre}" itemValue="#{m.nombre}"/>
                                             <p:ajax event="itemSelect" process="@this" update=":formBateria:"  listener="#{crearBateriaView.buscarEvaluacionXCompetencia()}"/>
                                         </p:selectOneMenu>
                                     </div>
@@ -205,12 +206,8 @@
                 <p:dialog header="Dialog" widgetVar="dlg1"  id="dlg1"
                           resizable="false"
                           closeOnEscape="true"
-                          closable="true" showEffect="clip" hideEffect="clip" responsive="true"
-                          >
-
-
-                    <p:dataTable var="ajustes" value="#{crearBateriaView.lstAjustesCalcBean}" scrollable="true" scrollRows="1" >
-
+                          closable="true" showEffect="clip" hideEffect="clip" responsive="true" >
+                    <p:dataTable var="ajustes" value="#{crearBateriaView.listaAjustesPorEvaluacion1}" scrollable="true" scrollRows="1" >
                         <p:columnGroup type="header">
                             <p:row>
                                 <p:column rowspan="1" headerText="Tipo de ajuste" />
@@ -218,31 +215,21 @@
                             </p:row>
                         </p:columnGroup>
 
-
                         <p:subTable id="subdata" var="hijo" value="#{ajustes.lstAjusteEvaluacionBean}">
-                            <f:facet name="header">
-                                <h:outputText value="#{ajustes.tipo}" />
+
+                            <f:facet name="header"  >
+                                <h:outputText value="#{ajustes.tipo}"/>
                             </f:facet>
                             <p:column>
                                 <h:outputText value="#{hijo.concepto}" />
                             </p:column>
                             <p:column>
-                                <h:outputText value="#{hijo.dato}" />
+                                <h:outputText value="#{hijo.dato}"  />
                             </p:column>
-
                         </p:subTable>
-
                     </p:dataTable>
-
                 </p:dialog>
-
-
-
             </div>
-
-
-
-
 
         </h:form>
     </ui:define>
