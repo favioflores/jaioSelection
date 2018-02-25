@@ -192,7 +192,7 @@ public class ModeloEvaluacionDAO extends HibernateUtil implements Serializable {
                     + " where mac.modelo_evaluacion_id=" + id + " order by el.descripcion, mac.id ");
             return query.list();
         } catch (Exception e) {
-            manejaException(e);
+            manejaException(log, e);
         } finally {
             cerrarSession();
         }

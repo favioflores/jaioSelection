@@ -50,7 +50,7 @@ public class ModeloCompetenciaDAO extends HibernateUtil implements Serializable 
                     + " join modelo_competencia mc on mc.id = mec.modelo_competencia_id order by 1 asc");
             return query.list();
         } catch (Exception e) {
-            manejaException(e);
+            manejaException(log, e);
         } finally {
             cerrarSession();
         }
