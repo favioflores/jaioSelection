@@ -9,7 +9,7 @@ public class Notificaciones implements java.io.Serializable {
     private Integer id;
     private ProcesoSeleccion procesoSeleccion;
     private String asunto;
-    private byte[] contenido;
+    private int tipo;
     private String correo;
     private int estado;
     private Date fechaRegistro;
@@ -19,29 +19,29 @@ public class Notificaciones implements java.io.Serializable {
     public Notificaciones() {
     }
 
-    public Notificaciones(ProcesoSeleccion procesoSeleccion, String asunto, byte[] contenido, String correo, int estado, Date fechaRegistro) {
+    public Notificaciones(ProcesoSeleccion procesoSeleccion, String asunto, int tipo, String correo, int estado, Date fechaRegistro) {
         this.procesoSeleccion = procesoSeleccion;
         this.asunto = asunto;
-        this.contenido = contenido;
+        this.tipo = tipo;
         this.correo = correo;
         this.estado = estado;
         this.fechaRegistro = fechaRegistro;
     }
 
-    public Notificaciones(ProcesoSeleccion procesoSeleccion, String asunto, byte[] contenido, String correo, int estado, Date fechaRegistro, Date fechaEnvio) {
+    public Notificaciones(ProcesoSeleccion procesoSeleccion, String asunto, int tipo, String correo, int estado, Date fechaRegistro, Date fechaEnvio) {
         this.procesoSeleccion = procesoSeleccion;
         this.asunto = asunto;
-        this.contenido = contenido;
+        this.tipo = tipo;
         this.correo = correo;
         this.estado = estado;
         this.fechaRegistro = fechaRegistro;
         this.fechaEnvio = fechaEnvio;
     }
 
-    public Notificaciones(ProcesoSeleccion procesoSeleccion, String asunto, byte[] contenido, String correo, int estado, Date fechaRegistro, Date fechaEnvio, Set destinatarioss) {
+    public Notificaciones(ProcesoSeleccion procesoSeleccion, String asunto, int tipo, String correo, int estado, Date fechaRegistro, Date fechaEnvio, Set destinatarioss) {
         this.procesoSeleccion = procesoSeleccion;
         this.asunto = asunto;
-        this.contenido = contenido;
+        this.tipo = tipo;
         this.correo = correo;
         this.estado = estado;
         this.fechaRegistro = fechaRegistro;
@@ -73,12 +73,12 @@ public class Notificaciones implements java.io.Serializable {
         this.asunto = asunto;
     }
 
-    public byte[] getContenido() {
-        return this.contenido;
+    public int getTipo() {
+        return tipo;
     }
 
-    public void setContenido(byte[] contenido) {
-        this.contenido = contenido;
+    public void setTipo(int tipo) {
+        this.tipo = tipo;
     }
 
     public String getCorreo() {

@@ -12,8 +12,8 @@
         <property generated="never" lazy="false" name="asunto" optimistic-lock="true" type="string" unique="false">
             <column length="200" name="asunto" not-null="true"/>
         </property>
-        <property generated="never" lazy="false" name="contenido" optimistic-lock="true" type="binary" unique="false">
-            <column name="contenido" not-null="true"/>
+        <property generated="never" lazy="false" name="tipo" optimistic-lock="true" type="int" unique="false">
+            <column name="tipo" not-null="true"/>
         </property>
         <property generated="never" lazy="false" name="correo" optimistic-lock="true" type="string" unique="false">
             <column length="200" name="correo" not-null="true"/>

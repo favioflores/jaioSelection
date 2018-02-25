@@ -33,8 +33,7 @@ public class PerfilDAO extends HibernateUtil implements Serializable {
             lstPerfiles = query.list();
 
         } catch (Exception e) {
-            log.error(e);
-            manejaException(e);
+            manejaException(log, e);
         } finally {
             cerrarSession();
         }
@@ -58,7 +57,7 @@ public class PerfilDAO extends HibernateUtil implements Serializable {
 
         } catch (Exception e) {
             log.error(e);
-            manejaException(e);
+            manejaException(log, e);
         } finally {
             cerrarSession();
         }
@@ -82,7 +81,7 @@ public class PerfilDAO extends HibernateUtil implements Serializable {
 
         } catch (Exception e) {
             log.error(e);
-            manejaException(e);
+            manejaException(log, e);
         } finally {
             cerrarSession();
         }
@@ -105,7 +104,7 @@ public class PerfilDAO extends HibernateUtil implements Serializable {
             return id;
 
         } catch (Exception e) {
-            rollback(e);
+            rollback(log, e);
         } finally {
             cerrarSession();
         }
@@ -137,7 +136,7 @@ public class PerfilDAO extends HibernateUtil implements Serializable {
             return true;
 
         } catch (RuntimeException re) {
-            rollback(re);
+            rollback(log, re);
         } finally {
             cerrarSession();
         }
@@ -171,7 +170,7 @@ public class PerfilDAO extends HibernateUtil implements Serializable {
             return true;
 
         } catch (RuntimeException re) {
-            rollback(re);
+            rollback(log, re);
         } finally {
             cerrarSession();
         }
@@ -187,7 +186,7 @@ public class PerfilDAO extends HibernateUtil implements Serializable {
             Perfil perfil = (Perfil) query.uniqueResult();
             return perfil;
         } catch (Exception e) {
-            manejaException(e);
+            manejaException(log, e);
         } finally {
             cerrarSession();
         }

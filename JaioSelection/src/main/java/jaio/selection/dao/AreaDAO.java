@@ -52,8 +52,7 @@ public class AreaDAO extends HibernateUtil implements Serializable {
             lstPerfiles = queryPerfiles.list();
 
         } catch (Exception e) {
-            log.error(e);
-            manejaException(e);
+            manejaException(log, e);
         } finally {
             cerrarSession();
         }
@@ -109,8 +108,7 @@ public class AreaDAO extends HibernateUtil implements Serializable {
             lstArea = query.list();
 
         } catch (Exception e) {
-            log.error(e);
-            manejaException(e);
+            manejaException(log, e);
         } finally {
             cerrarSession();
         }
@@ -132,7 +130,7 @@ public class AreaDAO extends HibernateUtil implements Serializable {
             return area;
 
         } catch (Exception e) {
-            manejaException(e);
+            manejaException(log, e);
         } finally {
             cerrarSession();
         }
@@ -181,7 +179,7 @@ public class AreaDAO extends HibernateUtil implements Serializable {
             return true;
 
         } catch (RuntimeException re) {
-            rollback(re);
+            rollback(log, re);
         } finally {
             cerrarSession();
         }
@@ -215,7 +213,7 @@ public class AreaDAO extends HibernateUtil implements Serializable {
             return true;
 
         } catch (RuntimeException re) {
-            rollback(re);
+            rollback(log, re);
         } finally {
             cerrarSession();
         }
@@ -239,7 +237,7 @@ public class AreaDAO extends HibernateUtil implements Serializable {
             return id;
 
         } catch (Exception e) {
-            rollback(e);
+            rollback(log, e);
         } finally {
             cerrarSession();
         }
@@ -309,7 +307,7 @@ public class AreaDAO extends HibernateUtil implements Serializable {
             return true;
 
         } catch (Exception e) {
-            rollback(e);
+            rollback(log, e);
         } finally {
             cerrarSession();
         }

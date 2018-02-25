@@ -21,12 +21,6 @@ import java.io.Serializable;
 import java.util.Date;
 import org.hibernate.Query;
 
-/**
- * DAO object for domain model class ModeloEvaluacion.
- *
- * @see jaio.selection.orm.ModeloEvaluacion
- * @author Hibernate Tools
- */
 public class ModeloEvaluacionDAO extends HibernateUtil implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -134,7 +128,7 @@ public class ModeloEvaluacionDAO extends HibernateUtil implements Serializable {
             Query query = session.createQuery("From ModeloEvaluacion order by 1 asc");
             return query.list();
         } catch (Exception e) {
-            manejaException(e);
+            manejaException(log, e);
         } finally {
             cerrarSession();
         }
@@ -155,7 +149,7 @@ public class ModeloEvaluacionDAO extends HibernateUtil implements Serializable {
                     + " and me.id not in (" + sb + ")");
             return query.list();
         } catch (Exception e) {
-            manejaException(e);
+            manejaException(log, e);
         } finally {
             cerrarSession();
         }
@@ -168,7 +162,7 @@ public class ModeloEvaluacionDAO extends HibernateUtil implements Serializable {
             Query query = session.createSQLQuery("select * from modelo_evaluacion where id not in (" + sb + ");");
             return query.list();
         } catch (Exception e) {
-            manejaException(e);
+            manejaException(log, e);
         } finally {
             cerrarSession();
         }
@@ -182,7 +176,7 @@ public class ModeloEvaluacionDAO extends HibernateUtil implements Serializable {
                     + " union all select modelo_competencia_id as id,palabra as nombre from modelo_competencia_sinonimo");
             return query.list();
         } catch (Exception e) {
-            manejaException(e);
+            manejaException(log, e);
         } finally {
             cerrarSession();
         }
@@ -198,7 +192,7 @@ public class ModeloEvaluacionDAO extends HibernateUtil implements Serializable {
                     + " where mac.modelo_evaluacion_id=" + id + " order by el.descripcion, mac.id " );
             return query.list();
         } catch (Exception e) {
-            manejaException(e);
+            manejaException(log, e);
         } finally {
             cerrarSession();
         }
@@ -257,8 +251,7 @@ public class ModeloEvaluacionDAO extends HibernateUtil implements Serializable {
             guardarCambios();
             log.debug("Grago correctamente");
         } catch (Exception e) {
-            manejaException(e);
-            rollback(e);
+            rollback(log, e);
         } finally {
             cerrarSession();
         }
