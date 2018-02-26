@@ -229,7 +229,6 @@ public class CrearBateriaView extends BaseView implements Serializable {
                 if (id.equals(obj[0].toString())) {
                     tipo = obj[2].toString();
                     if (tipo.equals(tipoAnt)) {
-                        objAjustesCalcBean = new ModeloAjustesCalcBean();
                         objAjustesCalcBean.setLstAjusteEvaluacionBean(new ArrayList<>());
                         AjusteEvaluacionBean objAjusteEvaluacionBean = new AjusteEvaluacionBean();
                         objAjusteEvaluacionBean.setConcepto(obj[1].toString());
