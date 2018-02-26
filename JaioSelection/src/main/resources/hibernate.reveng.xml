@@ -28,4 +28,5 @@
     <table-filter match-catalog="JaioSelectionDB" match-name="proceso_seleccion"/>
     <table-filter match-catalog="JaioSelectionDB" match-name="usuario"/>
     <table-filter match-catalog="JaioSelectionDB" match-name="destinatarios"/>
+    <table-filter match-catalog="JaioSelectionDB" match-name="notificacion_detalle"/>
 </hibernate-reverse-engineering>

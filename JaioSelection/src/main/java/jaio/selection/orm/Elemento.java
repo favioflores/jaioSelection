@@ -5,6 +5,7 @@ public class Elemento implements java.io.Serializable {
     private Integer id;
     private Definicion definicion;
     private String descripcion;
+    private String cadena;
     private int orden;
     private byte activo;
 
@@ -20,6 +21,14 @@ public class Elemento implements java.io.Serializable {
 
     public Integer getId() {
         return this.id;
+    }
+
+    public String getCadena() {
+        return cadena;
+    }
+
+    public void setCadena(String cadena) {
+        this.cadena = cadena;
     }
 
     public void setId(Integer id) {

@@ -98,6 +98,11 @@
         <servlet-name>Faces Servlet</servlet-name>
     </filter-mapping>
     <servlet>
+        <servlet-name>mailSenderInit</servlet-name>
+        <servlet-class>jaio.selection.initial.MailSenderInit</servlet-class>
+        <load-on-startup>2</load-on-startup>
+    </servlet>
+    <servlet>
         <servlet-name>Faces Servlet</servlet-name>
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
     </servlet>

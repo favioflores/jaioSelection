@@ -18,5 +18,8 @@
         <property generated="never" lazy="false" name="activo" optimistic-lock="true" type="byte" unique="false">
             <column name="activo" not-null="true"/>
         </property>
+        <property generated="never" lazy="false" name="cadena" optimistic-lock="true" type="string" unique="false">
+            <column length="200" name="cadena" not-null="true"/>
+        </property>
     </class>
 </hibernate-mapping>

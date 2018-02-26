@@ -35,9 +35,6 @@ public class Constantes {
     public static Integer INT_LONGITUD_ARCHIVOS = 20;
 
     public static Integer INT_ESTADO_ELEMENTO_ACTIVO = 1;
-    public static Integer INT_ET_ESTADO_NOTIFICACION_ENVIADO = 55;
-    public static Integer INT_ET_ESTADO_NOTIFICACION_PENDIENTE = 56;
-    public static Integer INT_ET_ESTADO_NOTIFICACION_ENVIANDO = 57;
     public static Integer INT_ET_SENDER_DOMINIO = 58;
     public static Integer INT_ET_SENDER_PUERTO_ENVIO = 59;
     public static Integer INT_ET_SENDER_PUERTO_RECEPCION = 60;
@@ -129,15 +126,14 @@ public class Constantes {
 
     public static String STR_ET_NOTIFICACION_AGRADECIMIENTO = "54";
 
-    public static Integer INT_ET_NOTIFICACION_CLAVE = 63;
     public static Integer INT_ET_MODELO_NOTIFICACION_CARGA_RED = 74;
     public static Integer INT_ET_MODELO_NOTIFICACION_CONVOCATORIA = 78;
-
-    public static Integer INT_ET_TIPO_PARAMETRO_SEXO = 82;
-    public static Integer INT_ET_TIPO_PARAMETRO_EDAD = 83;
-    public static Integer INT_ET_TIPO_PARAMETRO_TIEMPO = 84;
-    public static Integer INT_ET_TIPO_PARAMETRO_NIVEL = 85;
-    public static Integer INT_ET_TIPO_PARAMETRO_AREA = 86;
+    
+    public static Integer INT_ET_TIPO_CORREO_CLAVE = 25;
+    
+    public static Integer INT_ET_ESTADO_NOTIFICACION_REGISTRADO = 30;
+    public static Integer INT_ET_ESTADO_NOTIFICACION_ENVIADO = 31;
+    public static Integer INT_ET_ESTADO_NOTIFICACION_FALLIDO = 32;
 
     public static String strEspacio = " ";
     public static String strDobleEspacio = "  ";

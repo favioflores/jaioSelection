@@ -7,42 +7,35 @@ import java.util.Set;
 public class Notificaciones implements java.io.Serializable {
 
     private Integer id;
-    private ProcesoSeleccion procesoSeleccion;
     private String asunto;
     private int tipo;
-    private String correo;
     private int estado;
     private Date fechaRegistro;
     private Date fechaEnvio;
     private Set destinatarioss = new HashSet(0);
+    private Set notificaciondetalles = new HashSet(0);
 
     public Notificaciones() {
     }
 
-    public Notificaciones(ProcesoSeleccion procesoSeleccion, String asunto, int tipo, String correo, int estado, Date fechaRegistro) {
-        this.procesoSeleccion = procesoSeleccion;
+    public Notificaciones(String asunto, int tipo, int estado, Date fechaRegistro) {
         this.asunto = asunto;
         this.tipo = tipo;
-        this.correo = correo;
         this.estado = estado;
         this.fechaRegistro = fechaRegistro;
     }
 
-    public Notificaciones(ProcesoSeleccion procesoSeleccion, String asunto, int tipo, String correo, int estado, Date fechaRegistro, Date fechaEnvio) {
-        this.procesoSeleccion = procesoSeleccion;
+    public Notificaciones(String asunto, int tipo, int estado, Date fechaRegistro, Date fechaEnvio) {
         this.asunto = asunto;
         this.tipo = tipo;
-        this.correo = correo;
         this.estado = estado;
         this.fechaRegistro = fechaRegistro;
         this.fechaEnvio = fechaEnvio;
     }
 
-    public Notificaciones(ProcesoSeleccion procesoSeleccion, String asunto, int tipo, String correo, int estado, Date fechaRegistro, Date fechaEnvio, Set destinatarioss) {
-        this.procesoSeleccion = procesoSeleccion;
+    public Notificaciones(String asunto, int tipo, int estado, Date fechaRegistro, Date fechaEnvio, Set destinatarioss) {
         this.asunto = asunto;
         this.tipo = tipo;
-        this.correo = correo;
         this.estado = estado;
         this.fechaRegistro = fechaRegistro;
         this.fechaEnvio = fechaEnvio;
@@ -55,14 +48,6 @@ public class Notificaciones implements java.io.Serializable {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public ProcesoSeleccion getProcesoSeleccion() {
-        return this.procesoSeleccion;
-    }
-
-    public void setProcesoSeleccion(ProcesoSeleccion procesoSeleccion) {
-        this.procesoSeleccion = procesoSeleccion;
     }
 
     public String getAsunto() {
@@ -79,14 +64,6 @@ public class Notificaciones implements java.io.Serializable {
 
     public void setTipo(int tipo) {
         this.tipo = tipo;
-    }
-
-    public String getCorreo() {
-        return this.correo;
-    }
-
-    public void setCorreo(String correo) {
-        this.correo = correo;
     }
 
     public int getEstado() {
@@ -121,4 +98,12 @@ public class Notificaciones implements java.io.Serializable {
         this.destinatarioss = destinatarioss;
     }
 
+    public Set getNotificaciondetalles() {
+        return notificaciondetalles;
+    }
+
+    public void setNotificaciondetalles(Set notificaciondetalles) {
+        this.notificaciondetalles = notificaciondetalles;
+    }
+    
 }

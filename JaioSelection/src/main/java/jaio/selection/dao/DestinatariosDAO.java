@@ -17,7 +17,7 @@ public class DestinatariosDAO extends HibernateUtil implements Serializable {
 
         List<Destinatarios> lstDestinatarios;
 
-        Query query = sesion.createQuery("select de from Destinatarios de where de.notificaciones.noIdNotificacionPk = ? ");
+        Query query = sesion.createQuery("select de from Destinatarios de where de.notificaciones.id = ? ");
 
         query.setInteger(0, intNotificacionPk);
 

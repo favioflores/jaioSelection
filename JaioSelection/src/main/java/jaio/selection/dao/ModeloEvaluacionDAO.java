@@ -205,7 +205,7 @@ public class ModeloEvaluacionDAO extends HibernateUtil implements Serializable {
             Query query = session.createSQLQuery("select mac.modelo_evaluacion_id as idE,mac.concepto,el.descripcion,mac.dato "
                     + "	from modelo_ajustes_calc mac "
                     + "	join elemento el on mac.tipo = el.id "
-                    + "	order by el.descripcion, mac.id");
+                    + "	order by mac.modelo_evaluacion_id, el.descripcion, mac.id ");
             return query.list();
         } catch (Exception e) {
             manejaException(log, e);
