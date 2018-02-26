@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package jaio.selection.util;
 
 import java.io.InputStream;
@@ -11,19 +7,16 @@ import java.util.Iterator;
 import java.util.List;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Ehcache;
-import net.sf.ehcache.Element;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import jaio.selection.orm.Elemento;
+import net.sf.ehcache.Element;
 
-/**
- *
- * @author Favio
- */
 public class EHCacheManager implements Serializable {
 
     private static Log log = LogFactory.getLog(EHCacheManager.class);
+
     private static final CacheManager cacheManager;
     private static Ehcache elementosCache;
 
@@ -41,17 +34,16 @@ public class EHCacheManager implements Serializable {
         elementosCache = cacheManager.getEhcache("elementosCache");
     }
 
-    /*
-    public void agregarElemento(Elemento objElemento){
-        Element element = new Element(objElemento.getElIdElementoPk(), objElemento);
+    public void agregarElemento(Elemento objElemento) {
+        Element element = new Element(objElemento.getId(), objElemento);
         elementosCache.put(element);
     }
 
-    public static String obtenerDescripcionElemento(Integer intIdElemento){
+    public static String obtenerDescripcionElemento(Integer intIdElemento) {
 
         try {
             Elemento objElement = (Elemento) elementosCache.get(intIdElemento).getValue();
-            return objElement.getElTxDescripcion();
+            return objElement.getDescripcion();
         } catch (Exception e) {
             log.error(e);
         }
@@ -59,34 +51,6 @@ public class EHCacheManager implements Serializable {
         return Constantes.strVacio;
     }
 
-    public static String obtenerValor1Elemento(Integer intIdElemento){
-
-        try {
-            Elemento objElement = (Elemento) elementosCache.get(intIdElemento).getValue();
-            return objElement.getElTxValor1();
-        } catch (Exception e) {
-            log.error(e);
-        }
-
-        return Constantes.strVacio;
-    }
-
-    public static String obtenerCadenaElemento(Integer intIdElemento){
-
-        try {
-            Elemento objElement = (Elemento) elementosCache.get(intIdElemento).getValue();
-
-            byte[] bdata = objElement.getElCadena();
-            String mensaje = new String(bdata);
-
-            return mensaje;
-        } catch (Exception e) {
-            log.error(e);
-        }
-
-        return Constantes.strVacio;
-    }
-     */
     public static List<Elemento> obtenerElementosPorDefinicion(Integer intIdDefinicion) {
 
         List<Elemento> lstElementos = new ArrayList();
@@ -98,11 +62,11 @@ public class EHCacheManager implements Serializable {
 
             while (itLst.hasNext()) {
                 Elemento objElemento = (Elemento) elementosCache.get(itLst.next()).getValue();
-                /*
-                 if(intIdDefinicion.equals(objElemento.getDefinicionTabla().getDtIdDefinicionPk())){
-                     lstElementos.add(objElemento);
-                 }
-                 */
+
+                if (intIdDefinicion.equals(objElemento.getDefinicion().getId())) {
+                    lstElementos.add(objElemento);
+                }
+
             }
 
             return lstElementos;

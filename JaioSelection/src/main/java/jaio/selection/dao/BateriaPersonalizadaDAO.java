@@ -35,7 +35,7 @@ public class BateriaPersonalizadaDAO extends HibernateUtil implements Serializab
             query.setString("id", id);
             return query.list();
         } catch (Exception e) {
-            manejaException(e);
+            manejaException(log, e);
         } finally {
             cerrarSession();
         }

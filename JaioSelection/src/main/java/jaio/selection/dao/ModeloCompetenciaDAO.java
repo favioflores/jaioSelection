@@ -18,7 +18,7 @@ public class ModeloCompetenciaDAO extends HibernateUtil implements Serializable 
             Query query = session.createQuery("From ModeloCompetencia");
             return query.list();
         } catch (Exception e) {
-            manejaException(e);
+            manejaException(log, e);
         } finally {
             cerrarSession();
         }
@@ -35,7 +35,7 @@ public class ModeloCompetenciaDAO extends HibernateUtil implements Serializable 
             query.setString("id", id);
             return query.list();
         } catch (Exception e) {
-            manejaException(e);
+            manejaException(log, e);
         } finally {
             cerrarSession();
         }
@@ -50,7 +50,7 @@ public class ModeloCompetenciaDAO extends HibernateUtil implements Serializable 
                     + " join modelo_competencia mc on mc.id = mec.modelo_competencia_id order by 1 asc");
             return query.list();
         } catch (Exception e) {
-            manejaException(e);
+            manejaException(log, e);
         } finally {
             cerrarSession();
         }

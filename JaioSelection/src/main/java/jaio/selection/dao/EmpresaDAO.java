@@ -30,7 +30,7 @@ public class EmpresaDAO extends HibernateUtil implements Serializable {
             log.debug("Grago correctamente");
 
         } catch (Exception e) {
-            rollback(e);
+            rollback(log, e);
         } finally {
             cerrarSession();
         }
@@ -49,7 +49,7 @@ public class EmpresaDAO extends HibernateUtil implements Serializable {
             return query.list();
 
         } catch (Exception e) {
-            manejaException(e);
+            manejaException(log, e);
         } finally {
             cerrarSession();
         }
@@ -70,7 +70,7 @@ public class EmpresaDAO extends HibernateUtil implements Serializable {
             return query.list();
 
         } catch (Exception e) {
-            manejaException(e);
+            manejaException(log, e);
         } finally {
             cerrarSession();
         }
@@ -97,7 +97,7 @@ public class EmpresaDAO extends HibernateUtil implements Serializable {
             return empresa;
 
         } catch (Exception e) {
-            manejaException(e);
+            manejaException(log, e);
         } finally {
             cerrarSession();
         }
@@ -126,7 +126,7 @@ public class EmpresaDAO extends HibernateUtil implements Serializable {
             return true;
 
         } catch (RuntimeException re) {
-            rollback(re);
+            rollback(log, re);
         } finally {
             cerrarSession();
         }
@@ -158,7 +158,7 @@ public class EmpresaDAO extends HibernateUtil implements Serializable {
             return true;
 
         } catch (RuntimeException re) {
-            rollback(re);
+            rollback(log, re);
         } finally {
             cerrarSession();
         }
