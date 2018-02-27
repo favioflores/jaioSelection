@@ -98,6 +98,18 @@
         <servlet-name>Faces Servlet</servlet-name>
     </filter-mapping>
     <servlet>
+        <servlet-name>velocity</servlet-name>
+        <servlet-class>org.apache.velocity.tools.view.VelocityViewServlet</servlet-class>
+        <init-param>
+            <param-name>org.apache.velocity.properties</param-name>
+            <param-value>/WEB-INF/velocity.properties</param-value>
+        </init-param>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>velocity</servlet-name>
+        <url-pattern>*.vm</url-pattern>
+    </servlet-mapping>
+    <servlet>
         <servlet-name>mailSenderInit</servlet-name>
         <servlet-class>jaio.selection.initial.MailSenderInit</servlet-class>
         <load-on-startup>2</load-on-startup>
