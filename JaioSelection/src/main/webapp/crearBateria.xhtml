@@ -37,7 +37,7 @@
 
         </style>
         <h:form id="formBateria" enctype="multipart/form-data" >
-            <p:growl life="4000" />
+            <p:growl autoUpdate="true" life="4000" />
             <div class="ui-g">
                 <div class="ui-g-12">
                     <div class="ui-g card">
@@ -71,7 +71,7 @@
                                                          filter="true" required="true" requiredMessage="#{msg['bateria.noSeleccionoEmpresa']}" >
                                             <f:selectItem itemLabel="#{msg['proceso.selecciona.empresa']}" itemValue="-1" />
                                             <f:selectItems id="empresa" value="#{crearBateriaView.lstEmpresas}" var="emp" itemLabel="#{emp.desc}" itemValue="#{emp.id}"/>
-                                            <p:ajax event="itemSelect" process="@this" update=":formBateria:"  listener="#{crearBateriaView.seleccionaEmpresa()}"/>
+                                            <p:ajax event="itemSelect" process="@this" update=":formBateria:listaArea"  listener="#{crearBateriaView.seleccionaEmpresa()}"/>
                                         </p:selectOneMenu>
                                     </div>
 
@@ -84,7 +84,7 @@
                                                          filter="true" required="true" requiredMessage="#{msg['bateria.noSeleccionoArea']}" >
                                             <f:selectItem itemLabel="#{msg['proceso.selecciona.area']}"/>
                                             <f:selectItems id="area" value="#{crearBateriaView.lstArea}" var="area" itemLabel="#{area.descripcion}" itemValue="#{area.id}"  />
-                                            <p:ajax event="itemSelect" process="@this" update=":formBateria:"  listener="#{crearBateriaView.seleccionaArea()}"/>
+                                            <p:ajax event="itemSelect" process="@this" update=":formBateria:listaPerfil"  listener="#{crearBateriaView.seleccionaArea()}"/>
                                         </p:selectOneMenu>
                                     </div>
 
@@ -97,107 +97,121 @@
                                                          filter="true" required="true" requiredMessage="#{msg['bateria.noSeleccionoPerfil']}" >
                                             <f:selectItem itemLabel="#{msg['proceso.selecciona.perfil']}"/>
                                             <f:selectItems id="perfil" value="#{crearBateriaView.lstPerfil}" var="perfil" itemLabel="#{perfil.descripcion}" itemValue="#{perfil.id}"/>
-                                            <p:ajax event="itemSelect" process="@this" update=":formBateria:"  listener="#{crearBateriaView.seleccionaPerfil()}"/>
+                                            <p:ajax event="itemSelect" process="@this" listener="#{crearBateriaView.seleccionaPerfil()}"/>
                                         </p:selectOneMenu>
                                     </div>
                                     <div class="ui-g-12">
-                                        <p:outputLabel value="Tiempo total de evaluación: #{crearBateriaView.minutosTotal}m"/>
+                                        <h4>
+                                            <p:outputLabel id="oTotal" value="Tiempo total de evaluación: #{crearBateriaView.minutosTotal} minutos"/>
+                                        </h4>
                                     </div>
                                 </p:fieldset>
                                 <br/>
-                                <p:fieldset id="evaluacionesSeleccionadas" legend="#{msg['proceso.dialog.bateria.seleccionadas']}">
-                                    <p:outputPanel id="dropArea">
-                                        <p:dataGrid id="listDropBaterias" widgetVar="listDropBaterias" var="bat" value="#{crearBateriaView.droppedBaterias}" columns="2"
-                                                    style="border-style: none; border:5px;" emptyMessage="#{msg['bateria.arratreSuEvaluacion']}" layout="grid"
-                                                    rendered="#{not empty crearBateriaView.droppedBaterias}">
-                                            <p:panel id="panelBilleteraDeEvaluaciones"  style="width: 100%;">
+                                <h:panelGroup id="pnlgroup1">
+                                    <p:fieldset id="evaluacionesSeleccionadas" widgetVar="evaluacionesSeleccionadas" legend="#{msg['proceso.dialog.bateria.seleccionadas']}">
+                                        <p:outputPanel id="dropArea">
+                                            <p:dataGrid id="listDropBaterias" widgetVar="listDropBaterias" var="bat" value="#{crearBateriaView.droppedBaterias}" columns="2"
+                                                        style="border-style: none; border:5px;" emptyMessage="#{msg['bateria.arratreSuEvaluacion']}" layout="grid"
+                                                        rendered="#{not empty crearBateriaView.droppedBaterias}">
+                                                <p:panel id="panelBilleteraDeEvaluaciones"  style="width: 100%;">
 
 
-                                                <h:outputText value="#{bat.nombre}" class="textTituloPanel"/>
+                                                    <h:outputText value="#{bat.nombre}" class="textTituloPanel"/>
 
-                                                <h:panelGrid columns="2" width="100%" cellpadding="0" cellspacing="0" style="margin-top: 10px;" >
+                                                    <h:panelGrid columns="2" width="100%" cellpadding="0" cellspacing="0" style="margin-top: 10px;" >
 
-                                                    <h:outputText value="Validez: #{bat.validez}%" class="textPanel"/>
-                                                    <p:column style="align-content: flex-end;">
-                                                        <p:commandLink value="Ajustes" process="@this" 
-                                                                       actionListener="#{crearBateriaView.muestraAjuste(bat.lstAjustes)}" 
-                                                                       oncomplete="PF('dlg1').show();" update=":formBateria:dlg1"
-                                                                       rendered="#{bat.lstAjustes.size()>0}"/>
-                                                    </p:column>
-                                                    <h:outputText value="Confiabilidad: #{bat.confiabilidad}%" class="textPanel"/><br/>
-                                                    <h:outputText value="Minutos: #{bat.minutosEstimados}" class="textPanel"/><br/>
+                                                        <h:outputText value="Validez: #{bat.validez}%" class="textPanel"/>
+                                                        <p:column style="align-content: flex-end;">
+                                                            <p:commandLink value="Ajustes" process="@this" 
+                                                                           actionListener="#{crearBateriaView.muestraAjuste(bat.lstAjustes)}" 
+                                                                           oncomplete="PF('dlg1').show();" update=":formBateria:dlg1"
+                                                                           rendered="#{bat.lstAjustes.size()>0}"/>
+                                                        </p:column>
+                                                        <h:outputText value="Confiabilidad: #{bat.confiabilidad}%" class="textPanel"/><br/>
+                                                        <h:outputText value="Minutos: #{bat.minutosEstimados}" class="textPanel"/><br/>
 
-                                                </h:panelGrid>
+                                                    </h:panelGrid>
 
-                                                <div class="ui-g-12">
-                                                    <ui:repeat var="colores" value="#{bat.lstColores}" >
-                                                        <div  class="ui-g-1 ui-lg-1 circulo" style="background: #{colores.color};border-style: hidden;border: 0px;"></div>
-                                                    </ui:repeat>
-                                                </div>    
+                                                    <div class="ui-g-12">
+                                                        <table >
+                                                            <tr>
+                                                                <td style="height: 20px;">
+                                                                    <ui:repeat var="colores" value="#{bat.lstColores}"  >
+                                                                        <div  class="ui-g-1 ui-lg-1 circulo" style="background: #{colores.color};border-style: hidden;border: 0px;"></div>
+                                                                    </ui:repeat>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>    
 
 
 
 
-                                                <p:commandButton value="Retirar" styleClass="red-button" style="margin-bottom:10px;width: 100%;"
-                                                                 update=":formBateria:" immediate="true" process="@this" actionListener="#{crearBateriaView.quitarBaterias(bat)}"/>
-                                            </p:panel>
-                                        </p:dataGrid>
-                                        <h:outputText value="#{msg['bateria.arratreSuEvaluacion']}" style="font-size:22px;"
-                                                      rendered="#{empty crearBateriaView.droppedBaterias}"/>
-                                    </p:outputPanel>
-                                </p:fieldset>
-                                <br/>
-                                <p:dataGrid id="listDropCompetencias" var="listC"  value="#{crearBateriaView.droppedCompetencias}" style="border-style: none;" columns="3" 
-                                            emptyMessage="#{msg['bateria.noHayCompetencias']}">
-                                    <f:facet name="footer" >Resumen de evaluaciones</f:facet>
-                                    <h:panelGrid columns="2" >
-                                        <div class="circulo" style="background: #{listC.color}">
-                                        </div>
-                                        <p:outputPanel style="font-size: 14px;font-family:'latoregular',sans-serif;">
-                                            #{listC.nombre}
+                                                    <p:commandButton value="Retirar" styleClass="red-button" style="margin-bottom:10px;width: 100%;"
+                                                                     update=":formBateria:pnlgroup1, :formBateria:pnlgroup2, :formBateria:oTotal" immediate="true" process="@this" actionListener="#{crearBateriaView.quitarBaterias(bat)}"/>
+                                                </p:panel>
+                                            </p:dataGrid>
+                                            <h:outputText value="#{msg['bateria.arratreSuEvaluacion']}" style="font-size:22px;"
+                                                          rendered="#{empty crearBateriaView.droppedBaterias}"/>
                                         </p:outputPanel>
-                                    </h:panelGrid>
-                                </p:dataGrid>
-                                <p:droppable for="evaluacionesSeleccionadas"  tolerance="touch" activeStyleClass="ui-state-highlight" datasource="listaEvaluaciones" onDrop="handleDrop">
-                                    <p:ajax listener="#{crearBateriaView.cargarBilleteraDeBaterias}" update="dropArea,listDropCompetencias,listaEvaluaciones" />
-                                </p:droppable>
-                                <br/>
-                                <div class="ui-panelgrid-cell ui-grid-col-12">
-                                    <p:commandButton value="#{msg['bateria.boton.grabar']}" id="guardarBateria" styleClass="aqua-button"
-                                                     actionListener="#{crearBateriaView.grabarBateria()}" update=":formBateria:"
-                                                     style="margin-bottom:10px; width: 100%;"/>
-                                </div>
+                                    </p:fieldset>
+                                    <br/>
+                                    <p:dataGrid id="listDropCompetencias" var="listC"  value="#{crearBateriaView.droppedCompetencias}" style="border-style: none;" columns="3" 
+                                                emptyMessage="#{msg['bateria.noHayCompetencias']}">
+                                        <f:facet name="footer" >Resumen de evaluaciones</f:facet>
+                                        <h:panelGrid columns="2" >
+                                            <div class="circulo" style="background: #{listC.color}">
+                                            </div>
+                                            <p:outputPanel style="font-size: 14px;font-family:'latoregular',sans-serif;">
+                                                #{listC.nombre}
+                                            </p:outputPanel>
+                                        </h:panelGrid>
+                                    </p:dataGrid>
+                                    <p:droppable id="devalua" for="evaluacionesSeleccionadas"  tolerance="touch" activeStyleClass="ui-state-highlight" datasource="listaEvaluaciones" onDrop="handleDrop">
+                                        <p:ajax listener="#{crearBateriaView.cargarBilleteraDeBaterias}" update=":formBateria:pnlgroup1,:formBateria:pnlgroup2,:formBateria:oTotal" />
+                                    </p:droppable>
+                                    <br/>
+                                    <div class="ui-panelgrid-cell ui-grid-col-12">
+                                        <p:commandButton value="#{msg['bateria.boton.grabar']}" id="guardarBateria" widgetVar="guardarBateria" styleClass="aqua-button"
+                                                         actionListener="#{crearBateriaView.grabarBateria()}" update=":formBateria:"
+                                                         style="margin-bottom:10px; width: 100%;" rendered="#{crearBateriaView.droppedBaterias.size()>0}"/>
+                                    </div>
+                                </h:panelGroup>
                             </div>
                             <div class="ui-g-12 ui-lg-4">
-                                <p:fieldset id="evaluaciones" legend="#{msg['proceso.dialog.bateria.biblioteca']}" style="border-style: none;">
-                                    <div class="ui-g-12">
-                                        <p:selectOneMenu id="searchCompetencias" value="#{crearBateriaView.strCompSeleccionada}" effect="fade" filterMatchMode="startsWith"
-                                                         filter="true" >
-                                            <f:selectItem itemLabel="#{msg['bateria.ingreseNombreEvaluacion']}" itemValue="-1" />
-                                            <f:selectItems id="nombreC" value="#{crearBateriaView.listaCompetenciasTotal}" var="m" itemLabel="#{m.nombre}" itemValue="#{m.nombre}"/>
-                                            <p:ajax event="itemSelect" process="@this" update=":formBateria:"  listener="#{crearBateriaView.buscarEvaluacionXCompetencia()}"/>
-                                        </p:selectOneMenu>
-                                    </div>
-                                    <p:dataGrid id="listaEvaluaciones" var="listE"  value="#{crearBateriaView.listaDeEvaluaciones}" columns="1" rows="4"  paginator="true"  
-                                                paginatorPosition="bottom" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" >
-                                        <p:panel id="panelDeEvaluaciones">
-                                            <h:outputText value="#{listE.nombre}" class="textTituloPanel"/><br/>
-                                            <h:outputText value="Validez: #{listE.validez}%" class="textPanel"/><br/>
-                                            <h:outputText value="Confiabilidad: #{listE.confiabilidad}%" class="textPanel"/><br/>
-                                            <h:outputText value="Minutos Estimados: #{listE.minutosEstimados}" class="textPanel"/><br/>
-                                            <h:outputText value="Tiempo Limite: #{listE.limiteTiempo}" class="textPanel"/><br/>
-                                            <h:outputLink id="track" value="#">
-                                                <h:outputText value="Competencias" />
-                                            </h:outputLink>
-                                            <p:tooltip id="toolTipTrack" for="track" value="#{listE.lstCompetencias}" trackMouse="true" />
-                                            <br/><br/>
-                                            <p:commandButton value="Agregar" styleClass="aqua-button" style="margin-bottom:10px; width: 100%;" 
-                                                             update=":formBateria:" immediate="true" process="@this" actionListener="#{crearBateriaView.pasarBaterias(listE)}">
-                                            </p:commandButton>
-                                        </p:panel>
-                                        <p:draggable for="panelDeEvaluaciones" revert="true" />
-                                    </p:dataGrid>
-                                </p:fieldset>
+                                <h:panelGroup id="pnlgroup2">
+                                    <p:fieldset id="evaluaciones" widgetVar="evaluaciones" legend="#{msg['proceso.dialog.bateria.biblioteca']}" style="border-style: none;">
+                                        <div class="ui-g-12">
+                                            <p:selectOneMenu id="searchCompetencias" value="#{crearBateriaView.strCompSeleccionada}" effect="fade" filterMatchMode="startsWith"
+                                                             filter="true" >
+                                                <f:selectItem itemLabel="#{msg['bateria.ingreseNombreEvaluacion']}" itemValue="-1" />
+                                                <f:selectItems id="nombreC" value="#{crearBateriaView.listaCompetenciasTotal}" var="m" itemLabel="#{m.nombre}" itemValue="#{m.nombre}"/>
+                                                <p:ajax event="itemSelect" process="@this" update=":formBateria:"  listener="#{crearBateriaView.buscarEvaluacionXCompetencia()}"/>
+                                            </p:selectOneMenu>
+                                        </div>
+                                        <p:dataGrid id="listaEvaluaciones" var="listE"  value="#{crearBateriaView.listaDeEvaluaciones}" columns="1" rows="4"  paginator="true"  
+                                                    paginatorPosition="bottom" paginatorTemplate="{CurrentPageReport} {PreviousPageLink} {PageLinks} {NextPageLink} {RowsPerPageDropdown}" >
+                                            <p:panel id="panelDeEvaluaciones">
+                                                <h:outputText value="#{listE.nombre}" class="textTituloPanel"/><br/>
+                                                <h:outputText value="Validez: #{listE.validez}%" class="textPanel"/><br/>
+                                                <h:outputText value="Confiabilidad: #{listE.confiabilidad}%" class="textPanel"/><br/>
+                                                <h:outputText value="Minutos Estimados: #{listE.minutosEstimados}" class="textPanel"/><br/>
+                                                <h:outputText value="Tiempo Limite: #{listE.limiteTiempo}" class="textPanel"/><br/>
+                                                <h:outputLink id="track" value="#">
+                                                    <h:outputText value="Competencias" />
+                                                </h:outputLink>
+                                                <p:tooltip id="toolTipTrack" for="track" value="#{listE.lstCompetencias}" trackMouse="true" />
+                                                <br/><br/>
+                                                <p:commandButton value="Agregar" styleClass="aqua-button" style="margin-bottom:10px; width: 100%;" 
+                                                                 update=":formBateria:pnlgroup1,
+                                                                 :formBateria:pnlgroup2,
+                                                                 :formBateria:oTotal" immediate="true" process="@this" actionListener="#{crearBateriaView.pasarBaterias(listE)}">
+                                                </p:commandButton>
+                                            </p:panel>
+                                            <p:draggable id="dragObject" for="panelDeEvaluaciones" revert="true" />
+                                        </p:dataGrid>
+                                    </p:fieldset>
+                                </h:panelGroup>
                             </div>
                         </div>
                     </div>
@@ -206,7 +220,7 @@
                 <p:dialog header="Dialog" widgetVar="dlg1"  id="dlg1"
                           resizable="false"
                           closeOnEscape="true"
-                          closable="true" showEffect="clip" hideEffect="clip" responsive="true" >
+                          closable="true" showEffect="clip" hideEffect="clip" responsive="true" width="400" >
                     <p:dataTable var="ajustes" value="#{crearBateriaView.listaAjustesPorEvaluacion1}" scrollable="true" scrollRows="1" >
                         <p:columnGroup type="header">
                             <p:row>

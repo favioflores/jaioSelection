@@ -6,17 +6,11 @@
             <column name="id"/>
             <generator class="identity"/>
         </id>
-        <many-to-one class="jaio.selection.orm.ProcesoSeleccion" embed-xml="true" fetch="select" insert="true" name="procesoSeleccion" not-found="exception" optimistic-lock="true" unique="false" update="true">
-            <column name="proceso_seleccion_id" not-null="true"/>
-        </many-to-one>
         <property generated="never" lazy="false" name="asunto" optimistic-lock="true" type="string" unique="false">
             <column length="200" name="asunto" not-null="true"/>
         </property>
         <property generated="never" lazy="false" name="tipo" optimistic-lock="true" type="int" unique="false">
             <column name="tipo" not-null="true"/>
-        </property>
-        <property generated="never" lazy="false" name="correo" optimistic-lock="true" type="string" unique="false">
-            <column length="200" name="correo" not-null="true"/>
         </property>
         <property generated="never" lazy="false" name="estado" optimistic-lock="true" type="int" unique="false">
             <column name="estado" not-null="true"/>
@@ -29,12 +23,22 @@
         </property>
         
         <set embed-xml="true" fetch="select" inverse="true" lazy="true"
-                     mutable="true" cascade="save-update" name="destinatarioss" optimistic-lock="true"
-                     sort="unsorted" table="destinatarios">
+             mutable="true" cascade="save-update" name="destinatarioss" optimistic-lock="true"
+             sort="unsorted" table="destinatarios">
             <key on-delete="noaction">
                 <column name="notificaciones_id" not-null="true" />
             </key>
             <one-to-many class="jaio.selection.orm.Destinatarios" embed-xml="true"
+                         not-found="exception" />
+        </set>
+        
+        <set embed-xml="true" fetch="select" inverse="true" lazy="true"
+             mutable="true" cascade="save-update" name="notificaciondetalles" optimistic-lock="true"
+             sort="unsorted" table="notificacion_detalle">
+            <key on-delete="noaction">
+                <column name="notificaciones_id" not-null="true" />
+            </key>
+            <one-to-many class="jaio.selection.orm.NotificacionDetalle" embed-xml="true"
                          not-found="exception" />
         </set>
         

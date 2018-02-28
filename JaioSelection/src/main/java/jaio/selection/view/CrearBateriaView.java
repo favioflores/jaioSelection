@@ -17,6 +17,7 @@ import jaio.selection.bean.BateriaBean;
 import jaio.selection.bean.ConvertirDatosBean;
 import jaio.selection.bean.EmpresaBean;
 import jaio.selection.bean.ModeloAjustesCalcBean;
+import jaio.selection.bean.ModeloAjustesListaBean;
 import jaio.selection.bean.ModeloCompetenciaBean;
 import jaio.selection.bean.PerfilBean;
 import jaio.selection.dao.AreaDAO;
@@ -35,10 +36,12 @@ import jaio.selection.util.Utilitarios;
 import static jaio.selection.view.BaseView.ERROR;
 import static jaio.selection.view.BaseView.FATAL;
 import static jaio.selection.view.BaseView.INFO;
+import java.sql.Array;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.Map;
 import org.primefaces.event.DragDropEvent;
 
 @ManagedBean(name = "crearBateriaView")
@@ -56,6 +59,7 @@ public class CrearBateriaView extends BaseView implements Serializable {
 
     private List listaAjustesTotalEvaluaciones = new ArrayList<>();
     private List<ModeloAjustesCalcBean> listaAjustesPorEvaluacion1 = new ArrayList<>();
+    private LinkedHashMap<String, ModeloAjustesListaBean> mhAjustes = new LinkedHashMap();
 
     private String strCompSeleccionada;
     private List<ModeloCompetenciaBean> listaCompetenciasTotal = new ArrayList<>();
@@ -68,7 +72,7 @@ public class CrearBateriaView extends BaseView implements Serializable {
     private String strAreaSeleccionada;
     private String strPerfilSeleccionado;
     private int minutosTotal = 0;
-    private LinkedHashMap<String, String> mapCompetenciasSeleccionadas = new LinkedHashMap<String, String>();
+    private LinkedHashMap<String, String> mapCompetenciasSeleccionadas = new LinkedHashMap<>();
     private List<BateriaBean> droppedBaterias;
     private List<ModeloCompetenciaBean> droppedCompetencias;
 
@@ -110,6 +114,7 @@ public class CrearBateriaView extends BaseView implements Serializable {
         mapCompetenciasSeleccionadas.clear();
         droppedBaterias = new ArrayList<>();
         droppedCompetencias = new ArrayList<>();
+        mhAjustes.clear();
     }
 
     public List cargarEvaluaciones() {
@@ -137,10 +142,10 @@ public class CrearBateriaView extends BaseView implements Serializable {
                 objBateriaBean.setLstCompetencias(listaNombresCompetenciasPorEvaluacion);
                 objBateriaBean.setLstColores(listaColoresCompetenciasPorEvaluacion);
 
-                cargarAjustePorEvaluacion(objBateriaBean.getId());
-                objBateriaBean.setLstAjustes(listaAjustesPorEvaluacion1);
-//                objBateriaBean.setLstAjustes(obtenerAjustesPorEvaluacion(objBateriaBean));
-                
+                cargarAjustePorEvaluacion();
+                if (mhAjustes.containsKey(objBateriaBean.getId())) {
+                    objBateriaBean.setLstAjustes(mhAjustes.get(objBateriaBean.getId()).getLstModeloAjustesCalcBeans());
+                }
 
                 lstEvaluaciones.add(objBateriaBean);
             }
@@ -217,38 +222,74 @@ public class CrearBateriaView extends BaseView implements Serializable {
 
     }
 
-    public void cargarAjustePorEvaluacion(String id) {
+    public void cargarAjustePorEvaluacion() {
         try {
-            String tipo = "", tipoAnt = "";
+
+            mhAjustes = new LinkedHashMap();
+
             listaAjustesPorEvaluacion1 = new ArrayList<>();
+
             Iterator it = listaAjustesTotalEvaluaciones.iterator();
+
+            ModeloAjustesListaBean objModeloAjustesListaBean = new ModeloAjustesListaBean();
             ModeloAjustesCalcBean objAjustesCalcBean = new ModeloAjustesCalcBean();
-            
+
+            String Evaluacion = "", EvaluacionAnt = "";
+            String Tipo = "", TipoAnt = "";
+            String Concepto = "";
+            String Dato = "";
+
             while (it.hasNext()) {
+
                 Object obj[] = (Object[]) it.next();
-                if (id.equals(obj[0].toString())) {
-                    tipo = obj[2].toString();
-                    if (tipo.equals(tipoAnt)) {
-                        objAjustesCalcBean.setLstAjusteEvaluacionBean(new ArrayList<>());
-                        AjusteEvaluacionBean objAjusteEvaluacionBean = new AjusteEvaluacionBean();
-                        objAjusteEvaluacionBean.setConcepto(obj[1].toString());
-                        objAjusteEvaluacionBean.setDato(obj[3].toString());
-                        objAjustesCalcBean.getLstAjusteEvaluacionBean().add(objAjusteEvaluacionBean);
-                        tipoAnt = tipo;
+
+                Evaluacion = obj[0].toString();
+                Tipo = obj[2].toString();
+                Concepto = obj[1].toString();
+                Dato = obj[3].toString();
+
+                if (Evaluacion.equals(EvaluacionAnt) && !EvaluacionAnt.equals("")) {
+
+                    if (Tipo.equals(TipoAnt)) {
+
+                        int a = objModeloAjustesListaBean.getLstModeloAjustesCalcBeans().indexOf(objAjustesCalcBean);
+                        objAjustesCalcBean = objModeloAjustesListaBean.getLstModeloAjustesCalcBeans().get(a);
+                        objAjustesCalcBean.getLstAjusteEvaluacionBean().add(new AjusteEvaluacionBean(Concepto, Dato));
+
                     } else {
                         objAjustesCalcBean = new ModeloAjustesCalcBean();
-                        objAjustesCalcBean.setTipo(obj[2].toString());
+                        objAjustesCalcBean.setTipo(Tipo);
                         objAjustesCalcBean.setLstAjusteEvaluacionBean(new ArrayList<>());
-                        AjusteEvaluacionBean objAjusteEvaluacionBean = new AjusteEvaluacionBean();
-                        objAjusteEvaluacionBean.setConcepto(obj[1].toString());
-                        objAjusteEvaluacionBean.setDato(obj[3].toString());
-                        objAjustesCalcBean.getLstAjusteEvaluacionBean().add(objAjusteEvaluacionBean);
-                        tipoAnt = tipo;
+                        objAjustesCalcBean.getLstAjusteEvaluacionBean().add(new AjusteEvaluacionBean(Concepto, Dato));
+                        objModeloAjustesListaBean.getLstModeloAjustesCalcBeans().add(objAjustesCalcBean);
                     }
-                    listaAjustesPorEvaluacion1.add(objAjustesCalcBean);
+
+                    EvaluacionAnt = Evaluacion;
+                    TipoAnt = Tipo;
+
+                } else {
+
+                    if (!Evaluacion.equals("")) {
+                        mhAjustes.put(EvaluacionAnt, objModeloAjustesListaBean);
+                    }
+
+                    objModeloAjustesListaBean = new ModeloAjustesListaBean();
+
+                    objAjustesCalcBean = new ModeloAjustesCalcBean();
+                    objAjustesCalcBean.setTipo(Tipo);
+                    objAjustesCalcBean.setLstAjusteEvaluacionBean(new ArrayList<>());
+                    objAjustesCalcBean.getLstAjusteEvaluacionBean().add(new AjusteEvaluacionBean(Concepto, Dato));
+
+                    objModeloAjustesListaBean.setLstModeloAjustesCalcBeans(new ArrayList<>());
+                    objModeloAjustesListaBean.getLstModeloAjustesCalcBeans().add(objAjustesCalcBean);
+
+                    EvaluacionAnt = Evaluacion;
+
                 }
 
             }
+
+            mhAjustes.put(EvaluacionAnt, objModeloAjustesListaBean);
 
         } catch (Exception e) {
             mostrarAlerta(FATAL, "error.inesperado", log, e);
@@ -300,7 +341,7 @@ public class CrearBateriaView extends BaseView implements Serializable {
         }
         return listaDeAjustes;
     }
-*/
+     */
     public void poblarEmpresas() {
         try {
             lstEmpresas = new ArrayList<>();
@@ -513,10 +554,11 @@ public class CrearBateriaView extends BaseView implements Serializable {
                 objBateriaBean.setLstCompetencias(listaNombresCompetenciasPorEvaluacion);
                 objBateriaBean.setLstColores(listaColoresCompetenciasPorEvaluacion);
 
-                cargarAjustePorEvaluacion(objBateriaBean.getId());
-                objBateriaBean.setLstAjustes(listaAjustesPorEvaluacion1);
-//                objBateriaBean.setLstAjustes(obtenerAjustesPorEvaluacion(objBateriaBean));
-
+                cargarAjustePorEvaluacion();
+                if (mhAjustes.containsKey(objBateriaBean.getId())) {
+                    objBateriaBean.setLstAjustes(mhAjustes.get(objBateriaBean.getId()).getLstModeloAjustesCalcBeans());
+                }
+                
                 listaDeEvaluaciones.add(objBateriaBean);
             }
         } catch (Exception e) {

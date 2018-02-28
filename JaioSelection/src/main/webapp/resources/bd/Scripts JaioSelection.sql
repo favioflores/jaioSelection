@@ -14,6 +14,11 @@ insert into definicion values (7,'Tipo de pregunta');
 insert into definicion values (8,'Tipo de respuesta');
 insert into definicion values (9,'Estado del proceso');
 insert into definicion values (10,'Tipos de ajustes en evaluación');
+insert into definicion values (11,'Tipos de correos');
+insert into definicion values (12,'Estado de notificaciones');
+insert into definicion values (13,'Parametros de correo');
+
+
 
 select * from elemento;
 insert into elemento values (1,'Vigente',0,true,1);
@@ -47,11 +52,16 @@ insert into elemento values (22,'Por sexo',1,true,10);
 insert into elemento values (23,'Por nivel educativo',1,true,10);
 insert into elemento values (24,'Por edad',1,true,10);
 
+insert into elemento values (25,'Notificacion de recuperación de clave',1,true,11);
+
+insert into elemento values (30,'Registrado',1,true,12,null);
+insert into elemento values (31,'Enviado',1,true,12,null);
+insert into elemento values (32,'Fallido',1,true,12,null);
+
+insert into elemento values (34,'DOMINIO TLS',1,true,13,'smtp.gmail.com');
+insert into elemento values (35,'PUERTO ENVIO TLS',1,true,13,'465');
+insert into elemento values (36,'PUERTO RECEPCION TLS',1,true,13,'465');
+insert into elemento values (37,'USUARIO',1,true,13,'jaio.mailsender@gmail.com');
+insert into elemento values (38,'CONTRASEÑA',1,true,13,'i410400Frozen4play');
+
 commit;
-
-
-
-
-
-
-

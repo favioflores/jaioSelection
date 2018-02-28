@@ -9,6 +9,12 @@ public class AjusteEvaluacionBean implements Serializable {
     private String concepto;
     private String dato;
 
+    
+    public AjusteEvaluacionBean (String concepto, String dato){
+       this.concepto = concepto;
+       this.dato = dato;
+    }
+    
     public String getConcepto() {
         return concepto;
     }

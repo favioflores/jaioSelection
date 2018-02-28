@@ -1,7 +1,9 @@
 package jaio.selection.dao;
 
 import jaio.selection.orm.Destinatarios;
+import jaio.selection.orm.NotificacionDetalle;
 import jaio.selection.orm.Notificaciones;
+import jaio.selection.orm.Usuario;
 import jaio.selection.util.Constantes;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -25,10 +27,9 @@ public class NotificacionesDAO extends HibernateUtil implements Serializable {
 
             iniciaSession();
 
-            Query query = session.createQuery("from Notificaciones where DATE_FORMAT(fechaRegistro, '%Y-%m-%d') <= DATE_FORMAT(?, '%Y-%m-%d') and estado = ? ");
+            Query query = session.createQuery("from Notificaciones where estado = ? ");
 
-            query.setDate(0, dtFechaEntrega);
-            query.setInteger(1, Constantes.INT_ET_ESTADO_NOTIFICACION_PENDIENTE);
+            query.setInteger(0, Constantes.INT_ET_ESTADO_NOTIFICACION_REGISTRADO);
             query.setMaxResults(intLimiteNotificaciones);
 
             List<Notificaciones> lstNotificaciones = query.list();
@@ -87,21 +88,49 @@ public class NotificacionesDAO extends HibernateUtil implements Serializable {
         return flag;
     }
 
-    public Integer guardaNotificacion(Notificaciones objNotificaciones) throws HibernateException {
+    public boolean guardaNotificacion(Notificaciones objNotificaciones) {
 
-        Integer id = 0;
+        boolean flag = true;
 
         try {
+
             iniciaSession();
-            id = (Integer) session.save(objNotificaciones);
-            tx.commit();
-        } catch (HibernateException he) {
+
+            session.save(objNotificaciones);
+
+            guardarCambios();
+
+        } catch (Exception he) {
+            flag = false;
             manejaException(log, he);
         } finally {
-            session.close();
+            cerrarSession();
         }
 
-        return id;
-        
+        return flag;
+
     }
+
+    public List<NotificacionDetalle> obtenerNotificacionDetalle(Notificaciones notificaciones) {
+
+        iniciaSession();
+
+        try {
+
+            Query query = session.createQuery("From NotificacionDetalle n where n.notificaciones.id = ? ");
+
+            query.setInteger(0, notificaciones.getId());
+
+            return query.list();
+
+        } catch (Exception e) {
+            manejaException(log, e);
+        } finally {
+            cerrarSession();
+        }
+
+        return new ArrayList<>();
+
+    }
+
 }

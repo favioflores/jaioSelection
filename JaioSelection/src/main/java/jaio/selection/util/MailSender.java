@@ -2,8 +2,11 @@ package jaio.selection.util;
 
 import jaio.selection.dao.NotificacionesDAO;
 import jaio.selection.orm.Destinatarios;
+import jaio.selection.orm.NotificacionDetalle;
 import jaio.selection.orm.Notificaciones;
+import java.io.File;
 import java.io.Serializable;
+import java.io.StringWriter;
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -20,6 +23,9 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.velocity.Template;
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.VelocityEngine;
 
 public class MailSender extends Thread implements Serializable {
 
@@ -109,7 +115,7 @@ public class MailSender extends Thread implements Serializable {
 
                 if (boEnvioCorrecto) {
                     objNotificaciones.setEstado(Constantes.INT_ET_ESTADO_NOTIFICACION_ENVIADO);
-                    objNotificaciones.setFechaEnvio(new java.sql.Date(new Date().getTime()));
+                    objNotificaciones.setFechaEnvio(new Date());
                     objNotificacionesDAO.actualizaNotificacion(objNotificaciones);
                 } else {
                     this.sleep(30000);
@@ -123,69 +129,112 @@ public class MailSender extends Thread implements Serializable {
 
     public boolean enviaNotificaciones(Notificaciones objNotificaciones, List<Destinatarios> lstDestinatarios) {
 
+        boolean flag = true;
+        
         try {
 
-            byte[] bdata = null;
-            //objNotificaciones.getTipo()+"";
-            String mensaje = new String(bdata);
+            String mensaje = "" ;
+                    
+            if (prepararContenido(objNotificaciones, mensaje)) {
 
-            MimeMessage message = new MimeMessage(session);
+                MimeMessage message = new MimeMessage(session);
 
-            message.setSubject(objNotificaciones.getAsunto(), "UTF-8");
+                message.setSubject(objNotificaciones.getAsunto(), "UTF-8");
 
-            message.setFrom(new InternetAddress(strUsuario, "Jaio360 Notificaciones"));
+                message.setFrom(new InternetAddress(strUsuario, "Jaio Notificaciones"));
 
-            Iterator itLstDestinatarios = lstDestinatarios.iterator();
+                Iterator itLstDestinatarios = lstDestinatarios.iterator();
 
-            while (itLstDestinatarios.hasNext()) {
-                Destinatarios objDestinatarios = (Destinatarios) itLstDestinatarios.next();
-                message.addRecipient(Message.RecipientType.TO, new InternetAddress(objDestinatarios.getCorreo()));
-            }
+                while (itLstDestinatarios.hasNext()) {
+                    Destinatarios objDestinatarios = (Destinatarios) itLstDestinatarios.next();
+                    message.addRecipient(Message.RecipientType.TO, new InternetAddress(objDestinatarios.getCorreo()));
+                }
 
-            // COVER WRAP
-            MimeBodyPart wrap = new MimeBodyPart();
+                // COVER WRAP
+                MimeBodyPart wrap = new MimeBodyPart();
 
-            // ALTERNATIVE TEXT/HTML CONTENT
-            MimeMultipart cover = new MimeMultipart("alternative");
+                // ALTERNATIVE TEXT/HTML CONTENT
+                MimeMultipart cover = new MimeMultipart("alternative");
 
-            MimeBodyPart html = new MimeBodyPart();
+                MimeBodyPart html = new MimeBodyPart();
 
-            html.setHeader("Content-Type", "text/plain; charset=\"utf-8\"");
-            html.setHeader("Content-Transfer-Encoding", "quoted-printable");
-            html.setContent(mensaje, "text/html; charset=utf-8");
+                html.setHeader("Content-Type", "text/plain; charset=\"utf-8\"");
+                html.setHeader("Content-Transfer-Encoding", "quoted-printable");
+                html.setContent(mensaje, "text/html; charset=utf-8");
 
-            cover.addBodyPart(html);
+                cover.addBodyPart(html);
 
-            wrap.setHeader("Content-Type", "text/plain; charset=\"utf-8\"");
-            wrap.setHeader("Content-Transfer-Encoding", "quoted-printable");
-            wrap.setContent(cover, "text/plain; charset=utf-8");
+                wrap.setHeader("Content-Type", "text/plain; charset=\"utf-8\"");
+                wrap.setHeader("Content-Transfer-Encoding", "quoted-printable");
+                wrap.setContent(cover, "text/plain; charset=utf-8");
 
-            MimeMultipart content = new MimeMultipart("related");
-            message.setContent(content, "UTF-8");
-            content.addBodyPart(wrap);
+                MimeMultipart content = new MimeMultipart("related");
+                message.setContent(content, "UTF-8");
+                content.addBodyPart(wrap);
 
-            /*
+                /*
             if (objNotificaciones.getNoAdjunto() != null) {
                 BodyPart adjunto = new MimeBodyPart();
                 adjunto.setDataHandler(new DataHandler(new FileDataSource(objNotificaciones.getNoAdjunto())));
                 adjunto.setFileName(adjunto.getDataHandler().getName());
                 cover.addBodyPart(adjunto);
             }
-            */
+                 */
+                // SEND THE MESSAGE
+                message.setSentDate(new Date());
 
-            // SEND THE MESSAGE
-            message.setSentDate(new Date());
+                this.transport.sendMessage(message, message.getAllRecipients());
 
-            this.transport.sendMessage(message, message.getAllRecipients());
-
-            return true;
+                return true;
+            
+            }else{
+                flag = false;
+            }
 
         } catch (Exception e) {
+            flag = false;
             log.error(e);
         }
 
-        return true;
+        return flag;
 
+    }
+
+    private boolean prepararContenido(Notificaciones objNotificaciones, String contenido) {
+
+        boolean flag = true;
+
+        try {
+
+            VelocityEngine ve = new VelocityEngine();
+            ve.init();
+
+            Template t = new Template();
+            VelocityContext context = new VelocityContext();
+
+            if (objNotificaciones.getTipo() == Constantes.INT_ET_TIPO_CORREO_CLAVE) {
+                t = ve.getTemplate("TemplateRecuperaClave.vm");
+                context = new VelocityContext();
+
+                for (NotificacionDetalle objNotificacionDetalle : objNotificacionesDAO.obtenerNotificacionDetalle(objNotificaciones)) {
+                    context.put(objNotificacionDetalle.getParametro(), objNotificacionDetalle.getContenido());
+                }
+
+            } else {
+
+            }
+
+            StringWriter out = new StringWriter();
+            t.merge(context, out);
+
+            contenido = out.toString();
+
+        } catch (Exception e) {
+            flag = false;
+            log.error(e);
+        }
+
+        return flag;
     }
 
     private void conectarCorreoExterno() {
@@ -196,7 +245,12 @@ public class MailSender extends Thread implements Serializable {
             strPuerto = cache.obtenerValor1Elemento(Constantes.INT_ET_SENDER_PUERTO_ENVIO).trim();
             strUsuario = cache.obtenerValor1Elemento(Constantes.INT_ET_SENDER_USUARIO).trim();
             strContraseña = cache.obtenerValor1Elemento(Constantes.INT_ET_SENDER_CONTRASEÑA).trim();
-            */
+             */
+
+            strDominio = "smtp.gmail.com";
+            strPuerto = "465";
+            strUsuario = "jaio.mailsender@gmail.com";
+            strContraseña = "i410400Frozen4play";
 
             Properties props = new Properties();
             props.put("mail.smtp.host", strDominio);
