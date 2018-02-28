@@ -122,35 +122,39 @@ public class ClaveView extends BaseView implements Serializable {
                 objNotificaciones.getDestinatarioss().add(objDestinatarios);
 
                 objNotificaciones.getNotificaciondetalles().add(
-                        new NotificacionDetalle(objNotificaciones, "$USUARIO", correo.getBytes()));
+                        new NotificacionDetalle(objNotificaciones, "USUARIO", correo.getBytes()));
 
                 objNotificaciones.getNotificaciondetalles().add(
-                        new NotificacionDetalle(objNotificaciones, "$FECHA_HORA_ENVIO", Utilitarios.formatearFecha(new Date(), Constantes.DDMMYYYY_HH24_MI_SS).getBytes()));
+                        new NotificacionDetalle(objNotificaciones, "FECHA_HORA_ENVIO", Utilitarios.formatearFecha(new Date(), Constantes.DDMMYYYY_HH24_MI_SS).getBytes()));
 
                 objNotificaciones.getNotificaciondetalles().add(
-                        new NotificacionDetalle(objNotificaciones, "$APPLICACION", "JAIO 360".getBytes()));
+                        new NotificacionDetalle(objNotificaciones, "APPLICACION", "JAIO 360".getBytes()));
 
                 objNotificaciones.getNotificaciondetalles().add(
-                        new NotificacionDetalle(objNotificaciones, "$PARRAFO1", msg("correo.clave.parrafo1").getBytes()));
+                        new NotificacionDetalle(objNotificaciones, "PARRAFO1", msg("correo.clave.parrafo1").getBytes()));
+
+                
+                objNotificaciones.getNotificaciondetalles().add(
+                        new NotificacionDetalle(objNotificaciones, "CLAVE", objUsuarioDAO.obtenerUsuario(correo).getContrasena().getBytes()));
 
                 objNotificaciones.getNotificaciondetalles().add(
-                        new NotificacionDetalle(objNotificaciones, "$CLAVE", correo.getBytes()));
+                        new NotificacionDetalle(objNotificaciones, "PARRAFO2", msg("correo.clave.parrafo2").getBytes()));
 
                 objNotificaciones.getNotificaciondetalles().add(
-                        new NotificacionDetalle(objNotificaciones, "$PARRAFO2", msg("correo.clave.parrafo2").getBytes()));
+                        new NotificacionDetalle(objNotificaciones, "PARRAFO0", msg("correo.clave.parrafo0").getBytes()));
 
                 objNotificaciones.getNotificaciondetalles().add(
-                        new NotificacionDetalle(objNotificaciones, "$PARRAFO0", msg("correo.clave.parrafo0").getBytes()));
-
-                objNotificaciones.getNotificaciondetalles().add(
-                        new NotificacionDetalle(objNotificaciones, "$PARRAFO3", msg("correo.clave.parrafo3").getBytes()));
+                        new NotificacionDetalle(objNotificaciones, "PARRAFO3", msg("correo.clave.parrafo3").getBytes()));
 
                 if (objNotificacionesDAO.guardaNotificacion(objNotificaciones)) {
-                    mostrarAlerta(INFO, "Envió correctamente", null, null);
+                    correo = "";
+                    mostrarAlerta(INFO, "clave.correo.enviado", null, null);
                 } else {
                     mostrarAlerta(FATAL, "error.inesperado", null, null);
                 }
 
+            }else{
+                mostrarAlerta(ERROR, "clave.correo.noexiste", null, null);
             }
 
         } catch (Exception ex) {

@@ -44,6 +44,37 @@ public class UsuarioDAO extends HibernateUtil implements Serializable {
 
         return usuario;
     }
+    
+    public Usuario obtenerUsuario(String correo) {
+
+        Usuario usuario = null;
+
+        iniciaSession();
+
+        try {
+
+            Query query = session.createSQLQuery("select id from usuario where binary correo = ? ");
+
+            query.setString(0, correo);
+
+            List lst = query.list();
+
+            if (lst.isEmpty()) {
+                return null;
+            } else {
+                Query quer1 = session.createQuery("From Usuario where id = ? ");
+                quer1.setString(0, lst.get(0).toString());
+                usuario = (Usuario) quer1.uniqueResult();
+            }
+
+        } catch (Exception e) {
+            manejaException(log, e);
+        } finally {
+            cerrarSession();
+        }
+
+        return usuario;
+    }
 
     public boolean existeUsuario(String correo) {
 

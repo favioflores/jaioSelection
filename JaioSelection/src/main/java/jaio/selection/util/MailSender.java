@@ -130,12 +130,12 @@ public class MailSender extends Thread implements Serializable {
     public boolean enviaNotificaciones(Notificaciones objNotificaciones, List<Destinatarios> lstDestinatarios) {
 
         boolean flag = true;
-        
+
         try {
 
-            String mensaje = "" ;
-                    
-            if (prepararContenido(objNotificaciones, mensaje)) {
+            String mensaje = prepararContenido(objNotificaciones);
+
+            if (Utilitarios.noEsNuloOVacio(mensaje)) {
 
                 MimeMessage message = new MimeMessage(session);
 
@@ -186,8 +186,8 @@ public class MailSender extends Thread implements Serializable {
                 this.transport.sendMessage(message, message.getAllRecipients());
 
                 return true;
-            
-            }else{
+
+            } else {
                 flag = false;
             }
 
@@ -197,6 +197,47 @@ public class MailSender extends Thread implements Serializable {
         }
 
         return flag;
+
+    }
+
+    private String prepararContenido(Notificaciones objNotificaciones) {
+
+        boolean flag = true;
+
+        try {
+
+            Properties props = new Properties();
+            props.setProperty("resource.loader", "class");
+            props.setProperty("class.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
+            
+            VelocityEngine ve = new VelocityEngine();
+            
+            ve.init(props);
+
+            Template t = new Template();
+            VelocityContext context = new VelocityContext();
+
+            if (objNotificaciones.getTipo() == Constantes.INT_ET_TIPO_CORREO_CLAVE) {
+                t = ve.getTemplate("templates/TemplateRecuperaClave.vm");
+                context = new VelocityContext();
+
+                for (NotificacionDetalle objNotificacionDetalle : objNotificacionesDAO.obtenerNotificacionDetalle(objNotificaciones)) {
+                    context.put(objNotificacionDetalle.getParametro(), new String(objNotificacionDetalle.getContenido()));
+                }
+
+            } else {
+
+            }
+
+            StringWriter out = new StringWriter();
+            t.merge(context, out);
+
+            return out.toString();
+
+        } catch (Exception e) {
+            log.error(e);
+            return "";
+        }
 
     }
 
