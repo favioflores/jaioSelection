@@ -226,9 +226,9 @@ public class ModeloEvaluacionDAO extends HibernateUtil implements Serializable {
             if (Utilitarios.noEsNuloOVacio(var)) {
                 objBateriaPersonalizada.setId(Integer.parseInt(id));
                 Query query0 = session.createSQLQuery("delete from bateria_evaluacion where bateria_personalizada_id=" + id);
-                Query query1 = session.createSQLQuery("delete from proceso_seleccion where id=(select proceso_seleccion_id "
+                Query query1 = session.createSQLQuery("delete from evaluacion_perfil where bateria_personalizada_id=" + id);
+                Query query2 = session.createSQLQuery("delete from proceso_seleccion where id=(select proceso_seleccion_id "
                         + "from evaluacion_perfil where bateria_personalizada_id=" + id + ")");
-                Query query2 = session.createSQLQuery("delete from evaluacion_perfil where bateria_personalizada_id=" + id);
                 Query query3 = session.createSQLQuery("update bateria_personalizada "
                         + " set nombre=" + objBateriaPersonalizada.getNombre() + ","
                         + " minutos_estimados_total=" + objBateriaPersonalizada.getMinutosEstimadosTotal() + ""

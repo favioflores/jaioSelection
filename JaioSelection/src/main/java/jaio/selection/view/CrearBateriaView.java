@@ -112,7 +112,6 @@ public class CrearBateriaView extends BaseView implements Serializable {
 
         if (Utilitarios.noEsNuloOVacio(Utilitarios.obtenerSession(Constantes.SESSION_ID_BATERIA))) {
             cargarListaCompetenciasTotal();
-            cargarEvaluaciones();
             String id = (String) Utilitarios.obtenerSession(Constantes.SESSION_ID_BATERIA);
             cargarInformacionParaEditar(id);
         } else {
@@ -169,9 +168,7 @@ public class CrearBateriaView extends BaseView implements Serializable {
                 objBateriaBean.setValidez(obj[3].toString());
                 objBateriaBean.setConfiabilidad(obj[4].toString());
                 objBateriaBean.setLimiteTiempo(obj[7].toString());
-                //Crear campo en BD para fecha ultima de edicion
-                //actualizar el estado de la bateria a editado
-                //objBateriaBean.setFechaModificacion(ingresarfechamodificacion);
+                //agregar campo de ultima modificacion
 
                 cargarModeloCompetenciaPorEvaluacion(objBateriaBean.getId());
                 objBateriaBean.setLstCompetencias(listaNombresCompetenciasPorEvaluacion);
@@ -182,17 +179,9 @@ public class CrearBateriaView extends BaseView implements Serializable {
                     objBateriaBean.setLstAjustes(mhAjustes.get(objBateriaBean.getId()).getLstModeloAjustesCalcBeans());
                 }
                 
-                droppedBaterias.add(objBateriaBean);
-                contarMinutos();
-                droppedCompetencias = new ArrayList<>();
-                mapCompetenciasSeleccionadas = new LinkedHashMap<String, String>();
-
-                for (BateriaBean objBateriaBean1 : droppedBaterias) {
-                    cargarCompetencias(objBateriaBean1);
-                }
-                listaDeEvaluaciones.remove(droppedBaterias);
-//                pasarBaterias(objBateriaBean);
+                pasarBaterias(objBateriaBean);
             }
+            cargarEvaluaciones();
         } catch (Exception e) {
             mostrarAlerta(FATAL, "error.inesperado", log, e);
         }
@@ -537,7 +526,6 @@ public class CrearBateriaView extends BaseView implements Serializable {
             contarMinutos();
             droppedCompetencias = new ArrayList<>();
             mapCompetenciasSeleccionadas = new LinkedHashMap<String, String>();
-
             for (BateriaBean objBateriaBean1 : droppedBaterias) {
                 cargarCompetencias(objBateriaBean1);
             }
