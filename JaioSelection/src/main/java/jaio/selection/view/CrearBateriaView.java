@@ -36,12 +36,11 @@ import jaio.selection.util.Utilitarios;
 import static jaio.selection.view.BaseView.ERROR;
 import static jaio.selection.view.BaseView.FATAL;
 import static jaio.selection.view.BaseView.INFO;
-import java.sql.Array;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.Map;
 import org.primefaces.event.DragDropEvent;
 
 @ManagedBean(name = "crearBateriaView")
@@ -71,6 +70,7 @@ public class CrearBateriaView extends BaseView implements Serializable {
     private String strEmpresaSeleccionada;
     private String strAreaSeleccionada;
     private String strPerfilSeleccionado;
+    private boolean lockEmpresa;
     private int minutosTotal = 0;
     private LinkedHashMap<String, String> mapCompetenciasSeleccionadas = new LinkedHashMap<>();
     private List<BateriaBean> droppedBaterias;
@@ -78,43 +78,125 @@ public class CrearBateriaView extends BaseView implements Serializable {
 
     @PostConstruct
     public void init() {
-        strNombreProceso = null;
-        strCompSeleccionada = null;
-        cargarListaCompetenciasTotal();
-        cargarEvaluaciones();
-        poblarEmpresas();
-        lstArea = new ArrayList<>();
-        lstPerfil = new ArrayList<>();
-        minutosTotal = 0;
-        mapCompetenciasSeleccionadas.clear();
-        droppedBaterias = new ArrayList<>();
-        droppedCompetencias = new ArrayList<>();
-        if (Utilitarios.noEsNuloOVacio(Utilitarios.obtenerSession(Constantes.SESSION_BATERIA))) {
-            strEmpresaSeleccionada = (String) Utilitarios.obtenerSession(Constantes.SESSION_BATERIA);
-            poblarArea();
+
+        if (Utilitarios.noEsNuloOVacio(Utilitarios.obtenerSession(Constantes.SESSION_ID_BATERIA))) {
+            cargarListaCompetenciasTotal();
+            cargarEvaluaciones();
+            String demo = (String) Utilitarios.obtenerSession(Constantes.SESSION_ID_BATERIA);
+            cargarInformacionParaEditar(demo);
         } else {
-            strEmpresaSeleccionada = null;
-            strAreaSeleccionada = null;
-            strPerfilSeleccionado = null;
+            lockEmpresa = false;
+            strNombreProceso = null;
+            strCompSeleccionada = null;
+            cargarListaCompetenciasTotal();
+            cargarEvaluaciones();
+            poblarEmpresas();
+            lstArea = new ArrayList<>();
+            lstPerfil = new ArrayList<>();
+            minutosTotal = 0;
+            mapCompetenciasSeleccionadas.clear();
+            droppedBaterias = new ArrayList<>();
+            droppedCompetencias = new ArrayList<>();
+            if (Utilitarios.noEsNuloOVacio(Utilitarios.obtenerSession(Constantes.SESSION_BATERIA))) {
+                strEmpresaSeleccionada = (String) Utilitarios.obtenerSession(Constantes.SESSION_BATERIA);
+                poblarArea();
+            } else {
+                strEmpresaSeleccionada = null;
+                strAreaSeleccionada = null;
+                strPerfilSeleccionado = null;
+            }
         }
     }
 
     public void limpiar() {
-        strNombreProceso = null;
+
+        if (Utilitarios.noEsNuloOVacio(Utilitarios.obtenerSession(Constantes.SESSION_ID_BATERIA))) {
+            cargarListaCompetenciasTotal();
+            cargarEvaluaciones();
+            String id = (String) Utilitarios.obtenerSession(Constantes.SESSION_ID_BATERIA);
+            cargarInformacionParaEditar(id);
+        } else {
+            strNombreProceso = null;
+            strEmpresaSeleccionada = null;
+            poblarEmpresas();
+
+        }
         strCompSeleccionada = null;
         cargarListaCompetenciasTotal();
         cargarRespaldo();
-        poblarEmpresas();
         lstArea = new ArrayList<>();
         lstPerfil = new ArrayList<>();
-        strEmpresaSeleccionada = null;
         strAreaSeleccionada = null;
         strPerfilSeleccionado = null;
+        poblarArea();
         minutosTotal = 0;
         mapCompetenciasSeleccionadas.clear();
         droppedBaterias = new ArrayList<>();
         droppedCompetencias = new ArrayList<>();
         mhAjustes.clear();
+
+    }
+
+    public List cargarInformacionParaEditar(String id) {
+        try {
+            ModeloEvaluacionDAO objEvaluacionDAO = new ModeloEvaluacionDAO();
+            List listaInfo = objEvaluacionDAO.obtenerInfoParaCampos(id);
+
+            Iterator it1 = listaInfo.iterator();
+
+            while (it1.hasNext()) {
+                Object obj[] = (Object[]) it1.next();
+                strNombreProceso = obj[0].toString();
+                poblarEmpresas();
+                strEmpresaSeleccionada = obj[1].toString();
+                poblarArea();
+                strAreaSeleccionada = obj[2].toString();
+                poblarPerfil();
+                strPerfilSeleccionado = obj[3].toString();
+            }
+            lockEmpresa = true;
+
+            droppedBaterias = new ArrayList<>();
+            droppedCompetencias = new ArrayList<>();
+            List listaEvaluaciones = objEvaluacionDAO.obtenerEvaluacionesSeleccionadas(id);
+            Iterator it2 = listaEvaluaciones.iterator();
+            while (it2.hasNext()) {
+                Object obj[] = (Object[]) it2.next();
+                BateriaBean objBateriaBean = new BateriaBean();
+                objBateriaBean.setId(obj[0].toString());
+                objBateriaBean.setNombre(obj[1].toString());
+                objBateriaBean.setMinutosEstimados(obj[2].toString());
+                objBateriaBean.setValidez(obj[3].toString());
+                objBateriaBean.setConfiabilidad(obj[4].toString());
+                objBateriaBean.setLimiteTiempo(obj[7].toString());
+                //Crear campo en BD para fecha ultima de edicion
+                //actualizar el estado de la bateria a editado
+                //objBateriaBean.setFechaModificacion(ingresarfechamodificacion);
+
+                cargarModeloCompetenciaPorEvaluacion(objBateriaBean.getId());
+                objBateriaBean.setLstCompetencias(listaNombresCompetenciasPorEvaluacion);
+                objBateriaBean.setLstColores(listaColoresCompetenciasPorEvaluacion);
+
+                cargarAjustePorEvaluacion();
+                if (mhAjustes.containsKey(objBateriaBean.getId())) {
+                    objBateriaBean.setLstAjustes(mhAjustes.get(objBateriaBean.getId()).getLstModeloAjustesCalcBeans());
+                }
+                
+                droppedBaterias.add(objBateriaBean);
+                contarMinutos();
+                droppedCompetencias = new ArrayList<>();
+                mapCompetenciasSeleccionadas = new LinkedHashMap<String, String>();
+
+                for (BateriaBean objBateriaBean1 : droppedBaterias) {
+                    cargarCompetencias(objBateriaBean1);
+                }
+                listaDeEvaluaciones.remove(droppedBaterias);
+//                pasarBaterias(objBateriaBean);
+            }
+        } catch (Exception e) {
+            mostrarAlerta(FATAL, "error.inesperado", log, e);
+        }
+        return null;
     }
 
     public List cargarEvaluaciones() {
@@ -284,11 +366,8 @@ public class CrearBateriaView extends BaseView implements Serializable {
                     objModeloAjustesListaBean.getLstModeloAjustesCalcBeans().add(objAjustesCalcBean);
 
                     EvaluacionAnt = Evaluacion;
-
                 }
-
             }
-
             mhAjustes.put(EvaluacionAnt, objModeloAjustesListaBean);
 
         } catch (Exception e) {
@@ -296,52 +375,6 @@ public class CrearBateriaView extends BaseView implements Serializable {
         }
     }
 
-    /*
-    public List obtenerAjustesPorEvaluacion(BateriaBean objBateriaBean) {
-        List<ModeloAjustesCalcBean> listaDeAjustes = new ArrayList<>();
-        try {
-            ModeloEvaluacionDAO objMCDao = new ModeloEvaluacionDAO();
-            List lstAjustes = objMCDao.traerAjustesXEvaluacion(objBateriaBean.getId());
-            if (Utilitarios.noEsNuloOVacio(lstAjustes)) {
-                Iterator it = lstAjustes.iterator();
-
-                String tipo = "", tipoAnt = "";
-
-                ModeloAjustesCalcBean objAjustesCalcBean = new ModeloAjustesCalcBean();
-
-                while (it.hasNext()) {
-                    Object obj[] = (Object[]) it.next();
-                    tipo = obj[2].toString();
-                    if (tipo.equals(tipoAnt)) {
-                        AjusteEvaluacionBean objAjusteEvaluacionBean = new AjusteEvaluacionBean();
-                        objAjusteEvaluacionBean.setConcepto(obj[1].toString());
-                        objAjusteEvaluacionBean.setDato(obj[3].toString());
-                        objAjustesCalcBean.getLstAjusteEvaluacionBean().add(objAjusteEvaluacionBean);
-                        tipoAnt = tipo;
-                    } else {
-                        if (!tipoAnt.equals("")) {
-                            listaDeAjustes.add(objAjustesCalcBean);
-                        }
-                        objAjustesCalcBean = new ModeloAjustesCalcBean();
-                        objAjustesCalcBean.setTipo(obj[2].toString());
-                        objAjustesCalcBean.setLstAjusteEvaluacionBean(new ArrayList<>());
-                        AjusteEvaluacionBean objAjusteEvaluacionBean = new AjusteEvaluacionBean();
-                        objAjusteEvaluacionBean.setConcepto(obj[1].toString());
-                        objAjusteEvaluacionBean.setDato(obj[3].toString());
-                        objAjustesCalcBean.getLstAjusteEvaluacionBean().add(objAjusteEvaluacionBean);
-                        tipoAnt = tipo;
-                    }
-                }
-                if (!lstAjustes.isEmpty()) {
-                    listaDeAjustes.add(objAjustesCalcBean);
-                }
-            }
-        } catch (Exception e) {
-            mostrarAlerta(FATAL, "error.inesperado", log, e);
-        }
-        return listaDeAjustes;
-    }
-     */
     public void poblarEmpresas() {
         try {
             lstEmpresas = new ArrayList<>();
@@ -456,10 +489,19 @@ public class CrearBateriaView extends BaseView implements Serializable {
         }
     }
 
-    public void cargarCompetencias(String id) {
+    public void cargarCompetencias(BateriaBean objBateriaBean) {
         try {
+            StringBuilder sb = new StringBuilder();
+            List lstId = new ArrayList<>();
+            for (BateriaBean objBean : droppedBaterias) {
+                lstId.add(objBean.getId());
+            }
+            for (int i = 0; i < lstId.size(); i++) {
+                sb.append("'").append(lstId.get(i)).append("'").append(",");
+            }
+            sb.deleteCharAt(sb.length() - 1).toString();
             ModeloCompetenciaDAO objMCDao = new ModeloCompetenciaDAO();
-            List lstCompetencias = objMCDao.obtenerCompetenciasXEvaluacion(id);
+            List lstCompetencias = objMCDao.obtenerCompetenciasXEvaluacion(objBateriaBean.getId());
             Iterator it = lstCompetencias.iterator();
             while (it.hasNext()) {
                 Object obj[] = (Object[]) it.next();
@@ -469,10 +511,16 @@ public class CrearBateriaView extends BaseView implements Serializable {
                 objModeloCompetencia.setColor(obj[2].toString());
                 if (!mapCompetenciasSeleccionadas.containsKey(objModeloCompetencia.getId())) {
                     mapCompetenciasSeleccionadas.put(objModeloCompetencia.getId(), objModeloCompetencia.getNombre());
+
                     ModeloCompetenciaBean objCompetencia = new ModeloCompetenciaBean();
                     objCompetencia.setId(objModeloCompetencia.getId());
                     objCompetencia.setNombre(objModeloCompetencia.getNombre());
                     objCompetencia.setColor(objModeloCompetencia.getColor());
+
+                    List lista = objMCDao.obtenerNombresEvaluacionPorCompetencia(objModeloCompetencia.getId(), sb);
+
+                    objCompetencia.setListaNombreEvaluaciones(lista);
+
                     droppedCompetencias.add(objCompetencia);
                     Collections.sort(droppedCompetencias);
                 }
@@ -487,7 +535,12 @@ public class CrearBateriaView extends BaseView implements Serializable {
         try {
             droppedBaterias.add(objBateriaBean);
             contarMinutos();
-            cargarCompetencias(objBateriaBean.getId());
+            droppedCompetencias = new ArrayList<>();
+            mapCompetenciasSeleccionadas = new LinkedHashMap<String, String>();
+
+            for (BateriaBean objBateriaBean1 : droppedBaterias) {
+                cargarCompetencias(objBateriaBean1);
+            }
             listaDeEvaluaciones.remove(objBateriaBean);
         } catch (Exception e) {
             mostrarAlerta(FATAL, "error.inesperado", log, e);
@@ -501,7 +554,7 @@ public class CrearBateriaView extends BaseView implements Serializable {
             droppedCompetencias = new ArrayList<>();
             mapCompetenciasSeleccionadas = new LinkedHashMap<String, String>();
             for (BateriaBean objBateriaBean1 : droppedBaterias) {
-                cargarCompetencias(objBateriaBean1.getId());
+                cargarCompetencias(objBateriaBean1);
             }
             contarMinutos();
         } catch (Exception e) {
@@ -520,7 +573,6 @@ public class CrearBateriaView extends BaseView implements Serializable {
     public void cargarListaCompetenciasTotal() {
         try {
             listaCompetenciasTotal = new ArrayList<>();
-
             ModeloEvaluacionDAO objM = new ModeloEvaluacionDAO();
             List listStringC = objM.traerNombresDeCompetencias();
             Iterator it = listStringC.iterator();
@@ -558,7 +610,7 @@ public class CrearBateriaView extends BaseView implements Serializable {
                 if (mhAjustes.containsKey(objBateriaBean.getId())) {
                     objBateriaBean.setLstAjustes(mhAjustes.get(objBateriaBean.getId()).getLstModeloAjustesCalcBeans());
                 }
-                
+
                 listaDeEvaluaciones.add(objBateriaBean);
             }
         } catch (Exception e) {
@@ -570,6 +622,7 @@ public class CrearBateriaView extends BaseView implements Serializable {
     public void grabarBateria() {
         try {
             ModeloEvaluacionDAO objEvaluacionDAO = new ModeloEvaluacionDAO();
+            String id = (String) Utilitarios.obtenerSession(Constantes.SESSION_ID_BATERIA);
             if (Utilitarios.noEsNuloOVacio(droppedBaterias)) {
                 if (Utilitarios.noEsNuloOVacio(droppedCompetencias)) {
                     BateriaPersonalizada objBateriaPersonalizada = new BateriaPersonalizada();
@@ -579,8 +632,16 @@ public class CrearBateriaView extends BaseView implements Serializable {
                     objBateriaPersonalizada.setResena(strNombreProceso);
                     objBateriaPersonalizada.setHorasEstimadasTotal(Constantes.Int_cinco);
                     objBateriaPersonalizada.setMinutosEstimadosTotal(minutosTotal);
+                    if (Utilitarios.noEsNuloOVacio(id)) {
+                        objEvaluacionDAO.eliminarBateria(objBateriaPersonalizada);
+                    }
                     objEvaluacionDAO.grabarBateriaPersonalizada(objBateriaPersonalizada, droppedBaterias, strPerfilSeleccionado);
-                    limpiar();
+                    if (Utilitarios.noEsNuloOVacio(id)) {
+                        Utilitarios.ponerSession(null, Constantes.SESSION_ID_BATERIA);
+                        limpiar();
+                    } else {
+                        limpiar();
+                    }
                     mostrarAlerta(INFO, "bateria.bateriaGuardada", null, null);
                 } else {
                     mostrarAlerta(ERROR, "bateria.noSeleccionoCompetencias", null, null);
@@ -719,6 +780,14 @@ public class CrearBateriaView extends BaseView implements Serializable {
 
     public void setListaAjustesPorEvaluacion1(List<ModeloAjustesCalcBean> listaAjustesPorEvaluacion1) {
         this.listaAjustesPorEvaluacion1 = listaAjustesPorEvaluacion1;
+    }
+
+    public boolean isLockEmpresa() {
+        return lockEmpresa;
+    }
+
+    public void setLockEmpresa(boolean lockEmpresa) {
+        this.lockEmpresa = lockEmpresa;
     }
 
 }

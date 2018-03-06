@@ -7,7 +7,7 @@ public class BateriaPersonalizadaBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
     
-    private Integer id;
+    private String id;
     private String nombre;
     private String fechaCreacion;
     private String nombrePerfil;
@@ -16,11 +16,11 @@ public class BateriaPersonalizadaBean implements Serializable {
     private int horasEstimadasTotal;
     private int minutosEstimadosTotal;
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 

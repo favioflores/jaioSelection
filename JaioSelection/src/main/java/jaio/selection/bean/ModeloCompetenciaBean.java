@@ -8,11 +8,12 @@ import java.util.List;
 public class ModeloCompetenciaBean implements Serializable, Comparable<ModeloCompetenciaBean> {
 
     private static final long serialVersionUID = 1L;
-    
+
     private String id;
     private String nombre;
     private String resena;
     private String color;
+    private List listaNombreEvaluaciones;
 
     public String getId() {
         return id;
@@ -46,10 +47,17 @@ public class ModeloCompetenciaBean implements Serializable, Comparable<ModeloCom
         this.color = color;
     }
 
-    @Override
-    public int compareTo(ModeloCompetenciaBean o) {
-         return this.getNombre().compareTo(o.getNombre());
+    public List getListaNombreEvaluaciones() {
+        return listaNombreEvaluaciones;
     }
 
-    
+    public void setListaNombreEvaluaciones(List listaNombreEvaluaciones) {
+        this.listaNombreEvaluaciones = listaNombreEvaluaciones;
+    }
+
+    @Override
+    public int compareTo(ModeloCompetenciaBean o) {
+        return this.getNombre().compareTo(o.getNombre());
+    }
+
 }

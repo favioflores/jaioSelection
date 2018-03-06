@@ -17,8 +17,10 @@ import jaio.selection.orm.ModeloEvaluacion;
 import jaio.selection.orm.Perfil;
 import jaio.selection.orm.ProcesoSeleccion;
 import jaio.selection.util.Constantes;
+import jaio.selection.util.Utilitarios;
 import java.io.Serializable;
 import java.util.Date;
+import org.atmosphere.util.uri.UriComponent;
 import org.hibernate.Query;
 
 public class ModeloEvaluacionDAO extends HibernateUtil implements Serializable {
@@ -215,10 +217,37 @@ public class ModeloEvaluacionDAO extends HibernateUtil implements Serializable {
         return null;
     }
 
+    public void eliminarBateria(BateriaPersonalizada objBateriaPersonalizada) {
+        try {
+            iniciaSession();
+            String id = (String) Utilitarios.obtenerSession(Constantes.SESSION_ID_BATERIA);
+            Query query = session.createQuery("From BateriaPersonalizada b where b.id= " + id);
+            Object var = query.uniqueResult();
+            if (Utilitarios.noEsNuloOVacio(var)) {
+                objBateriaPersonalizada.setId(Integer.parseInt(id));
+                Query query0 = session.createSQLQuery("delete from bateria_evaluacion where bateria_personalizada_id=" + id);
+                Query query1 = session.createSQLQuery("delete from proceso_seleccion where id=(select proceso_seleccion_id "
+                        + "from evaluacion_perfil where bateria_personalizada_id=" + id + ")");
+                Query query2 = session.createSQLQuery("delete from evaluacion_perfil where bateria_personalizada_id=" + id);
+                Query query3 = session.createSQLQuery("update bateria_personalizada "
+                        + " set nombre=" + objBateriaPersonalizada.getNombre() + ","
+                        + " minutos_estimados_total=" + objBateriaPersonalizada.getMinutosEstimadosTotal() + ""
+                        + " where id =" + objBateriaPersonalizada.getId());
+            }
+            guardarCambios();
+            log.debug("Grago correctamente");
+        } catch (Exception e) {
+            rollback(log, e);
+        } finally {
+            cerrarSession();
+        }
+    }
+
     public void grabarBateriaPersonalizada(BateriaPersonalizada objBateriaPersonalizada, List<BateriaBean> droppedBaterias, String strPerfilSeleccionado) {
         try {
             iniciaSession();
             session.save(objBateriaPersonalizada);
+
             for (BateriaBean droppedBateria : droppedBaterias) {
                 ModeloEvaluacion objModeloEvaluacion = new ModeloEvaluacion();
                 objModeloEvaluacion.setId(Integer.parseInt(droppedBateria.getId()));
@@ -234,7 +263,9 @@ public class ModeloEvaluacionDAO extends HibernateUtil implements Serializable {
 
                 objModeloEvaluacion.getBateriaEvaluacion().add(objBateriaEvaluacion);
                 objBateriaPersonalizada.getBateriaEvaluacion().add(objBateriaEvaluacion);
+
                 session.save(objBateriaEvaluacion);
+
             }
 
             ProcesoSeleccion objProcesoSeleccion = new ProcesoSeleccion();
@@ -266,6 +297,54 @@ public class ModeloEvaluacionDAO extends HibernateUtil implements Serializable {
 
             guardarCambios();
             log.debug("Grago correctamente");
+        } catch (Exception e) {
+            rollback(log, e);
+        } finally {
+            cerrarSession();
+        }
+    }
+
+    public void updateRegister() {
+
+    }
+
+    public List obtenerEvaluacionesSeleccionadas(String id) {
+        iniciaSession();
+        try {
+            Query query = session.createSQLQuery("select me.* from modelo_evaluacion me "
+                    + " join bateria_evaluacion be on be.modelo_evaluacion_id = me.id "
+                    + " where be.bateria_personalizada_id=" + id);
+            return query.list();
+        } catch (Exception e) {
+            manejaException(log, e);
+        } finally {
+            cerrarSession();
+        }
+        return null;
+    }
+
+    public List obtenerInfoParaCampos(String id) {
+        iniciaSession();
+        try {
+            Query query = session.createSQLQuery("select bp.nombre,p.empresa_id,p.area_id,p.id "
+                    + " from bateria_personalizada bp "
+                    + " join evaluacion_perfil ep on ep.bateria_personalizada_id = bp.id "
+                    + " join proceso_seleccion ps on ps.id = ep.proceso_seleccion_id "
+                    + " join perfil p on p.id = ps.perfil_id "
+                    + " where bp.id=" + id);
+            return query.list();
+        } catch (Exception e) {
+            manejaException(log, e);
+        } finally {
+            cerrarSession();
+        }
+        return null;
+    }
+
+    public void actualizarBateria(BateriaPersonalizada objBateriaPersonalizada, List<BateriaBean> droppedBaterias, String strPerfilSeleccionado) {
+        try {
+            iniciaSession();
+
         } catch (Exception e) {
             rollback(log, e);
         } finally {
