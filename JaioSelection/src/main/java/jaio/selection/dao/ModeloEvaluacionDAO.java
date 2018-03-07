@@ -223,6 +223,20 @@ public class ModeloEvaluacionDAO extends HibernateUtil implements Serializable {
             iniciaSession();
             if (Utilitarios.noEsNuloOVacio(Utilitarios.obtenerSession(Constantes.SESSION_ID_BATERIA))) {
                 session.saveOrUpdate(objBateriaPersonalizada);
+                Query del = session.createSQLQuery("delete from bateria_evaluacion "
+                        + " where bateria_personalizada_id=" + objBateriaPersonalizada.getId());
+                del.executeUpdate();
+                
+                Query del1 = session.createSQLQuery("delete from evaluacion_perfil "
+                        + " where bateria_personalizada_id="+objBateriaPersonalizada.getId());
+                del1.executeUpdate();
+                
+                Query del2 = session.createSQLQuery("delete from proceso_seleccion where id=(select proceso_seleccion_id"
+                        + " from evaluacion_perfil where bateria_personalizada_id="+ objBateriaPersonalizada.getId() +")");
+                del2.executeUpdate();
+                
+                
+                
             } else {
                 session.save(objBateriaPersonalizada);
             }
@@ -242,7 +256,7 @@ public class ModeloEvaluacionDAO extends HibernateUtil implements Serializable {
 
                 objModeloEvaluacion.getBateriaEvaluacion().add(objBateriaEvaluacion);
                 objBateriaPersonalizada.getBateriaEvaluacion().add(objBateriaEvaluacion);
-                
+
                 session.save(objBateriaEvaluacion);
 
             }
