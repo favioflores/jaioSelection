@@ -69,10 +69,10 @@ public class BateriaPersonalizadaDAO extends HibernateUtil implements Serializab
     public List obtenerCompetenciaParaResumen(String id) {
         iniciaSession();
         try {
-            Query query = session.createSQLQuery("select distinct(mc.nombre) from modelo_competencia mc "
+            Query query = session.createSQLQuery("select distinct(mc.nombre),mc.id from modelo_competencia mc "
                     + " join modelo_evaluacion_x_competencia mec on mec.modelo_competencia_id = mc.id "
                     + " join bateria_evaluacion be on be.modelo_evaluacion_id = mec.modelo_evaluacion_id "
-                    + " where be.bateria_personalizada_id=" + id + "order by mc.nombre asc");
+                    + " where be.bateria_personalizada_id=" + id);
             return query.list();
         } catch (HibernateException e) {
             manejaException(log, e);

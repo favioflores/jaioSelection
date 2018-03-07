@@ -27,6 +27,7 @@ import jaio.selection.util.Constantes;
 import jaio.selection.dao.ModeloEvaluacionDAO;
 import jaio.selection.dao.PerfilDAO;
 import jaio.selection.orm.Area;
+import jaio.selection.orm.BateriaEvaluacion;
 import jaio.selection.orm.BateriaPersonalizada;
 import jaio.selection.orm.Empresa;
 import jaio.selection.orm.ModeloCompetencia;
@@ -36,7 +37,6 @@ import jaio.selection.util.Utilitarios;
 import static jaio.selection.view.BaseView.ERROR;
 import static jaio.selection.view.BaseView.FATAL;
 import static jaio.selection.view.BaseView.INFO;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
@@ -140,9 +140,9 @@ public class CrearBateriaView extends BaseView implements Serializable {
         try {
             ModeloEvaluacionDAO objEvaluacionDAO = new ModeloEvaluacionDAO();
             List listaInfo = objEvaluacionDAO.obtenerInfoParaCampos(id);
+            List listaEvaluaciones = objEvaluacionDAO.obtenerEvaluacionesSeleccionadas(id);
 
             Iterator it1 = listaInfo.iterator();
-
             while (it1.hasNext()) {
                 Object obj[] = (Object[]) it1.next();
                 strNombreProceso = obj[0].toString();
@@ -157,7 +157,8 @@ public class CrearBateriaView extends BaseView implements Serializable {
 
             droppedBaterias = new ArrayList<>();
             droppedCompetencias = new ArrayList<>();
-            List listaEvaluaciones = objEvaluacionDAO.obtenerEvaluacionesSeleccionadas(id);
+            
+
             Iterator it2 = listaEvaluaciones.iterator();
             while (it2.hasNext()) {
                 Object obj[] = (Object[]) it2.next();
@@ -179,7 +180,7 @@ public class CrearBateriaView extends BaseView implements Serializable {
                     objBateriaBean.setLstAjustes(mhAjustes.get(objBateriaBean.getId()).getLstModeloAjustesCalcBeans());
                 }
                 
-                pasarBaterias(objBateriaBean);
+                pasarBaterias1(objBateriaBean);
             }
             cargarEvaluaciones();
         } catch (Exception e) {
@@ -529,11 +530,42 @@ public class CrearBateriaView extends BaseView implements Serializable {
             for (BateriaBean objBateriaBean1 : droppedBaterias) {
                 cargarCompetencias(objBateriaBean1);
             }
-            listaDeEvaluaciones.remove(objBateriaBean);
+            if(Utilitarios.noEsNuloOVacio(Utilitarios.obtenerSession(Constantes.SESSION_ID_BATERIA))){
+                
+            }else{
+                listaDeEvaluaciones.remove(objBateriaBean);    
+            }
+            
+            
         } catch (Exception e) {
             mostrarAlerta(FATAL, "error.inesperado", log, e);
         }
     }
+    
+   public void pasarBaterias1(BateriaBean objBateriaBean) {
+        try {
+            droppedBaterias.add(objBateriaBean);
+            
+            contarMinutos();
+            droppedCompetencias = new ArrayList<>();
+            mapCompetenciasSeleccionadas = new LinkedHashMap<String, String>();
+            for (BateriaBean objBateriaBean1 : droppedBaterias) {
+                cargarCompetencias(objBateriaBean1);
+            }
+            
+            List<BateriaBean> listaDeEvaluaciones1 = new ArrayList<>();
+            int s=0;
+            listaDeEvaluaciones1.addAll(listaDeEvaluaciones);
+            for (BateriaBean objB : listaDeEvaluaciones1) {
+                if (objB.getId().equals(objBateriaBean.getId())){
+                    listaDeEvaluaciones.remove(objB);
+                }
+                s=s++;
+            }            
+        } catch (Exception e) {
+            mostrarAlerta(FATAL, "error.inesperado", log, e);
+        }
+    }    
 
     public void quitarBaterias(BateriaBean objBateria) {
         try {
@@ -614,15 +646,15 @@ public class CrearBateriaView extends BaseView implements Serializable {
             if (Utilitarios.noEsNuloOVacio(droppedBaterias)) {
                 if (Utilitarios.noEsNuloOVacio(droppedCompetencias)) {
                     BateriaPersonalizada objBateriaPersonalizada = new BateriaPersonalizada();
+                    if (Utilitarios.noEsNuloOVacio(id)) {
+                        objBateriaPersonalizada.setId(Integer.parseInt(id));
+                    }
                     objBateriaPersonalizada.setNombre(strNombreProceso);
                     objBateriaPersonalizada.setFechaCreacion(new Date());
                     objBateriaPersonalizada.setEstado(Constantes.INT_ESTADO_PROCESO_REGISTRADO);
                     objBateriaPersonalizada.setResena(strNombreProceso);
                     objBateriaPersonalizada.setHorasEstimadasTotal(Constantes.Int_cinco);
                     objBateriaPersonalizada.setMinutosEstimadosTotal(minutosTotal);
-                    if (Utilitarios.noEsNuloOVacio(id)) {
-                        objEvaluacionDAO.eliminarBateria(objBateriaPersonalizada);
-                    }
                     objEvaluacionDAO.grabarBateriaPersonalizada(objBateriaPersonalizada, droppedBaterias, strPerfilSeleccionado);
                     if (Utilitarios.noEsNuloOVacio(id)) {
                         Utilitarios.ponerSession(null, Constantes.SESSION_ID_BATERIA);
