@@ -47,7 +47,7 @@
                             <div class="ui-g-12 ui-lg-8">
                                 <div class="ui-g-12">
                                     <p:button value="#{msg['organigrama.volver']}" outcome="crearProceso" icon="fa fa-angle-left" styleClass="aqua-button"/>
-                                    <p:commandButton value="#{msg['bateria.boton.limpiar']}" actionListener="#{crearBateriaView.limpiar()}"
+                                    <p:commandButton value="#{msg['boton.limpiar']}" actionListener="#{crearBateriaView.limpiar()}"
                                                      update=":formBateria:" process="@this" ajax="true" style="margin-right:20px;" styleClass="aqua-button" />
                                 </div>
                                 <p:fieldset >
@@ -64,12 +64,12 @@
 
                                     <!--EMPRESA-->
                                     <div class="ui-g-12 ui-lg-2">
-                                        <p:outputLabel for="formBateria" value="#{msg['bateria.empresa']}"/>
+                                        <p:outputLabel for="formBateria" value="#{msg['etiqueta.empresa']}"/>
                                     </div>
                                     <div class="ui-g-12 ui-lg-10">
                                         <p:selectOneMenu id="listaEmpresa" value="#{crearBateriaView.strEmpresaSeleccionada}" effect="clip" filterMatchMode="startsWith"
-                                                         filter="true" required="true" requiredMessage="#{msg['bateria.noSeleccionoEmpresa']}" >
-                                            <f:selectItem itemLabel="#{msg['proceso.selecciona.empresa']}" itemValue="-1" />
+                                                         filter="true" required="true" requiredMessage="#{msg['combo.noSeleccionoEmpresa']}" disabled="#{crearBateriaView.lockEmpresa}">
+                                            <f:selectItem itemLabel="#{msg['combo.selecciona.empresa']}" itemValue="-1" />
                                             <f:selectItems id="empresa" value="#{crearBateriaView.lstEmpresas}" var="emp" itemLabel="#{emp.desc}" itemValue="#{emp.id}"/>
                                             <p:ajax event="itemSelect" process="@this" update=":formBateria:listaArea"  listener="#{crearBateriaView.seleccionaEmpresa()}"/>
                                         </p:selectOneMenu>
@@ -77,12 +77,12 @@
 
                                     <!--AREA-->
                                     <div class="ui-g-12 ui-lg-2">
-                                        <p:outputLabel for="formBateria" value="#{msg['bateria.area']}"/> 
+                                        <p:outputLabel for="formBateria" value="#{msg['etiqueta.area']}"/> 
                                     </div>    
                                     <div class="ui-g-12 ui-lg-10">
                                         <p:selectOneMenu id="listaArea" value="#{crearBateriaView.strAreaSeleccionada}" effect="clip" filterMatchMode="startsWith"
-                                                         filter="true" required="true" requiredMessage="#{msg['bateria.noSeleccionoArea']}" >
-                                            <f:selectItem itemLabel="#{msg['proceso.selecciona.area']}"/>
+                                                         filter="true" required="true" requiredMessage="#{msg['combo.noSeleccionoArea']}" >
+                                            <f:selectItem itemLabel="#{msg['combo.selecciona.area']}"/>
                                             <f:selectItems id="area" value="#{crearBateriaView.lstArea}" var="area" itemLabel="#{area.descripcion}" itemValue="#{area.id}"  />
                                             <p:ajax event="itemSelect" process="@this" update=":formBateria:listaPerfil"  listener="#{crearBateriaView.seleccionaArea()}"/>
                                         </p:selectOneMenu>
@@ -90,12 +90,12 @@
 
                                     <!--PERFIL-->
                                     <div class="ui-g-12 ui-lg-2">
-                                        <p:outputLabel for="formBateria" value="#{msg['bateria.perfil']}"/> 
+                                        <p:outputLabel for="formBateria" value="#{msg['etiqueta.perfil']}"/> 
                                     </div>
                                     <div class="ui-g-12 ui-lg-10">
                                         <p:selectOneMenu id="listaPerfil" value="#{crearBateriaView.strPerfilSeleccionado}" effect="clip" filterMatchMode="startsWith"
-                                                         filter="true" required="true" requiredMessage="#{msg['bateria.noSeleccionoPerfil']}" >
-                                            <f:selectItem itemLabel="#{msg['proceso.selecciona.perfil']}"/>
+                                                         filter="true" required="true" requiredMessage="#{msg['combo.noSeleccionoPerfil']}" >
+                                            <f:selectItem itemLabel="#{msg['combo.selecciona.perfil']}"/>
                                             <f:selectItems id="perfil" value="#{crearBateriaView.lstPerfil}" var="perfil" itemLabel="#{perfil.descripcion}" itemValue="#{perfil.id}"/>
                                             <p:ajax event="itemSelect" process="@this" listener="#{crearBateriaView.seleccionaPerfil()}"/>
                                         </p:selectOneMenu>
@@ -142,13 +142,25 @@
                                                                 </td>
                                                             </tr>
                                                         </table>
-                                                    </div>    
+                                                    </div>
+
+                                                    <p:commandButton id="retirarEvaluacion" value="Retirar" styleClass="red-button" immediate="true" process="@this"
+                                                                     update=":formBateria:pnlgroup1, :formBateria:pnlgroup2, :formBateria:oTotal" style="margin-bottom:10px;width: 100%;"
+                                                                     actionListener="#{crearBateriaView.quitarBaterias(bat)}">
+                                                        <p:confirm header="Confirmar retiro de evaluación." icon="ui-icon-alert"/>
+                                                    </p:commandButton>
+
+                                                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" style="align-content: center;">
+                                                        <f:facet name='message'>
+                                                            <h:outputText value=' Al borrar la evaluación "#{bat.nombre}" dejara de evaluar la(s) competencia(s)'/>
+                                                            <br/>
+                                                            <h:outputText value='#{bat.lstCompetencias}'/>
+                                                        </f:facet>
+                                                        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                                    </p:confirmDialog>
 
 
-
-
-                                                    <p:commandButton value="Retirar" styleClass="red-button" style="margin-bottom:10px;width: 100%;"
-                                                                     update=":formBateria:pnlgroup1, :formBateria:pnlgroup2, :formBateria:oTotal" immediate="true" process="@this" actionListener="#{crearBateriaView.quitarBaterias(bat)}"/>
                                                 </p:panel>
                                             </p:dataGrid>
                                             <h:outputText value="#{msg['bateria.arratreSuEvaluacion']}" style="font-size:22px;"
@@ -162,9 +174,11 @@
                                         <h:panelGrid columns="2" >
                                             <div class="circulo" style="background: #{listC.color}">
                                             </div>
-                                            <p:outputPanel style="font-size: 14px;font-family:'latoregular',sans-serif;">
-                                                #{listC.nombre}
-                                            </p:outputPanel>
+                                            <h:outputLink id="track" value="#" style="font-size: 14px;font-family:'latoregular',sans-serif;">
+                                                <h:outputText value="#{listC.nombre}" />
+                                            </h:outputLink>
+                                            <p:tooltip id="toolTipTrack" for="track" value="#{listC.listaNombreEvaluaciones}" trackMouse="true" />
+
                                         </h:panelGrid>
                                     </p:dataGrid>
                                     <p:droppable id="devalua" for="evaluacionesSeleccionadas"  tolerance="touch" activeStyleClass="ui-state-highlight" datasource="listaEvaluaciones" onDrop="handleDrop">
@@ -172,7 +186,7 @@
                                     </p:droppable>
                                     <br/>
                                     <div class="ui-panelgrid-cell ui-grid-col-12">
-                                        <p:commandButton value="#{msg['bateria.boton.grabar']}" id="guardarBateria" widgetVar="guardarBateria" styleClass="aqua-button"
+                                        <p:commandButton value="#{msg['boton.grabar']}" id="guardarBateria" widgetVar="guardarBateria" styleClass="aqua-button"
                                                          actionListener="#{crearBateriaView.grabarBateria()}" update=":formBateria:"
                                                          style="margin-bottom:10px; width: 100%;" rendered="#{crearBateriaView.droppedBaterias.size()>0}"/>
                                     </div>
@@ -189,7 +203,7 @@
                                                 <p:ajax event="itemSelect" process="@this" update=":formBateria:"  listener="#{crearBateriaView.buscarEvaluacionXCompetencia()}"/>
                                             </p:selectOneMenu>
                                         </div>
-                                        <p:dataGrid id="listaEvaluaciones" var="listE"  value="#{crearBateriaView.listaDeEvaluaciones}" columns="1" rows="4"  paginator="true"  
+                                        <p:dataGrid id="listaEvaluaciones" var="listE"  value="#{crearBateriaView.listaDeEvaluaciones}" columns="1" rows="4"  paginator="true" emptyMessage="No hay evaluaciones."
                                                     paginatorPosition="bottom" paginatorTemplate="{CurrentPageReport} {PreviousPageLink} {PageLinks} {NextPageLink} {RowsPerPageDropdown}" >
                                             <p:panel id="panelDeEvaluaciones">
                                                 <h:outputText value="#{listE.nombre}" class="textTituloPanel"/><br/>
@@ -217,7 +231,7 @@
                     </div>
                 </div>
 
-                <p:dialog header="Dialog" widgetVar="dlg1"  id="dlg1"
+                <p:dialog header="Ajustes" widgetVar="dlg1"  id="dlg1"
                           resizable="false"
                           closeOnEscape="true"
                           closable="true" showEffect="clip" hideEffect="clip" responsive="true" width="400" >

@@ -236,6 +236,7 @@ public class Constantes {
     public static String SESSION_USUARIO = "userSession";
     public static String SESSION_EMPRESA = "empresaSession";
     public static String SESSION_BATERIA = "bateriaSession";
+    public static String SESSION_ID_BATERIA = "idBateriaSession";
 
     public static String MASCULINO = "6";
     public static String FEMENINO = "7";

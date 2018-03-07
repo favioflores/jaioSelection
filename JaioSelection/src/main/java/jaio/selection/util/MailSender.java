@@ -4,6 +4,7 @@ import jaio.selection.dao.NotificacionesDAO;
 import jaio.selection.orm.Destinatarios;
 import jaio.selection.orm.NotificacionDetalle;
 import jaio.selection.orm.Notificaciones;
+import java.io.File;
 import java.io.Serializable;
 import java.io.StringWriter;
 import java.util.Date;
@@ -238,6 +239,43 @@ public class MailSender extends Thread implements Serializable {
             return "";
         }
 
+    }
+
+    private boolean prepararContenido(Notificaciones objNotificaciones, String contenido) {
+
+        boolean flag = true;
+
+        try {
+
+            VelocityEngine ve = new VelocityEngine();
+            ve.init();
+
+            Template t = new Template();
+            VelocityContext context = new VelocityContext();
+
+            if (objNotificaciones.getTipo() == Constantes.INT_ET_TIPO_CORREO_CLAVE) {
+                t = ve.getTemplate("TemplateRecuperaClave.vm");
+                context = new VelocityContext();
+
+                for (NotificacionDetalle objNotificacionDetalle : objNotificacionesDAO.obtenerNotificacionDetalle(objNotificaciones)) {
+                    context.put(objNotificacionDetalle.getParametro(), objNotificacionDetalle.getContenido());
+                }
+
+            } else {
+
+            }
+
+            StringWriter out = new StringWriter();
+            t.merge(context, out);
+
+            contenido = out.toString();
+
+        } catch (Exception e) {
+            flag = false;
+            log.error(e);
+        }
+
+        return flag;
     }
 
     private void conectarCorreoExterno() {

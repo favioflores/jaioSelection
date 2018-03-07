@@ -1,17 +1,11 @@
 package jaio.selection.view;
 
-import jaio.selection.bean.AreaBean;
 import jaio.selection.bean.BateriaPersonalizadaBean;
-import jaio.selection.bean.ConvertirDatosBean;
+import jaio.selection.bean.CompetenciaBean;
 import jaio.selection.bean.EmpresaBean;
-import jaio.selection.bean.PerfilBean;
-import jaio.selection.dao.AreaDAO;
 import jaio.selection.dao.BateriaPersonalizadaDAO;
 import jaio.selection.dao.EmpresaDAO;
-import jaio.selection.dao.PerfilDAO;
-import jaio.selection.orm.Area;
 import jaio.selection.orm.Empresa;
-import jaio.selection.orm.Perfil;
 import jaio.selection.util.Constantes;
 import jaio.selection.util.Utilitarios;
 import static jaio.selection.view.BaseView.FATAL;
@@ -36,69 +30,10 @@ public class CrearProcesoView extends BaseView implements Serializable {
     private static final long serialVersionUID = -1L;
 
     public List<EmpresaBean> lstEmpresas;
-    public List<PerfilBean> lstPerfil;
-    public List<AreaBean> lstArea;
     public String strEmpresaSeleccionada;
-    public String strPerfilSeleccionado;
-    public String strAreaSeleccionada;
-
-    private List<BateriaPersonalizadaBean> lstBateriaPersonalizadaBeans;
-
-    public List<AreaBean> getLstArea() {
-        return lstArea;
-    }
-
-    public void setLstArea(List<AreaBean> lstArea) {
-        this.lstArea = lstArea;
-    }
-
-    public String getStrAreaSeleccionada() {
-        return strAreaSeleccionada;
-    }
-
-    public void setStrAreaSeleccionada(String strAreaSeleccionada) {
-        this.strAreaSeleccionada = strAreaSeleccionada;
-    }
-
-    public String getStrPerfilSeleccionado() {
-        return strPerfilSeleccionado;
-    }
-
-    public void setStrPerfilSeleccionado(String strPerfilSeleccionado) {
-        this.strPerfilSeleccionado = strPerfilSeleccionado;
-    }
-
-    public String getStrEmpresaSeleccionada() {
-        return strEmpresaSeleccionada;
-    }
-
-    public void setStrEmpresaSeleccionada(String strEmpresaSeleccionada) {
-        this.strEmpresaSeleccionada = strEmpresaSeleccionada;
-    }
-
-    public List<PerfilBean> getLstPerfil() {
-        return lstPerfil;
-    }
-
-    public void setLstPerfil(List<PerfilBean> lstPerfil) {
-        this.lstPerfil = lstPerfil;
-    }
-
-    public List<EmpresaBean> getLstEmpresas() {
-        return lstEmpresas;
-    }
-
-    public void setLstEmpresas(List<EmpresaBean> lstEmpresas) {
-        this.lstEmpresas = lstEmpresas;
-    }
-
-    public List<BateriaPersonalizadaBean> getLstBateriaPersonalizadaBeans() {
-        return lstBateriaPersonalizadaBeans;
-    }
-
-    public void setLstBateriaPersonalizadaBeans(List<BateriaPersonalizadaBean> lstBateriaPersonalizadaBeans) {
-        this.lstBateriaPersonalizadaBeans = lstBateriaPersonalizadaBeans;
-    }
+    private String countEvaluacion;
+    private List<BateriaPersonalizadaBean> listaBateriasRegistradas;
+    private List<CompetenciaBean> lstCompetenciaBean;
 
     @PostConstruct
     public void init() {
@@ -106,58 +41,103 @@ public class CrearProcesoView extends BaseView implements Serializable {
     }
 
     public void limpiar() {
+        listaBateriasRegistradas = new ArrayList<>();
         lstEmpresas = new ArrayList<>();
-        lstArea = new ArrayList<>();
-        lstPerfil = new ArrayList<>();
+        lstCompetenciaBean = new ArrayList();
         strEmpresaSeleccionada = null;
+        countEvaluacion = null;
         poblarEmpresas();
 
     }
 
-    public void abrirCrearBateria() {
-
+    public void abrirCrearProceso() {
         try {
-
             if (Utilitarios.noEsNuloOVacio(strEmpresaSeleccionada)) {
                 Utilitarios.ponerSession(strEmpresaSeleccionada, Constantes.SESSION_BATERIA);
             }
-
+            Utilitarios.ponerSession(null, Constantes.SESSION_ID_BATERIA);
             FacesContext.getCurrentInstance().getExternalContext().redirect("crearBateria.jsf");
-
         } catch (Exception e) {
             mostrarAlerta(FATAL, "error.inesperado", log, e);
         }
     }
 
-    /**
-     * metodo para cargar los procesos por empresa
-     */
-    public void cargarBateriaPersonalizada() {
-        lstBateriaPersonalizadaBeans = new ArrayList<>();
-        if (Utilitarios.noEsNuloOVacio(strEmpresaSeleccionada)) {
-            BateriaPersonalizadaDAO objBateriaPersonalizadaDAO = new BateriaPersonalizadaDAO();
-            List lstBaterias = objBateriaPersonalizadaDAO.obtenerProcesosRegistrados(strEmpresaSeleccionada);
-            Iterator it = lstBaterias.iterator();
-            while (it.hasNext()) {
-                Object obj[] = (Object[]) it.next();
-                BateriaPersonalizadaBean objBateriaPersonalizadaBean = new BateriaPersonalizadaBean();
-                objBateriaPersonalizadaBean.setNombre(obj[0].toString());
-                objBateriaPersonalizadaBean.setFechaCreacion(obj[1].toString());
-                objBateriaPersonalizadaBean.setNombrePerfil(obj[2].toString());
-                lstBateriaPersonalizadaBeans.add(objBateriaPersonalizadaBean);
+    public void cargarBateriasRegistradas() {
+        try {
+            listaBateriasRegistradas = new ArrayList<>();
+            if (Utilitarios.noEsNuloOVacio(strEmpresaSeleccionada)) {
+                BateriaPersonalizadaDAO objBateriaPersonalizadaDAO = new BateriaPersonalizadaDAO();
+                List lstBaterias = objBateriaPersonalizadaDAO.obtenerProcesosRegistrados(strEmpresaSeleccionada);
+                Iterator it = lstBaterias.iterator();
+                while (it.hasNext()) {
+                    Object obj[] = (Object[]) it.next();
+                    BateriaPersonalizadaBean objBateriaPersonalizadaBean = new BateriaPersonalizadaBean();
+                    objBateriaPersonalizadaBean.setId(obj[0].toString());
+                    objBateriaPersonalizadaBean.setNombre(obj[1].toString());
+                    objBateriaPersonalizadaBean.setFechaCreacion(obj[2].toString());
+                    objBateriaPersonalizadaBean.setNombrePerfil(obj[3].toString());
+                    listaBateriasRegistradas.add(objBateriaPersonalizadaBean);
+                }
             }
+        } catch (Exception e) {
+            mostrarAlerta(FATAL, "error.inesperado", log, e);
         }
     }
 
-    /**
-     * metodo que trae la empresa seleccionada
-     */
+    public void verResumenBateria(BateriaPersonalizadaBean objBean) {
+        try {
+
+            BateriaPersonalizadaDAO objBateriaPersonalizadaDAO = new BateriaPersonalizadaDAO();
+            countEvaluacion = null;
+            lstCompetenciaBean = new ArrayList<>();
+            countEvaluacion = objBateriaPersonalizadaDAO.obtenerNumeroEvaluaciones(objBean.getId());
+            List objList = objBateriaPersonalizadaDAO.obtenerCompetenciaParaResumen(objBean.getId());
+
+            Iterator it = objList.iterator();
+            while (it.hasNext()) {
+                Object obj[] = (Object[]) it.next();
+                CompetenciaBean objBean1 = new CompetenciaBean();
+                objBean1.setNombre(obj[0].toString());
+                lstCompetenciaBean.add(objBean1);
+            }
+        } catch (Exception e) {
+            mostrarAlerta(FATAL, "error.inesperado", log, e);
+        }
+    }
+
+    public void editarBateria(BateriaPersonalizadaBean objBean) {
+        try {
+            if (Utilitarios.noEsNuloOVacio(objBean.getId())) {
+                Utilitarios.ponerSession(objBean.getId(), Constantes.SESSION_ID_BATERIA);
+                FacesContext.getCurrentInstance().getExternalContext().redirect("crearBateria.jsf");
+            } else {
+                mostrarAlerta(FATAL, "error.inesperado", log, null);
+            }
+        } catch (Exception e) {
+            mostrarAlerta(FATAL, "error.inesperado", log, e);
+        }
+    }
+
+    public void eliminarBateria(BateriaPersonalizadaBean objBean) {
+        try {
+            BateriaPersonalizadaDAO objDAO = new BateriaPersonalizadaDAO();
+            boolean result = objDAO.eliminarBateriaRegistrada(objBean.getId());
+            if (result) {
+                mostrarAlerta(INFO, "proceso.mensaje.eliminado", null, null);
+                cargarBateriasRegistradas();
+            } else {
+                mostrarAlerta(INFO, "proceso.mensaje.errorEliminar", null, null);
+            }
+        } catch (Exception e) {
+            mostrarAlerta(FATAL, "error.inesperado", log, e);
+        }
+    }
+
     public void seleccionaEmpresa() {
         try {
             if (Utilitarios.noEsNuloOVacio(strEmpresaSeleccionada) && !strEmpresaSeleccionada.equals("-1")) {
                 EmpresaDAO objEmpresaDAO = new EmpresaDAO();
                 Empresa objEmpresa = objEmpresaDAO.obtenerEmpresa(strEmpresaSeleccionada);
-                poblarArea();
                 mostrarAlerta(INFO, "proceso.seleccion.empresa", null, null, objEmpresa.getNombre());
             } else {
                 limpiar();
@@ -189,79 +169,44 @@ public class CrearProcesoView extends BaseView implements Serializable {
 
     }
 
-    /**
-     * metodo que trae la area seleccionada
-     */
-    public void seleccionaArea() {
-        try {
-            if (Utilitarios.noEsNuloOVacio(strAreaSeleccionada)) {
-                if (!strAreaSeleccionada.equals("-1")) {
-                    AreaDAO objAreaDAO = new AreaDAO();
-                    Area objArea = objAreaDAO.obtenerArea(strAreaSeleccionada);
-                    mostrarAlerta(INFO, "proceso.seleccion.area", null, null, objArea.getDescripcion());
-                    poblarPerfil();
-                }
-            } else {
-                mostrarAlerta(ERROR, "error.inesperado", null, null);
-            }
-        } catch (Exception e) {
-            mostrarAlerta(FATAL, "error.inesperado", log, e);
-        }
+    public String getStrEmpresaSeleccionada() {
+        return strEmpresaSeleccionada;
     }
 
-    /**
-     * metodo que trae las areas por empresa
-     */
-    public void poblarArea() {
-        try {
-            if (Utilitarios.noEsNuloOVacio(strEmpresaSeleccionada) && !strEmpresaSeleccionada.equals("-1")) {
-                lstArea = new ArrayList<>();
-                AreaDAO objAreaDAO = new AreaDAO();
-                List<Area> lstAreas = objAreaDAO.obtenerAreasXEmpresa(strEmpresaSeleccionada);
-
-                for (Area objArea : lstAreas) {
-                    AreaBean objAreaBean = new AreaBean();
-                    objAreaBean.setId(objArea.getId().toString());
-                    objAreaBean.setDescripcion(objArea.getDescripcion());
-                    lstArea.add(objAreaBean);
-                };
-            }
-        } catch (Exception e) {
-            mostrarAlerta(FATAL, "error.inesperado", log, e);
-        }
+    public void setStrEmpresaSeleccionada(String strEmpresaSeleccionada) {
+        this.strEmpresaSeleccionada = strEmpresaSeleccionada;
     }
 
-    public void seleccionaPerfil() {
-        try {
-            if (Utilitarios.noEsNuloOVacio(strPerfilSeleccionado)) {
-                PerfilDAO objPerfilDao = new PerfilDAO();
-                Perfil objPerfil = objPerfilDao.obtenerPerfil(strPerfilSeleccionado);
-                mostrarAlerta(INFO, "proceso.seleccion.perfil", null, null, objPerfil.getNombre());
-            }
-        } catch (Exception e) {
-            mostrarAlerta(FATAL, "error.inesperado", log, e);
-        }
+    public List<EmpresaBean> getLstEmpresas() {
+        return lstEmpresas;
     }
 
-    /**
-     * metodo que trae los perfiles por area
-     */
-    public void poblarPerfil() {
-        try {
-            if (Utilitarios.noEsNuloOVacio(strAreaSeleccionada) && !strAreaSeleccionada.equals("-1")) {
-                lstPerfil = new ArrayList<>();
-                PerfilDAO objPerfilDAO = new PerfilDAO();
-                List<Perfil> lstPerfiles = objPerfilDAO.obtenerPerfilesXArea(strAreaSeleccionada);
-                for (Perfil objPerfil : lstPerfiles) {
-                    PerfilBean objPerfilBean = new PerfilBean();
-                    objPerfilBean.setId(objPerfil.getId().toString());
-                    objPerfilBean.setDescripcion(objPerfil.getNombre());
-                    lstPerfil.add(objPerfilBean);
-                };
-            }
-        } catch (Exception e) {
-            mostrarAlerta(FATAL, "error.inesperado", log, e);
-        }
+    public void setLstEmpresas(List<EmpresaBean> lstEmpresas) {
+        this.lstEmpresas = lstEmpresas;
+    }
+
+    public List<BateriaPersonalizadaBean> getListaBateriasRegistradas() {
+        return listaBateriasRegistradas;
+    }
+
+    public void setListaBateriasRegistradas(List<BateriaPersonalizadaBean> listaBateriasRegistradas) {
+        this.listaBateriasRegistradas = listaBateriasRegistradas;
+    }
+
+    public List<CompetenciaBean> getLstCompetenciaBean() {
+        return lstCompetenciaBean;
+    }
+
+    public void setLstCompetenciaBean(List<CompetenciaBean> lstCompetenciaBean) {
+        this.lstCompetenciaBean = lstCompetenciaBean;
+    }
+
+    public String getCountEvaluacion() {
+        return countEvaluacion;
+    }
+
+    public void setCountEvaluacion(String countEvaluacion) {
+        this.countEvaluacion = countEvaluacion;
     }
 
 }

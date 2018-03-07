@@ -45,9 +45,25 @@ public class ModeloCompetenciaDAO extends HibernateUtil implements Serializable 
     public List obtenerModeloCompetenciaDeEvaluaciones() {
         iniciaSession();
         try {
-            Query query = session.createSQLQuery("select me.id, mc.nombre, mc.color from modelo_evaluacion_x_competencia mec "
+            Query query = session.createSQLQuery("select me.id, mc.nombre, mc.color, mc.id as idmc from modelo_evaluacion_x_competencia mec "
                     + " join modelo_evaluacion me on me.id = mec.modelo_evaluacion_id "
                     + " join modelo_competencia mc on mc.id = mec.modelo_competencia_id order by 1 asc");
+            return query.list();
+        } catch (Exception e) {
+            manejaException(log, e);
+        } finally {
+            cerrarSession();
+        }
+        return null;
+    }
+
+    public List obtenerNombresEvaluacionPorCompetencia(String id, StringBuilder sb) {
+        iniciaSession();
+        try {
+            Query query = session.createSQLQuery("select me.nombre from modelo_evaluacion_x_competencia mec "
+                    + " join modelo_evaluacion me on me.id = mec.modelo_evaluacion_id "
+                    + "	join modelo_competencia mc on mc.id = mec.modelo_competencia_id "
+                    + " where mc.id="+ id +" and me.id in ("+ sb +")");
             return query.list();
         } catch (Exception e) {
             manejaException(log, e);

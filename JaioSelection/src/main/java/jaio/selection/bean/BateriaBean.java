@@ -15,7 +15,6 @@ public class BateriaBean implements Serializable {
     private String confiabilidad;
     private String minutosEstimados;
     private String limiteTiempo;
-    private String color;
     private List lstCompetencias;
     private List lstColores;
     private List<ModeloAjustesCalcBean> lstAjustes;
@@ -96,14 +95,6 @@ public class BateriaBean implements Serializable {
 
     public void setLimiteTiempo(String limiteTiempo) {
         this.limiteTiempo = limiteTiempo;
-    }
-
-    public String getColor() {
-        return color;
-    }
-
-    public void setColor(String color) {
-        this.color = color;
     }
 
     public List getLstColores() {
