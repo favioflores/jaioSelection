@@ -14,6 +14,7 @@
             <meta name="apple-mobile-web-app-capable" content="yes" />
             <link rel="shortcut icon" type="image/png"
                   href="#{request.contextPath}/resources/omega-layout/images/logo-jaio.png" />
+            <script src='https://www.google.com/recaptcha/api.js'></script>
         </f:facet>
         <title>#{msg['app']}</title>
     </h:head>
@@ -41,6 +42,14 @@
                                              actionListener="#{claveView.enviarClaveCorreo()}"
                                              styleClass="navy-button" value="#{msg['recupera.clave.sendmail']}"
                                              update=":formLogin:" style="margin-bottom: 5px;" />
+                            
+                            <br/><br/>
+
+                            <div id="captcha1" 
+                                 class="g-recaptcha" 
+                                 data-sitekey="6LeGgf4SAAAAAOxdlPnTNQht-IU5UTHQAVdBwvN8" >
+                            </div>
+                            <br/>
                             <p:button outcome="login" styleClass="navy-button" value="#{msg['recupera.clave.volver']}"/>
                             <p:hotkey id="hotLogin" bind="ENTER" 
                                       actionListener="#{claveView.enviarClaveCorreo()}" update=":formLogin:" />

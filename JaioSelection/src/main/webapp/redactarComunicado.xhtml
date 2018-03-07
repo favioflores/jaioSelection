@@ -1,0 +1,79 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <ui:define name="content">
+        <h:form id="formComunicados">
+
+            <p:growl id="growl" life="4000" />
+
+            <div class="ui-g card">
+                <div class="ui-g-12">
+
+                    <h1>#{msg['comunicados.titulo']}</h1>
+                    <p align="justify">#{msg['comunicados.parrafo1']}</p>
+
+                    <h2>#{msg['comunicados.subtitulo.convocatoria']}</h2>
+
+                    <p align="justify">#{msg['comunicados.convocatoria.parrafo']}</p>
+
+                    <p:tabView cache="true" dynamic="true" effect="clip">
+                        <p:tab title="Modelo" titletip="Modelo" >
+
+                            <p align="justify">#{msg['comunicados.convocatoria.parrafo1']}</p>
+
+                            <div class="ui-g ui-fluid">
+
+                                <div class="ui-g-12 ui-lg-6">
+
+                                    <p:panelGrid columns="1" styleClass="ui-panelgrid-blank" layout="grid">
+                                        
+                                        <p:outputLabel value="Titulo :" />
+                                        <p:inputTextarea counter="dTituloC" maxlength="100" counterTemplate="{0} #{msg['count.caracteres']}"/>
+                                        <h:outputText id="dTituloC" />
+                                        
+                                        <br/>
+                                        
+                                        <p:outputLabel value="Parrafo principal :" />
+                                        <p:inputTextarea counter="dTituloP1" maxlength="200" counterTemplate="{0} #{msg['count.caracteres']}"/>
+                                        <h:outputText id="dTituloP1" />
+                                        
+                                        <br/>
+                                        
+                                        <p:outputLabel value="Parrafo secundario :" />                                        
+                                        <p:inputTextarea counter="dTituloP2" maxlength="200" counterTemplate="{0} #{msg['count.caracteres']}"/>
+                                        <h:outputText id="dTituloP2" />
+                                        
+                                    </p:panelGrid>
+
+                                </div>
+                                <div class="ui-g-12 ui-lg-6">
+                                    <h:outputText value="#{comunicadoView.strPreviewConvocatoriaTemplate}" escape="false" />
+                                </div>
+                            </div>
+
+                        </p:tab>
+
+                        <p:tab title="Formato texto" titletip="Formato texto" >
+                            <p align="justify">#{msg['comunicados.convocatoria.parrafo2']}</p>
+                            <p:textEditor widgetVar="eConvocatoria" height="300" />                             
+                        </p:tab>
+
+                        <p:tab title="Personalizado" titletip="Personalizado" >
+                            <p align="justify">#{msg['comunicados.convocatoria.parrafo3']}</p>
+
+                        </p:tab>
+                    </p:tabView>
+
+
+                </div>
+            </div>
+
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

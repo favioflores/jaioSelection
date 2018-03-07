@@ -44,7 +44,6 @@
                                        icon="fa fa-building-o">
                                 <p:menuitem id="om_perfil0"
                                             value="#{msg['side.registro.empresa']}" outcome="crearEmpresa" />
-                                    <!-- p:menuitem id="om_perfil1" value="#{msg['side.registro.organizacion']}" outcome="crearPerfil"  -->
                             </p:submenu>
 
 
@@ -52,6 +51,8 @@
                                        label="#{msg['side.proceso.seleccion']}" icon="fa fa-group">
                                 <p:menuitem id="om_defProyecto"
                                             value="#{msg['side.definir.proceso']}" outcome="crearProceso" />
+                                <p:menuitem id="om_comunicados"
+                                            value="#{msg['side.comunicado']}" outcome="redactarComunicado" />
                                 <p:menuitem id="om_reclutamiento"
                                             value="#{msg['side.reclutamiento']}" />
                                 <p:menuitem id="om_preSeleccion"

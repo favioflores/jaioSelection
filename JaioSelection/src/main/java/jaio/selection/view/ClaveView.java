@@ -13,9 +13,12 @@ import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Date;
+import java.util.Map;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -104,57 +107,86 @@ public class ClaveView extends BaseView implements Serializable {
 
         try {
 
-            UsuarioDAO objUsuarioDAO = new UsuarioDAO();
+            Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+            String captha = params.get("g-recaptcha-response");
 
-            if (objUsuarioDAO.existeUsuario(correo)) {
+            boolean blValido = false;
 
-                Utilitarios objUtilitarios = new Utilitarios();
+            HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext()
+                    .getRequest();
+            String ipAddress = request.getRemoteAddr();
 
-                NotificacionesDAO objNotificacionesDAO = new NotificacionesDAO();
-
-                Notificaciones objNotificaciones = new Notificaciones();
-                objNotificaciones.setAsunto("Correo de notificacion clave");
-                objNotificaciones.setEstado(Constantes.INT_ET_ESTADO_NOTIFICACION_REGISTRADO);
-                objNotificaciones.setFechaRegistro(new Date());
-                objNotificaciones.setTipo(Constantes.INT_ET_TIPO_CORREO_CLAVE);
-
-                Destinatarios objDestinatarios = new Destinatarios(objNotificaciones, correo);
-                objNotificaciones.getDestinatarioss().add(objDestinatarios);
-
-                objNotificaciones.getNotificaciondetalles().add(
-                        new NotificacionDetalle(objNotificaciones, "USUARIO", correo.getBytes()));
-
-                objNotificaciones.getNotificaciondetalles().add(
-                        new NotificacionDetalle(objNotificaciones, "FECHA_HORA_ENVIO", Utilitarios.formatearFecha(new Date(), Constantes.DDMMYYYY_HH24_MI_SS).getBytes()));
-
-                objNotificaciones.getNotificaciondetalles().add(
-                        new NotificacionDetalle(objNotificaciones, "APPLICACION", "JAIO 360".getBytes()));
-
-                objNotificaciones.getNotificaciondetalles().add(
-                        new NotificacionDetalle(objNotificaciones, "PARRAFO1", msg("correo.clave.parrafo1").getBytes()));
-
-                
-                objNotificaciones.getNotificaciondetalles().add(
-                        new NotificacionDetalle(objNotificaciones, "CLAVE", objUsuarioDAO.obtenerUsuario(correo).getContrasena().getBytes()));
-
-                objNotificaciones.getNotificaciondetalles().add(
-                        new NotificacionDetalle(objNotificaciones, "PARRAFO2", msg("correo.clave.parrafo2").getBytes()));
-
-                objNotificaciones.getNotificaciondetalles().add(
-                        new NotificacionDetalle(objNotificaciones, "PARRAFO0", msg("correo.clave.parrafo0").getBytes()));
-
-                objNotificaciones.getNotificaciondetalles().add(
-                        new NotificacionDetalle(objNotificaciones, "PARRAFO3", msg("correo.clave.parrafo3").getBytes()));
-
-                if (objNotificacionesDAO.guardaNotificacion(objNotificaciones)) {
-                    correo = "";
-                    mostrarAlerta(INFO, "clave.correo.enviado", null, null);
+            if (!ipAddress.equals("127.0.0.1") && !ipAddress.equals("0:0:0:0:0:0:0:1")) {
+                if (validaConexionGoogle()) {
+                    //if (true) {
+                    if (!captchaInvalido(captha)) {
+                        blValido = true;
+                    } else {
+                        blValido = false;
+                    }
                 } else {
-                    mostrarAlerta(FATAL, "error.inesperado", null, null);
+                    blValido = false;
+                }
+            } else {
+                blValido = true;
+            }
+
+            if (blValido) {
+
+                UsuarioDAO objUsuarioDAO = new UsuarioDAO();
+
+                if (objUsuarioDAO.existeUsuario(correo)) {
+
+                    Utilitarios objUtilitarios = new Utilitarios();
+
+                    NotificacionesDAO objNotificacionesDAO = new NotificacionesDAO();
+
+                    Notificaciones objNotificaciones = new Notificaciones();
+                    objNotificaciones.setAsunto("Correo de notificacion clave");
+                    objNotificaciones.setEstado(Constantes.INT_ET_ESTADO_NOTIFICACION_REGISTRADO);
+                    objNotificaciones.setFechaRegistro(new Date());
+                    objNotificaciones.setTipo(Constantes.INT_ET_TIPO_CORREO_CLAVE);
+
+                    Destinatarios objDestinatarios = new Destinatarios(objNotificaciones, correo);
+                    objNotificaciones.getDestinatarioss().add(objDestinatarios);
+
+                    objNotificaciones.getNotificaciondetalles().add(
+                            new NotificacionDetalle(objNotificaciones, "USUARIO", correo.getBytes()));
+
+                    objNotificaciones.getNotificaciondetalles().add(
+                            new NotificacionDetalle(objNotificaciones, "FECHA_HORA_ENVIO", Utilitarios.formatearFecha(new Date(), Constantes.DDMMYYYY_HH24_MI_SS).getBytes()));
+
+                    objNotificaciones.getNotificaciondetalles().add(
+                            new NotificacionDetalle(objNotificaciones, "APPLICACION", "JAIO 360".getBytes()));
+
+                    objNotificaciones.getNotificaciondetalles().add(
+                            new NotificacionDetalle(objNotificaciones, "PARRAFO1", msg("correo.clave.parrafo1").getBytes()));
+
+                    objNotificaciones.getNotificaciondetalles().add(
+                            new NotificacionDetalle(objNotificaciones, "CLAVE", objUsuarioDAO.obtenerUsuario(correo).getContrasena().getBytes()));
+
+                    objNotificaciones.getNotificaciondetalles().add(
+                            new NotificacionDetalle(objNotificaciones, "PARRAFO2", msg("correo.clave.parrafo2").getBytes()));
+
+                    objNotificaciones.getNotificaciondetalles().add(
+                            new NotificacionDetalle(objNotificaciones, "PARRAFO0", msg("correo.clave.parrafo0").getBytes()));
+
+                    objNotificaciones.getNotificaciondetalles().add(
+                            new NotificacionDetalle(objNotificaciones, "PARRAFO3", msg("correo.clave.parrafo3").getBytes()));
+
+                    if (objNotificacionesDAO.guardaNotificacion(objNotificaciones)) {
+                        correo = "";
+                        mostrarAlerta(INFO, "clave.correo.enviado", null, null);
+                    } else {
+                        mostrarAlerta(FATAL, "error.inesperado", null, null);
+                    }
+
+                } else {
+                    mostrarAlerta(ERROR, "clave.correo.noexiste", null, null);
                 }
 
             }else{
-                mostrarAlerta(ERROR, "clave.correo.noexiste", null, null);
+                
             }
 
         } catch (Exception ex) {

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>$APPLICACION</title>
+<title>Untitled Document</title>
 <style type="text/css">
 body {
 	background-color: #FFFFFF;
@@ -108,11 +108,11 @@ a:hover, a:active, a:focus {
   <td height="15"></td>
 </tr>
 <tr>
-<td height="40"><div class="divTittle">$PARRAFO0 $APPLICACION</div>
+<td height="40"><div class="divTittle">Solicitaste el reenvio de tu clave de JAIO</div>
 </td>
 </tr>
 <tr>
-<td height="35"><div class="divDatoEnvio">$PARRAFO3 $FECHA_HORA_ENVIO</div></td>
+<td height="35"><div class="divDatoEnvio">Enviado a las #%DATO.MENSAJE</div></td>
 </tr>
 <tr>
 <td>
@@ -139,7 +139,7 @@ a:hover, a:active, a:focus {
           </tr>
           <tr>
             <td>&nbsp;</td>
-            <td><div class="divDatos">$PARRAFO1</div></td>
+            <td><div class="divDatos">Recuerda que tu clave es privada y al compartirla tus datos se vulneran ante cualquier tipo de ataque. Si deseas cambiarla puedes ingresar a nuestro sistema y actualizar tu informacion personal.</div></td>
             <td>&nbsp;</td>
           </tr>
           <tr>
@@ -154,7 +154,7 @@ a:hover, a:active, a:focus {
           </tr>
           <tr>
             <td>&nbsp;</td>
-            <td><div class="divDatosResaltado">$USUARIO</div></td>
+            <td><div class="divDatosResaltado">#%USUARIO.MENSAJE</div></td>
             <td>&nbsp;</td>
           </tr>
           <tr>
@@ -164,7 +164,7 @@ a:hover, a:active, a:focus {
           </tr>
           <tr>
             <td>&nbsp;</td>
-            <td><div class="divDatosResaltado">$CLAVE</div></td>
+            <td><div class="divDatosResaltado">#%CLAVE.MENSAJE</div></td>
             <td>&nbsp;</td>
           </tr>
           <tr>
@@ -191,7 +191,7 @@ a:hover, a:active, a:focus {
 </td>
   </tr>
   <tr>
-<td height="60"><div class="divDatoEnvio">$PARRAFO2</div>
+<td height="60"><div class="divDatoEnvio">Si tienes alguna duda o consulta no dudes en contactarnos contacto@jaio360.com</div>
 </td>
 </tr>
 </table>
