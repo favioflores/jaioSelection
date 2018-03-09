@@ -3,7 +3,7 @@ insert into usuario values(null,'favio.flores.olaza@gmail.com','Favio Flores Ola
 ALTER TABLE usuario ADD CONSTRAINT USUARIO_C_CORREO UNIQUE (CORREO);
 CREATE INDEX USUARIO_IDX1_CORREO ON usuario (CORREO);
 
-
+ 
 insert into definicion values (1,'Estados de usuario');
 insert into definicion values (2,'Estados de empresa');
 insert into definicion values (3,'Sexo');
