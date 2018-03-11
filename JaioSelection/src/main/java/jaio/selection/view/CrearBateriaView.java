@@ -1,24 +1,17 @@
 package jaio.selection.view;
 
+import static jaio.selection.view.BaseView.ERROR;
+import static jaio.selection.view.BaseView.FATAL;
+import static jaio.selection.view.BaseView.INFO;
+
 import jaio.selection.bean.AjusteEvaluacionBean;
-import jaio.selection.bean.AreaBean;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.annotation.PostConstruct;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import jaio.selection.bean.BateriaBean;
 import jaio.selection.bean.ConvertirDatosBean;
 import jaio.selection.bean.EmpresaBean;
 import jaio.selection.bean.ModeloAjustesCalcBean;
 import jaio.selection.bean.ModeloAjustesListaBean;
 import jaio.selection.bean.ModeloCompetenciaBean;
+import jaio.selection.bean.ModeloEvaluacionBean;
 import jaio.selection.bean.PerfilBean;
 import jaio.selection.dao.AreaDAO;
 import jaio.selection.dao.EmpresaDAO;
@@ -27,20 +20,27 @@ import jaio.selection.util.Constantes;
 import jaio.selection.dao.ModeloEvaluacionDAO;
 import jaio.selection.dao.PerfilDAO;
 import jaio.selection.orm.Area;
-import jaio.selection.orm.BateriaEvaluacion;
 import jaio.selection.orm.BateriaPersonalizada;
 import jaio.selection.orm.Empresa;
 import jaio.selection.orm.ModeloCompetencia;
 import jaio.selection.orm.ModeloEvaluacion;
 import jaio.selection.orm.Perfil;
 import jaio.selection.util.Utilitarios;
-import static jaio.selection.view.BaseView.ERROR;
-import static jaio.selection.view.BaseView.FATAL;
-import static jaio.selection.view.BaseView.INFO;
+import jaio.selection.bean.AreaBean;
+import jaio.selection.bean.ModeloEvaluacionCalBean;
+import jaio.selection.bean.ModeloEvaluacionListCalBean;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.ArrayList;
+import java.util.List;
+import java.io.Serializable;
+import javax.annotation.PostConstruct;
 import org.primefaces.event.DragDropEvent;
 
 @ManagedBean(name = "crearBateriaView")
@@ -55,6 +55,9 @@ public class CrearBateriaView extends BaseView implements Serializable {
     private List listaNombresCompetenciasPorEvaluacion = new ArrayList<>();
     private List<ModeloCompetencia> listaColoresCompetenciasPorEvaluacion = new ArrayList<>();
     private List<ModeloAjustesCalcBean> listaAjustesPorEvaluacion;
+
+    private List listaEvaluacionesPorCompetencia = new ArrayList<>();
+    private LinkedHashMap<String, ModeloEvaluacionListCalBean> mapEvaComp = new LinkedHashMap();
 
     private List listaAjustesTotalEvaluaciones = new ArrayList<>();
     private List<ModeloAjustesCalcBean> listaAjustesPorEvaluacion1 = new ArrayList<>();
@@ -133,20 +136,19 @@ public class CrearBateriaView extends BaseView implements Serializable {
         droppedBaterias = new ArrayList<>();
         droppedCompetencias = new ArrayList<>();
         mhAjustes.clear();
+        mapEvaComp.clear();
 
     }
 
     public List cargarInformacionParaEditar(String id) {
         try {
-
-            lockEmpresa = true;
-            droppedBaterias = new ArrayList<>();
-            droppedCompetencias = new ArrayList<>();
-
             ModeloEvaluacionDAO objEvaluacionDAO = new ModeloEvaluacionDAO();
 
-            List listaInfo = objEvaluacionDAO.obtenerInfoParaCampos(id);
+            droppedCompetencias = new ArrayList<>();
+            droppedBaterias = new ArrayList<>();
+            lockEmpresa = true;
 
+            List listaInfo = objEvaluacionDAO.obtenerInformacionDeCampos(id);
             Iterator it1 = listaInfo.iterator();
             while (it1.hasNext()) {
                 Object obj[] = (Object[]) it1.next();
@@ -158,6 +160,42 @@ public class CrearBateriaView extends BaseView implements Serializable {
                 poblarPerfil();
                 strPerfilSeleccionado = obj[3].toString();
             }
+
+            listaEvaluacionesPorCompetencia = objEvaluacionDAO.obtenerListaDeEvaluacionesPorCompetencia();
+            mapEvaComp = new LinkedHashMap();
+
+            ModeloEvaluacionCalBean objEvaluacionCalBean = new ModeloEvaluacionCalBean();
+            ModeloEvaluacionListCalBean objEvaluacionListCalBean = new ModeloEvaluacionListCalBean();
+
+            String idCAnt = "";
+            Iterator it = listaEvaluacionesPorCompetencia.iterator();
+            while (it.hasNext()) {
+                Object obj[] = (Object[]) it.next();
+                String idC = obj[0].toString();
+
+                if (idC.equals(idCAnt) && !idCAnt.equals("")) {
+                    objEvaluacionCalBean = new ModeloEvaluacionCalBean();
+                    objEvaluacionCalBean.setId(obj[1].toString());
+                    objEvaluacionCalBean.setNombre(obj[2].toString());
+                    objEvaluacionListCalBean.getListModeloEvaluacionCalBean().add(objEvaluacionCalBean);
+                    idCAnt = idC;
+                } else {
+
+                    if (!idCAnt.equals("")) {
+                        mapEvaComp.put(idCAnt, objEvaluacionListCalBean);
+                    }
+                    objEvaluacionListCalBean = new ModeloEvaluacionListCalBean();
+                    objEvaluacionCalBean = new ModeloEvaluacionCalBean();
+                    objEvaluacionCalBean.setId(obj[1].toString());
+                    objEvaluacionCalBean.setNombre(obj[2].toString());
+
+                    objEvaluacionListCalBean.setListModeloEvaluacionCalBean(new ArrayList<>());
+                    objEvaluacionListCalBean.getListModeloEvaluacionCalBean().add(objEvaluacionCalBean);
+
+                    idCAnt = idC;
+                }
+            }
+            mapEvaComp.put(idCAnt, objEvaluacionListCalBean);
 
             List evaluaciones = objEvaluacionDAO.obtenerEvaluacionesSeleccionadas(id);
             Iterator iEva = evaluaciones.iterator();
@@ -469,16 +507,19 @@ public class CrearBateriaView extends BaseView implements Serializable {
 
     public void cargarCompetencias(BateriaBean objBateriaBean) {
         try {
-            StringBuilder sb = new StringBuilder();
-            List lstId = new ArrayList<>();
-            for (BateriaBean objBean : droppedBaterias) {
-                lstId.add(objBean.getId());
-            }
-            for (int i = 0; i < lstId.size(); i++) {
-                sb.append("'").append(lstId.get(i)).append("'").append(",");
-            }
-            sb.deleteCharAt(sb.length() - 1).toString();
+//            StringBuilder sb = new StringBuilder();
+//            List lstId = new ArrayList<>();
+//            for (BateriaBean objBean : droppedBaterias) {
+//                lstId.add(objBean.getId());
+//            }
+//            for (int i = 0; i < lstId.size(); i++) {
+//                sb.append("'").append(lstId.get(i)).append("'").append(",");
+//            }
+//            sb.deleteCharAt(sb.length() - 1).toString();
+//            
+//            
             ModeloCompetenciaDAO objMCDao = new ModeloCompetenciaDAO();
+            List listaN = new ArrayList();
             List lstCompetencias = objMCDao.obtenerCompetenciasXEvaluacion(objBateriaBean.getId());
             Iterator it = lstCompetencias.iterator();
             while (it.hasNext()) {
@@ -495,9 +536,20 @@ public class CrearBateriaView extends BaseView implements Serializable {
                     objCompetencia.setNombre(objModeloCompetencia.getNombre());
                     objCompetencia.setColor(objModeloCompetencia.getColor());
 
-                    List lista = objMCDao.obtenerNombresEvaluacionPorCompetencia(objModeloCompetencia.getId(), sb);
+                    for (ModeloEvaluacionListCalBean objModelo : mapEvaComp.values()) {
+                        if (mapEvaComp.containsKey(objCompetencia.getId())) {
+                            for (BateriaBean objBean : droppedBaterias) {
+                                for (ModeloEvaluacionCalBean objB : objModelo.getListModeloEvaluacionCalBean()) {
+                                    if (objB.getId().equals(objBean.getId())) {
+                                        listaN.add(objB.getNombre());
+                                    }
 
-                    objCompetencia.setListaNombreEvaluaciones(lista);
+                                }
+                            }
+                        }
+                    }
+                    objCompetencia.setListaNombreEvaluaciones(listaN);
+//                    List lista = objMCDao.obtenerNombresEvaluacionPorCompetencia(objModeloCompetencia.getId(), sb);
 
                     droppedCompetencias.add(objCompetencia);
                     Collections.sort(droppedCompetencias);
@@ -524,7 +576,6 @@ public class CrearBateriaView extends BaseView implements Serializable {
             mostrarAlerta(FATAL, "error.inesperado", log, e);
         }
     }
-
 
     public void quitarBaterias(BateriaBean objBateria) {
         try {
@@ -618,10 +669,8 @@ public class CrearBateriaView extends BaseView implements Serializable {
                     if (Utilitarios.noEsNuloOVacio(id)) {
                         Utilitarios.ponerSession(null, Constantes.SESSION_ID_BATERIA);
                         lockEmpresa = false;
-                        limpiar();
-                    } else {
-                        limpiar();
                     }
+                    limpiar();
                     mostrarAlerta(INFO, "bateria.bateriaGuardada", null, null);
                 } else {
                     mostrarAlerta(ERROR, "bateria.noSeleccionoCompetencias", null, null);
@@ -768,6 +817,14 @@ public class CrearBateriaView extends BaseView implements Serializable {
 
     public void setLockEmpresa(boolean lockEmpresa) {
         this.lockEmpresa = lockEmpresa;
+    }
+
+    public List getListaEvaluacionesPorCompetencia() {
+        return listaEvaluacionesPorCompetencia;
+    }
+
+    public void setListaEvaluacionesPorCompetencia(List listaEvaluacionesPorCompetencia) {
+        this.listaEvaluacionesPorCompetencia = listaEvaluacionesPorCompetencia;
     }
 
 }

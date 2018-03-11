@@ -317,7 +317,7 @@ public class ModeloEvaluacionDAO extends HibernateUtil implements Serializable {
         return null;
     }
 
-    public List obtenerInfoParaCampos(String id) {
+    public List obtenerInformacionDeCampos(String id) {
         iniciaSession();
         try {
             Query query = session.createSQLQuery("select bp.nombre,p.empresa_id,p.area_id,p.id "
@@ -326,6 +326,22 @@ public class ModeloEvaluacionDAO extends HibernateUtil implements Serializable {
                     + " join proceso_seleccion ps on ps.id = ep.proceso_seleccion_id "
                     + " join perfil p on p.id = ps.perfil_id "
                     + " where bp.id=" + id);
+            return query.list();
+        } catch (Exception e) {
+            manejaException(log, e);
+        } finally {
+            cerrarSession();
+        }
+        return null;
+    }
+    
+    public List obtenerListaDeEvaluacionesPorCompetencia() {
+        try {
+            iniciaSession();
+            Query query = session.createSQLQuery("select mc.id as idMC,me.id as idME,me.nombre"
+                    + " from modelo_evaluacion_x_competencia mec"
+                    + " join modelo_evaluacion me on me.id = mec.modelo_evaluacion_id"
+                    + " join modelo_competencia mc on mc.id = mec.modelo_competencia_id");
             return query.list();
         } catch (Exception e) {
             manejaException(log, e);

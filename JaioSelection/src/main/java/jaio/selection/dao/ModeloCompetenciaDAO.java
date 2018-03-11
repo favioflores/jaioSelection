@@ -63,7 +63,7 @@ public class ModeloCompetenciaDAO extends HibernateUtil implements Serializable 
             Query query = session.createSQLQuery("select me.nombre from modelo_evaluacion_x_competencia mec "
                     + " join modelo_evaluacion me on me.id = mec.modelo_evaluacion_id "
                     + "	join modelo_competencia mc on mc.id = mec.modelo_competencia_id "
-                    + " where mc.id="+ id +" and me.id in ("+ sb +")");
+                    + " where mc.id=" + id + " and me.id in (" + sb + ")");
             return query.list();
         } catch (Exception e) {
             manejaException(log, e);
