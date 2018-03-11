@@ -146,7 +146,7 @@
 
                                                     <p:commandButton id="retirarEvaluacion" value="Retirar" styleClass="red-button" immediate="true" process="@this"
                                                                      update=":formBateria:pnlgroup1, :formBateria:pnlgroup2, :formBateria:oTotal" style="margin-bottom:10px;width: 100%;"
-                                                                     actionListener="#{crearBateriaView.quitarBaterias(bat)}">
+                                                                     actionListener="#{crearBateriaView.quitarBateria(bat)}">
                                                         <p:confirm header="Confirmar retiro de evaluación." icon="ui-icon-alert"/>
                                                     </p:commandButton>
 
@@ -219,7 +219,7 @@
                                                 <p:commandButton value="Agregar" styleClass="aqua-button" style="margin-bottom:10px; width: 100%;" 
                                                                  update=":formBateria:pnlgroup1,
                                                                  :formBateria:pnlgroup2,
-                                                                 :formBateria:oTotal" immediate="true" process="@this" actionListener="#{crearBateriaView.pasarBaterias(listE)}">
+                                                                 :formBateria:oTotal" immediate="true" process="@this" actionListener="#{crearBateriaView.pasarBateria(listE)}">
                                                 </p:commandButton>
                                             </p:panel>
                                             <p:draggable id="dragObject" for="panelDeEvaluaciones" revert="true" />
