@@ -1,46 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
-  <session-factory name="sessionFactory">
-    <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-    <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/JaioSelectionDB</property>
-    <property name="hibernate.connection.username">root</property>
-    <property name="hibernate.connection.password">Frozen4play</property>
-    <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
-    <property name="hibernate.connection.autocommit">false</property>
-    <property name="hibernate.show_sql">true</property>
-    <property name="hibernate.format_sql">true</property>
-    <property name="hibernate.generate_statistics">true</property>
-    <property name="hibernate.connection.autoReconnect">true</property>
-    <property name="hibernate.current_session_context_class">org.hibernate.context.internal.ThreadLocalSessionContext</property>
-    <mapping resource="jaio/selection/orm/Area.hbm.xml"/>
-    <mapping resource="jaio/selection/orm/BateriaEvaluacion.hbm.xml"/>
-    <mapping resource="jaio/selection/orm/BateriaPersonalizada.hbm.xml"/>
-    <mapping resource="jaio/selection/orm/Candidato.hbm.xml"/>
-    <mapping resource="jaio/selection/orm/ComunicadoProceso.hbm.xml"/>
-    <mapping resource="jaio/selection/orm/Definicion.hbm.xml"/>
-    <mapping resource="jaio/selection/orm/Elemento.hbm.xml"/>
-    <mapping resource="jaio/selection/orm/Empresa.hbm.xml"/>
-    <mapping resource="jaio/selection/orm/EvaluacionPerfil.hbm.xml"/>
-    <mapping resource="jaio/selection/orm/InfoAcademica.hbm.xml"/>
-    <mapping resource="jaio/selection/orm/InfoConocimiento.hbm.xml"/>
-    <mapping resource="jaio/selection/orm/InfoExperiencia.hbm.xml"/>
-    <mapping resource="jaio/selection/orm/InfoReferencia.hbm.xml"/>
-    <mapping resource="jaio/selection/orm/ModeloAjustesCalc.hbm.xml"/>
-    <mapping resource="jaio/selection/orm/ModeloCompetencia.hbm.xml"/>
-    <mapping resource="jaio/selection/orm/ModeloCompetenciaSinonimo.hbm.xml"/>
-    <mapping resource="jaio/selection/orm/ModeloComunicado.hbm.xml"/>
-    <mapping resource="jaio/selection/orm/ModeloEvaluacion.hbm.xml"/>
-    <mapping resource="jaio/selection/orm/ModeloEvaluacionXCompetencia.hbm.xml"/>
-    <mapping resource="jaio/selection/orm/ModeloLibro.hbm.xml"/>
-    <mapping resource="jaio/selection/orm/ModeloPregunta.hbm.xml"/>
-    <mapping resource="jaio/selection/orm/ModeloRespuesta.hbm.xml"/>
-    <mapping resource="jaio/selection/orm/Notificaciones.hbm.xml"/>
-    <mapping resource="jaio/selection/orm/Perfil.hbm.xml"/>
-    <mapping resource="jaio/selection/orm/ProcesoSeleccion.hbm.xml"/>
-    <mapping resource="jaio/selection/orm/Usuario.hbm.xml"/>
-    <mapping resource="jaio/selection/orm/Destinatarios.hbm.xml"/>
-    <mapping resource="jaio/selection/orm/NotificacionDetalle.hbm.xml"/>
-    
-  </session-factory>
+    <session-factory name="sessionFactory">
+        <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/JaioSelectionDB</property>
+        <property name="hibernate.connection.username">root</property>
+        <property name="hibernate.connection.password">Frozen4play</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+        <property name="hibernate.connection.autocommit">false</property>
+        <property name="hibernate.show_sql">true</property>
+        <property name="hibernate.format_sql">true</property>
+        <property name="hibernate.generate_statistics">true</property>
+        <property name="hibernate.connection.autoReconnect">true</property>
+        <property name="hibernate.current_session_context_class">org.hibernate.context.internal.ThreadLocalSessionContext</property>
+        
+        <mapping resource="jaio/selection/orm/Area.hbm.xml"/>
+        <mapping resource="jaio/selection/orm/BateriaEvaluacion.hbm.xml"/>
+        <mapping resource="jaio/selection/orm/BateriaPersonalizada.hbm.xml"/>
+        <mapping resource="jaio/selection/orm/Candidato.hbm.xml"/>
+        <mapping resource="jaio/selection/orm/ComunicadoDetalle.hbm.xml"/>
+        <mapping resource="jaio/selection/orm/ComunicadoProceso.hbm.xml"/>
+        <mapping resource="jaio/selection/orm/Definicion.hbm.xml"/>
+        <mapping resource="jaio/selection/orm/Destinatarios.hbm.xml"/>
+        <mapping resource="jaio/selection/orm/Elemento.hbm.xml"/>
+        <mapping resource="jaio/selection/orm/Empresa.hbm.xml"/>
+        <mapping resource="jaio/selection/orm/EvaluacionPerfil.hbm.xml"/>
+        <mapping resource="jaio/selection/orm/InfoAcademica.hbm.xml"/>
+        <mapping resource="jaio/selection/orm/InfoConocimiento.hbm.xml"/>
+        <mapping resource="jaio/selection/orm/InfoExperiencia.hbm.xml"/>
+        <mapping resource="jaio/selection/orm/InfoReferencia.hbm.xml"/>
+        <mapping resource="jaio/selection/orm/ModeloAjustesCalc.hbm.xml"/>
+        <mapping resource="jaio/selection/orm/ModeloCompetencia.hbm.xml"/>
+        <mapping resource="jaio/selection/orm/ModeloCompetenciaSinonimo.hbm.xml"/>
+        <mapping resource="jaio/selection/orm/ModeloEvaluacion.hbm.xml"/>
+        <mapping resource="jaio/selection/orm/ModeloEvaluacionXCompetencia.hbm.xml"/>
+        <mapping resource="jaio/selection/orm/ModeloLibro.hbm.xml"/>
+        <mapping resource="jaio/selection/orm/ModeloPregunta.hbm.xml"/>
+        <mapping resource="jaio/selection/orm/ModeloRespuesta.hbm.xml"/>
+        <mapping resource="jaio/selection/orm/Notificaciones.hbm.xml"/>
+        <mapping resource="jaio/selection/orm/NotificacionDetalle.hbm.xml"/>
+        <mapping resource="jaio/selection/orm/Perfil.hbm.xml"/>
+        <mapping resource="jaio/selection/orm/ProcesoSeleccion.hbm.xml"/>
+        <mapping resource="jaio/selection/orm/Usuario.hbm.xml"/>
+
+    </session-factory>
 </hibernate-configuration>
