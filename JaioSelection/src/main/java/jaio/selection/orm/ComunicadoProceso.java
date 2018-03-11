@@ -18,6 +18,16 @@ public class ComunicadoProceso implements java.io.Serializable {
     public ComunicadoProceso() {
     }
 
+    public ComunicadoProceso(int tipo, Date fechaRegistro, Date fechaActualizacion, int estado, byte[] contenido, ProcesoSeleccion procesoSeleccion, Set comunicadoDetalles) {
+        this.tipo = tipo;
+        this.fechaRegistro = fechaRegistro;
+        this.fechaActualizacion = fechaActualizacion;
+        this.estado = estado;
+        this.contenido = contenido;
+        this.procesoSeleccion = procesoSeleccion;
+        this.comunicadoDetalles = comunicadoDetalles;
+    }
+
     public Integer getId() {
         return id;
     }
@@ -81,5 +91,5 @@ public class ComunicadoProceso implements java.io.Serializable {
     public void setProcesoSeleccion(ProcesoSeleccion procesoSeleccion) {
         this.procesoSeleccion = procesoSeleccion;
     }
-    
+
 }

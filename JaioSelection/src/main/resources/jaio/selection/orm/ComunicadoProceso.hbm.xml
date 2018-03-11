@@ -27,7 +27,7 @@
             <column name="contenido" not-null="true" />
         </property>
 
-        <set embed-xml="true" fetch="select" inverse="true" lazy="true" mutable="true" name="comunidadoDetalles" optimistic-lock="true" sort="unsorted" table="comunicado_detalle">
+        <set embed-xml="true" fetch="select" inverse="true" lazy="true" mutable="true" name="comunicadoDetalles" optimistic-lock="true" sort="unsorted" table="comunicado_detalle">
             <key on-delete="noaction">
                 <column name="comunicado_proceso_id" not-null="true"/>
             </key>

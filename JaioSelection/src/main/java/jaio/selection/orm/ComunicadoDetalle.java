@@ -10,6 +10,12 @@ public class ComunicadoDetalle implements java.io.Serializable {
     public ComunicadoDetalle() {
     }
 
+    public ComunicadoDetalle(String parametro, byte[] contenido, ComunicadoProceso comunicadoProceso) {
+        this.parametro = parametro;
+        this.contenido = contenido;
+        this.comunicadoProceso = comunicadoProceso;
+    }
+    
     public Integer getId() {
         return id;
     }
