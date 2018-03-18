@@ -93,6 +93,8 @@ public class RegistrarReclutamientoView extends BaseView implements Serializable
         distrito = null;
         correo = null;
         limpiarInfoAcademica();
+        limpiarInfoConocimiento();
+        limpiarInfoExperiencia();
     }
 
     public void limpiarInfoCandidato() {
@@ -156,12 +158,13 @@ public class RegistrarReclutamientoView extends BaseView implements Serializable
             objConocimiento.setNombre(nombreConocimiento);
             objConocimiento.setNivel(nivelConocimiento);
             listConocimiento.add(objConocimiento);
+            limpiarInfoConocimiento();
         } catch (Exception e) {
             mostrarAlerta(FATAL, "error.inesperado", log, e);
         }
     }
 
-    public void quitarConocimiento(ConocimientoBean objConocimiento) {
+    public void quitarInfoConocimiento(ConocimientoBean objConocimiento) {
         try {
             listConocimiento.remove(objConocimiento);
         } catch (Exception e) {
@@ -174,7 +177,7 @@ public class RegistrarReclutamientoView extends BaseView implements Serializable
         nivelConocimiento = null;
     }
 
-    public void agregarExperiencia() {
+    public void agregarInfoExperiencia() {
         try {
             ExperienciaBean objExperiencia = new ExperienciaBean();
             objExperiencia.setEmpresa(empresa);
@@ -183,12 +186,13 @@ public class RegistrarReclutamientoView extends BaseView implements Serializable
             objExperiencia.setCargo(cargo);
             objExperiencia.setLogro(logroExperiencia);
             listExperiencia.add(objExperiencia);
+            limpiarInfoExperiencia();
         } catch (Exception e) {
             mostrarAlerta(FATAL, "error.inesperado", log, e);
         }
     }
 
-    public void quitarExperiencia(ExperienciaBean objExperienciaBean) {
+    public void quitarInfoExperiencia(ExperienciaBean objExperienciaBean) {
         try {
             listExperiencia.remove(objExperienciaBean);
         } catch (Exception e) {
@@ -209,7 +213,9 @@ public class RegistrarReclutamientoView extends BaseView implements Serializable
         try {
 
             ProcesoSeleccion objProcesoSeleccion = new ProcesoSeleccion();
-            objProcesoSeleccion.setId(Integer.parseInt(idProcesoSelecccion));
+            if (Utilitarios.noEsNuloOVacio(idProcesoSelecccion)) {
+                objProcesoSeleccion.setId(Integer.parseInt(idProcesoSelecccion));
+            }
 
             Candidato objCandidato = new Candidato();
             objCandidato.setProcesoSeleccion(objProcesoSeleccion);
