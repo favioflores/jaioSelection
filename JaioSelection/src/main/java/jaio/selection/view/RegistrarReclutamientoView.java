@@ -2,6 +2,7 @@ package jaio.selection.view;
 
 import jaio.selection.bean.AcademicaBean;
 import jaio.selection.bean.ConocimientoBean;
+import jaio.selection.bean.ElementoBean;
 import jaio.selection.bean.ExperienciaBean;
 import jaio.selection.dao.ReclutamientoDAO;
 import jaio.selection.orm.Candidato;
@@ -40,7 +41,7 @@ public class RegistrarReclutamientoView extends BaseView implements Serializable
     private String apellidoPaterno;
     private String apellidoMaterno;
     private String nroDocumento;
-    private List listaTipoDocumento = new ArrayList<>();
+    private List<ElementoBean> listaTipoDocumento = new ArrayList<>();
     private String documentoSeleccionado;
     private String celular;
     private String telefono;
@@ -83,12 +84,12 @@ public class RegistrarReclutamientoView extends BaseView implements Serializable
         apellidoPaterno = null;
         apellidoMaterno = null;
         nroDocumento = null;
-        listaTipoDocumento = new ArrayList<>();
+        poblarTipoDocumento(); 
         documentoSeleccionado = null;
         celular = null;
         telefono = null;
         direccion = null;
-        fechaNacimiento = null;
+        fechaNacimiento = formato.format(new Date());
         departamento = null;
         distrito = null;
         correo = null;
@@ -106,8 +107,8 @@ public class RegistrarReclutamientoView extends BaseView implements Serializable
         documentoSeleccionado = null;
         celular = null;
         telefono = null;
-        direccion = null;
-        fechaNacimiento = null;
+        direccion = null;   
+        fechaNacimiento = formato.format(new Date());
         departamento = null;
         distrito = null;
         correo = null;
@@ -120,7 +121,6 @@ public class RegistrarReclutamientoView extends BaseView implements Serializable
 
     public void agregarInfoAcademica() {
         try {
-
             AcademicaBean objAcademica = new AcademicaBean();
             objAcademica.setNombre(nombreAcademico);
             objAcademica.setEspecialidad(especialidad);
@@ -207,6 +207,23 @@ public class RegistrarReclutamientoView extends BaseView implements Serializable
         logroExperiencia = null;
         cargo = null;
     }
+    
+    public void poblarTipoDocumento(){
+        try {
+            listaTipoDocumento = new ArrayList<>();
+            ReclutamientoDAO objReclutamientoDAO = new ReclutamientoDAO();
+            for(Object o : objReclutamientoDAO.obtenerTipoDocumento()){
+                Object obj[] = (Object[]) o;
+                ElementoBean el = new ElementoBean();
+                el.setId(obj[0].toString());
+                el.setDescripcion(obj[1].toString());
+                listaTipoDocumento.add(el);
+            }
+        } catch (Exception e) {
+            mostrarAlerta(FATAL, "error.inesperado", log, e);
+        }
+    }
+    
 
     public void grabarInfoCandidato() {
 
@@ -303,11 +320,11 @@ public class RegistrarReclutamientoView extends BaseView implements Serializable
         this.nroDocumento = nroDocumento;
     }
 
-    public List getListaTipoDocumento() {
+    public List<ElementoBean> getListaTipoDocumento() {
         return listaTipoDocumento;
     }
 
-    public void setListaTipoDocumento(List tipoDocumento) {
+    public void setListaTipoDocumento(List<ElementoBean> tipoDocumento) {
         this.listaTipoDocumento = tipoDocumento;
     }
 

@@ -11,6 +11,7 @@ import org.apache.commons.logging.LogFactory;
 
 import jaio.selection.util.Utilitarios;
 import java.io.Serializable;
+import org.hibernate.Query;
 
 public class ReclutamientoDAO extends HibernateUtil implements Serializable {
 
@@ -20,6 +21,18 @@ public class ReclutamientoDAO extends HibernateUtil implements Serializable {
 //    public List<ProcesoSeleccion> obtenerProcesosPorEmpresa
     
     
+    public List obtenerTipoDocumento(){
+        try {
+            iniciaSession();
+            Query query = session.createSQLQuery("select * from elemento where definicion_id=14 order by 1 asc");
+            return query.list();
+        } catch (Exception e) {
+            manejaException(log, e);
+        }finally{
+            cerrarSession();
+        }
+        return null;
+    }
     
     
     public void grabarInfoCandidato(Candidato candidato, List<InfoAcademica> listaAcademica,
