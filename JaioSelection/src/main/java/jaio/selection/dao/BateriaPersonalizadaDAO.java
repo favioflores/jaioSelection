@@ -32,7 +32,7 @@ public class BateriaPersonalizadaDAO extends HibernateUtil implements Serializab
     public List obtenerProcesosRegistrados(String id) {
         iniciaSession();
         try {
-            Query query = session.createSQLQuery("select bp.id, bp.nombre, bp.fecha_creacion, p.nombre as nombrePerfil "
+            Query query = session.createSQLQuery("select bp.id, bp.nombre, bp.fecha_creacion, p.nombre as nombrePerfil,ps.id as PS "
                     + " from bateria_personalizada bp "
                     + " join evaluacion_perfil ep on ep.bateria_personalizada_id = bp.id "
                     + " join proceso_seleccion ps on ps.id = ep.proceso_seleccion_id "
@@ -55,7 +55,7 @@ public class BateriaPersonalizadaDAO extends HibernateUtil implements Serializab
         try {
             Query query = session.createSQLQuery("select count(modelo_evaluacion_id) "
                     + " from bateria_evaluacion where bateria_personalizada_id= " + id);
-            
+
             String cantidad = query.uniqueResult().toString();
             return cantidad;
         } catch (HibernateException e) {
@@ -75,6 +75,21 @@ public class BateriaPersonalizadaDAO extends HibernateUtil implements Serializab
                     + " where be.bateria_personalizada_id=" + id);
             return query.list();
         } catch (HibernateException e) {
+            manejaException(log, e);
+        } finally {
+            cerrarSession();
+        }
+        return null;
+    }
+
+    public List obtenerNombreDeEva(String id) {
+        try {
+            iniciaSession();
+            Query query = session.createSQLQuery("select distinct(me.nombre)from modelo_evaluacion me"
+                    + " join bateria_evaluacion be on be.modelo_evaluacion_id = me.id"
+                    + " where be.bateria_personalizada_id=" + id);
+            return query.list();
+        } catch (Exception e) {
             manejaException(log, e);
         } finally {
             cerrarSession();

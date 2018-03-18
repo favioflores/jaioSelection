@@ -29,11 +29,11 @@
                                                   value="#{msg['proceso.boton.nuevo']}">
                                 </p:commandButton>
                             </p:panelGrid>
-                            
+
                             <div class="ui-g-12" >
                                 <br/>
                                 <p:dataTable id="listaDeProcesos" var="procesos" emptyMessage="#{msg['no.registros']}" resizableColumns="true"
-                                             value="#{crearProcesoView.listaBateriasRegistradas}" style="margin-bottom:20px"
+                                             value="#{crearProcesoView.listaBateriasRegistradas}" style="margin-bottom:20px;width: 100%"
                                              rowKey="demo" rendered="#{crearProcesoView.listaBateriasRegistradas.size() > 0}"
                                              class="ui-datatable tabla">
 
@@ -66,9 +66,14 @@
                                         </p:commandButton>
                                     </p:column>
 
-                                    <p:column headerText="#{msg['proceso.cabezera.eliminar']}">
+                                    <p:column headerText="#{msg['proceso.cabezera.eliminar']}" style="width: auto;">
                                         <p:commandButton id="eliminarProceso" icon="fa fa-trash" styleClass="red-button" update=":formProceso:"
                                                          actionListener="#{crearProcesoView.eliminarBateria(procesos)}" >
+                                        </p:commandButton>
+                                    </p:column>
+                                    <p:column headerText="Reclutar" >
+                                        <p:commandButton id="reclutar" icon="fa fa-briefcase" update=":formProceso:"
+                                                         actionListener="#{crearProcesoView.abrirReclutamiento(procesos)}" >
                                         </p:commandButton>
                                     </p:column>
                                 </p:dataTable>
@@ -82,11 +87,15 @@
                           closable="true" hideEffect="clip" width="400" >
                     <div class="ui-g-12">
                         <p:outputLabel id="oTotal" value="Nº de Evaluaciones #{crearProcesoView.countEvaluacion}"/>
-                        <br/>
                     </div>
                     <div class="ui-g-12">
-                        <p:dataTable var="resumen" value="" scrollable="true" scrollRows="1" style="table-layout: auto">
-                            <p:columnGroup type="header">
+                        <ui:repeat var="i" value="#{crearProcesoView.listNombreEva}">
+                            <h:outputText  value="Evaluacion: #{i} "/><br/>
+                        </ui:repeat>
+                    </div>
+                    <div class="ui-g-12">
+                        <p:dataTable var="resumen" value="" scrollable="true" scrollRows="1" style="table-layout: auto" >
+                            <p:columnGroup type="header" >
                                 <p:row>
                                     <p:column colspan="1" headerText="Competencias Evaluadas" />
                                 </p:row>
@@ -97,6 +106,7 @@
                                     <h:outputText value="#{hijo.nombre}" />
                                 </p:column>
                             </p:subTable>
+
                         </p:dataTable>
                     </div>
                 </p:dialog>

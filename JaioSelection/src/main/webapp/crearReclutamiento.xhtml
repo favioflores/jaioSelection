@@ -1,0 +1,127 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+
+    <ui:define name="content">
+        <h:form id="formReclutamiento" enctype="multipart/form-data">
+            <p:growl life="4000" />
+            <div class="ui-g">
+                <div class="ui-g-12">
+                    <div class="ui-g card">
+                        <div class="ui-g-12">
+
+                            <h1>#{msg['registro.reclutamiento.titulo']}</h1>
+                            <p>#{msg['registro.reclutamiento.parrafo']}</p>
+
+                            <!--EMPRESAS-->
+                            <div class="ui-g-12 ui-lg-2" >
+                                <p:outputLabel value="#{msg['registro.combo.empresas']}"/>
+                            </div>
+                            <div class="ui-g-12 ui-lg-3" >
+                                <p:selectOneMenu id="comboEmpresas" value="#{crearProcesoView.strEmpresaSeleccionada}" effect="clip" filter="true" filterMatchMode="startsWith">
+                                    <f:selectItem itemLabel="#{msg['proceso.selecciona.empresa']}" itemValue="-1"/>
+                                    <f:selectItems value="#{crearReclutamiento.lstEmpresas}" var="e" itemLabel="#{e.desc}" itemValue="#{e.id}"/>
+                                    <p:ajax event="itemSelect" process="@this" update=":formReclutamiento:" listener="#{crearProcesoView.cargarBateriasRegistradas()}"/>
+                                </p:selectOneMenu>
+                            </div>
+                            <!--PROCESOS-->
+                            <div class="ui-g-12 ui-lg-2" >
+                                <p:outputLabel value="#{msg['registro.combo.procesos']}" />
+                            </div>
+                            <div class="ui-g-12 ui-lg-3" >
+                                <p:selectOneMenu id="comboProcesos" value="#{crearProcesoView.strEmpresaSeleccionada}" effect="clip" filter="true" filterMatchMode="startsWith">
+                                    <f:selectItem itemLabel="#{msg['proceso.selecciona.empresa']}" itemValue="-1"/>
+                                    <f:selectItems value="#{crearReclutamiento.lstProcesos}" var="emp" itemLabel="#{emp.desc}" itemValue="#{emp.id}"  />
+                                    <p:ajax event="itemSelect" process="@this" update=":formReclutamiento:"  listener="#{crearProcesoView.cargarBateriasRegistradas()}"/>
+                                </p:selectOneMenu>
+                            </div>
+                            <div class="ui-g-12 ui-lg-2" ></div>
+
+                            <p:panelGrid columns="1" columnClasses="ui-grid-col" layout="grid" styleClass="ui-panelgrid-blank" 
+                                         style="border:0px none; background-color:transparent;">
+
+
+
+                                <br/>
+                                <p:outputLabel value="#{msg['proceso.nuevo.proceso']}"/>
+                                <p:commandButton  icon="fa fa-plus Fs14" styleClass="aqua-button" actionListener="#{crearReclutamiento.abrirRegistroReclutamiento()}"
+                                                  value="#{msg['proceso.boton.nuevo']}">
+                                </p:commandButton>
+                            </p:panelGrid>
+
+                            <div class="ui-g-12" >
+                                <br/>
+<!--                                <p:dataTable id="listaDeProcesos" var="procesos" emptyMessage="#{msg['no.registros']}" resizableColumns="true"
+                                             value="#{crearProcesoView.listaBateriasRegistradas}" style="margin-bottom:20px"
+                                             rowKey="demo" rendered="#{crearProcesoView.listaBateriasRegistradas.size() > 0}"
+                                             class="ui-datatable tabla">
+
+                                    <f:facet name="header">
+                                #{msg['proceso.datatable.titulo']}
+                            </f:facet>
+
+                            <p:column headerText="#{msg['proceso.datatable.col1']}" >
+                                <h:outputText value="#{procesos.nombre}" />
+                            </p:column>
+
+                            <p:column headerText="#{msg['proceso.datatable.col2']}" >
+                                <h:outputText value="#{procesos.fechaCreacion}" />
+                            </p:column>
+
+                            <p:column headerText="#{msg['proceso.datatable.col4']}">
+                                <h:outputText value="#{procesos.nombrePerfil}" />
+                            </p:column>
+
+                            <p:column headerText="#{msg['proceso.datatable.col5']}" >
+                                <p:commandLink id="verResumen" actionListener="#{crearProcesoView.verResumenBateria(procesos)}" oncomplete="PF('dlgResumen').show();"
+                                               update=":formProceso:">
+                                    <h:outputText value="#{msg['proceso.ver.resumen.bateria']}" />
+                                </p:commandLink>
+                            </p:column>
+
+                            <p:column headerText="#{msg['proceso.cabezera.editar']}">
+                                <p:commandButton id="editarProceso" icon="fa fa-edit" styleClass="red-blue" update=":formProceso:"
+                                                 actionListener="#{crearProcesoView.editarBateria(procesos)}">
+                                </p:commandButton>
+                            </p:column>
+
+                            <p:column headerText="#{msg['proceso.cabezera.eliminar']}">
+                                <p:commandButton id="eliminarProceso" icon="fa fa-trash" styleClass="red-button" update=":formProceso:"
+                                                 actionListener="#{crearProcesoView.eliminarBateria(procesos)}" >
+                                </p:commandButton>
+                            </p:column>
+                        </p:dataTable>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <p:dialog id="dlgResumen" widgetVar="dlgResumen" header="#{msg['proceso.dialog.header']}"   
+                          resizable="false" closeOnEscape="true" responsive="true" showEffect="clip"
+                          closable="true" hideEffect="clip" width="400" >
+                    <div class="ui-g-12">
+                        <p:outputLabel id="oTotal" value="Nº de Evaluaciones #{crearProcesoView.countEvaluacion}"/>
+                        <br/>
+                    </div>
+                    <div class="ui-g-12">
+                        <p:dataTable var="resumen" value="" scrollable="true" scrollRows="1" style="table-layout: auto">
+                            <p:columnGroup type="header">
+                                <p:row>
+                                    <p:column colspan="1" headerText="Competencias Evaluadas" />
+                                </p:row>
+                            </p:columnGroup>
+
+                            <p:subTable id="subdata" var="hijo" value="#{crearProcesoView.lstCompetenciaBean}">
+                                <p:column>
+                                    <h:outputText value="#{hijo.nombre}" />
+                                </p:column>
+                            </p:subTable>
+                        </p:dataTable>
+                    </div>
+                </p:dialog>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>

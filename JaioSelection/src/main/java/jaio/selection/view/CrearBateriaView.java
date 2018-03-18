@@ -11,7 +11,6 @@ import jaio.selection.bean.EmpresaBean;
 import jaio.selection.bean.ModeloAjustesCalcBean;
 import jaio.selection.bean.ModeloAjustesListaBean;
 import jaio.selection.bean.ModeloCompetenciaBean;
-import jaio.selection.bean.ModeloEvaluacionBean;
 import jaio.selection.bean.PerfilBean;
 import jaio.selection.dao.AreaDAO;
 import jaio.selection.dao.EmpresaDAO;
@@ -41,6 +40,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
+import javax.faces.context.FacesContext;
 import org.primefaces.event.DragDropEvent;
 
 @ManagedBean(name = "crearBateriaView")
@@ -78,20 +78,21 @@ public class CrearBateriaView extends BaseView implements Serializable {
     private LinkedHashMap<String, String> mapCompetenciasSeleccionadas = new LinkedHashMap<>();
     private List<BateriaBean> droppedBaterias;
     private List<ModeloCompetenciaBean> droppedCompetencias;
+    private String n;
+
+    private LinkedHashMap<String, String> mapGuiaEdit = new LinkedHashMap();
 
     @PostConstruct
     public void init() {
         cargarEvaluaciones();
+        cargarListaCompetenciasTotal();
         llenarMapEvaComp();
         if (Utilitarios.noEsNuloOVacio(Utilitarios.obtenerSession(Constantes.SESSION_ID_BATERIA))) {
-            cargarListaCompetenciasTotal();
-            String demo = (String) Utilitarios.obtenerSession(Constantes.SESSION_ID_BATERIA);
-            cargarInformacionParaEditar(demo);
+            cargarEvaluacionesParaEditar((String) Utilitarios.obtenerSession(Constantes.SESSION_ID_BATERIA));
         } else {
             lockEmpresa = false;
             strNombreProceso = null;
             strCompSeleccionada = null;
-            cargarListaCompetenciasTotal();
             poblarEmpresas();
             lstArea = new ArrayList<>();
             lstPerfil = new ArrayList<>();
@@ -111,20 +112,12 @@ public class CrearBateriaView extends BaseView implements Serializable {
     }
 
     public void limpiar() {
-
-        if (Utilitarios.noEsNuloOVacio(Utilitarios.obtenerSession(Constantes.SESSION_ID_BATERIA))) {
-            cargarListaCompetenciasTotal();
-            String id = (String) Utilitarios.obtenerSession(Constantes.SESSION_ID_BATERIA);
-            cargarInformacionParaEditar(id);
-        } else {
-            strNombreProceso = null;
+        if (!Utilitarios.noEsNuloOVacio(Utilitarios.obtenerSession(Constantes.SESSION_ID_BATERIA))) {
             strEmpresaSeleccionada = null;
             poblarEmpresas();
-
         }
+        strNombreProceso = null;
         strCompSeleccionada = null;
-        cargarListaCompetenciasTotal();
-        llenarMapEvaComp();
         cargarRespaldo();
         lstArea = new ArrayList<>();
         lstPerfil = new ArrayList<>();
@@ -137,39 +130,34 @@ public class CrearBateriaView extends BaseView implements Serializable {
         droppedCompetencias = new ArrayList<>();
     }
 
-    public List cargarInformacionParaEditar(String id) {
+    public List cargarEvaluacionesParaEditar(String id) {
         try {
             ModeloEvaluacionDAO objEvaluacionDAO = new ModeloEvaluacionDAO();
-
-            droppedCompetencias = new ArrayList<>();
+            for (Object o : objEvaluacionDAO.obtenerInformacionDeCampos(id)) {
+                Object c[] = (Object[]) o;
+                strNombreProceso = c[0].toString();
+                poblarEmpresas();
+                strEmpresaSeleccionada = c[1].toString();
+                poblarArea();
+                strAreaSeleccionada = c[2].toString();
+                poblarPerfil();
+                strPerfilSeleccionado = c[3].toString();
+            }
             droppedBaterias = new ArrayList<>();
             lockEmpresa = true;
 
-            List listaInfo = objEvaluacionDAO.obtenerInformacionDeCampos(id);
-            Iterator it1 = listaInfo.iterator();
-            while (it1.hasNext()) {
-                Object obj[] = (Object[]) it1.next();
-                strNombreProceso = obj[0].toString();
-                poblarEmpresas();
-                strEmpresaSeleccionada = obj[1].toString();
-                poblarArea();
-                strAreaSeleccionada = obj[2].toString();
-                poblarPerfil();
-                strPerfilSeleccionado = obj[3].toString();
-            }
-
-            List evaluaciones = objEvaluacionDAO.obtenerEvaluacionesSeleccionadas(id);
-            Iterator iEva = evaluaciones.iterator();
-            List<BateriaBean> listDemo = listaDeEvaluacionesRespaldo;
-            while (iEva.hasNext()) {
-                Object obj[] = (Object[]) iEva.next();
-                for (BateriaBean bateria : listDemo) {
-                    if (obj[0].toString().equals(bateria.getId())) {
-                        pasarBateria(bateria);
-                    }
+            for (Object o : objEvaluacionDAO.obtenerEvaluacionesSeleccionadas(id)) {
+                Object obj[] = (Object[]) o;
+                if (mapGuiaEdit.containsKey(obj[0].toString())) {
+                    BateriaBean bateria = listaDeEvaluacionesRespaldo.get(Integer.parseInt(mapGuiaEdit.get(obj[0].toString())));
+                    droppedBaterias.add(bateria);
+                    listaDeEvaluaciones.remove(bateria);
                 }
             }
-
+            contarMinutos();
+            droppedCompetencias = new ArrayList<>();
+            mapCompetenciasSeleccionadas = new LinkedHashMap<String, String>();
+            cargarCompetencias();
         } catch (Exception e) {
             mostrarAlerta(FATAL, "error.inesperado", log, e);
         }
@@ -189,6 +177,7 @@ public class CrearBateriaView extends BaseView implements Serializable {
 
             List<BateriaBean> lstEvaluaciones = new ArrayList<>();
             ConvertirDatosBean convertirDatos = new ConvertirDatosBean();
+            int i = 0;
             for (ModeloEvaluacion objModeloEvaluacion : objEvaluacionDAO.obtenerModelos()) {
                 BateriaBean objBateriaBean = new BateriaBean();
                 objBateriaBean.setId(objModeloEvaluacion.getId().toString());
@@ -208,6 +197,8 @@ public class CrearBateriaView extends BaseView implements Serializable {
                 }
 
                 lstEvaluaciones.add(objBateriaBean);
+                mapGuiaEdit.put(objBateriaBean.getId(), Integer.toString(i));
+                i++;
             }
 
             listaDeEvaluacionesRespaldo.addAll(lstEvaluaciones);
@@ -280,6 +271,36 @@ public class CrearBateriaView extends BaseView implements Serializable {
             mostrarAlerta(FATAL, "error.inesperado", log, e);
         }
         return listaDeEvaluaciones;
+    }
+
+    public void verificarCompetenciaAlRetirar(BateriaBean objBateriaBean) {
+        try {
+            List listRetirado = new ArrayList<>();
+            n = null;
+            LinkedHashMap<String, String> comp = new LinkedHashMap<>();
+            for (Object o : objBateriaBean.getLstCompetencias()) {
+                for (BateriaBean bat : droppedBaterias) {
+                    comp = new LinkedHashMap<>();
+                    Integer i = 0;
+                    for (Object a : bat.getLstCompetencias()) {
+                        comp.put(i.toString(), a.toString());
+                        i++;
+                    }
+                    if (!comp.containsValue(o)) {
+                        listRetirado.add(o.toString());
+                    }
+                }
+            }
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < listRetirado.size(); i++) {
+                sb.append("'").append(listRetirado.get(i)).append("'").append(",");
+            }
+            sb.deleteCharAt(sb.length() - 1).toString();
+            n = sb.toString();
+        } catch (Exception e) {
+            mostrarAlerta(FATAL, "error.inesperado", log, e);
+        }
+
     }
 
     public StringBuilder obtenerIdEvaluacionesSeleccionadas() {
@@ -542,7 +563,7 @@ public class CrearBateriaView extends BaseView implements Serializable {
                     if (!mapEvaComp.isEmpty()) {
                         ModeloEvaluacionListCalBean objMap = mapEvaComp.get(objCompetencia.getId());
                         for (ModeloEvaluacionCalBean objB : objMap.getListModeloEvaluacionCalBean()) {
-                            String idEvaA ="";
+                            String idEvaA = "";
                             for (Object o : lstCompetencias) {
                                 Object e[] = (Object[]) o;
                                 if (!idEvaA.equals(e[3].toString())) {
@@ -555,7 +576,7 @@ public class CrearBateriaView extends BaseView implements Serializable {
                             }
                         }
                     }
-                    
+
                     objCompetencia.setListaNombreEvaluaciones(listaN);
                     droppedCompetencias.add(objCompetencia);
                     Collections.sort(droppedCompetencias);
@@ -585,12 +606,10 @@ public class CrearBateriaView extends BaseView implements Serializable {
         try {
             listaDeEvaluaciones.add(objBateria);
             droppedBaterias.remove(objBateria);
+            contarMinutos();
             droppedCompetencias = new ArrayList<>();
             mapCompetenciasSeleccionadas = new LinkedHashMap<String, String>();
-//            for (BateriaBean objBateriaBean1 : droppedBaterias) {
-//                cargarCompetencias(objBateriaBean1);
-//            }
-            contarMinutos();
+            cargarCompetencias();
         } catch (Exception e) {
             mostrarAlerta(FATAL, "error.inesperado", log, e);
         }
@@ -673,6 +692,7 @@ public class CrearBateriaView extends BaseView implements Serializable {
                     if (Utilitarios.noEsNuloOVacio(id)) {
                         Utilitarios.ponerSession(null, Constantes.SESSION_ID_BATERIA);
                         lockEmpresa = false;
+                        FacesContext.getCurrentInstance().getExternalContext().redirect("crearProceso.jsf");
                     }
                     limpiar();
                     mostrarAlerta(INFO, "bateria.bateriaGuardada", null, null);
@@ -831,4 +851,11 @@ public class CrearBateriaView extends BaseView implements Serializable {
         this.listaEvaluacionesPorCompetencia = listaEvaluacionesPorCompetencia;
     }
 
+    public String getN() {
+        return n;
+    }
+
+    public void setN(String n) {
+        this.n = n;
+    }
 }

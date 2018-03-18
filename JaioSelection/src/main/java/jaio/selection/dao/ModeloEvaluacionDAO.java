@@ -268,7 +268,7 @@ public class ModeloEvaluacionDAO extends HibernateUtil implements Serializable {
             objPerfil.setId(Integer.parseInt(strPerfilSeleccionado));
 
             objProcesoSeleccion.setFechaRegistro(new Date());
-            objProcesoSeleccion.setDescripcion("descripcion de prueba");
+            objProcesoSeleccion.setDescripcion(objBateriaPersonalizada.getNombre());
             objProcesoSeleccion.setEstado(Constantes.INT_ESTADO_PROCESO_REGISTRADO);
             objProcesoSeleccion.setPerfil(objPerfil);
 

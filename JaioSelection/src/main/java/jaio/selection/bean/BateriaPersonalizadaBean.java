@@ -6,7 +6,7 @@ import java.util.Date;
 public class BateriaPersonalizadaBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     private String id;
     private String nombre;
     private String fechaCreacion;
@@ -15,6 +15,7 @@ public class BateriaPersonalizadaBean implements Serializable {
     private String resena;
     private int horasEstimadasTotal;
     private int minutosEstimadosTotal;
+    private String idPs;
 
     public String getId() {
         return id;
@@ -79,8 +80,13 @@ public class BateriaPersonalizadaBean implements Serializable {
     public void setMinutosEstimadosTotal(int minutosEstimadosTotal) {
         this.minutosEstimadosTotal = minutosEstimadosTotal;
     }
-    
-    
-    
-    
+
+    public String getIdPs() {
+        return idPs;
+    }
+
+    public void setIdPs(String idPs) {
+        this.idPs = idPs;
+    }
+
 }

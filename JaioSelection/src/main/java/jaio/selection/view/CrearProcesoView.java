@@ -34,6 +34,7 @@ public class CrearProcesoView extends BaseView implements Serializable {
     private String countEvaluacion;
     private List<BateriaPersonalizadaBean> listaBateriasRegistradas;
     private List<CompetenciaBean> lstCompetenciaBean;
+    private List listNombreEva;
 
     @PostConstruct
     public void init() {
@@ -62,6 +63,21 @@ public class CrearProcesoView extends BaseView implements Serializable {
         }
     }
 
+    public void abrirReclutamiento(BateriaPersonalizadaBean objBean) {
+        try {
+            if (Utilitarios.noEsNuloOVacio(objBean.getIdPs())) {
+                Utilitarios.ponerSession(objBean.getIdPs(), Constantes.SESSION_ID_PROCESO);
+                FacesContext.getCurrentInstance().getExternalContext().redirect("registrarReclutamiento.jsf");
+            } else {
+                mostrarAlerta(FATAL, "error.inesperado", log, null);
+            }
+            
+        } catch (Exception e) {
+            mostrarAlerta(FATAL, "error.inesperado", log, e);
+        }
+
+    }
+
     public void cargarBateriasRegistradas() {
         try {
             listaBateriasRegistradas = new ArrayList<>();
@@ -76,6 +92,7 @@ public class CrearProcesoView extends BaseView implements Serializable {
                     objBateriaPersonalizadaBean.setNombre(obj[1].toString());
                     objBateriaPersonalizadaBean.setFechaCreacion(obj[2].toString());
                     objBateriaPersonalizadaBean.setNombrePerfil(obj[3].toString());
+                    objBateriaPersonalizadaBean.setIdPs(obj[4].toString());
                     listaBateriasRegistradas.add(objBateriaPersonalizadaBean);
                 }
             }
@@ -90,6 +107,7 @@ public class CrearProcesoView extends BaseView implements Serializable {
             BateriaPersonalizadaDAO objBateriaPersonalizadaDAO = new BateriaPersonalizadaDAO();
             countEvaluacion = null;
             lstCompetenciaBean = new ArrayList<>();
+            listNombreEva = new ArrayList<>();
             countEvaluacion = objBateriaPersonalizadaDAO.obtenerNumeroEvaluaciones(objBean.getId());
             List objList = objBateriaPersonalizadaDAO.obtenerCompetenciaParaResumen(objBean.getId());
 
@@ -99,6 +117,10 @@ public class CrearProcesoView extends BaseView implements Serializable {
                 CompetenciaBean objBean1 = new CompetenciaBean();
                 objBean1.setNombre(obj[0].toString());
                 lstCompetenciaBean.add(objBean1);
+            }
+            
+            for(Object n : objBateriaPersonalizadaDAO.obtenerNombreDeEva(objBean.getId())){
+                listNombreEva.add(n);
             }
         } catch (Exception e) {
             mostrarAlerta(FATAL, "error.inesperado", log, e);
@@ -208,5 +230,14 @@ public class CrearProcesoView extends BaseView implements Serializable {
     public void setCountEvaluacion(String countEvaluacion) {
         this.countEvaluacion = countEvaluacion;
     }
+
+    public List getListNombreEva() {
+        return listNombreEva;
+    }
+
+    public void setListNombreEva(List listNombreEva) {
+        this.listNombreEva = listNombreEva;
+    }
+    
 
 }
