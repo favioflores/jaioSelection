@@ -79,6 +79,7 @@ public class CrearBateriaView extends BaseView implements Serializable {
     private List<BateriaBean> droppedBaterias;
     private List<ModeloCompetenciaBean> droppedCompetencias;
     private String n;
+    private String nm;
 
     private LinkedHashMap<String, String> mapGuiaEdit = new LinkedHashMap();
 
@@ -277,6 +278,7 @@ public class CrearBateriaView extends BaseView implements Serializable {
         try {
             List listRetirado = new ArrayList<>();
             n = null;
+            nm = null;
             LinkedHashMap<String, String> comp = new LinkedHashMap<>();
             for (Object o : objBateriaBean.getLstCompetencias()) {
                 for (BateriaBean bat : droppedBaterias) {
@@ -296,6 +298,7 @@ public class CrearBateriaView extends BaseView implements Serializable {
                 sb.append("'").append(listRetirado.get(i)).append("'").append(",");
             }
             sb.deleteCharAt(sb.length() - 1).toString();
+            nm = objBateriaBean.getNombre();
             n = sb.toString();
         } catch (Exception e) {
             mostrarAlerta(FATAL, "error.inesperado", log, e);
@@ -858,4 +861,13 @@ public class CrearBateriaView extends BaseView implements Serializable {
     public void setN(String n) {
         this.n = n;
     }
+
+    public String getNm() {
+        return nm;
+    }
+
+    public void setNm(String nm) {
+        this.nm = nm;
+    }
+
 }

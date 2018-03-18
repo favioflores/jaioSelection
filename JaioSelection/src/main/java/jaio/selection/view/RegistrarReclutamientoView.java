@@ -35,6 +35,7 @@ public class RegistrarReclutamientoView extends BaseView implements Serializable
     SimpleDateFormat formato = new SimpleDateFormat("dd-MM-yyyy");
 
     private String idProcesoSelecccion;
+    private String idReclutamiento;
 
     //Info Candidato
     private String nombreCandidato;
@@ -76,15 +77,30 @@ public class RegistrarReclutamientoView extends BaseView implements Serializable
     @PostConstruct
     public void init() {
 
+        poblarTipoDocumento();
+
         if (Utilitarios.noEsNuloOVacio(Utilitarios.obtenerSession(Constantes.SESSION_ID_PROCESO))) {
             idProcesoSelecccion = (String) Utilitarios.obtenerSession(Constantes.SESSION_ID_PROCESO);
         }
+        
+        if (Utilitarios.noEsNuloOVacio(Utilitarios.obtenerSession(Constantes.SESSION_ID_RECLUTAMIENTO))) {
+            idReclutamiento = (String) Utilitarios.obtenerSession(Constantes.SESSION_ID_RECLUTAMIENTO);
+            cargaInformacionAcademica();
+        } else {
+           limpiarInfoCandidato();
+        }
+        
+        limpiarInfoAcademica();
+        limpiarInfoConocimiento();
+        limpiarInfoExperiencia();
 
+    }
+
+    public void limpiarInfoCandidato() {
         nombreCandidato = null;
         apellidoPaterno = null;
         apellidoMaterno = null;
         nroDocumento = null;
-        poblarTipoDocumento(); 
         documentoSeleccionado = null;
         celular = null;
         telefono = null;
@@ -93,29 +109,28 @@ public class RegistrarReclutamientoView extends BaseView implements Serializable
         departamento = null;
         distrito = null;
         correo = null;
-        limpiarInfoAcademica();
-        limpiarInfoConocimiento();
-        limpiarInfoExperiencia();
-    }
-
-    public void limpiarInfoCandidato() {
-        nombreCandidato = null;
-        apellidoPaterno = null;
-        apellidoMaterno = null;
-        nroDocumento = null;
-        listaTipoDocumento = new ArrayList<>();
-        documentoSeleccionado = null;
-        celular = null;
-        telefono = null;
-        direccion = null;   
-        fechaNacimiento = formato.format(new Date());
-        departamento = null;
-        distrito = null;
-        correo = null;
 
     }
 
     public void cargaInformacionAcademica() {
+        try {
+            ReclutamientoDAO objReclutamientoDAO = new ReclutamientoDAO();
+            Candidato objCandidatoDao = objReclutamientoDAO.cargarCandidato(idReclutamiento);
+            nombreCandidato = objCandidatoDao.getNombre();
+            apellidoPaterno = objCandidatoDao.getApellidoParterno();
+            apellidoMaterno = objCandidatoDao.getApellidoMaterno();
+            nroDocumento = objCandidatoDao.getNroDocumento();
+            documentoSeleccionado = Integer.toString(objCandidatoDao.getTipoDocumento());
+            celular = objCandidatoDao.getMovil();
+            telefono = objCandidatoDao.getTelefono();
+            direccion = objCandidatoDao.getDireccion();
+            fechaNacimiento = formato.format(objCandidatoDao.getFechaNacimiento());
+            distrito = Integer.toString(objCandidatoDao.getDistrito());
+            correo = objCandidatoDao.getCorreo();
+
+        } catch (Exception e) {
+            mostrarAlerta(FATAL, "error.inesperado", log, e);
+        }
 
     }
 
@@ -207,12 +222,12 @@ public class RegistrarReclutamientoView extends BaseView implements Serializable
         logroExperiencia = null;
         cargo = null;
     }
-    
-    public void poblarTipoDocumento(){
+
+    public void poblarTipoDocumento() {
         try {
             listaTipoDocumento = new ArrayList<>();
             ReclutamientoDAO objReclutamientoDAO = new ReclutamientoDAO();
-            for(Object o : objReclutamientoDAO.obtenerTipoDocumento()){
+            for (Object o : objReclutamientoDAO.obtenerTipoDocumento()) {
                 Object obj[] = (Object[]) o;
                 ElementoBean el = new ElementoBean();
                 el.setId(obj[0].toString());
@@ -223,7 +238,6 @@ public class RegistrarReclutamientoView extends BaseView implements Serializable
             mostrarAlerta(FATAL, "error.inesperado", log, e);
         }
     }
-    
 
     public void grabarInfoCandidato() {
 

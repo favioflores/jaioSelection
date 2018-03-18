@@ -239,6 +239,7 @@ public class Constantes {
     public static String SESSION_BATERIA = "bateriaSession";
     public static String SESSION_ID_BATERIA = "idBateriaSession";
     public static String SESSION_ID_PROCESO = "idProcesoSession";
+    public static String SESSION_ID_RECLUTAMIENTO = "idReclutamiento";
 
     public static String MASCULINO = "6";
     public static String FEMENINO = "7";

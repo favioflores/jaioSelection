@@ -34,12 +34,26 @@ public class ReclutamientoDAO extends HibernateUtil implements Serializable {
         return null;
     }
     
+    public Candidato cargarCandidato(String id){
+        try {
+            iniciaSession();
+            Query query = session.createQuery("From Candidato c where c.id = ? ");
+            query.setString(0, id);
+            Candidato candidato = (Candidato) query.uniqueResult();
+            return candidato;
+        } catch (Exception e) {
+            manejaException(log, e);
+        }finally{
+            cerrarSession();
+        }
+        return null;
+    }
+    
     
     public void grabarInfoCandidato(Candidato candidato, List<InfoAcademica> listaAcademica,
             List<InfoConocimiento> listaConocimiento, List<InfoExperiencia> listaExperiencia) {
         try {
             iniciaSession();
-            
             session.save(candidato);
 
             if (Utilitarios.noEsNuloOVacio(listaAcademica)) {
@@ -65,7 +79,6 @@ public class ReclutamientoDAO extends HibernateUtil implements Serializable {
 
             guardarCambios();
             log.debug("Grago correctamente");
-
         } catch (Exception e) {
             rollback(log, e);
         } finally {

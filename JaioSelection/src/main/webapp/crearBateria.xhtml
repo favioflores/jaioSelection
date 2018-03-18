@@ -148,22 +148,10 @@
                                                                      style="margin-bottom:10px;width: 100%;"
                                                                      oncomplete="PF('compDrop').show();"
                                                                      actionListener="#{crearBateriaView.verificarCompetenciaAlRetirar(bat)}"
-                                                                     update=":formBateria:pnlgroup1, :formBateria:pnlgroup2, :formBateria:oTotal" >
+                                                                     update=":formBateria:pnlgroup1, :formBateria:pnlgroup2, :formBateria:oTotal, :formBateria:compDrop" >
                                                     </p:commandButton>
 
-                                                    <p:confirmDialog id="compDrop" widgetVar="compDrop" 
-                                                                     responsive="true" closable="true" closeOnEscape="true"
-                                                                     header="Confirmar retiro de evaluación." 
-                                                                     global="true" showEffect="fade" hideEffect="fade" style="align-content: center;" >
-                                                        <f:facet name='message' >
-                                                            <h:outputText value=' Al borrar la evaluación "#{bat.nombre}" dejara de evaluar '/>
-                                                            <br/>
-                                                            <h:outputText value='la(s) competencia(s): #{crearBateriaView.n} '/>
-                                                            <br/>   
-                                                        </f:facet>
-                                                        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" actionListener="#{crearBateriaView.quitarBateria(bat)}"/>
-                                                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-                                                    </p:confirmDialog>
+
 
 
                                                 </p:panel>
@@ -237,7 +225,19 @@
                 </div>
 
 
-
+                <p:confirmDialog id="compDrop" widgetVar="compDrop" 
+                                 responsive="true" closable="true" closeOnEscape="true"
+                                 header="Confirmar retiro de evaluación." 
+                                 global="true" showEffect="fade" hideEffect="fade" style="align-content: center;" >
+                    <f:facet name='message' >
+                        <h:outputText value=' Al borrar la evaluación "#{crearBateriaView.nm}" dejara de evaluar '/>
+                        <br/>
+                        <h:outputText value='la(s) competencia(s): #{crearBateriaView.n} '/>
+                        <br/>   
+                    </f:facet>
+                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" actionListener="#{crearBateriaView.quitarBateria(bat)}"/>
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                </p:confirmDialog>
 
 
 
