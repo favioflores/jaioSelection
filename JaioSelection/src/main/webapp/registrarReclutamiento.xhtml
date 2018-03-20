@@ -16,7 +16,7 @@
                             <div class="ui-g-12">
                                 <p:button value="#{msg['organigrama.volver']}" outcome="crearReclutamiento" icon="fa fa-angle-left" styleClass="aqua-button"/>
                                 <p:commandButton value="#{msg['boton.limpiar']}" actionListener="#{registrarReclutamientoView.limpiarInfoCandidato()}"
-                                                 update=":formRegistroR:" process="@this" style="margin-right:20px;" styleClass="aqua-button" />
+                                                 update=":formRegistroR:infoCandidato" process="@this" style="margin-right:20px;" styleClass="aqua-button" />
                                 <br/>
                             </div>
                             <h:panelGroup id="grupo1">
@@ -223,7 +223,7 @@
 
                                         <div class="ui-g-12 ui-lg-6">
                                             <p:commandButton id="limpiarInfoAcademica" value="#{msg['boton.limpiar']}" widgetVar="grabarInfo" styleClass="aqua-button"
-                                                             actionListener="#{registrarReclutamientoView.limpiarInfoAcademica()}" update=":formRegistroR:"
+                                                             actionListener="#{registrarReclutamientoView.limpiarInfoAcademica()}" update=":formRegistroR:infoAcademica"
                                                              style="margin-bottom:10px; width: 100%;"  process="@this"/>
                                         </div>
 
@@ -235,7 +235,7 @@
                                                 <f:facet name="header" >
                                                     <h:outputText value="#{listA.nombre}" />
                                                     <p:commandButton icon="fa fa-trash" actionListener="#{registrarReclutamientoView.quitarInfoAcademica(listA)}"
-                                                                     process="@this" update=":formRegistroR:" styleClass="red-button"/>
+                                                                     process="@this" update=":formRegistroR:grupo2" styleClass="red-button"/>
                                                 </f:facet>
                                                 <h:outputText value="#{listA.especialidad}"/>
                                                 <br/>
@@ -275,15 +275,16 @@
                                         </div>
 
                                         <!--BOTONES-->
-                                        <div class="ui-g-12 ui-lg-6">
-                                            <p:commandButton id="agregarInfoConocimiento" value="#{msg['organigrama.boton.agregar']}" styleClass="aqua-button"
-                                                             action="#{registrarReclutamientoView.agregarInfoConocimiento()}" update=":formRegistroR:"
-                                                             style="margin-bottom:10px; width: 100%;" immediate="true" icon="fa fa-plus Fs14" process="@this"/>
+                                        <div class="ui-g-12 ui-lg-6">                                            
+                                            <p:commandButton id="agregarInfoConocimiento" widgetVar="agregarInfoConocimiento" styleClass="aqua-button"
+                                                             value="#{msg['organigrama.boton.agregar']}"
+                                                             action="#{registrarReclutamientoView.agregarInfoConocimiento()}" update=":formRegistroR:grupo3"
+                                                             style="margin-bottom:10px; width: 100%;" icon="fa fa-plus Fs14" process="infoConocimientos"/>
                                         </div>
 
                                         <div class="ui-g-12 ui-lg-6">
                                             <p:commandButton id="limpiarInfoConocimiento" value="#{msg['boton.limpiar']}" widgetVar="grabarInfo" styleClass="aqua-button"
-                                                             actionListener="#{registrarReclutamientoView.limpiarInfoConocimiento()}" update=":formRegistroR:"
+                                                             actionListener="#{registrarReclutamientoView.limpiarInfoConocimiento()}" update=":formRegistroR:infoConocimientos"
                                                              style="margin-bottom:10px; width: 100%;"  process="@this"/>
                                         </div>
 
@@ -295,7 +296,7 @@
                                                 <f:facet name="header" >
                                                     <h:outputText value="#{listC.nombre}" />
                                                     <p:commandButton icon="fa fa-trash" actionListener="#{registrarReclutamientoView.quitarInfoConocimiento(listC)}"
-                                                                     process="@this" update=":formRegistroR:" styleClass="red-button"/>
+                                                                     process="@this" update=":formRegistroR:grupo3" styleClass="red-button"/>
                                                 </f:facet>
                                                 <h:outputText value="#{listC.nivel}"/>
                                             </p:panel>
@@ -359,14 +360,15 @@
 
                                         <!--BOTONES-->
                                         <div class="ui-g-12 ui-lg-6">
-                                            <p:commandButton id="agregarInfoExperiencia" value="#{msg['organigrama.boton.agregar']}" styleClass="aqua-button"
-                                                             action="#{registrarReclutamientoView.agregarInfoExperiencia()}" update=":formRegistroR:"
-                                                             style="margin-bottom:10px; width: 100%;" immediate="true" icon="fa fa-plus Fs14" process="@this"/>
+                                            <p:commandButton id="agregarInfoExperiencia" widgetVar="agregarInfoExperiencia" styleClass="aqua-button"
+                                                             value="#{msg['organigrama.boton.agregar']}"
+                                                             action="#{registrarReclutamientoView.agregarInfoExperiencia()}" update=":formRegistroR:grupo4"
+                                                             style="margin-bottom:10px; width: 100%;" icon="fa fa-plus Fs14" process="infoExperiencia"/>
                                         </div>
 
                                         <div class="ui-g-12 ui-lg-6">
                                             <p:commandButton id="limpiarInfoExperiencia" value="#{msg['boton.limpiar']}" widgetVar="grabarInfo" styleClass="aqua-button"
-                                                             actionListener="#{registrarReclutamientoView.limpiarInfoExperiencia()}" update=":formRegistroR:"
+                                                             actionListener="#{registrarReclutamientoView.limpiarInfoExperiencia()}" update=":formRegistroR:infoExperiencia"
                                                              style="margin-bottom:10px; width: 100%;"  process="@this"/>
                                         </div>
 
@@ -379,7 +381,7 @@
                                                 <f:facet name="header" >
                                                     <h:outputText value="#{listE.empresa}" />
                                                     <p:commandButton icon="fa fa-trash" actionListener="#{registrarReclutamientoView.quitarInfoExperiencia(listE)}"
-                                                                     process="@this" update=":formRegistroR:" styleClass="red-button" />
+                                                                     process="@this" update=":formRegistroR:grupo4" styleClass="red-button" />
                                                 </f:facet>
                                                 <h:outputText value="#{listE.cargo}" />
                                                 <h:outputText value="#{listE.logro}"/>

@@ -254,7 +254,7 @@ public class RegistrarReclutamientoView extends BaseView implements Serializable
             objCandidato.setApellidoParterno(apellidoPaterno);
             objCandidato.setApellidoMaterno(apellidoMaterno);
             objCandidato.setNroDocumento(nroDocumento);
-            objCandidato.setTipoDocumento(1);
+            objCandidato.setTipoDocumento(Integer.parseInt(documentoSeleccionado));
             objCandidato.setMovil(celular);
             objCandidato.setTelefono(telefono);
             objCandidato.setDireccion(direccion);
