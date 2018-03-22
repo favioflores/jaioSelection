@@ -24,6 +24,7 @@ import javax.faces.bean.ManagedBean;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 
 @ManagedBean(name = "registrarReclutamientoView")
 @ViewScoped
@@ -47,7 +48,7 @@ public class RegistrarReclutamientoView extends BaseView implements Serializable
     private String celular;
     private String telefono;
     private String direccion;
-    private String fechaNacimiento;
+    private Date fechaNacimiento;
     private String departamento;
     private String distrito;
     private String correo;
@@ -57,9 +58,10 @@ public class RegistrarReclutamientoView extends BaseView implements Serializable
     private String nombreAcademico;
     private String especialidad;
     private String grado;
-    private String fechaInicioAcademico;
-    private String fechaFinAcademico;
+    private Date fechaInicioAcademico;
+    private Date fechaFinAcademico;
     private String logro;
+    private boolean isInfoA;
 
     //Info Conocimiento
     private List<ConocimientoBean> listConocimiento = new ArrayList<>();
@@ -69,31 +71,27 @@ public class RegistrarReclutamientoView extends BaseView implements Serializable
     //Info Experiencia
     private List<ExperienciaBean> listExperiencia = new ArrayList<>();
     private String empresa;
-    private String fechaInicioExperiencia;
-    private String fechaFinExperiencia;
+    private Date fechaInicioExperiencia;
+    private Date fechaFinExperiencia;
     private String logroExperiencia;
     private String cargo;
 
     @PostConstruct
     public void init() {
-
         poblarTipoDocumento();
-
+        limpiarInfoAcademica();
+        limpiarInfoConocimiento();
+        limpiarInfoExperiencia();
         if (Utilitarios.noEsNuloOVacio(Utilitarios.obtenerSession(Constantes.SESSION_ID_PROCESO))) {
             idProcesoSelecccion = (String) Utilitarios.obtenerSession(Constantes.SESSION_ID_PROCESO);
         }
-        
         if (Utilitarios.noEsNuloOVacio(Utilitarios.obtenerSession(Constantes.SESSION_ID_RECLUTAMIENTO))) {
             idReclutamiento = (String) Utilitarios.obtenerSession(Constantes.SESSION_ID_RECLUTAMIENTO);
             cargaInformacionAcademica();
         } else {
-           limpiarInfoCandidato();
+            limpiarInfoCandidato();
         }
-        
-        limpiarInfoAcademica();
-        limpiarInfoConocimiento();
-        limpiarInfoExperiencia();
-
+        isInfoA = false;
     }
 
     public void limpiarInfoCandidato() {
@@ -105,11 +103,32 @@ public class RegistrarReclutamientoView extends BaseView implements Serializable
         celular = null;
         telefono = null;
         direccion = null;
-        fechaNacimiento = formato.format(new Date());
+        fechaNacimiento = null;
         departamento = null;
         distrito = null;
         correo = null;
+    }
 
+    public void limpiarInfoAcademica() {
+        nombreAcademico=null;
+        especialidad = null;
+        grado = null;
+        fechaInicioAcademico = null;
+        fechaFinAcademico = null;
+        logro = null;
+    }
+
+    public void limpiarInfoConocimiento() {
+        nombreConocimiento = null;
+        nivelConocimiento = null;
+    }
+
+    public void limpiarInfoExperiencia() {
+        empresa = null;
+        fechaInicioExperiencia = null;
+        fechaFinExperiencia = null;
+        logroExperiencia = null;
+        cargo = null;
     }
 
     public void cargaInformacionAcademica() {
@@ -124,7 +143,7 @@ public class RegistrarReclutamientoView extends BaseView implements Serializable
             celular = objCandidatoDao.getMovil();
             telefono = objCandidatoDao.getTelefono();
             direccion = objCandidatoDao.getDireccion();
-            fechaNacimiento = formato.format(objCandidatoDao.getFechaNacimiento());
+//            fechaNacimiento = formato.format(objCandidatoDao.getFechaNacimiento());
             distrito = Integer.toString(objCandidatoDao.getDistrito());
             correo = objCandidatoDao.getCorreo();
 
@@ -133,6 +152,14 @@ public class RegistrarReclutamientoView extends BaseView implements Serializable
         }
 
     }
+    
+    public void ocultandoCampos(){
+        try {
+            isInfoA = true;
+        } catch (Exception e) {
+        }
+        
+    }
 
     public void agregarInfoAcademica() {
         try {
@@ -140,8 +167,8 @@ public class RegistrarReclutamientoView extends BaseView implements Serializable
             objAcademica.setNombre(nombreAcademico);
             objAcademica.setEspecialidad(especialidad);
             objAcademica.setGrado(grado);
-            objAcademica.setFechaInicio(fechaInicioAcademico);
-            objAcademica.setFechaFin(fechaFinAcademico);
+            objAcademica.setFechaInicio(formato.format(fechaInicioAcademico));
+            objAcademica.setFechaFin(formato.format(fechaFinAcademico));
             objAcademica.setLogro(logro);
             listAcademica.add(objAcademica);
             limpiarInfoAcademica();
@@ -156,15 +183,6 @@ public class RegistrarReclutamientoView extends BaseView implements Serializable
         } catch (Exception e) {
             mostrarAlerta(FATAL, "error.inesperado", log, e);
         }
-    }
-
-    public void limpiarInfoAcademica() {
-        nombreAcademico = null;
-        especialidad = null;
-        grado = null;
-        fechaInicioAcademico = formato.format(new Date());
-        fechaFinAcademico = formato.format(new Date());
-        logro = null;
     }
 
     public void agregarInfoConocimiento() {
@@ -187,17 +205,12 @@ public class RegistrarReclutamientoView extends BaseView implements Serializable
         }
     }
 
-    public void limpiarInfoConocimiento() {
-        nombreConocimiento = null;
-        nivelConocimiento = null;
-    }
-
     public void agregarInfoExperiencia() {
         try {
             ExperienciaBean objExperiencia = new ExperienciaBean();
             objExperiencia.setEmpresa(empresa);
-            objExperiencia.setFechaInicio(fechaInicioExperiencia);
-            objExperiencia.setFechaFin(fechaFinExperiencia);
+            objExperiencia.setFechaInicio(formato.format(fechaInicioExperiencia));
+            objExperiencia.setFechaFin(formato.format(fechaFinExperiencia));
             objExperiencia.setCargo(cargo);
             objExperiencia.setLogro(logroExperiencia);
             listExperiencia.add(objExperiencia);
@@ -213,14 +226,6 @@ public class RegistrarReclutamientoView extends BaseView implements Serializable
         } catch (Exception e) {
             mostrarAlerta(FATAL, "error.inesperado", log, e);
         }
-    }
-
-    public void limpiarInfoExperiencia() {
-        empresa = null;
-        fechaInicioExperiencia = formato.format(new Date());
-        fechaFinExperiencia = formato.format(new Date());
-        logroExperiencia = null;
-        cargo = null;
     }
 
     public void poblarTipoDocumento() {
@@ -258,7 +263,7 @@ public class RegistrarReclutamientoView extends BaseView implements Serializable
             objCandidato.setMovil(celular);
             objCandidato.setTelefono(telefono);
             objCandidato.setDireccion(direccion);
-            objCandidato.setFechaNacimiento(formato.parse(fechaNacimiento));
+            objCandidato.setFechaNacimiento(fechaNacimiento);
 //            objCandidato.setDepartamento(departamento);
             objCandidato.setDistrito(1);
             objCandidato.setCorreo(correo);
@@ -296,7 +301,8 @@ public class RegistrarReclutamientoView extends BaseView implements Serializable
 
             ReclutamientoDAO objReclutamientoDAO = new ReclutamientoDAO();
             objReclutamientoDAO.grabarInfoCandidato(objCandidato, listaAcademica, listaConocimiento, listaExperiencia);
-
+            
+            FacesContext.getCurrentInstance().getExternalContext().redirect("crearReclutamiento.jsf");
         } catch (Exception e) {
             mostrarAlerta(FATAL, "error.inesperado", log, e);
         }
@@ -374,11 +380,11 @@ public class RegistrarReclutamientoView extends BaseView implements Serializable
         this.direccion = direccion;
     }
 
-    public String getFechaNacimiento() {
+    public Date getFechaNacimiento() {
         return fechaNacimiento;
     }
 
-    public void setFechaNacimiento(String fechaNacimiento) {
+    public void setFechaNacimiento(Date fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
 
@@ -430,19 +436,19 @@ public class RegistrarReclutamientoView extends BaseView implements Serializable
         this.grado = grado;
     }
 
-    public String getFechaInicioAcademico() {
+    public Date getFechaInicioAcademico() {
         return fechaInicioAcademico;
     }
 
-    public void setFechaInicioAcademico(String fechaInicioAcademico) {
+    public void setFechaInicioAcademico(Date fechaInicioAcademico) {
         this.fechaInicioAcademico = fechaInicioAcademico;
     }
 
-    public String getFechaFinAcademico() {
+    public Date getFechaFinAcademico() {
         return fechaFinAcademico;
     }
 
-    public void setFechaFinAcademico(String fechaFinAcademico) {
+    public void setFechaFinAcademico(Date fechaFinAcademico) {
         this.fechaFinAcademico = fechaFinAcademico;
     }
 
@@ -494,19 +500,19 @@ public class RegistrarReclutamientoView extends BaseView implements Serializable
         this.empresa = empresa;
     }
 
-    public String getFechaInicioExperiencia() {
+    public Date getFechaInicioExperiencia() {
         return fechaInicioExperiencia;
     }
 
-    public void setFechaInicioExperiencia(String fechaInicioExperiencia) {
+    public void setFechaInicioExperiencia(Date fechaInicioExperiencia) {
         this.fechaInicioExperiencia = fechaInicioExperiencia;
     }
 
-    public String getFechaFinExperiencia() {
+    public Date getFechaFinExperiencia() {
         return fechaFinExperiencia;
     }
 
-    public void setFechaFinExperiencia(String fechaFinExperiencia) {
+    public void setFechaFinExperiencia(Date fechaFinExperiencia) {
         this.fechaFinExperiencia = fechaFinExperiencia;
     }
 
@@ -534,4 +540,12 @@ public class RegistrarReclutamientoView extends BaseView implements Serializable
         this.listExperiencia = listExperiencia;
     }
 
+    public boolean isIsInfoA() {
+        return isInfoA;
+    }
+
+    public void setIsInfoA(boolean isInfoA) {
+        this.isInfoA = isInfoA;
+    }
+    
 }

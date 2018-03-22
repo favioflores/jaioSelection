@@ -58,10 +58,10 @@
                                     </div>
                                     <div class="ui-g-12 ui-lg-4">
                                         <p:selectOneMenu id="listaDocumentos" value="#{registrarReclutamientoView.documentoSeleccionado}" effect="clip" filterMatchMode="startsWith"
-                                                         filter="true" required="false" requiredMessage="#{msg['infoCandidato.falta.tipoDocumento']}">
+                                                         filter="true" required="true" requiredMessage="#{msg['infoCandidato.falta.tipoDocumento']}">
                                             <f:selectItem itemLabel="#{msg['infoCandidato.ingrese.tipoDocumento']}" itemValue="-1"/>
                                             <f:selectItems id="tipoDocumento" value="#{registrarReclutamientoView.listaTipoDocumento}" var="d" itemLabel="#{d.descripcion}" itemValue="#{d.id}"/>
-                                            <p:ajax event="itemSelect" process="@this" update=":formRegistroR:"/>
+                                            <p:ajax event="itemSelect" immediate="true" process="@this" update=":formRegistroR:listaDocumentos" />
                                         </p:selectOneMenu>
                                     </div>
 
@@ -79,11 +79,13 @@
 
                                     <!--FECHA NACIMIENTO-->
                                     <div class="ui-g-12 ui-lg-2">
-                                        <p:outputLabel for="formRegistroR" value="#{msg['infoCandidato.fechaNacimiento']}" />
+                                        <p:outputLabel for="fechaNacimiento" value="#{msg['infoCandidato.fechaNacimiento']}" />
                                     </div>
                                     <div class="ui-g-12 ui-lg-10">
                                         <p:calendar id="fechaNacimiento" value="#{registrarReclutamientoView.fechaNacimiento}" style="width: 35%;"
-                                                    required="true" requiredMessage="#{msg['infoCandidato.falta.fechaNacimiento']}"/>
+                                                    required="true" requiredMessage="#{msg['infoCandidato.falta.fechaNacimiento']}" showOn="button">
+                                            <f:convertDateTime pattern="MM/dd/yyyy" />
+                                        </p:calendar>
                                     </div>
 
                                     <!--CELULAR-->
@@ -154,7 +156,6 @@
                                 <p:fieldset  id="infoAcademica" widgetVar="infoAcademica" legend="#{msg['registro.reclutamiento.fielset.infoAcademica']}" >
 
                                     <div class="ui-g-12 ui-lg-8">
-                                        <br/>
                                         <!--NOMBRE-->
                                         <div class="ui-g-12 ui-lg-2">
                                             <p:outputLabel value="#{msg['infoCandidato.nombre']}"/>
@@ -162,7 +163,8 @@
                                         <div class="ui-g-12 ui-lg-10">
                                             <p:inputText id="nombreAcademico" value="#{registrarReclutamientoView.nombreAcademico}" maxlength="200"
                                                          placeholder="#{msg['infoCandidato.ingrese.nombre']}" style="width: 86%;" 
-                                                         required="false" requiredMessage="#{msg['infoCandidato.falta.nombre']}" /> 
+                                                         required="false" requiredMessage="#{msg['infoCandidato.falta.nombre']}" 
+                                                         rendered="#{registrarReclutamientoView.isInfoA == false}"/> 
                                         </div>
 
                                         <!--ESPECIALIDAD-->
@@ -191,7 +193,7 @@
                                         </div>
                                         <div class="ui-g-12 ui-lg-10">
                                             <p:calendar id="fechaInicio" value="#{registrarReclutamientoView.fechaInicioAcademico}" style="width: 35%;"
-                                                        required="false" requiredMessage="#{msg['infoAcademica.falta.fechaInicio']}"/>
+                                                        required="false" requiredMessage="#{msg['infoAcademica.falta.fechaInicio']}" showOn="button"/>
                                         </div>
 
                                         <!--FECHA FIN-->
@@ -200,7 +202,7 @@
                                         </div>
                                         <div class="ui-g-12 ui-lg-10">
                                             <p:calendar id="fechaFin" value="#{registrarReclutamientoView.fechaFinAcademico}" style="width: 35%;"
-                                                        required="false" requiredMessage="#{msg['infoAcademica.falta.fechaFin']}"/>
+                                                        required="false" requiredMessage="#{msg['infoAcademica.falta.fechaFin']}" showOn="button"/>
                                         </div>
 
                                         <!--LOGRO-->
@@ -326,7 +328,7 @@
                                         </div>
                                         <div class="ui-g-12 ui-lg-10">
                                             <p:calendar id="fechaInicioExperiencia" value="#{registrarReclutamientoView.fechaInicioExperiencia}" style="width: 35%;"
-                                                        required="false" requiredMessage="#{msg['infoAcademica.falta.fechaInicio']}"/>
+                                                        required="false" requiredMessage="#{msg['infoAcademica.falta.fechaInicio']}" showOn="button"/>
                                         </div>
 
                                         <!--FECHA FIN-->
@@ -335,7 +337,7 @@
                                         </div>
                                         <div class="ui-g-12 ui-lg-10">
                                             <p:calendar id="fechaFinExperiencia" value="#{registrarReclutamientoView.fechaFinExperiencia}" style="width: 35%;"
-                                                        required="false" requiredMessage="#{msg['infoAcademica.falta.fechaFin']}"/>
+                                                        required="false" requiredMessage="#{msg['infoAcademica.falta.fechaFin']}" showOn="button"/>
                                         </div>
 
                                         <!--CARGO-->
