@@ -18,13 +18,14 @@
                                 <p:commandButton value="#{msg['boton.limpiar']}" actionListener="#{registrarReclutamientoView.limpiarInfoCandidato()}"
                                                  update=":formRegistroR:infoCandidato" process="@this" style="margin-right:20px;" styleClass="aqua-button" />
                                 <br/>
+                                <br/>
                             </div>
                             <h:panelGroup id="grupo1">
                                 <p:fieldset id="infoCandidato" legend="#{msg['registro.reclutamiento.fielset.infoCandidato']}">
 
                                     <!--NOMBRE-->
                                     <div class="ui-g-12 ui-lg-2">
-                                        <p:outputLabel for=":formRegistroR:" value="#{msg['infoCandidato.nombre']}"/>
+                                        <p:outputLabel for="nombreReclutado" value="#{msg['infoCandidato.nombre']}"/>
                                     </div>
                                     <div class="ui-g-12 ui-lg-10">
                                         <p:inputText id="nombreReclutado" value="#{registrarReclutamientoView.nombreCandidato}" maxlength="200"
@@ -34,7 +35,7 @@
 
                                     <!--APELLIDO PATERNO-->
                                     <div class="ui-g-12 ui-lg-2">
-                                        <p:outputLabel for="formRegistroR" value="#{msg['infoCandidato.apellidoPaterno']}"/>
+                                        <p:outputLabel for="apellidoPaterno" value="#{msg['infoCandidato.apellidoPaterno']}"/>
                                     </div>
                                     <div class="ui-g-12 ui-lg-4">
                                         <p:inputText id="apellidoPaterno" value="#{registrarReclutamientoView.apellidoPaterno}" maxlength="200"
@@ -44,7 +45,7 @@
 
                                     <!--APELLIDO MATERNO-->
                                     <div class="ui-g-12 ui-lg-2">
-                                        <p:outputLabel for="formRegistroR" value="#{msg['infoCandidato.apellidoMaterno']}"/>
+                                        <p:outputLabel for="apellidoMaterno" value="#{msg['infoCandidato.apellidoMaterno']}"/>
                                     </div>
                                     <div class="ui-g-12 ui-lg-4">
                                         <p:inputText id="apellidoMaterno" value="#{registrarReclutamientoView.apellidoMaterno}" maxlength="200"
@@ -54,7 +55,7 @@
 
                                     <!--TIPO DE DOCUMENTO-->
                                     <div class="ui-g-12 ui-lg-2">
-                                        <p:outputLabel for="formRegistroR" value="#{msg['infoCandidato.tipoDocumento']}"/>
+                                        <p:outputLabel for="listaDocumentos" value="#{msg['infoCandidato.tipoDocumento']}"/>
                                     </div>
                                     <div class="ui-g-12 ui-lg-4">
                                         <p:selectOneMenu id="listaDocumentos" value="#{registrarReclutamientoView.documentoSeleccionado}" effect="clip" filterMatchMode="startsWith"
@@ -67,12 +68,14 @@
 
                                     <!--NUMERO DOCUMENTO-->
                                     <div class="ui-g-12 ui-lg-2">
-                                        <p:outputLabel for="formRegistroR" value="#{msg['infoCandidato.nroDocumento']}"/>
+                                        <p:outputLabel for="nroDocumento" value="#{msg['infoCandidato.nroDocumento']}"/>
                                     </div>
                                     <div class="ui-g-12 ui-lg-4">
                                         <p:inputText id="nroDocumento" value="#{registrarReclutamientoView.nroDocumento}" maxlength="200"
                                                      placeholder="#{msg['infoCandidato.ingrese.nroDocumento']}" style="width: 90%;" 
-                                                     required="true" requiredMessage="#{msg['infoCandidato.falta.nroDocumento']}" />
+                                                     required="true" requiredMessage="#{msg['infoCandidato.falta.nroDocumento']}">
+                                            <p:clientValidator event="keyup"/>
+                                        </p:inputText>
                                     </div>
 
                                     <div class="ui-g-12"></div>
@@ -84,33 +87,38 @@
                                     <div class="ui-g-12 ui-lg-10">
                                         <p:calendar id="fechaNacimiento" value="#{registrarReclutamientoView.fechaNacimiento}" style="width: 35%;"
                                                     required="true" requiredMessage="#{msg['infoCandidato.falta.fechaNacimiento']}" showOn="button">
-                                            <f:convertDateTime pattern="MM/dd/yyyy" />
                                         </p:calendar>
                                     </div>
 
+                                    <div class="ui-g-12"></div>
+
                                     <!--CELULAR-->
                                     <div class="ui-g-12 ui-lg-2">
-                                        <p:outputLabel for="formRegistroR" value="#{msg['infoCandidato.celular']}"/>
+                                        <p:outputLabel for="celular" value="#{msg['infoCandidato.celular']}"/>
                                     </div>
                                     <div class="ui-g-12 ui-lg-4">
                                         <p:inputText id="celular" value="#{registrarReclutamientoView.celular}" maxlength="200"
                                                      placeholder="#{msg['infoCandidato.ingrese.celular']}" style="width: 60%;" 
-                                                     required="true" requiredMessage="#{msg['infoCandidato.falta.nroDocumento']}" />
+                                                     required="true" requiredMessage="#{msg['infoCandidato.falta.nroDocumento']}">
+                                            <p:clientValidator event="keyup"/>
+                                        </p:inputText>
                                     </div>
 
                                     <!--TELEFONO-->
                                     <div class="ui-g-12 ui-lg-2">
-                                        <p:outputLabel for="formRegistroR" value="#{msg['infoCandidato.telefono']}"/>
+                                        <p:outputLabel for="telefono" value="#{msg['infoCandidato.telefono']}"/>
                                     </div>
                                     <div class="ui-g-12 ui-lg-4">
                                         <p:inputText id="telefono" value="#{registrarReclutamientoView.telefono}" maxlength="200"
                                                      placeholder="#{msg['infoCandidato.ingrese.telefono']}" style="width: 60%;" 
-                                                     required="true" requiredMessage="#{msg['infoCandidato.falta.celular']}" />
+                                                     required="false" requiredMessage="#{msg['infoCandidato.falta.celular']}">
+                                            <p:clientValidator event="keyup"/>
+                                        </p:inputText>
                                     </div>
 
                                     <!--DEPARTAMENTO-->
                                     <div class="ui-g-12 ui-lg-2">
-                                        <p:outputLabel for="formRegistroR" value="#{msg['infoCandidato.departamento']}"/>
+                                        <p:outputLabel for="direccion" value="#{msg['infoCandidato.departamento']}"/>
                                     </div>
                                     <div class="ui-g-12 ui-lg-4">
                                         <p:inputText id="direccion" value="#{registrarReclutamientoView.departamento}" maxlength="200"
@@ -120,7 +128,7 @@
 
                                     <!--DISTRITO-->
                                     <div class="ui-g-12 ui-lg-2">
-                                        <p:outputLabel for="formRegistroR" value="#{msg['infoCandidato.distrito']}"/>
+                                        <p:outputLabel for="distrito" value="#{msg['infoCandidato.distrito']}"/>
                                     </div>
                                     <div class="ui-g-12 ui-lg-4">
                                         <p:inputText id="distrito" value="#{registrarReclutamientoView.distrito}" maxlength="200"
@@ -130,7 +138,7 @@
 
                                     <!--DIRECCION-->
                                     <div class="ui-g-12 ui-lg-2">
-                                        <p:outputLabel for="formRegistroR" value="#{msg['infoCandidato.direccion']}"/>
+                                        <p:outputLabel for="departamento" value="#{msg['infoCandidato.direccion']}"/>
                                     </div>
                                     <div class="ui-g-12 ui-lg-10">
                                         <p:inputText id="departamento" value="#{registrarReclutamientoView.direccion}" maxlength="200"
@@ -140,12 +148,16 @@
 
                                     <!--CORREO-->
                                     <div class="ui-g-12 ui-lg-2">
-                                        <p:outputLabel for="formRegistroR" value="#{msg['infoCandidato.correo']}"/>
+                                        <p:outputLabel for="correo" value="#{msg['infoCandidato.correo']}"/>
                                     </div>
                                     <div class="ui-g-12 ui-lg-10">
                                         <p:inputText id="correo" value="#{registrarReclutamientoView.correo}" maxlength="200"
                                                      placeholder="#{msg['infoCandidato.ingrese.correo']}" style="width: 60%;" 
-                                                     required="true" requiredMessage="#{msg['infoCandidato.falta.correo']}" /> 
+                                                     required="true" requiredMessage="#{msg['infoCandidato.falta.correo']}"
+                                                     validatorMessage="Correo invalido.">
+                                            <f:validateRegex
+                                                pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                                        </p:inputText> 
                                     </div>
 
                                 </p:fieldset>
@@ -158,7 +170,7 @@
                                     <div class="ui-g-12 ui-lg-8">
                                         <!--NOMBRE-->
                                         <div class="ui-g-12 ui-lg-2">
-                                            <p:outputLabel value="#{msg['infoCandidato.nombre']}"/>
+                                            <p:outputLabel for="nombreAcademico" value="#{msg['infoCandidato.nombre']}"/>
                                         </div>
                                         <div class="ui-g-12 ui-lg-10">
                                             <p:inputText id="nombreAcademico" value="#{registrarReclutamientoView.nombreAcademico}" maxlength="200"
@@ -169,7 +181,7 @@
 
                                         <!--ESPECIALIDAD-->
                                         <div class="ui-g-12 ui-lg-2">
-                                            <p:outputLabel value="#{msg['infoAcademica.especialidad']}"/>
+                                            <p:outputLabel for="especialidad" value="#{msg['infoAcademica.especialidad']}"/>
                                         </div>
                                         <div class="ui-g-12 ui-lg-10">
                                             <p:inputText id="especialidad" value="#{registrarReclutamientoView.especialidad}" maxlength="200"
@@ -179,7 +191,7 @@
 
                                         <!--GRADO-->
                                         <div class="ui-g-12 ui-lg-2">
-                                            <p:outputLabel value="#{msg['infoAcademica.grado']}"/>
+                                            <p:outputLabel for="grado" value="#{msg['infoAcademica.grado']}"/>
                                         </div>
                                         <div class="ui-g-12 ui-lg-10">
                                             <p:inputText id="grado" value="#{registrarReclutamientoView.grado}" maxlength="200"
@@ -189,25 +201,27 @@
 
                                         <!--FECHA INICIO-->
                                         <div class="ui-g-12 ui-lg-2">
-                                            <p:outputLabel value="#{msg['infoAcademica.fechaInicio']}" />
+                                            <p:outputLabel for="fechaInicio" value="#{msg['infoAcademica.fechaInicio']}" />
                                         </div>
                                         <div class="ui-g-12 ui-lg-10">
                                             <p:calendar id="fechaInicio" value="#{registrarReclutamientoView.fechaInicioAcademico}" style="width: 35%;"
-                                                        required="false" requiredMessage="#{msg['infoAcademica.falta.fechaInicio']}" showOn="button"/>
+                                                        required="false" requiredMessage="#{msg['infoAcademica.falta.fechaInicio']}" showOn="button">
+                                            </p:calendar>
                                         </div>
 
                                         <!--FECHA FIN-->
                                         <div class="ui-g-12 ui-lg-2">
-                                            <p:outputLabel value="#{msg['infoAcademica.fechaFin']}" />
+                                            <p:outputLabel for="fechaFin" value="#{msg['infoAcademica.fechaFin']}" />
                                         </div>
                                         <div class="ui-g-12 ui-lg-10">
                                             <p:calendar id="fechaFin" value="#{registrarReclutamientoView.fechaFinAcademico}" style="width: 35%;"
-                                                        required="false" requiredMessage="#{msg['infoAcademica.falta.fechaFin']}" showOn="button"/>
+                                                        required="false" requiredMessage="#{msg['infoAcademica.falta.fechaFin']}" showOn="button">
+                                            </p:calendar>
                                         </div>
 
                                         <!--LOGRO-->
                                         <div class="ui-g-12 ui-lg-2">
-                                            <p:outputLabel value="#{msg['infoAcademica.logro']}"/>
+                                            <p:outputLabel for="logro" value="#{msg['infoAcademica.logro']}"/>
                                         </div>
                                         <div class="ui-g-12 ui-lg-10">
                                             <p:inputText id="logro" value="#{registrarReclutamientoView.logro}" maxlength="200"
@@ -231,7 +245,7 @@
 
                                     </div>
                                     <div class="ui-g-12 ui-lg-4">
-                                        <p:dataGrid id="listaAcademica" var="listA" value="#{registrarReclutamientoView.listAcademica}" layout="grid"
+                                        <p:dataGrid id="listaAcademica" var="listA" value="#{registrarReclutamientoView.listAcademica}" layout="grid" paginatorPosition="bottom"
                                                     columns="1" rows="3" paginator="true" emptyMessage="#{msg['registro.reclutamiento.gridAcademica']}" >
                                             <p:panel  footer="#{listA.fechaInicio} / #{listA.fechaFin}" style="width: 100%;" >
                                                 <f:facet name="header" >
@@ -239,9 +253,9 @@
                                                     <p:commandButton icon="fa fa-trash" actionListener="#{registrarReclutamientoView.quitarInfoAcademica(listA)}"
                                                                      process="@this" update=":formRegistroR:grupo2" styleClass="red-button"/>
                                                 </f:facet>
-                                                <h:outputText value="#{listA.especialidad}"/>
+                                                <h:outputText value="Especialidad: #{listA.especialidad}"/>
                                                 <br/>
-                                                <h:outputText value="#{listA.logro}"/>
+                                                <h:outputText value="Logro: #{listA.logro}"/>
                                             </p:panel>
                                         </p:dataGrid>
                                     </div>
@@ -258,7 +272,7 @@
                                         <br/>
                                         <!--CONOCIMIENTO-->
                                         <div class="ui-g-12 ui-lg-2">
-                                            <p:outputLabel for="formRegistroR" value="#{msg['infoConocimientos.conocimiento']}"/>
+                                            <p:outputLabel for="conocimiento" value="#{msg['infoConocimientos.conocimiento']}"/>
                                         </div>
                                         <div class="ui-g-12 ui-lg-10">
                                             <p:inputText id="conocimiento" value="#{registrarReclutamientoView.nombreConocimiento}" maxlength="200"
@@ -268,7 +282,7 @@
 
                                         <!--NIVEL CONOCIMIENTO-->
                                         <div class="ui-g-12 ui-lg-2">
-                                            <p:outputLabel for="formRegistroR" value="#{msg['infoConocimientos.nivel']}"/>
+                                            <p:outputLabel for="nivelConcimiento" value="#{msg['infoConocimientos.nivel']}"/>
                                         </div>
                                         <div class="ui-g-12 ui-lg-10">
                                             <p:inputText id="nivelConcimiento" value="#{registrarReclutamientoView.nivelConocimiento}" maxlength="200"
@@ -292,7 +306,7 @@
 
                                     </div>
                                     <div class="ui-g-12 ui-lg-4">
-                                        <p:dataGrid id="listaConocimiento" var="listC" value="#{registrarReclutamientoView.listConocimiento}" 
+                                        <p:dataGrid id="listaConocimiento" var="listC" value="#{registrarReclutamientoView.listConocimiento}" paginatorPosition="bottom"
                                                     columns="1" rows="3" paginator="true" emptyMessage="#{msg['registro.reclutamiento.gridConocimiento']}">
                                             <p:panel>
                                                 <f:facet name="header" >
@@ -314,7 +328,7 @@
                                         <br/>
                                         <!--NOMBRE EMPRESA-->
                                         <div class="ui-g-12 ui-lg-2">
-                                            <p:outputLabel for="formRegistroR" value="#{msg['infoExperiencia.empresa']}"/>
+                                            <p:outputLabel for="empresa" value="#{msg['infoExperiencia.empresa']}"/>
                                         </div>
                                         <div class="ui-g-12 ui-lg-10">
                                             <p:inputText id="empresa" value="#{registrarReclutamientoView.empresa}" maxlength="200"
@@ -324,25 +338,27 @@
 
                                         <!--FECHA INICIO-->
                                         <div class="ui-g-12 ui-lg-2">
-                                            <p:outputLabel for="formRegistroR" value="#{msg['infoAcademica.fechaInicio']}" />
+                                            <p:outputLabel for="fechaInicioExperiencia" value="#{msg['infoAcademica.fechaInicio']}" />
                                         </div>
                                         <div class="ui-g-12 ui-lg-10">
                                             <p:calendar id="fechaInicioExperiencia" value="#{registrarReclutamientoView.fechaInicioExperiencia}" style="width: 35%;"
-                                                        required="false" requiredMessage="#{msg['infoAcademica.falta.fechaInicio']}" showOn="button"/>
+                                                        required="false" requiredMessage="#{msg['infoAcademica.falta.fechaInicio']}" showOn="button">
+                                            </p:calendar>
                                         </div>
 
                                         <!--FECHA FIN-->
                                         <div class="ui-g-12 ui-lg-2">
-                                            <p:outputLabel for="formRegistroR" value="#{msg['infoAcademica.fechaFin']}" />
+                                            <p:outputLabel for="fechaFinExperiencia" value="#{msg['infoAcademica.fechaFin']}" />
                                         </div>
                                         <div class="ui-g-12 ui-lg-10">
                                             <p:calendar id="fechaFinExperiencia" value="#{registrarReclutamientoView.fechaFinExperiencia}" style="width: 35%;"
-                                                        required="false" requiredMessage="#{msg['infoAcademica.falta.fechaFin']}" showOn="button"/>
+                                                        required="false" requiredMessage="#{msg['infoAcademica.falta.fechaFin']}" showOn="button">
+                                            </p:calendar>
                                         </div>
 
                                         <!--CARGO-->
                                         <div class="ui-g-12 ui-lg-2">
-                                            <p:outputLabel for="formRegistroR" value="#{msg['infoExperiencia.cargo']}"/>
+                                            <p:outputLabel for="cargo" value="#{msg['infoExperiencia.cargo']}"/>
                                         </div>
                                         <div class="ui-g-12 ui-lg-10">
                                             <p:inputText id="cargo" value="#{registrarReclutamientoView.cargo}" maxlength="200"
@@ -352,7 +368,7 @@
 
                                         <!--LOGRO-->
                                         <div class="ui-g-12 ui-lg-2">
-                                            <p:outputLabel for="formRegistroR" value="#{msg['infoAcademica.logro']}"/>
+                                            <p:outputLabel for="logroExperiencia" value="#{msg['infoAcademica.logro']}"/>
                                         </div>
                                         <div class="ui-g-12 ui-lg-10">
                                             <p:inputText id="logroExperiencia" value="#{registrarReclutamientoView.logroExperiencia}" maxlength="200"
@@ -377,7 +393,7 @@
                                     </div>
 
                                     <div class="ui-g-12 ui-lg-4">
-                                        <p:dataGrid id="listaExperiencia" var="listE" value="#{registrarReclutamientoView.listExperiencia}" 
+                                        <p:dataGrid id="listaExperiencia" var="listE" value="#{registrarReclutamientoView.listExperiencia}" paginatorPosition="bottom"
                                                     columns="1" rows="3" paginator="true" emptyMessage="#{msg['registro.reclutamiento.gridExperiencia']}" >
                                             <p:panel footer="#{listE.fechaInicio} - #{listE.fechaFin}">
                                                 <f:facet name="header" >

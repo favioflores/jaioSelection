@@ -235,8 +235,6 @@ public class ModeloEvaluacionDAO extends HibernateUtil implements Serializable {
                         + " from evaluacion_perfil where bateria_personalizada_id="+ objBateriaPersonalizada.getId() +")");
                 del2.executeUpdate();
                 
-                
-                
             } else {
                 session.save(objBateriaPersonalizada);
             }
