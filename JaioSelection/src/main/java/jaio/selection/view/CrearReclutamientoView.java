@@ -1,10 +1,10 @@
 package jaio.selection.view;
 
+import jaio.selection.bean.CandidatoBean;
 import jaio.selection.bean.EmpresaBean;
 import jaio.selection.bean.ProcesoSeleccionBean;
 import jaio.selection.dao.EmpresaDAO;
 import jaio.selection.dao.ReclutamientoDAO;
-import jaio.selection.orm.Candidato;
 import jaio.selection.orm.Empresa;
 import jaio.selection.util.Constantes;
 import jaio.selection.util.Utilitarios;
@@ -37,6 +37,9 @@ public class CrearReclutamientoView extends BaseView implements Serializable {
     public String strProcesoSeleccionado;
     private boolean lockProceso;
 
+    //informacion de reclutados
+    public List<CandidatoBean> listaReclutados = new ArrayList<>();
+
     @PostConstruct
     public void init() {
         limpiar();
@@ -50,13 +53,18 @@ public class CrearReclutamientoView extends BaseView implements Serializable {
         lockProceso = true;
     }
 
-    public void abrirRegistroReclutamiento() {
+    public void abrirRegistroReclutamiento(String id) {
         try {
             if (Utilitarios.noEsNuloOVacio(strEmpresaSeleccionada)) {
                 Utilitarios.ponerSession(strEmpresaSeleccionada, Constantes.SESSION_BATERIA);
+                if (Utilitarios.noEsNuloOVacio(id)) {
+                    Utilitarios.ponerSession(id, Constantes.SESSION_ID_PROCESO);
+                } else {
+                    Utilitarios.ponerSession(strProcesoSeleccionado, Constantes.SESSION_ID_PROCESO);
+                }
+
+                FacesContext.getCurrentInstance().getExternalContext().redirect("registrarReclutamiento.jsf");
             }
-            Utilitarios.ponerSession(null, Constantes.SESSION_ID_BATERIA);
-            FacesContext.getCurrentInstance().getExternalContext().redirect("registrarReclutamiento.jsf");
         } catch (Exception e) {
             mostrarAlerta(FATAL, "error.inesperado", log, e);
         }
@@ -87,6 +95,8 @@ public class CrearReclutamientoView extends BaseView implements Serializable {
                 Empresa objEmpresa = objEmpresaDAO.obtenerEmpresa(strEmpresaSeleccionada);
                 mostrarAlerta(INFO, "proceso.seleccion.empresa", null, null, objEmpresa.getNombre());
                 poblarProcesos();
+                obtenerInfoReclutados(strEmpresaSeleccionada, null);
+
             } else {
                 limpiar();
             }
@@ -94,16 +104,14 @@ public class CrearReclutamientoView extends BaseView implements Serializable {
             mostrarAlerta(FATAL, "error.inesperado", log, e);
         }
     }
-    
-    
-    public void poblarProcesos(){
+
+    public void poblarProcesos() {
         try {
             listaProcesos = new ArrayList<>();
             lockProceso = false;
             ReclutamientoDAO objReclutamiento = new ReclutamientoDAO();
-            List listaP = objReclutamiento.obtenerProcesos(strEmpresaSeleccionada);
-            for(Object proceso : listaP){
-                Object o[] = (Object[])proceso;
+            for (Object proceso : objReclutamiento.obtenerProcesos(strEmpresaSeleccionada)) {
+                Object o[] = (Object[]) proceso;
                 ProcesoSeleccionBean procesoBean = new ProcesoSeleccionBean();
                 procesoBean.setId(o[0].toString());
                 procesoBean.setDescripcion(o[1].toString());
@@ -114,24 +122,48 @@ public class CrearReclutamientoView extends BaseView implements Serializable {
         }
     }
 
-    public void obtenerInfoReclutados(String id) {
+    public void seleccionaProceso() {
         try {
-            
-            ReclutamientoDAO objEmpresaDAO = new ReclutamientoDAO();
-            List<Candidato> lstCandidato = objEmpresaDAO.obtenerReclutados(id);
-            for (Candidato candidato : lstCandidato) {
-
+            if (Utilitarios.noEsNuloOVacio(strProcesoSeleccionado) && !strProcesoSeleccionado.equals("-1")) {
+                obtenerInfoReclutados(strEmpresaSeleccionada, strProcesoSeleccionado);
+            } else {
+                obtenerInfoReclutados(strEmpresaSeleccionada, null);
             }
         } catch (Exception e) {
             mostrarAlerta(FATAL, "error.inesperado", log, e);
         }
     }
-    
-    
-    
 
-    public void seleccionaProceso() {
+    public void obtenerInfoReclutados(String idEmpresa, String idProceso) {
+        try {
+            listaReclutados = new ArrayList<>();
+            ReclutamientoDAO objReclutamientoDao = new ReclutamientoDAO();
+            for (Object o : objReclutamientoDao.obtenerReclutados(idEmpresa, idProceso)) {
+                Object obj[] = (Object[]) o;
+                CandidatoBean objCandidato = new CandidatoBean();
+                objCandidato.setId(obj[0].toString());
+                objCandidato.setNombre(obj[1].toString());
+                objCandidato.setApellidoParterno(obj[2].toString());
+                objCandidato.setApellidoMaterno(obj[3].toString());
+                objCandidato.setNroDocumento(obj[4].toString());
+                objCandidato.setMovil(obj[6].toString());
+                objCandidato.setDireccion(obj[8].toString());
+                listaReclutados.add(objCandidato);
+            }
+        } catch (Exception e) {
+            mostrarAlerta(FATAL, "error.inesperado", log, e);
+        }
+    }
 
+    public void eliminarReclutado(String id) {
+        try {
+            ReclutamientoDAO objReclutamientoDao = new ReclutamientoDAO();
+            objReclutamientoDao.eliminarReclutados(id);
+            obtenerInfoReclutados(strEmpresaSeleccionada,strProcesoSeleccionado);
+            mostrarAlerta(INFO, "Se elimino el registro correctamente", null, null, ".");
+        } catch (Exception e) {
+            mostrarAlerta(FATAL, "error.inesperado", log, e);
+        }
     }
 
     public String getStrEmpresaSeleccionada() {
@@ -165,6 +197,21 @@ public class CrearReclutamientoView extends BaseView implements Serializable {
     public void setLockProceso(boolean lockProceso) {
         this.lockProceso = lockProceso;
     }
-    
+
+    public List<CandidatoBean> getListaReclutados() {
+        return listaReclutados;
+    }
+
+    public void setListaReclutados(List<CandidatoBean> listaReclutados) {
+        this.listaReclutados = listaReclutados;
+    }
+
+    public String getStrProcesoSeleccionado() {
+        return strProcesoSeleccionado;
+    }
+
+    public void setStrProcesoSeleccionado(String strProcesoSeleccionado) {
+        this.strProcesoSeleccionado = strProcesoSeleccionado;
+    }
 
 }

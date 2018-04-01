@@ -5,6 +5,7 @@ import java.io.Serializable;
 public class ReferenciaBean implements Serializable {
 
     private Integer id;
+    private String nombreEmpresa;
     private String nombreCompleto;
     private String cargo;
     private String telefono;
@@ -48,6 +49,14 @@ public class ReferenciaBean implements Serializable {
 
     public void setMovil(String movil) {
         this.movil = movil;
+    }
+
+    public String getNombreEmpresa() {
+        return nombreEmpresa;
+    }
+
+    public void setNombreEmpresa(String nombreEmpresa) {
+        this.nombreEmpresa = nombreEmpresa;
     }
 
 }
