@@ -5,6 +5,7 @@ import jaio.selection.orm.InfoAcademica;
 import jaio.selection.orm.InfoConocimiento;
 import jaio.selection.orm.InfoExperiencia;
 import jaio.selection.orm.InfoReferencia;
+import jaio.selection.orm.ProcesoSeleccion;
 import jaio.selection.util.Constantes;
 import java.util.List;
 import org.apache.commons.logging.Log;
@@ -12,7 +13,6 @@ import org.apache.commons.logging.LogFactory;
 
 import jaio.selection.util.Utilitarios;
 import java.io.Serializable;
-import java.util.ArrayList;
 import org.hibernate.Query;
 
 public class ReclutamientoDAO extends HibernateUtil implements Serializable {
@@ -133,6 +133,20 @@ public class ReclutamientoDAO extends HibernateUtil implements Serializable {
             return query.list();
         } catch (Exception e) {
             manejaException(log, e);
+        } finally {
+            cerrarSession();
+        }
+        return null;
+    }
+
+    public ProcesoSeleccion obtenerInformacionDeProceso(String id) {
+        try {
+            iniciaSession();
+            Query query = session.createQuery("From ProcesoSeleccion p where p.id=" + id);
+
+            ProcesoSeleccion proceso = (ProcesoSeleccion) query.uniqueResult();
+            return proceso;
+        } catch (Exception e) {
         } finally {
             cerrarSession();
         }
