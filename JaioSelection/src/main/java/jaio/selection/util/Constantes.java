@@ -309,5 +309,82 @@ public class Constantes {
     public static String XLSX_ORG_MASIVO_CAB_NOMBRE_REGISTRO = "NOMBRE DE REGISTRO";
     public static String XLSX_ORG_MASIVO_CAB_DEPENDENCIA = "DEPENDENCIA";
     
+    //COLUMNAS DE RECLUTAMIENTO MASIVO
+    public static String XLSX_RECL_MASIVO_CAB_TIPO_DE_INFORMACION = "TIPO DE INFORMACION";
+    public static String XLSX_RECL_MASIVO_CAB_INFORMACION = "INFORMACION";
     
+    public static String XLSX_RECL_MASIVO_CAB_INFO_CANDIDATO = "INFORMACION DE CANDIDATO";
+    public static String XLSX_RECL_MASIVO_CAB_INFO_ACADEMICA = "INFORMACION ACADEMICA";
+    public static String XLSX_RECL_MASIVO_CAB_INFO_CONOCIMIENTOS = "INFORMACION DE CONOCIMIENTOS";
+    public static String XLSX_RECL_MASIVO_CAB_INFO_EXPERIENCIAS = "INFORMACION DE EXPERIENCIAS";
+    public static String XLSX_RECL_MASIVO_CAB_INFO_REFERENCIAS = "INFORMACION DE REFERENCIAS";
+    
+    public static String XLSX_RECL_MASIVO_CAB_NOMBRES = "NOMBRES";
+    public static String XLSX_RECL_MASIVO_CAB_APELLIDO_PATERNO = "APELLIDO PATERNO";
+    public static String XLSX_RECL_MASIVO_CAB_APELLIDO_MATERNO = "APELLIDO MATERNO";
+    public static String XLSX_RECL_MASIVO_CAB_TIPO_DOCUMENTO = "TIPO DE DOCUMENTO";
+    public static String XLSX_RECL_MASIVO_CAB_NRO_DOCUMENTO = "NRO DE DOCUMENTO";
+    public static String XLSX_RECL_MASIVO_CAB_FECHA_NACIMIENTO = "FECHA DE NACIMIENTO";
+    public static String XLSX_RECL_MASIVO_CAB_DEPARTAMENTO = "DEPARTAMENTO";
+    public static String XLSX_RECL_MASIVO_CAB_DISTRITO = "DISTRITO";
+    public static String XLSX_RECL_MASIVO_CAB_DIRECCION = "DIRECCION";
+    public static String XLSX_RECL_MASIVO_CAB_CORREO = "CORREO";
+    public static String XLSX_RECL_MASIVO_CAB_CELULAR = "CELULAR";
+    public static String XLSX_RECL_MASIVO_CAB_TELEFONO = "TELEFONO";
+    
+    public static String XLSX_RECL_MASIVO_CAB_NOMBRE_ACADEMICO = "NOMBRE ACADEMICO";
+    public static String XLSX_RECL_MASIVO_CAB_ESPECIALIDAD = "ESPECIALIDAD";
+    public static String XLSX_RECL_MASIVO_CAB_GRADO = "GRADO";
+    public static String XLSX_RECL_MASIVO_CAB_FECHA_INICIO = "FECHA INICIO";
+    public static String XLSX_RECL_MASIVO_CAB_FECHA_FIN = "FECHA FIN";
+    public static String XLSX_RECL_MASIVO_CAB_LOGRO = "LOGRO";
+    
+    public static String XLSX_RECL_MASIVO_CAB_CONOCIMIENTO = "CONOCIMIENTO";
+    public static String XLSX_RECL_MASIVO_CAB_NIVEL = "NIVEL";
+    
+    public static String XLSX_RECL_MASIVO_CAB_NOMBRE_DE_EMPRESA = "NOMBRE DE EMPRESA";
+    public static String XLSX_RECL_MASIVO_CAB_CARGO = "CARGO";
+    
+    public static String XLSX_RECL_MASIVO_CAB_NOMBRE_DE_REFERIDO = "NOMBRE DE REFERIDO";
+    
+    public static int XLSX_RECL_COL_TIPO_INFORMACION = 0;
+    public static int XLSX_RECL_COL_INFORMACION = 1;
+    
+    public static int XLSX_RECL_COL_INFO_CANDIDATO = 0;
+    public static int XLSX_RECL_COL_INFO_ACADEMICA = 0;
+    public static int XLSX_RECL_COL_INFO_CONOCIMIENTOS = 0;
+    public static int XLSX_RECL_COL_INFO_EXPERIENCIAS = 0;
+    public static int XLSX_RECL_COL_INFO_REFERENCIAS = 0;
+    
+    public static int XLSX_RECL_COL_NOMBRES = 1;
+    public static int XLSX_RECL_COL_APELLIDO_PATERNO = 2;
+    public static int XLSX_RECL_COL_APELLIDO_MATERNO = 3;
+    public static int XLSX_RECL_COL_TIPO_DOCUMENTO = 4;
+    public static int XLSX_RECL_COL_NRO_DOCUMENTO = 5;
+    public static int XLSX_RECL_COL_FECHA_NACIMIENTO = 6;
+    public static int XLSX_RECL_COL_DEPARTAMENTO = 7;
+    public static int XLSX_RECL_COL_DISTRITO = 8;
+    public static int XLSX_RECL_COL_DIRECCION = 9;
+    public static int XLSX_RECL_COL_CORREO = 10;
+    public static int XLSX_RECL_COL_CELULAR = 11;
+    public static int XLSX_RECL_COL_TELEFONO = 12;
+    
+    public static int XLSX_RECL_COL_NOMBRE_ACADEMICO = 1;
+    public static int XLSX_RECL_COL_ESPECIALIDAD = 2;
+    public static int XLSX_RECL_COL_GRADO = 3;
+    public static int XLSX_RECL_COL_FECHA_INICIO = 4;
+    public static int XLSX_RECL_COL_FECHA_FIN = 5;
+    public static int XLSX_RECL_COL_LOGRO = 6;
+    
+    public static int XLSX_RECL_COL_CONOCIMIENTO = 1;
+    public static int XLSX_RECL_COL_NIVEL = 2;
+    
+    public static int XLSX_RECL_COL_NOMBRE_EMPRESA = 1;
+    public static int XLSX_RECL_COL_CARGO = 2;
+    public static int XLSX_RECL_COL_LOGRO_EXPERIENCIA = 3;
+    
+    
+    public static int XLSX_RECL_COL_NOMBRE_REFERIDO = 0;
+    public static int XLSX_RECL_COL_CELULAR_REFERENCIA = 1;
+    public static int XLSX_RECL_COL_TELEFONO_REFERENCIA = 2;
 }

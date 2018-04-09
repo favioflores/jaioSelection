@@ -280,6 +280,9 @@ public class CrearBateriaView extends BaseView implements Serializable {
             n = null;
             nm = null;
             LinkedHashMap<String, String> comp = new LinkedHashMap<>();
+            
+            LinkedHashMap<String, String> compE = new LinkedHashMap<>();
+            
             for (Object o : objBateriaBean.getLstCompetencias()) {
                 for (BateriaBean bat : droppedBaterias) {
                     comp = new LinkedHashMap<>();
@@ -288,7 +291,11 @@ public class CrearBateriaView extends BaseView implements Serializable {
                         comp.put(i.toString(), a.toString());
                         i++;
                     }
-                    if (!comp.containsValue(o)) {
+                    if (!comp.containsValue(o) && !compE.containsValue(o)) {
+                        compE.put(o.toString(), o.toString());
+                        listRetirado.add(o.toString());
+                    }
+                    if(droppedBaterias.size() == Constantes.Int_uno){
                         listRetirado.add(o.toString());
                     }
                 }

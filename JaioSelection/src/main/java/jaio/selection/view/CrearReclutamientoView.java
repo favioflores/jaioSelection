@@ -167,7 +167,7 @@ public class CrearReclutamientoView extends BaseView implements Serializable {
             ReclutamientoDAO objReclutamientoDao = new ReclutamientoDAO();
             objReclutamientoDao.eliminarReclutados(id);
             obtenerInfoReclutados(strEmpresaSeleccionada, strProcesoSeleccionado);
-            mostrarAlerta(INFO, "Se elimino el registro correctamente", null, null, ".");
+            mostrarAlerta(INFO, "Se elimino el registro correctamente", null, null);
         } catch (Exception e) {
             mostrarAlerta(FATAL, "error.inesperado", log, e);
         }

@@ -72,10 +72,10 @@ public class RegistrarReclutamientoView extends BaseView implements Serializable
     //Info Experiencia
     private List<ExperienciaBean> listExperiencia = new ArrayList<>();
     private String empresa;
+    private String cargo;
+    private String logroExperiencia;
     private Date fechaInicioExperiencia;
     private Date fechaFinExperiencia;
-    private String logroExperiencia;
-    private String cargo;
 
     //Info Referencia
     private List<ReferenciaBean> listReferencia = new ArrayList<>();
@@ -96,12 +96,7 @@ public class RegistrarReclutamientoView extends BaseView implements Serializable
         if (Utilitarios.noEsNuloOVacio(Utilitarios.obtenerSession(Constantes.SESSION_ID_PROCESO))) {
             idProcesoSelecccion = (String) Utilitarios.obtenerSession(Constantes.SESSION_ID_PROCESO);
         }
-//        if (Utilitarios.noEsNuloOVacio(Utilitarios.obtenerSession(Constantes.SESSION_ID_RECLUTAMIENTO))) {
-//            idReclutamiento = (String) Utilitarios.obtenerSession(Constantes.SESSION_ID_RECLUTAMIENTO);
         cargaInformacionAcademica();
-//        } else {
-//            limpiarInfoCandidato();
-//        }
     }
 
     public void cargaInformacionAcademica() {
@@ -342,10 +337,10 @@ public class RegistrarReclutamientoView extends BaseView implements Serializable
             objCandidato.setNombre(nombreCandidato);
             objCandidato.setApellidoParterno(apellidoPaterno);
             objCandidato.setApellidoMaterno(apellidoMaterno);
-            objCandidato.setNroDocumento(nroDocumento.toString());
+            objCandidato.setNroDocumento(nroDocumento);
             objCandidato.setTipoDocumento(Integer.parseInt(documentoSeleccionado));
-            objCandidato.setMovil(celular.toString());
-            objCandidato.setTelefono(telefono.toString());
+            objCandidato.setMovil(celular);
+            objCandidato.setTelefono(telefono);
             objCandidato.setDireccion(direccion);
             objCandidato.setFechaNacimiento(fechaNacimiento);
 //            objCandidato.setDepartamento(departamento);
