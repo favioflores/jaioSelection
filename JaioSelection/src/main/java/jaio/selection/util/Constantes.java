@@ -384,7 +384,7 @@ public class Constantes {
     public static int XLSX_RECL_COL_LOGRO_EXPERIENCIA = 3;
     
     
-    public static int XLSX_RECL_COL_NOMBRE_REFERIDO = 0;
-    public static int XLSX_RECL_COL_CELULAR_REFERENCIA = 1;
-    public static int XLSX_RECL_COL_TELEFONO_REFERENCIA = 2;
+    public static int XLSX_RECL_COL_NOMBRE_REFERIDO = 1;
+    public static int XLSX_RECL_COL_CELULAR_REFERENCIA = 3;
+    public static int XLSX_RECL_COL_TELEFONO_REFERENCIA = 4;
 }

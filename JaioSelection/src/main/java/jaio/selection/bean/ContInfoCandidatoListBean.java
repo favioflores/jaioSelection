@@ -10,7 +10,7 @@ import java.util.List;
 public class ContInfoCandidatoListBean implements java.io.Serializable {
 
     String id;
-    List<InfoCandidatoListBean> listaInfoCandidato = new ArrayList<>();
+    InfoCandidatoListBean candidatoListBean = new InfoCandidatoListBean();
 
     public String getId() {
         return id;
@@ -20,12 +20,12 @@ public class ContInfoCandidatoListBean implements java.io.Serializable {
         this.id = id;
     }
 
-    public List<InfoCandidatoListBean> getListaInfoCandidato() {
-        return listaInfoCandidato;
+    public InfoCandidatoListBean getCandidatoListBean() {
+        return candidatoListBean;
     }
 
-    public void setListaInfoCandidato(List<InfoCandidatoListBean> listaInfoCandidato) {
-        this.listaInfoCandidato = listaInfoCandidato;
+    public void setCandidatoListBean(InfoCandidatoListBean candidatoListBean) {
+        this.candidatoListBean = candidatoListBean;
     }
 
 }
