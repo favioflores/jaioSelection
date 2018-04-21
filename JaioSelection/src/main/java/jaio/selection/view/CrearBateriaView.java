@@ -80,6 +80,7 @@ public class CrearBateriaView extends BaseView implements Serializable {
     private List<ModeloCompetenciaBean> droppedCompetencias;
     private String n;
     private String nm;
+    private String idDropBat;
 
     private LinkedHashMap<String, String> mapGuiaEdit = new LinkedHashMap();
 
@@ -279,7 +280,11 @@ public class CrearBateriaView extends BaseView implements Serializable {
             List listRetirado = new ArrayList<>();
             n = null;
             nm = null;
+            idDropBat = null;
             LinkedHashMap<String, String> comp = new LinkedHashMap<>();
+
+            LinkedHashMap<String, String> compE = new LinkedHashMap<>();
+
             for (Object o : objBateriaBean.getLstCompetencias()) {
                 for (BateriaBean bat : droppedBaterias) {
                     comp = new LinkedHashMap<>();
@@ -288,18 +293,23 @@ public class CrearBateriaView extends BaseView implements Serializable {
                         comp.put(i.toString(), a.toString());
                         i++;
                     }
-                    if (!comp.containsValue(o)) {
+                    if (!comp.containsValue(o) && !compE.containsValue(o)) {
+                        compE.put(o.toString(), o.toString());
+                        listRetirado.add(o.toString());
+                    }
+                    if (droppedBaterias.size() == Constantes.Int_uno) {
                         listRetirado.add(o.toString());
                     }
                 }
             }
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < listRetirado.size(); i++) {
-                sb.append("'").append(listRetirado.get(i)).append("'").append(",");
+                sb.append("'").append(listRetirado.get(i)).append("'").append(", ");
             }
             sb.deleteCharAt(sb.length() - 1).toString();
             nm = objBateriaBean.getNombre();
             n = sb.toString();
+            idDropBat = objBateriaBean.getId();
         } catch (Exception e) {
             mostrarAlerta(FATAL, "error.inesperado", log, e);
         }
@@ -618,6 +628,27 @@ public class CrearBateriaView extends BaseView implements Serializable {
         }
     }
 
+    public void quitarDropBat() {
+        try {
+
+            BateriaBean objBatBean = new BateriaBean();
+
+            for (BateriaBean objDrop : droppedBaterias) {
+                if (objDrop.getId().equals(idDropBat)) {
+                    objBatBean = objDrop;
+                }
+            }
+            droppedBaterias.remove(objBatBean);
+            listaDeEvaluaciones.add(objBatBean);
+            contarMinutos();
+            droppedCompetencias = new ArrayList<>();
+            mapCompetenciasSeleccionadas = new LinkedHashMap<String, String>();
+            cargarCompetencias();
+        } catch (Exception e) {
+            mostrarAlerta(FATAL, "error.inesperado", log, e);
+        }
+    }
+
     public void contarMinutos() {
         minutosTotal = 0;
         for (BateriaBean objBatBean : droppedBaterias) {
@@ -868,6 +899,14 @@ public class CrearBateriaView extends BaseView implements Serializable {
 
     public void setNm(String nm) {
         this.nm = nm;
+    }
+
+    public String getIdDropBat() {
+        return idDropBat;
+    }
+
+    public void setIdDropBat(String idDropBat) {
+        this.idDropBat = idDropBat;
     }
 
 }

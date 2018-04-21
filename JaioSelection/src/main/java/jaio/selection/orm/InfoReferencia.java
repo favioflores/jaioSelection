@@ -8,6 +8,7 @@ public class InfoReferencia implements java.io.Serializable {
 
     private Integer id;
     private InfoExperiencia infoExperiencia;
+    private String nombreEmpresa;
     private String nombreCompleto;
     private String cargo;
     private String telefono;
@@ -78,4 +79,13 @@ public class InfoReferencia implements java.io.Serializable {
         this.movil = movil;
     }
 
+    public String getNombreEmpresa() {
+        return nombreEmpresa;
+    }
+
+    public void setNombreEmpresa(String nombreEmpresa) {
+        this.nombreEmpresa = nombreEmpresa;
+    }
+    
+    
 }

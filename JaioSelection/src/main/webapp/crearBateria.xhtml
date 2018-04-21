@@ -232,8 +232,10 @@
                         <h:outputText value='la(s) competencia(s): #{crearBateriaView.n} '/>
                         <br/>   
                     </f:facet>
-                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" actionListener="#{crearBateriaView.quitarBateria(bat)}"/>
-                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                    <p:commandButton value="Yes" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" 
+                                     actionListener="#{crearBateriaView.quitarDropBat()}" immediate="true" process="@this"
+                                     update=":formBateria:pnlgroup1, :formBateria:pnlgroup2, :formBateria:oTotal, :formBateria:compDrop"/>
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
                 </p:confirmDialog>
 
 

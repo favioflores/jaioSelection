@@ -4,11 +4,13 @@ import jaio.selection.bean.AcademicaBean;
 import jaio.selection.bean.ConocimientoBean;
 import jaio.selection.bean.ElementoBean;
 import jaio.selection.bean.ExperienciaBean;
+import jaio.selection.bean.ReferenciaBean;
 import jaio.selection.dao.ReclutamientoDAO;
 import jaio.selection.orm.Candidato;
 import jaio.selection.orm.InfoAcademica;
 import jaio.selection.orm.InfoConocimiento;
 import jaio.selection.orm.InfoExperiencia;
+import jaio.selection.orm.InfoReferencia;
 import jaio.selection.orm.ProcesoSeleccion;
 import jaio.selection.util.Constantes;
 import jaio.selection.util.Utilitarios;
@@ -61,7 +63,6 @@ public class RegistrarReclutamientoView extends BaseView implements Serializable
     private Date fechaInicioAcademico;
     private Date fechaFinAcademico;
     private String logro;
-    private boolean isInfoA;
 
     //Info Conocimiento
     private List<ConocimientoBean> listConocimiento = new ArrayList<>();
@@ -71,13 +72,23 @@ public class RegistrarReclutamientoView extends BaseView implements Serializable
     //Info Experiencia
     private List<ExperienciaBean> listExperiencia = new ArrayList<>();
     private String empresa;
+    private String cargo;
+    private String logroExperiencia;
     private Date fechaInicioExperiencia;
     private Date fechaFinExperiencia;
-    private String logroExperiencia;
-    private String cargo;
+
+    //Info Referencia
+    private List<ReferenciaBean> listReferencia = new ArrayList<>();
+    private boolean lockReferencia;
+    private String empresaRefSeleccionada;
+    private String nombreReferencia;
+    private String cargoReferencia;
+    private String telefonoReferencia;
+    private String movilReferencia;
 
     @PostConstruct
     public void init() {
+        lockReferencia = true;
         poblarTipoDocumento();
         limpiarInfoAcademica();
         limpiarInfoConocimiento();
@@ -85,13 +96,73 @@ public class RegistrarReclutamientoView extends BaseView implements Serializable
         if (Utilitarios.noEsNuloOVacio(Utilitarios.obtenerSession(Constantes.SESSION_ID_PROCESO))) {
             idProcesoSelecccion = (String) Utilitarios.obtenerSession(Constantes.SESSION_ID_PROCESO);
         }
-        if (Utilitarios.noEsNuloOVacio(Utilitarios.obtenerSession(Constantes.SESSION_ID_RECLUTAMIENTO))) {
-            idReclutamiento = (String) Utilitarios.obtenerSession(Constantes.SESSION_ID_RECLUTAMIENTO);
-            cargaInformacionAcademica();
-        } else {
-            limpiarInfoCandidato();
+        cargaInformacionAcademica();
+    }
+
+    public void cargaInformacionAcademica() {
+        try {
+            ReclutamientoDAO objReclutamientoDAO = new ReclutamientoDAO();
+            Candidato objCandidatoDao = objReclutamientoDAO.cargarCandidato(idProcesoSelecccion);
+            nombreCandidato = objCandidatoDao.getNombre();
+            apellidoPaterno = objCandidatoDao.getApellidoParterno();
+            apellidoMaterno = objCandidatoDao.getApellidoMaterno();
+            nroDocumento = objCandidatoDao.getNroDocumento();
+            documentoSeleccionado = Integer.toString(objCandidatoDao.getTipoDocumento());
+            celular = objCandidatoDao.getMovil();
+            telefono = objCandidatoDao.getTelefono();
+            direccion = objCandidatoDao.getDireccion();
+            fechaNacimiento = objCandidatoDao.getFechaNacimiento();
+            distrito = Integer.toString(objCandidatoDao.getDistrito());
+            correo = objCandidatoDao.getCorreo();
+
+            listAcademica = new ArrayList<>();
+            for (InfoAcademica objAcademica : objReclutamientoDAO.cargarInfoAcademica(objCandidatoDao.getId())) {
+                AcademicaBean academica = new AcademicaBean();
+                academica.setNombre(objAcademica.getNombre());
+                academica.setEspecialidad(objAcademica.getEspecialidad());
+                academica.setGrado(objAcademica.getGrado());
+                academica.setFechaInicio(formato.format(objAcademica.getFechaInicio()));
+                academica.setFechaFin(formato.format(objAcademica.getFechaFin()));
+                academica.setLogro(objAcademica.getLogro());
+                listAcademica.add(academica);
+            }
+
+            listConocimiento = new ArrayList<>();
+            for (InfoConocimiento objConocimiento : objReclutamientoDAO.cargarInfoConocimiento(objCandidatoDao.getId())) {
+                ConocimientoBean conocimiento = new ConocimientoBean();
+                conocimiento.setId(objConocimiento.getId());
+                conocimiento.setNombre(objConocimiento.getNombre());
+                conocimiento.setNivel(objConocimiento.getNivel());
+                listConocimiento.add(conocimiento);
+            }
+
+            listExperiencia = new ArrayList<>();
+            listReferencia = new ArrayList<>();
+            for (InfoExperiencia objExperiencia : objReclutamientoDAO.cargarInfoExperiencia(objCandidatoDao.getId())) {
+                ExperienciaBean experiencia = new ExperienciaBean();
+                experiencia.setId(objExperiencia.getId());
+                experiencia.setEmpresa(objExperiencia.getEmpresa());
+                experiencia.setFechaInicio(formato.format(objExperiencia.getFechaInicio()));
+                experiencia.setFechaFin(formato.format(objExperiencia.getFechaFin()));
+                experiencia.setLogro(objExperiencia.getLogro().toString());
+                experiencia.setCargo(objExperiencia.getCargo());
+
+                for (InfoReferencia objReferencia : objReclutamientoDAO.cargarInfoReferencia(Integer.SIZE)) {
+                    ReferenciaBean referencia = new ReferenciaBean();
+                    referencia.setNombreCompleto(objReferencia.getNombreCompleto());
+                    referencia.setCargo(objReferencia.getCargo());
+                    referencia.setMovil(objReferencia.getMovil());
+                    referencia.setTelefono(objReferencia.getTelefono());
+                    listReferencia.add(referencia);
+                }
+
+                listExperiencia.add(experiencia);
+            }
+
+        } catch (Exception e) {
+            mostrarAlerta(FATAL, "error.inesperado", log, e);
         }
-        isInfoA = false;
+
     }
 
     public void limpiarInfoCandidato() {
@@ -107,58 +178,6 @@ public class RegistrarReclutamientoView extends BaseView implements Serializable
         departamento = null;
         distrito = null;
         correo = null;
-    }
-
-    public void limpiarInfoAcademica() {
-        nombreAcademico=null;
-        especialidad = null;
-        grado = null;
-        fechaInicioAcademico = null;
-        fechaFinAcademico = null;
-        logro = null;
-    }
-
-    public void limpiarInfoConocimiento() {
-        nombreConocimiento = null;
-        nivelConocimiento = null;
-    }
-
-    public void limpiarInfoExperiencia() {
-        empresa = null;
-        fechaInicioExperiencia = null;
-        fechaFinExperiencia = null;
-        logroExperiencia = null;
-        cargo = null;
-    }
-
-    public void cargaInformacionAcademica() {
-        try {
-            ReclutamientoDAO objReclutamientoDAO = new ReclutamientoDAO();
-            Candidato objCandidatoDao = objReclutamientoDAO.cargarCandidato(idReclutamiento);
-            nombreCandidato = objCandidatoDao.getNombre();
-            apellidoPaterno = objCandidatoDao.getApellidoParterno();
-            apellidoMaterno = objCandidatoDao.getApellidoMaterno();
-            nroDocumento = objCandidatoDao.getNroDocumento();
-            documentoSeleccionado = Integer.toString(objCandidatoDao.getTipoDocumento());
-            celular = objCandidatoDao.getMovil();
-            telefono = objCandidatoDao.getTelefono();
-            direccion = objCandidatoDao.getDireccion();
-//            fechaNacimiento = formato.format(objCandidatoDao.getFechaNacimiento());
-            distrito = Integer.toString(objCandidatoDao.getDistrito());
-            correo = objCandidatoDao.getCorreo();
-
-        } catch (Exception e) {
-            mostrarAlerta(FATAL, "error.inesperado", log, e);
-        }
-
-    }
-    
-    public void ocultandoCampos(){
-        try {
-            isInfoA = true;
-        } catch (Exception e) {
-        }
-        
     }
 
     public void agregarInfoAcademica() {
@@ -185,6 +204,15 @@ public class RegistrarReclutamientoView extends BaseView implements Serializable
         }
     }
 
+    public void limpiarInfoAcademica() {
+        nombreAcademico = null;
+        especialidad = null;
+        grado = null;
+        fechaInicioAcademico = null;
+        fechaFinAcademico = null;
+        logro = null;
+    }
+
     public void agregarInfoConocimiento() {
         try {
             ConocimientoBean objConocimiento = new ConocimientoBean();
@@ -205,6 +233,11 @@ public class RegistrarReclutamientoView extends BaseView implements Serializable
         }
     }
 
+    public void limpiarInfoConocimiento() {
+        nombreConocimiento = null;
+        nivelConocimiento = null;
+    }
+
     public void agregarInfoExperiencia() {
         try {
             ExperienciaBean objExperiencia = new ExperienciaBean();
@@ -214,6 +247,7 @@ public class RegistrarReclutamientoView extends BaseView implements Serializable
             objExperiencia.setCargo(cargo);
             objExperiencia.setLogro(logroExperiencia);
             listExperiencia.add(objExperiencia);
+            lockReferencia = false;
             limpiarInfoExperiencia();
         } catch (Exception e) {
             mostrarAlerta(FATAL, "error.inesperado", log, e);
@@ -223,9 +257,51 @@ public class RegistrarReclutamientoView extends BaseView implements Serializable
     public void quitarInfoExperiencia(ExperienciaBean objExperienciaBean) {
         try {
             listExperiencia.remove(objExperienciaBean);
+            if (Utilitarios.esNuloOVacio(listExperiencia)) {
+                lockReferencia = true;
+            }
         } catch (Exception e) {
             mostrarAlerta(FATAL, "error.inesperado", log, e);
         }
+    }
+
+    public void limpiarInfoExperiencia() {
+        empresa = null;
+        fechaInicioExperiencia = null;
+        fechaFinExperiencia = null;
+        logroExperiencia = null;
+        cargo = null;
+    }
+
+    public void agregarInfoReferencia() {
+        try {
+            ReferenciaBean objReferencia = new ReferenciaBean();
+            objReferencia.setNombreEmpresa(empresaRefSeleccionada);
+            objReferencia.setNombreCompleto(nombreReferencia);
+            objReferencia.setCargo(cargoReferencia);
+            objReferencia.setTelefono(telefonoReferencia);
+            objReferencia.setMovil(movilReferencia);
+            listReferencia.add(objReferencia);
+            limpiarInfoReferencia();
+        } catch (Exception e) {
+            mostrarAlerta(FATAL, "error.inesperado", log, e);
+        }
+    }
+
+    public void quitarInfoReferencia(ReferenciaBean objReferenciaBean) {
+        try {
+            listReferencia.remove(objReferenciaBean);
+        } catch (Exception e) {
+            mostrarAlerta(FATAL, "error.inesperado", log, e);
+        }
+    }
+
+    public void limpiarInfoReferencia() {
+        empresaRefSeleccionada = null;
+        nombreReferencia = null;
+        cargoReferencia = null;
+        telefonoReferencia = null;
+        movilReferencia = null;
     }
 
     public void poblarTipoDocumento() {
@@ -254,6 +330,9 @@ public class RegistrarReclutamientoView extends BaseView implements Serializable
             }
 
             Candidato objCandidato = new Candidato();
+            if (Utilitarios.noEsNuloOVacio(idReclutamiento)) {
+                objCandidato.setId(Integer.parseInt(idReclutamiento));
+            }
             objCandidato.setProcesoSeleccion(objProcesoSeleccion);
             objCandidato.setNombre(nombreCandidato);
             objCandidato.setApellidoParterno(apellidoPaterno);
@@ -271,6 +350,9 @@ public class RegistrarReclutamientoView extends BaseView implements Serializable
             List<InfoAcademica> listaAcademica = new ArrayList<>();
             for (AcademicaBean academicaBean : listAcademica) {
                 InfoAcademica academica = new InfoAcademica();
+                if (Utilitarios.noEsNuloOVacio(academicaBean.getId())) {
+                    academica.setId(academicaBean.getId());
+                }
                 academica.setNombre(academicaBean.getNombre());
                 academica.setEspecialidad(academicaBean.getEspecialidad());
                 academica.setGrado(academicaBean.getGrado());
@@ -283,6 +365,9 @@ public class RegistrarReclutamientoView extends BaseView implements Serializable
             List<InfoConocimiento> listaConocimiento = new ArrayList<>();
             for (ConocimientoBean conocimientoBean : listConocimiento) {
                 InfoConocimiento conocimiento = new InfoConocimiento();
+                if (Utilitarios.noEsNuloOVacio(conocimientoBean.getId())) {
+                    conocimiento.setId(conocimientoBean.getId());
+                }
                 conocimiento.setNombre(conocimientoBean.getNombre());
                 conocimiento.setNivel(conocimientoBean.getNivel());
                 listaConocimiento.add(conocimiento);
@@ -291,6 +376,9 @@ public class RegistrarReclutamientoView extends BaseView implements Serializable
             List<InfoExperiencia> listaExperiencia = new ArrayList<>();
             for (ExperienciaBean experienciaBean : listExperiencia) {
                 InfoExperiencia experiencia = new InfoExperiencia();
+                if (Utilitarios.noEsNuloOVacio(experienciaBean.getId())) {
+                    experiencia.setId(experienciaBean.getId());
+                }
                 experiencia.setEmpresa(experienciaBean.getEmpresa());
                 experiencia.setFechaInicio(formato.parse(experienciaBean.getFechaInicio()));
                 experiencia.setFechaFin(formato.parse(experienciaBean.getFechaFin()));
@@ -299,9 +387,20 @@ public class RegistrarReclutamientoView extends BaseView implements Serializable
                 listaExperiencia.add(experiencia);
             }
 
+            List<InfoReferencia> listaReferencia = new ArrayList<>();
+            for (ReferenciaBean referenciaBean : listReferencia) {
+                InfoReferencia referencia = new InfoReferencia();
+                referencia.setNombreCompleto(referenciaBean.getNombreCompleto());
+                referencia.setNombreEmpresa(referenciaBean.getNombreEmpresa());
+                referencia.setCargo(referenciaBean.getCargo());
+                referencia.setTelefono(referenciaBean.getTelefono());
+                referencia.setMovil(referenciaBean.getMovil());
+                listaReferencia.add(referencia);
+            }
+
             ReclutamientoDAO objReclutamientoDAO = new ReclutamientoDAO();
-            objReclutamientoDAO.grabarInfoCandidato(objCandidato, listaAcademica, listaConocimiento, listaExperiencia);
-            
+            objReclutamientoDAO.grabarInfoCandidato(objCandidato, listaAcademica, listaConocimiento, listaExperiencia, listaReferencia);
+
             FacesContext.getCurrentInstance().getExternalContext().redirect("crearReclutamiento.jsf");
         } catch (Exception e) {
             mostrarAlerta(FATAL, "error.inesperado", log, e);
@@ -540,12 +639,60 @@ public class RegistrarReclutamientoView extends BaseView implements Serializable
         this.listExperiencia = listExperiencia;
     }
 
-    public boolean isIsInfoA() {
-        return isInfoA;
+    public List<ReferenciaBean> getListReferencia() {
+        return listReferencia;
     }
 
-    public void setIsInfoA(boolean isInfoA) {
-        this.isInfoA = isInfoA;
+    public void setListReferencia(List<ReferenciaBean> listReferencia) {
+        this.listReferencia = listReferencia;
     }
-    
+
+    public String getNombreReferencia() {
+        return nombreReferencia;
+    }
+
+    public void setNombreReferencia(String nombreCompletoReferencia) {
+        this.nombreReferencia = nombreCompletoReferencia;
+    }
+
+    public String getCargoReferencia() {
+        return cargoReferencia;
+    }
+
+    public void setCargoReferencia(String cargoReferencia) {
+        this.cargoReferencia = cargoReferencia;
+    }
+
+    public String getTelefonoReferencia() {
+        return telefonoReferencia;
+    }
+
+    public void setTelefonoReferencia(String telefonoReferencia) {
+        this.telefonoReferencia = telefonoReferencia;
+    }
+
+    public String getMovilReferencia() {
+        return movilReferencia;
+    }
+
+    public void setMovilReferencia(String movilReferencia) {
+        this.movilReferencia = movilReferencia;
+    }
+
+    public boolean getLockReferencia() {
+        return lockReferencia;
+    }
+
+    public void setLockReferencia(boolean lockReferencia) {
+        this.lockReferencia = lockReferencia;
+    }
+
+    public String getEmpresaRefSeleccionada() {
+        return empresaRefSeleccionada;
+    }
+
+    public void setEmpresaRefSeleccionada(String empresaRefSeleccionada) {
+        this.empresaRefSeleccionada = empresaRefSeleccionada;
+    }
+
 }
