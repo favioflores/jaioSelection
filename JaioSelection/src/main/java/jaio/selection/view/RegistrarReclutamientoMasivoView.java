@@ -1,5 +1,6 @@
 package jaio.selection.view;
 
+import jaio.selection.bean.CandidatoBean;
 import jaio.selection.bean.ContInfoCandidatoListBean;
 import jaio.selection.bean.ErrorExcelBean;
 import jaio.selection.util.Constantes;
@@ -437,10 +438,10 @@ public class RegistrarReclutamientoMasivoView extends BaseView implements Serial
 
                     }
                 }
-                
+
                 ErrorExcelBean objErrorExcelBean = new ErrorExcelBean();
                 objErrorExcelBean.setStrFila((row.getRowNum() + 1) + "");
-                
+
             }
 
             if (lstErrores.isEmpty()) {
@@ -455,6 +456,66 @@ public class RegistrarReclutamientoMasivoView extends BaseView implements Serial
 
         return lstErrores;
 
+    }
+
+    private boolean generaPreviewMasivo(XSSFWorkbook xlsMasivo) {
+        try {
+
+            boolean terminoOk = true;
+
+            XSSFSheet hoja = xlsMasivo.getSheetAt(0);
+            Iterator<Row> filas = hoja.iterator();
+
+            filas.next();
+            filas.next();
+            filas.next();
+            filas.next();
+            filas.next();
+            
+            CandidatoBean objCandidatoBean = new CandidatoBean();
+            
+            while (filas.hasNext()) {
+                Row row = filas.next();
+                String strTipoInfo = Utilitarios.obtieneDatoCelda(row, Constantes.XLSX_RECL_COL_TIPO_INFORMACION);
+
+                if (Utilitarios.noEsNuloOVacio(strTipoInfo)) {
+                    if (strTipoInfo.equals(Constantes.XLSX_RECL_MASIVO_CAB_INFO_CANDIDATO)) {
+                        String strNombres = Utilitarios.obtieneDatoCelda(row, Constantes.XLSX_RECL_COL_NOMBRES);
+                        String strApePater = Utilitarios.obtieneDatoCelda(row, Constantes.XLSX_RECL_COL_APELLIDO_PATERNO);
+                        String strApeMater = Utilitarios.obtieneDatoCelda(row, Constantes.XLSX_RECL_COL_APELLIDO_MATERNO);
+                        String strTipoDoc = Utilitarios.obtieneDatoCelda(row, Constantes.XLSX_RECL_COL_TIPO_DOCUMENTO);
+                        String strNroDoc = (Utilitarios.obtieneDatoCelda(row, Constantes.XLSX_RECL_COL_NRO_DOCUMENTO));
+                        String strFechaNac = Utilitarios.obtieneDatoCelda(row, Constantes.XLSX_RECL_COL_FECHA_NACIMIENTO);
+                        String strDepart = Utilitarios.obtieneDatoCelda(row, Constantes.XLSX_RECL_COL_DEPARTAMENTO);
+                        String strDistr = Utilitarios.obtieneDatoCelda(row, Constantes.XLSX_RECL_COL_DISTRITO);
+                        String strDir = Utilitarios.obtieneDatoCelda(row, Constantes.XLSX_RECL_COL_DIRECCION);
+                        String strEmail = Utilitarios.obtieneDatoCelda(row, Constantes.XLSX_RECL_COL_CORREO);
+                        String strCel = Utilitarios.obtieneDatoCelda(row, Constantes.XLSX_RECL_COL_CELULAR);
+                        String strTel = Utilitarios.obtieneDatoCelda(row, Constantes.XLSX_RECL_COL_TELEFONO);
+                        
+                        objCandidatoBean.setNombre(strNombres);
+                        objCandidatoBean.setApellidoParterno(strApePater);
+                        objCandidatoBean.setApellidoMaterno(strApeMater);
+                        objCandidatoBean.setTipoDocumento(strTipoDoc);
+                        objCandidatoBean.setNroDocumento(strNroDoc);
+                        objCandidatoBean.setFechaNacimiento(strFechaNac);
+                        objCandidatoBean.setDistrito(strDistr);
+                        objCandidatoBean.setDireccion(strDir);
+                        objCandidatoBean.setCorreo(strEmail);
+                        objCandidatoBean.setMovil(strCel);
+                        objCandidatoBean.setTelefono(strTel);
+                        
+                        
+
+                    }
+                }
+            }
+
+        } catch (Exception ex) {
+            mostrarAlerta(FATAL, "error.inesperado", log, ex);
+        }
+
+        return true;
     }
 
     public StreamedContent getFileImport() {

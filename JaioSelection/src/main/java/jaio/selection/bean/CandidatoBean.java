@@ -20,7 +20,7 @@ public class CandidatoBean implements java.io.Serializable {
     private String movil;
     private String telefono;
     private String direccion;
-    private Date fechaNacimiento;
+    private String fechaNacimiento;
     private String distrito;
     private String correo;
     private String estado;
@@ -100,11 +100,11 @@ public class CandidatoBean implements java.io.Serializable {
         this.direccion = direccion;
     }
 
-    public Date getFechaNacimiento() {
+    public String getFechaNacimiento() {
         return fechaNacimiento;
     }
 
-    public void setFechaNacimiento(Date fechaNacimiento) {
+    public void setFechaNacimiento(String fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
 
