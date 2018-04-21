@@ -1,5 +1,6 @@
 package jaio.selection.view;
 
+import jaio.selection.util.Utilitarios;
 import java.io.Serializable;
 import java.io.StringWriter;
 import java.util.Properties;
@@ -27,6 +28,16 @@ public class ComunicadosView extends BaseView implements Serializable {
     private String strPreviewFinalizacionTemplate;
     private String strPreviewAgredecimientoTemplate;
     private String strPreviewEntrevistaTemplate;
+
+    private String strConvoTitu;
+
+    public String getStrConvoTitu() {
+        return strConvoTitu;
+    }
+
+    public void setStrConvoTitu(String strConvoTitu) {
+        this.strConvoTitu = strConvoTitu;
+    }
 
     public String getStrPreviewConvocatoriaTemplate() {
         return strPreviewConvocatoriaTemplate;
@@ -92,8 +103,11 @@ public class ComunicadosView extends BaseView implements Serializable {
             Template t = new Template();
             VelocityContext context;
 
-            t = ve.getTemplate("templates/TemplateConvocatoria.vm");
+            t = ve.getTemplate("templates/TemplateComunicadoModelo.vm");
             context = new VelocityContext();
+
+            context.put("TITULO", msg("comunicados.modelo.titulo"));
+            context.put("PARRAFO1", msg("comunicados.modelo.parrafo1"));
 
             StringWriter out = new StringWriter();
             t.merge(context, out);
@@ -104,6 +118,62 @@ public class ComunicadosView extends BaseView implements Serializable {
             mostrarAlerta(FATAL, "error.inesperado", log, e);
         }
 
+    }
+
+    public void modificarTituloConvo() {
+
+        try {
+
+            if (Utilitarios.esNuloOVacio(strConvoTitu)) {
+                Properties props = new Properties();
+                props.setProperty("resource.loader", "class");
+                props.setProperty("class.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
+
+                VelocityEngine ve = new VelocityEngine();
+
+                ve.init(props);
+
+                Template t = new Template();
+                VelocityContext context;
+
+                t = ve.getTemplate("templates/TemplateComunicadoModelo.vm");
+                context = new VelocityContext();
+
+                context.put("TITULO", msg("comunicados.modelo.titulo"));
+                context.put("PARRAFO1", msg("comunicados.modelo.parrafo1"));
+
+                StringWriter out = new StringWriter();
+                t.merge(context, out);
+
+                strPreviewConvocatoriaTemplate = out.toString();
+            } else {
+                Properties props = new Properties();
+                props.setProperty("resource.loader", "class");
+                props.setProperty("class.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
+
+                VelocityEngine ve = new VelocityEngine();
+
+                ve.init(props);
+
+                Template t = new Template();
+                VelocityContext context;
+
+                t = ve.getTemplate("templates/TemplateComunicadoModelo.vm");
+                context = new VelocityContext();
+
+                context.put("TITULO", strConvoTitu);
+                context.put("PARRAFO1", msg("comunicados.modelo.parrafo1"));
+
+                StringWriter out = new StringWriter();
+                t.merge(context, out);
+
+                strPreviewConvocatoriaTemplate = out.toString();
+            }
+
+        } catch (Exception e) {
+            mostrarAlerta(FATAL, "error.inesperado", log, e);
+
+        }
     }
 
     public void limpiar() {

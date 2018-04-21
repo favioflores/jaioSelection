@@ -20,8 +20,8 @@
 
                     <p align="justify">#{msg['comunicados.convocatoria.parrafo']}</p>
 
-                    <p:tabView cache="true" dynamic="true" effect="clip">
-                        <p:tab title="Modelo" titletip="Modelo" >
+                    <p:tabView id="tab1" widgetVar="tab1" cache="true" dynamic="true" effect="clip">
+                        <p:tab id="mod_convo" title="Modelo" titletip="Modelo" >
 
                             <p align="justify">#{msg['comunicados.convocatoria.parrafo1']}</p>
 
@@ -30,28 +30,42 @@
                                 <div class="ui-g-12 ui-lg-6">
 
                                     <p:panelGrid columns="1" styleClass="ui-panelgrid-blank" layout="grid">
-                                        
+
                                         <p:outputLabel value="Titulo :" />
-                                        <p:inputTextarea counter="dTituloC" maxlength="100" counterTemplate="{0} #{msg['count.caracteres']}"/>
+                                        <p:inputTextarea counter="dTituloC" onkeyup="rc()" value="#{comunicadoView.strConvoTitu}"  maxlength="100" counterTemplate="{0} #{msg['count.caracteres']}" />
                                         <h:outputText id="dTituloC" />
-                                        
+
                                         <br/>
-                                        
+
                                         <p:outputLabel value="Parrafo principal :" />
                                         <p:inputTextarea counter="dTituloP1" maxlength="200" counterTemplate="{0} #{msg['count.caracteres']}"/>
                                         <h:outputText id="dTituloP1" />
-                                        
+
                                         <br/>
-                                        
+
                                         <p:outputLabel value="Parrafo secundario :" />                                        
                                         <p:inputTextarea counter="dTituloP2" maxlength="200" counterTemplate="{0} #{msg['count.caracteres']}"/>
                                         <h:outputText id="dTituloP2" />
-                                        
+
+                                        <br/>
+
+                                        <p:commandButton id="btnGrabar"
+                                                         styleClass="aqua-button" value="#{msg['comunicados.boton.grabar']}"
+                                                         update=":formComunicados:tab1:mod_convo:" />
+
+                                        <p:commandButton id="btnLimpiar"
+                                                         styleClass="aqua-button" value="#{msg['comunicados.boton.limpiar']}"
+                                                         update=":formComunicados:tab1:mod_convo:" />
+
                                     </p:panelGrid>
+
+                                    <p:remoteCommand name="rc" update=":formComunicados:tab1:outconvoper" actionListener="#{comunicadoView.modificarTituloConvo()}" />
 
                                 </div>
                                 <div class="ui-g-12 ui-lg-6">
-                                    <h:outputText value="#{comunicadoView.strPreviewConvocatoriaTemplate}" escape="false" />
+                                    <h:panelGrid columns="1" border="2">
+                                        <p:outputLabel id="outconvoper" value="#{comunicadoView.strPreviewConvocatoriaTemplate}" escape="false" />
+                                    </h:panelGrid>
                                 </div>
                             </div>
 
