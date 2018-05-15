@@ -27,6 +27,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import org.primefaces.model.UploadedFile;
 
 @ManagedBean(name = "registrarReclutamientoView")
 @ViewScoped
@@ -39,6 +40,9 @@ public class RegistrarReclutamientoView extends BaseView implements Serializable
 
     private String idProcesoSelecccion;
     private String idReclutamiento;
+    
+    //imagen de usuario
+    private UploadedFile imagen;
 
     //Info Candidato
     private String nombreCandidato;
@@ -182,6 +186,10 @@ public class RegistrarReclutamientoView extends BaseView implements Serializable
 
     public void agregarInfoAcademica() {
         try {
+            
+            
+            
+            
             AcademicaBean objAcademica = new AcademicaBean();
             objAcademica.setNombre(nombreAcademico);
             objAcademica.setEspecialidad(especialidad);
@@ -318,6 +326,9 @@ public class RegistrarReclutamientoView extends BaseView implements Serializable
         } catch (Exception e) {
             mostrarAlerta(FATAL, "error.inesperado", log, e);
         }
+    }
+    
+    public void cargarImagen(){
     }
 
     public void grabarInfoCandidato() {
@@ -695,4 +706,12 @@ public class RegistrarReclutamientoView extends BaseView implements Serializable
         this.empresaRefSeleccionada = empresaRefSeleccionada;
     }
 
+    public UploadedFile getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(UploadedFile imagen) {
+        this.imagen = imagen;
+    }
+    
 }

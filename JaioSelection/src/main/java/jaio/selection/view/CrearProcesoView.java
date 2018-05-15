@@ -84,16 +84,22 @@ public class CrearProcesoView extends BaseView implements Serializable {
             if (Utilitarios.noEsNuloOVacio(strEmpresaSeleccionada)) {
                 BateriaPersonalizadaDAO objBateriaPersonalizadaDAO = new BateriaPersonalizadaDAO();
                 List lstBaterias = objBateriaPersonalizadaDAO.obtenerProcesosRegistrados(strEmpresaSeleccionada);
-                Iterator it = lstBaterias.iterator();
-                while (it.hasNext()) {
-                    Object obj[] = (Object[]) it.next();
-                    BateriaPersonalizadaBean objBateriaPersonalizadaBean = new BateriaPersonalizadaBean();
-                    objBateriaPersonalizadaBean.setId(obj[0].toString());
-                    objBateriaPersonalizadaBean.setNombre(obj[1].toString());
-                    objBateriaPersonalizadaBean.setFechaCreacion(obj[2].toString());
-                    objBateriaPersonalizadaBean.setNombrePerfil(obj[3].toString());
-                    objBateriaPersonalizadaBean.setIdPs(obj[4].toString());
-                    listaBateriasRegistradas.add(objBateriaPersonalizadaBean);
+
+                if (Utilitarios.noEsNuloOVacio(lstBaterias) && !Constantes.ZERO_INTEGER.equals(lstBaterias.size())) {
+                    Iterator it = lstBaterias.iterator();
+                    
+                    while (it.hasNext()) {
+                        Object obj[] = (Object[]) it.next();
+                        BateriaPersonalizadaBean objBateriaPersonalizadaBean = new BateriaPersonalizadaBean();
+                        objBateriaPersonalizadaBean.setId(obj[0].toString());
+                        objBateriaPersonalizadaBean.setNombre(obj[1].toString());
+                        objBateriaPersonalizadaBean.setFechaCreacion(obj[2].toString());
+                        objBateriaPersonalizadaBean.setNombrePerfil(obj[3].toString());
+                        objBateriaPersonalizadaBean.setIdPs(obj[4].toString());
+                        listaBateriasRegistradas.add(objBateriaPersonalizadaBean);
+                    }
+                } else {
+                    mostrarAlerta(WARN, "bateria.nohayBaterias", null, null);
                 }
             }
         } catch (Exception e) {

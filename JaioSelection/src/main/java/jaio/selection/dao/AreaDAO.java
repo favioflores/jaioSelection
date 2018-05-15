@@ -100,11 +100,12 @@ public class AreaDAO extends HibernateUtil implements Serializable {
         iniciaSession();
 
         try {
-
-            Query query = session.createQuery("select a FROM Area a where a.empresa.id = :id order by a.descripcion asc ");
-
+            String estado = "8";
+            Query query = session.createQuery("select a FROM Area a where a.empresa.id = :id  "
+                    + " and a.estado= :estado order by a.descripcion asc ");
+            
             query.setString("id", idEmpresa);
-
+            query.setString("estado", estado);
             lstArea = query.list();
 
         } catch (Exception e) {

@@ -15,34 +15,41 @@
                             <h1>#{msg['registro.reclutamiento.titulo']}</h1>
                             <p>#{msg['registro.reclutamiento.parrafo']}</p>
 
-                            <p:outputLabel for="comboEmpresas" value="#{msg['proceso.lista.empresa']}"/><br/>
-                            <p:selectOneMenu id="comboEmpresas" value="#{crearReclutamientoView.strEmpresaSeleccionada}" effect="clip" filter="true" filterMatchMode="startsWith">
-                                <f:selectItem itemLabel="#{msg['proceso.selecciona.empresa']}" itemValue="-1"/>
+                            
+                            <div class="ui-g-12 ui-lg-3">
+                                <p:selectOneMenu id="comboEmpresas" value="#{crearReclutamientoView.strEmpresaSeleccionada}" effect="clip" filter="true" filterMatchMode="startsWith">
+                                <f:selectItem itemLabel="#{msg['etiqueta.selecciona.empresa']}" itemValue="-1"/>
                                 <f:selectItems value="#{crearReclutamientoView.listaEmpresas}" var="e" itemLabel="#{e.desc}" itemValue="#{e.id}"/>
                                 <p:ajax event="itemSelect" process="@this" listener="#{crearReclutamientoView.seleccionaEmpresa()}"
                                         update=":formReclutamiento:gridReclutados, :formReclutamiento:comboProcesos"/>
-                            </p:selectOneMenu>
-                            <br/><br/>
-                            <p:outputLabel for="comboProcesos" value="#{msg['registro.combo.procesos']}"/><br/>
-                            <p:selectOneMenu id="comboProcesos" value="#{crearReclutamientoView.strProcesoSeleccionado}" effect="clip" filter="true" filterMatchMode="startsWith">
-                                <f:selectItem itemLabel="#{msg['proceso.selecciona.proceso']}" itemValue="-1"/>
+                                </p:selectOneMenu>
+                            </div>
+                            
+                            <div class="ui-g-12 ui-lg-3">
+                                <p:selectOneMenu id="comboProcesos" value="#{crearReclutamientoView.strProcesoSeleccionado}" effect="clip" filter="true" filterMatchMode="startsWith">
+                                <f:selectItem itemLabel="#{msg['etiqueta.selecciona.proceso']}" itemValue="-1"/>
                                 <f:selectItems value="#{crearReclutamientoView.listaProcesos}" var="p" itemLabel="#{p.descripcion}" itemValue="#{p.id}"/>
                                 <p:ajax event="itemSelect" process="@this" listener="#{crearReclutamientoView.seleccionaProceso()}"
                                         update=":formReclutamiento:gridReclutados, :formReclutamiento:comboProcesos"/>
-                            </p:selectOneMenu>
-
-                            <p:panelGrid columns="1" columnClasses="ui-grid-col" layout="grid" styleClass="ui-panelgrid-blank" 
-                                         style="border:0px none; background-color:transparent;">
-                                <p:outputLabel for="nuevo" value="#{msg['proceso.nuevo.proceso']}"/>
+                                </p:selectOneMenu>
+                            </div>
+                            <div class="ui-g-12 ui-lg-6">
                                 <p:commandButton id="nuevo" icon="fa fa-plus Fs14" styleClass="aqua-button" value="#{msg['proceso.boton.nuevo']}"
                                                  actionListener="#{crearReclutamientoView.abrirRegistroReclutamiento()}">
                                 </p:commandButton>
+                            </div>
+
+                            <p:panelGrid columns="1" columnClasses="ui-grid-col" layout="grid" styleClass="ui-panelgrid-blank" 
+                                         style="border:0px none; background-color:transparent;">
+                                <!--<p:outputLabel for="nuevo" value="#{msg['proceso.nuevo.proceso']}"/>-->
+                                
                             </p:panelGrid>
 
                             <div class="ui-g-12" >
                                 <h:panelGroup id="gridReclutados">
                                     <p:dataGrid id="listaReclutados" var="reclutados" value="#{crearReclutamientoView.listaReclutados}"
-                                                layout="grid" paginatorPosition="bottom" columns="1" paginator="true">
+                                                layout="grid" paginatorPosition="bottom" columns="1" paginator="true"
+                                                rendered="#{crearReclutamientoView.listaReclutados.size() > 0}">
                                         <p:panel header="#{reclutados.nombre} #{reclutados.apellidoParterno} #{reclutados.apellidoMaterno}">                                        
                                             <h:outputText value="Nro Documento: #{reclutados.nroDocumento}"/><br/>
                                             <h:outputText value="Celular: #{reclutados.movil}"/><br/>

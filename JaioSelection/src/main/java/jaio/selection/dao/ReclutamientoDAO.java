@@ -47,10 +47,16 @@ public class ReclutamientoDAO extends HibernateUtil implements Serializable {
 
     public List obtenerProcesos(String id) {
         try {
+            
+            int estado = Constantes.INT_ESTADO_PROCESO_REGISTRADO;
             iniciaSession();
-            Query query = session.createSQLQuery("select ps.id,ps.descripcion from proceso_seleccion ps "
-                    + "join perfil p on p.id=ps.perfil_id "
-                    + "where p.empresa_id=" + id);
+            Query query = session.createSQLQuery("select ps.id,ps.descripcion from proceso_seleccion ps\n"
+                    + " join perfil p on p.id=ps.perfil_id "
+                    + " where p.empresa_id=:id and ps.estado=:estado order by 1 desc");
+            
+            query.setString("id", id);
+            query.setInteger("estado", estado);
+            
             return query.list();
         } catch (Exception e) {
             manejaException(log, e);

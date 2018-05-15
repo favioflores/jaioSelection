@@ -72,10 +72,11 @@ public class PerfilDAO extends HibernateUtil implements Serializable {
         iniciaSession();
 
         try {
-
-            Query query = session.createQuery("select p FROM Perfil p where p.area.id = :id order by p.nombre asc ");
-
+            String estado = "10";
+            Query query = session.createQuery("select p FROM Perfil p where p.area.id = :id "
+                    + " and p.estado = :estado order by p.nombre asc ");
             query.setString("id", idArea);
+            query.setString("estado", estado);
 
             lstPerfiles = query.list();
 

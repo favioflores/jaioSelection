@@ -100,12 +100,39 @@ public class BateriaPersonalizadaDAO extends HibernateUtil implements Serializab
     public boolean eliminarBateriaRegistrada(String id) {
         try {
             iniciaSession();
-            Query update = session.createSQLQuery("update bateria_personalizada "
-                    + "set estado = " + Constantes.INT_ESTADO_PROCESO_ELIMINADO + " where id =" + id);
-            update.executeUpdate();
+            int estadoProcDel = Constantes.INT_ESTADO_PROCESO_ELIMINADO;
+            int estadoEvaDel = Constantes.INT_ESTADO_EVALUACION_INACTIVO;
+            
+            //primero se actualiza el proceso a eliminado
+            Query searchProc = session.createSQLQuery("select id from proceso_seleccion ps "
+                    + " join evaluacion_perfil ep on ep.proceso_seleccion_id = ps.id "
+                    + " where ep.bateria_personalizada_id = :id");
+            searchProc.setString("id", id);
+            String idProc = searchProc.uniqueResult().toString();
+            
+            Query delProc = session.createSQLQuery("update proceso_seleccion set estado= :estado where id= :id");
+            delProc.setInteger("estado", estadoProcDel);
+            delProc.setString("id", idProc);
+            delProc.executeUpdate();
+            
+            
+            //segundo se actualiza la evaluacion por perfil a inactivo
+            Query delEva = session.createSQLQuery("update evaluacion_perfil set estado= :estado where bateria_personalizada_id= :id");
+            delEva.setInteger("estado", estadoEvaDel);
+            delEva.setString("id", idProc);
+            delEva.executeUpdate();
+            
+            
+            //tercero de actualiza la bateria personalizada
+            Query delBat = session.createSQLQuery("update bateria_personalizada set estado= :estado where id= :id");
+            delBat.setInteger("estado", estadoProcDel);
+            delBat.setString("id", id);
+            delBat.executeUpdate();
+            
             guardarCambios();
+            
         } catch (HibernateException e) {
-            manejaException(log, e);
+            rollback(log, e);
             return false;
         } finally {
             cerrarSession();
