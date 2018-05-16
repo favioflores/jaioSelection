@@ -174,21 +174,22 @@
 
                                         <div class="ui-g-12 ui-lg-4">
                                             <div class="ui-g-12">
-                                                <p:graphicImage id="ima" name="images/usuario.png" width="250" height="200" library="omega-layout" />
+                                                <p:graphicImage id="ima" name="images/usuario.png" width="250" height="200" 
+                                                                library="omega-layout" value="#{registrarReclutamientoView.imagen}"
+                                                                cache="false"/>
                                             </div>
                                             <div class="ui-g-12">
                                                 <p:fileUpload 
-                                                    id="imagen"
-                                                    widgetVar="imagen"
+                                                    id="cargarIma"
+                                                    widgetVar="cargarIma"
                                                     mode="simple" 
                                                     skinSimple="true"
                                                     styleClass="aqua-button"
                                                     fileLimit="1"
-                                                    label="#{msg['registro.boton.buscar']}"
+                                                    label="#{msg['registro.boton.cargarFoto']}"
                                                     sizeLimit="3072"
                                                     allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
-                                                    value="#{registrarReclutamientoView.imagen}"
-                                                    fileUploadListener="#{registrarReclutamientoView.cargarImagen()}"/>
+                                                    fileUploadListener="#{registrarReclutamientoView.cargarImagen}"/>
                                             </div>
                                             <!-- 
                                             <div class="ui-g-12 ui-lg-6">
@@ -213,7 +214,7 @@
                                         <div class="ui-g-12 ui-lg-10">
                                             <p:inputText id="nombreAcademico" value="#{registrarReclutamientoView.nombreAcademico}" maxlength="200"
                                                          placeholder="#{msg['infoCandidato.ingrese.nombre']}" style="width: 86%;" 
-                                                         required="false " requiredMessage="#{msg['infoCandidato.falta.nombre']}" /> 
+                                                         required="false " requiredMessage="#{msg['infoAcademica.falta.nombre']}" /> 
                                         </div>
 
                                         <!--ESPECIALIDAD-->
@@ -376,7 +377,6 @@
                                 <h:panelGroup id="grupo4">
                                     <p:fieldset id="infoExperiencia" legend="#{msg['registro.reclutamiento.fielset.infoExperiencia']}">
 
-
                                         <!--NOMBRE EMPRESA-->
                                         <div class="ui-g-12 ui-lg-2">
                                             <p:outputLabel for="empresa" value="#{msg['infoExperiencia.empresa']}"/>
@@ -427,7 +427,7 @@
                                                          required="false" requiredMessage="#{msg['infoAcademica.falta.logro']}" /> 
                                         </div>
 
-
+                                        <!--BOTONES-->
                                         <div class="ui-g-12 ui-lg-3">
                                             <p:commandButton id="agregarInfoExperiencia" widgetVar="agregarInfoExperiencia" styleClass="aqua-button"
                                                              value="#{msg['organigrama.boton.agregar']}"
@@ -477,9 +477,9 @@
                                         </div>
                                         <div class="ui-g-12 ui-lg-8">
                                             <p:selectOneMenu id="listaNomExps" value="#{registrarReclutamientoView.empresaRefSeleccionada}" effect="clip" filterMatchMode="startsWith"
-                                                             filter="true" required="true" requiredMessage="#{msg['infoCandidato.falta.tipoDocumento']}" 
+                                                             filter="true" required="true" requiredMessage="#{msg['infoReferencia.falta.nombreEmpresa']}" 
                                                              disabled="#{registrarReclutamientoView.lockReferencia}">
-                                                <f:selectItem itemLabel="#{msg['infoCandidato.ingrese.tipoDocumento']}" itemValue="-1"/>
+                                                <f:selectItem itemLabel="#{msg['infoReferencia.ingrese.nombreEmpresa']}" itemValue="-1"/>
                                                 <f:selectItems id="listaNomExp" value="#{registrarReclutamientoView.listExperiencia}" var="d" 
                                                                itemLabel="#{d.empresa}" itemValue="#{d.empresa}"/>
                                                 <p:ajax event="itemSelect" immediate="true" process="@this" update=":formRegistroR:tab:listaNomExps" />
@@ -606,6 +606,12 @@
                                                   fileUploadListener="#{registrarReclutamientoMasivoView.cargaRegistroMasivo}" >
                                     </p:fileUpload>
                                 </h:panelGroup>
+                                
+                                <div>
+                                    <p:dataTable id="listaRecl" widgetVar="listaRecl">
+                                    </p:dataTable>
+                                </div>
+                                
                             </p:tab>
 
                         </p:tabView>

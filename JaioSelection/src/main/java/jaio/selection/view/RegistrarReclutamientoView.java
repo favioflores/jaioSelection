@@ -14,19 +14,27 @@ import jaio.selection.orm.InfoReferencia;
 import jaio.selection.orm.ProcesoSeleccion;
 import jaio.selection.util.Constantes;
 import jaio.selection.util.Utilitarios;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Serializable;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 
 @ManagedBean(name = "registrarReclutamientoView")
@@ -40,7 +48,7 @@ public class RegistrarReclutamientoView extends BaseView implements Serializable
 
     private String idProcesoSelecccion;
     private String idReclutamiento;
-    
+
     //imagen de usuario
     private UploadedFile imagen;
 
@@ -159,7 +167,6 @@ public class RegistrarReclutamientoView extends BaseView implements Serializable
                     referencia.setTelefono(objReferencia.getTelefono());
                     listReferencia.add(referencia);
                 }
-
                 listExperiencia.add(experiencia);
             }
 
@@ -186,19 +193,39 @@ public class RegistrarReclutamientoView extends BaseView implements Serializable
 
     public void agregarInfoAcademica() {
         try {
-            
-            
-            
-            
+
             AcademicaBean objAcademica = new AcademicaBean();
-            objAcademica.setNombre(nombreAcademico);
-            objAcademica.setEspecialidad(especialidad);
-            objAcademica.setGrado(grado);
-            objAcademica.setFechaInicio(formato.format(fechaInicioAcademico));
-            objAcademica.setFechaFin(formato.format(fechaFinAcademico));
-            objAcademica.setLogro(logro);
-            listAcademica.add(objAcademica);
-            limpiarInfoAcademica();
+            boolean start = true;
+            if (Utilitarios.esNuloOVacio(nombreAcademico)) {
+                mostrarAlerta(WARN, "infoAcademica.falta.nombre", null, null);
+                start = false;
+            } else if (Utilitarios.esNuloOVacio(especialidad)) {
+                mostrarAlerta(WARN, "infoAcademica.falta.especialidad", null, null);
+                start = false;
+            } else if (Utilitarios.esNuloOVacio(grado)) {
+                mostrarAlerta(WARN, "infoAcademica.falta.grado", null, null);
+                start = false;
+            } else if (Utilitarios.esNuloOVacio(fechaInicioAcademico)) {
+                mostrarAlerta(WARN, "infoAcademica.falta.fechaInicio", null, null);
+                start = false;
+            } else if (Utilitarios.esNuloOVacio(fechaFinAcademico)) {
+                mostrarAlerta(WARN, "infoAcademica.falta.fechaFin", null, null);
+                start = false;
+            } else if (Utilitarios.esNuloOVacio(logro)) {
+                mostrarAlerta(WARN, "infoAcademica.falta.logro", null, null);
+                start = false;
+            }
+
+            if (start) {
+                objAcademica.setNombre(nombreAcademico);
+                objAcademica.setEspecialidad(especialidad);
+                objAcademica.setGrado(grado);
+                objAcademica.setFechaInicio(formato.format(fechaInicioAcademico));
+                objAcademica.setFechaFin(formato.format(fechaFinAcademico));
+                objAcademica.setLogro(logro);
+                listAcademica.add(objAcademica);
+                limpiarInfoAcademica();
+            }
         } catch (Exception e) {
             mostrarAlerta(FATAL, "error.inesperado", log, e);
         }
@@ -224,10 +251,21 @@ public class RegistrarReclutamientoView extends BaseView implements Serializable
     public void agregarInfoConocimiento() {
         try {
             ConocimientoBean objConocimiento = new ConocimientoBean();
-            objConocimiento.setNombre(nombreConocimiento);
-            objConocimiento.setNivel(nivelConocimiento);
-            listConocimiento.add(objConocimiento);
-            limpiarInfoConocimiento();
+            boolean start = true;
+            if (Utilitarios.esNuloOVacio(nombreConocimiento)) {
+                mostrarAlerta(WARN, "infoConocimientos.falta.nombre", null, null);
+                start = false;
+            } else if (Utilitarios.esNuloOVacio(nivelConocimiento)) {
+                mostrarAlerta(WARN, "infoConocimientos.falta.nivel", null, null);
+                start = false;
+            }
+
+            if (start) {
+                objConocimiento.setNombre(nombreConocimiento);
+                objConocimiento.setNivel(nivelConocimiento);
+                listConocimiento.add(objConocimiento);
+                limpiarInfoConocimiento();
+            }
         } catch (Exception e) {
             mostrarAlerta(FATAL, "error.inesperado", log, e);
         }
@@ -248,15 +286,36 @@ public class RegistrarReclutamientoView extends BaseView implements Serializable
 
     public void agregarInfoExperiencia() {
         try {
+
             ExperienciaBean objExperiencia = new ExperienciaBean();
-            objExperiencia.setEmpresa(empresa);
-            objExperiencia.setFechaInicio(formato.format(fechaInicioExperiencia));
-            objExperiencia.setFechaFin(formato.format(fechaFinExperiencia));
-            objExperiencia.setCargo(cargo);
-            objExperiencia.setLogro(logroExperiencia);
-            listExperiencia.add(objExperiencia);
-            lockReferencia = false;
-            limpiarInfoExperiencia();
+            boolean start = true;
+            if (Utilitarios.esNuloOVacio(empresa)) {
+                mostrarAlerta(WARN, "infoExperiencia.falta.empresa", null, null);
+                start = false;
+            } else if (Utilitarios.esNuloOVacio(fechaInicioExperiencia)) {
+                mostrarAlerta(WARN, "infoAcademica.falta.fechaInicio", null, null);
+                start = false;
+            } else if (Utilitarios.esNuloOVacio(fechaFinExperiencia)) {
+                mostrarAlerta(WARN, "infoAcademica.falta.fechaFin", null, null);
+                start = false;
+            } else if (Utilitarios.esNuloOVacio(cargo)) {
+                mostrarAlerta(WARN, "infoExperiencia.falta.cargo", null, null);
+                start = false;
+            } else if (Utilitarios.esNuloOVacio(logroExperiencia)) {
+                mostrarAlerta(WARN, "infoAcademica.falta.logro", null, null);
+                start = false;
+            }
+
+            if (start) {
+                objExperiencia.setEmpresa(empresa);
+                objExperiencia.setFechaInicio(formato.format(fechaInicioExperiencia));
+                objExperiencia.setFechaFin(formato.format(fechaFinExperiencia));
+                objExperiencia.setCargo(cargo);
+                objExperiencia.setLogro(logroExperiencia);
+                listExperiencia.add(objExperiencia);
+                lockReferencia = false;
+                limpiarInfoExperiencia();
+            }
         } catch (Exception e) {
             mostrarAlerta(FATAL, "error.inesperado", log, e);
         }
@@ -265,7 +324,7 @@ public class RegistrarReclutamientoView extends BaseView implements Serializable
     public void quitarInfoExperiencia(ExperienciaBean objExperienciaBean) {
         try {
             listExperiencia.remove(objExperienciaBean);
-            if (Utilitarios.esNuloOVacio(listExperiencia)) {
+            if (listExperiencia.size() < Constantes.TIPO_INTEGER) {
                 lockReferencia = true;
             }
         } catch (Exception e) {
@@ -284,13 +343,30 @@ public class RegistrarReclutamientoView extends BaseView implements Serializable
     public void agregarInfoReferencia() {
         try {
             ReferenciaBean objReferencia = new ReferenciaBean();
-            objReferencia.setNombreEmpresa(empresaRefSeleccionada);
-            objReferencia.setNombreCompleto(nombreReferencia);
-            objReferencia.setCargo(cargoReferencia);
-            objReferencia.setTelefono(telefonoReferencia);
-            objReferencia.setMovil(movilReferencia);
-            listReferencia.add(objReferencia);
-            limpiarInfoReferencia();
+            boolean start = true;
+            if (Utilitarios.esNuloOVacio(empresaRefSeleccionada)) {
+                mostrarAlerta(WARN, "infoReferencia.falta.nombreEmpresa", null, null);
+                start = false;
+            } else if (Utilitarios.esNuloOVacio(nombreReferencia)) {
+                mostrarAlerta(WARN, "infoReferencia.falta.nombre", null, null);
+                start = false;
+            } else if (Utilitarios.esNuloOVacio(cargoReferencia)) {
+                mostrarAlerta(WARN, "infoReferencia.falta.cargo", null, null);
+                start = false;
+            } else if (Utilitarios.esNuloOVacio(movilReferencia)) {
+                mostrarAlerta(WARN, "infoReferencia.falta.celular", null, null);
+                start = false;
+            }
+
+            if (start) {
+                objReferencia.setNombreEmpresa(empresaRefSeleccionada);
+                objReferencia.setNombreCompleto(nombreReferencia);
+                objReferencia.setCargo(cargoReferencia);
+                objReferencia.setTelefono(telefonoReferencia);
+                objReferencia.setMovil(movilReferencia);
+                listReferencia.add(objReferencia);
+                limpiarInfoReferencia();
+            }
         } catch (Exception e) {
             mostrarAlerta(FATAL, "error.inesperado", log, e);
         }
@@ -327,14 +403,47 @@ public class RegistrarReclutamientoView extends BaseView implements Serializable
             mostrarAlerta(FATAL, "error.inesperado", log, e);
         }
     }
-    
-    public void cargarImagen(){
+
+    public void cargarImagen(FileUploadEvent event) {
+        try {
+            copyFile(event.getFile().getFileName(), event.getFile().getInputstream());
+            FacesMessage message = new FacesMessage(
+                    "El archivo se ha subido con éxito!");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        } catch (IOException e) {
+            mostrarAlerta(FATAL, "error.inesperado", log, e);
+        }
     }
 
-    public void grabarInfoCandidato() {
-
+    public void copyFile(String fileName, InputStream in) {
         try {
+            String destination = "D:\\tmp\"";
+            OutputStream out = new FileOutputStream(new File(destination + fileName));
+            int read = 0;
+            byte[] bytes = new byte[1024];
+            while ((read = in.read(bytes)) != -1) {
+                out.write(bytes, 0, read);
+            }
+            in.close();
+            out.flush();
+            out.close();
+            System.out.println("El archivo se ha creado con éxito !");
 
+            DateFormat dateFormat = new SimpleDateFormat("yyyy–MM–dd HH_mm_ss");
+            Date date = new Date();
+            String ruta1 = destination + fileName;
+            String ruta2 = destination + dateFormat.format(date) + "–" + fileName;
+            System.out.println("Archivo: " + ruta1 + " Renombrado a: " + ruta2);
+            File archivo = new File(ruta1);
+            archivo.renameTo(new File(ruta2));
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+
+public void grabarInfoCandidato() {
+        try {
             ProcesoSeleccion objProcesoSeleccion = new ProcesoSeleccion();
             if (Utilitarios.noEsNuloOVacio(idProcesoSelecccion)) {
                 objProcesoSeleccion.setId(Integer.parseInt(idProcesoSelecccion));
@@ -713,5 +822,5 @@ public class RegistrarReclutamientoView extends BaseView implements Serializable
     public void setImagen(UploadedFile imagen) {
         this.imagen = imagen;
     }
-    
+
 }
