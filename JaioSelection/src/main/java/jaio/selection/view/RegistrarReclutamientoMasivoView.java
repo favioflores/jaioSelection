@@ -1,15 +1,15 @@
 package jaio.selection.view;
 
-import jaio.selection.bean.CandidatoBean;
-import jaio.selection.bean.ContInfoCandidatoListBean;
-import jaio.selection.bean.ErrorExcelBean;
-import jaio.selection.util.Constantes;
-import jaio.selection.util.Utilitarios;
 import static jaio.selection.view.BaseView.ERROR;
 import static jaio.selection.view.BaseView.FATAL;
 import static jaio.selection.view.BaseView.INFO;
 import static jaio.selection.view.BaseView.WARN;
 import static jaio.selection.view.BaseView.msg;
+import jaio.selection.bean.CandidatoBean;
+import jaio.selection.bean.ContInfoCandidatoListBean;
+import jaio.selection.bean.ErrorExcelBean;
+import jaio.selection.util.Constantes;
+import jaio.selection.util.Utilitarios;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -18,13 +18,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
 import javax.faces.bean.ManagedBean;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -71,47 +69,47 @@ public class RegistrarReclutamientoMasivoView extends BaseView implements Serial
         }
     }
 
-    //carga de archivo
+    /**
+     * carga de archivo masivo
+     *
+     * @param event
+     */
     public void cargaRegistroMasivo(FileUploadEvent event) {
+        List<ErrorExcelBean> listaErrores = new ArrayList<>();
+        try {
+            if (event.getFile() == null) {
+                mostrarAlerta(ERROR, "organigrama.masivo.archivo.vacio", null, null);
+            } else {
+                XSSFWorkbook excel = new XSSFWorkbook(event.getFile().getInputstream());
 
-        List<ErrorExcelBean> lstErrorExcelBeans = new ArrayList<>();
+                //se valida cabera de excel
+                validarCabeceraMasivo(excel, listaErrores);
 
-        if (event.getFile() == null) {
-            mostrarAlerta(ERROR, "organigrama.masivo.archivo.vacio", null, null);
-        } else {
-
-            XSSFWorkbook xlsxMasivo;
-
-            try {
-                xlsxMasivo = new XSSFWorkbook(event.getFile().getInputstream());
-
-                //validar cabecera
-                validarCabeceraMasivo(xlsxMasivo, lstErrorExcelBeans);
-
-                //validar contenido
-                if (lstErrorExcelBeans.isEmpty()) {
-                    validarReclutamientoMasivo(xlsxMasivo, lstErrorExcelBeans);
+                //se valida contenido de excel
+                if (listaErrores.isEmpty()) {
+                    validarReclutamientoMasivo(excel, listaErrores);
                 } else {
-                    lstErrores = lstErrorExcelBeans;
+                    lstErrores = listaErrores;
                     mostrarAlerta(WARN, "organigrama.masivo.archivo.procesoConErrores", null, null);
                     inputFile = null;
                     fileImport = null;
                     return;
                 }
 
-                //procesar registros
-                if (lstErrorExcelBeans.isEmpty()) {
-                    procesarReclutamientoMasivo(xlsxMasivo, lstErrorExcelBeans);
+                //se procesa registros
+                if (listaErrores.isEmpty()) {
+                    procesarReclutamientoMasivo(excel, listaErrores);
                 } else {
-                    lstErrores = lstErrorExcelBeans;
+                    lstErrores = listaErrores;
                     mostrarAlerta(WARN, "organigrama.masivo.archivo.procesoConErrores", null, null);
                     inputFile = null;
                     fileImport = null;
                     return;
                 }
 
-                if (!lstErrorExcelBeans.isEmpty()) {
-                    lstErrores = lstErrorExcelBeans;
+                //se valida que no haya errores
+                if (!listaErrores.isEmpty()) {
+                    lstErrores = listaErrores;
                     mostrarAlerta(WARN, "organigrama.masivo.archivo.procesoConErrores", null, null);
                     inputFile = null;
                     fileImport = null;
@@ -120,15 +118,18 @@ public class RegistrarReclutamientoMasivoView extends BaseView implements Serial
 
                 inputFile = null;
                 fileImport = null;
-
-            } catch (Exception ex) {
-                mostrarAlerta(FATAL, "error.inesperado", log, ex);
             }
-
+        } catch (Exception ex) {
+            mostrarAlerta(FATAL, "error.inesperado", log, ex);
         }
-
     }
 
+    /**
+     * validacion de cabecera de excel
+     * @param xlsMasivo
+     * @param lstErrors
+     * @return 
+     */
     private List<ErrorExcelBean> validarCabeceraMasivo(XSSFWorkbook xlsMasivo, List<ErrorExcelBean> lstErrors) {
         try {
 
@@ -153,31 +154,31 @@ public class RegistrarReclutamientoMasivoView extends BaseView implements Serial
             String strCelular = Utilitarios.obtieneDatoCelda(row, Constantes.XLSX_RECL_COL_CELULAR);
             String strTelefono = Utilitarios.obtieneDatoCelda(row, Constantes.XLSX_RECL_COL_TELEFONO);
 
-            Utilitarios.validaValorCeldaXLSX(strInfoCandidato, Constantes.TIPO_STRING, msg("reclutamiento.masivo.columna.infoCandidato"),
+            Utilitarios.validaValorCeldaXLSX(strInfoCandidato, Constantes.TIPO_STRING, msg("reclMasivo.col.infoCandidato"),
                     lstErrors, row, Constantes.XLSX_RECL_COL_INFO_CANDIDATO, true, Constantes.XLSX_RECL_CAB_INFO_CANDIDATO);
-            Utilitarios.validaValorCeldaXLSX(strNombres, Constantes.TIPO_STRING, msg("reclutamiento.masivo.columna.nombres"),
+            Utilitarios.validaValorCeldaXLSX(strNombres, Constantes.TIPO_STRING, msg("reclMasivo.col.nombres"),
                     lstErrors, row, Constantes.XLSX_RECL_COL_NOMBRES, true, Constantes.XLSX_RECL_CAB_NOMBRES);
-            Utilitarios.validaValorCeldaXLSX(strApellidoPaterno, Constantes.TIPO_STRING, msg("reclutamiento.masivo.columna.apellidoPaterno"),
+            Utilitarios.validaValorCeldaXLSX(strApellidoPaterno, Constantes.TIPO_STRING, msg("reclMasivo.col.apePaterno"),
                     lstErrors, row, Constantes.XLSX_RECL_COL_APELLIDO_PATERNO, true, Constantes.XLSX_RECL_CAB_APELLIDO_PATERNO);
-            Utilitarios.validaValorCeldaXLSX(strApellidoMaterno, Constantes.TIPO_STRING, msg("reclutamiento.masivo.columna.apellidoMaterno"),
+            Utilitarios.validaValorCeldaXLSX(strApellidoMaterno, Constantes.TIPO_STRING, msg("reclMasivo.col.apeMaterno"),
                     lstErrors, row, Constantes.XLSX_RECL_COL_APELLIDO_MATERNO, true, Constantes.XLSX_RECL_CAB_APELLIDO_MATERNO);
-            Utilitarios.validaValorCeldaXLSX(strTipoDocumento, Constantes.TIPO_STRING, msg("reclutamiento.masivo.columna.tipoDeDocumento"),
+            Utilitarios.validaValorCeldaXLSX(strTipoDocumento, Constantes.TIPO_STRING, msg("reclMasivo.col.tipoDoc"),
                     lstErrors, row, Constantes.XLSX_RECL_COL_TIPO_DOCUMENTO, true, Constantes.XLSX_RECL_CAB_TIPO_DOCUMENTO);
-            Utilitarios.validaValorCeldaXLSX(strNroDocumento, Constantes.TIPO_STRING, msg("reclutamiento.masivo.columna.nroDeDocumento"),
+            Utilitarios.validaValorCeldaXLSX(strNroDocumento, Constantes.TIPO_STRING, msg("reclMasivo.col.nroDoc"),
                     lstErrors, row, Constantes.XLSX_RECL_COL_NRO_DOCUMENTO, true, Constantes.XLSX_RECL_CAB_NRO_DOCUMENTO);
-            Utilitarios.validaValorCeldaXLSX(strFechaNacimiento, Constantes.TIPO_STRING, msg("reclutamiento.masivo.columna.fechaDeNacimiento"),
+            Utilitarios.validaValorCeldaXLSX(strFechaNacimiento, Constantes.TIPO_STRING, msg("reclMasivo.col.fechaNac"),
                     lstErrors, row, Constantes.XLSX_RECL_COL_FECHA_NACIMIENTO, true, Constantes.XLSX_RECL_CAB_FECHA_NACIMIENTO);
-            Utilitarios.validaValorCeldaXLSX(strDepartamento, Constantes.TIPO_STRING, msg("reclutamiento.masivo.columna.departamento"),
+            Utilitarios.validaValorCeldaXLSX(strDepartamento, Constantes.TIPO_STRING, msg("reclMasivo.col.departamento"),
                     lstErrors, row, Constantes.XLSX_RECL_COL_DEPARTAMENTO, true, Constantes.XLSX_RECL_CAB_DEPARTAMENTO);
-            Utilitarios.validaValorCeldaXLSX(strDistrito, Constantes.TIPO_STRING, msg("reclutamiento.masivo.columna.distrito"),
+            Utilitarios.validaValorCeldaXLSX(strDistrito, Constantes.TIPO_STRING, msg("reclMasivo.col.distrito"),
                     lstErrors, row, Constantes.XLSX_RECL_COL_DISTRITO, true, Constantes.XLSX_RECL_CAB_DISTRITO);
-            Utilitarios.validaValorCeldaXLSX(strDireccion, Constantes.TIPO_STRING, msg("reclutamiento.masivo.columna.direccion"),
+            Utilitarios.validaValorCeldaXLSX(strDireccion, Constantes.TIPO_STRING, msg("reclMasivo.col.direccion"),
                     lstErrors, row, Constantes.XLSX_RECL_COL_DIRECCION, true, Constantes.XLSX_RECL_CAB_DIRECCION);
-            Utilitarios.validaValorCeldaXLSX(strCorreo, Constantes.TIPO_STRING, msg("reclutamiento.masivo.columna.correo"),
+            Utilitarios.validaValorCeldaXLSX(strCorreo, Constantes.TIPO_STRING, msg("reclMasivo.col.correo"),
                     lstErrors, row, Constantes.XLSX_RECL_COL_CORREO, true, Constantes.XLSX_RECL_CAB_CORREO);
-            Utilitarios.validaValorCeldaXLSX(strCelular, Constantes.TIPO_STRING, msg("reclutamiento.masivo.columna.celular"),
+            Utilitarios.validaValorCeldaXLSX(strCelular, Constantes.TIPO_STRING, msg("reclMasivo.col.celular"),
                     lstErrors, row, Constantes.XLSX_RECL_COL_CELULAR, true, Constantes.XLSX_RECL_CAB_CELULAR);
-            Utilitarios.validaValorCeldaXLSX(strTelefono, Constantes.TIPO_STRING, msg("reclutamiento.masivo.columna.telefono"),
+            Utilitarios.validaValorCeldaXLSX(strTelefono, Constantes.TIPO_STRING, msg("reclMasivo.col.telefono"),
                     lstErrors, row, Constantes.XLSX_RECL_COL_TELEFONO, true, Constantes.XLSX_RECL_CAB_TELEFONO);
 
             //informacion academica
@@ -190,19 +191,19 @@ public class RegistrarReclutamientoMasivoView extends BaseView implements Serial
             String strFechaFin = Utilitarios.obtieneDatoCelda(row, Constantes.XLSX_RECL_COL_FECHA_FIN);
             String strLogro = Utilitarios.obtieneDatoCelda(row, Constantes.XLSX_RECL_COL_LOGRO);
 
-            Utilitarios.validaValorCeldaXLSX(strInfoAcademica, Constantes.TIPO_STRING, msg("reclutamiento.masivo.columna.infoAcademica"),
+            Utilitarios.validaValorCeldaXLSX(strInfoAcademica, Constantes.TIPO_STRING, msg("reclMasivo.col.infoAcademica"),
                     lstErrors, row, Constantes.XLSX_RECL_COL_INFO_ACADEMICA, true, Constantes.XLSX_RECL_CAB_INFO_ACADEMICA);
-            Utilitarios.validaValorCeldaXLSX(strNombreAcademico, Constantes.TIPO_STRING, msg("reclutamiento.masivo.columna.nombreAcademico"),
+            Utilitarios.validaValorCeldaXLSX(strNombreAcademico, Constantes.TIPO_STRING, msg("reclMasivo.col.nombreAcademico"),
                     lstErrors, row, Constantes.XLSX_RECL_COL_NOMBRE_ACADEMICO, true, Constantes.XLSX_RECL_CAB_NOMBRE_ACADEMICO);
-            Utilitarios.validaValorCeldaXLSX(strEspecialidad, Constantes.TIPO_STRING, msg("reclutamiento.masivo.columna.especialidad"),
+            Utilitarios.validaValorCeldaXLSX(strEspecialidad, Constantes.TIPO_STRING, msg("reclMasivo.col.especialidad"),
                     lstErrors, row, Constantes.XLSX_RECL_COL_ESPECIALIDAD, true, Constantes.XLSX_RECL_CAB_ESPECIALIDAD);
-            Utilitarios.validaValorCeldaXLSX(strGrado, Constantes.TIPO_STRING, msg("reclutamiento.masivo.columna.grado"),
+            Utilitarios.validaValorCeldaXLSX(strGrado, Constantes.TIPO_STRING, msg("reclMasivo.col.grado"),
                     lstErrors, row, Constantes.XLSX_RECL_COL_GRADO, true, Constantes.XLSX_RECL_CAB_GRADO);
-            Utilitarios.validaValorCeldaXLSX(strFechaInicio, Constantes.TIPO_STRING, msg("reclutamiento.masivo.columna.fechaInicio"),
+            Utilitarios.validaValorCeldaXLSX(strFechaInicio, Constantes.TIPO_STRING, msg("reclMasivo.col.fechaInicio"),
                     lstErrors, row, Constantes.XLSX_RECL_COL_FECHA_INICIO, true, Constantes.XLSX_RECL_CAB_FECHA_INICIO);
-            Utilitarios.validaValorCeldaXLSX(strFechaFin, Constantes.TIPO_STRING, msg("reclutamiento.masivo.columna.fechaFin"),
+            Utilitarios.validaValorCeldaXLSX(strFechaFin, Constantes.TIPO_STRING, msg("reclMasivo.col.fechaFin"),
                     lstErrors, row, Constantes.XLSX_RECL_COL_FECHA_FIN, true, Constantes.XLSX_RECL_CAB_FECHA_FIN);
-            Utilitarios.validaValorCeldaXLSX(strLogro, Constantes.TIPO_STRING, msg("reclutamiento.masivo.columna.logro"),
+            Utilitarios.validaValorCeldaXLSX(strLogro, Constantes.TIPO_STRING, msg("reclMasivo.col.logro"),
                     lstErrors, row, Constantes.XLSX_RECL_COL_LOGRO, true, Constantes.XLSX_RECL_CAB_LOGRO);
 
             //informacion de conocimientos
@@ -211,11 +212,11 @@ public class RegistrarReclutamientoMasivoView extends BaseView implements Serial
             String strConocimiento = Utilitarios.obtieneDatoCelda(row, Constantes.XLSX_RECL_COL_CONOCIMIENTO);
             String strNivel = Utilitarios.obtieneDatoCelda(row, Constantes.XLSX_RECL_COL_NIVEL);
 
-            Utilitarios.validaValorCeldaXLSX(strInfoConocimientos, Constantes.TIPO_STRING, msg("reclutamiento.masivo.columna.infoConocimientos"),
+            Utilitarios.validaValorCeldaXLSX(strInfoConocimientos, Constantes.TIPO_STRING, msg("reclMasivo.col.infoConocimiento"),
                     lstErrors, row, Constantes.XLSX_RECL_COL_INFO_CONOCIMIENTOS, true, Constantes.XLSX_RECL_CAB_INFO_CONOCIMIENTOS);
-            Utilitarios.validaValorCeldaXLSX(strConocimiento, Constantes.TIPO_STRING, msg("reclutamiento.masivo.columna.conocimiento"),
+            Utilitarios.validaValorCeldaXLSX(strConocimiento, Constantes.TIPO_STRING, msg("reclMasivo.col.conocimiento"),
                     lstErrors, row, Constantes.XLSX_RECL_COL_CONOCIMIENTO, true, Constantes.XLSX_RECL_CAB_CONOCIMIENTO);
-            Utilitarios.validaValorCeldaXLSX(strNivel, Constantes.TIPO_STRING, msg("reclutamiento.masivo.columna.nivel"),
+            Utilitarios.validaValorCeldaXLSX(strNivel, Constantes.TIPO_STRING, msg("reclMasivo.col.nivel"),
                     lstErrors, row, Constantes.XLSX_RECL_COL_NIVEL, true, Constantes.XLSX_RECL_CAB_NIVEL);
 
             //informacion de experiencias
@@ -227,17 +228,17 @@ public class RegistrarReclutamientoMasivoView extends BaseView implements Serial
             String strFechaInicioEmpresa = Utilitarios.obtieneDatoCelda(row, Constantes.XLSX_RECL_COL_FECHA_INICIO);
             String strFechaFinEmpresa = Utilitarios.obtieneDatoCelda(row, Constantes.XLSX_RECL_COL_FECHA_FIN);
 
-            Utilitarios.validaValorCeldaXLSX(strInfoExperiencias, Constantes.TIPO_STRING, msg("reclutamiento.masivo.columna.infoExperiencias"),
+            Utilitarios.validaValorCeldaXLSX(strInfoExperiencias, Constantes.TIPO_STRING, msg("reclMasivo.col.infoExperiencia"),
                     lstErrors, row, Constantes.XLSX_RECL_COL_INFO_EXPERIENCIAS, true, Constantes.XLSX_RECL_CAB_INFO_EXPERIENCIAS);
-            Utilitarios.validaValorCeldaXLSX(strNombreEmpresa, Constantes.TIPO_STRING, msg("reclutamiento.masivo.columna.nombreEmpresa"),
+            Utilitarios.validaValorCeldaXLSX(strNombreEmpresa, Constantes.TIPO_STRING, msg("reclMasivo.col.nombreEmpresa"),
                     lstErrors, row, Constantes.XLSX_RECL_COL_NOMBRE_EMPRESA, true, Constantes.XLSX_RECL_CAB_NOMBRE_DE_EMPRESA);
-            Utilitarios.validaValorCeldaXLSX(strCargoEmpresa, Constantes.TIPO_STRING, msg("reclutamiento.masivo.columna.cargo"),
+            Utilitarios.validaValorCeldaXLSX(strCargoEmpresa, Constantes.TIPO_STRING, msg("reclMasivo.col.cargo"),
                     lstErrors, row, Constantes.XLSX_RECL_COL_CARGO, true, Constantes.XLSX_RECL_CAB_CARGO);
-            Utilitarios.validaValorCeldaXLSX(strLogroEmpresa, Constantes.TIPO_STRING, msg("reclutamiento.masivo.columna.logro"),
+            Utilitarios.validaValorCeldaXLSX(strLogroEmpresa, Constantes.TIPO_STRING, msg("reclMasivo.col.logro"),
                     lstErrors, row, Constantes.XLSX_RECL_COL_LOGRO_EXPERIENCIA, true, Constantes.XLSX_RECL_CAB_LOGRO);
-            Utilitarios.validaValorCeldaXLSX(strFechaInicioEmpresa, Constantes.TIPO_STRING, msg("reclutamiento.masivo.columna.fechaInicio"),
+            Utilitarios.validaValorCeldaXLSX(strFechaInicioEmpresa, Constantes.TIPO_STRING, msg("reclMasivo.col.fechaInicio"),
                     lstErrors, row, Constantes.XLSX_RECL_COL_FECHA_INICIO, true, Constantes.XLSX_RECL_CAB_FECHA_INICIO);
-            Utilitarios.validaValorCeldaXLSX(strFechaFinEmpresa, Constantes.TIPO_STRING, msg("reclutamiento.masivo.columna.fechaFin"),
+            Utilitarios.validaValorCeldaXLSX(strFechaFinEmpresa, Constantes.TIPO_STRING, msg("reclMasivo.col.fechaFin"),
                     lstErrors, row, Constantes.XLSX_RECL_COL_FECHA_FIN, true, Constantes.XLSX_RECL_CAB_FECHA_FIN);
 
             //informacion de referencias
@@ -248,15 +249,15 @@ public class RegistrarReclutamientoMasivoView extends BaseView implements Serial
             String strCelularReferido = Utilitarios.obtieneDatoCelda(row, Constantes.XLSX_RECL_COL_CELULAR_REFERENCIA);
             String strTelefonoReferido = Utilitarios.obtieneDatoCelda(row, Constantes.XLSX_RECL_COL_TELEFONO_REFERENCIA);
 
-            Utilitarios.validaValorCeldaXLSX(strInfoReferencias, Constantes.TIPO_STRING, msg("reclutamiento.masivo.columna.infoReferencias"),
+            Utilitarios.validaValorCeldaXLSX(strInfoReferencias, Constantes.TIPO_STRING, msg("reclMasivo.col.infoReferencia"),
                     lstErrors, row, Constantes.XLSX_RECL_COL_INFO_REFERENCIAS, true, Constantes.XLSX_RECL_CAB_INFO_REFERENCIAS);
-            Utilitarios.validaValorCeldaXLSX(strNombreReferido, Constantes.TIPO_STRING, msg("reclutamiento.masivo.columna.nombreDeReferido"),
+            Utilitarios.validaValorCeldaXLSX(strNombreReferido, Constantes.TIPO_STRING, msg("reclMasivo.col.nombreReferido"),
                     lstErrors, row, Constantes.XLSX_RECL_COL_NOMBRE_REFERIDO, true, Constantes.XLSX_RECL_CAB_NOMBRE_DE_REFERIDO);
-            Utilitarios.validaValorCeldaXLSX(strCargoReferido, Constantes.TIPO_STRING, msg("reclutamiento.masivo.columna.cargo"),
+            Utilitarios.validaValorCeldaXLSX(strCargoReferido, Constantes.TIPO_STRING, msg("reclMasivo.col.cargo"),
                     lstErrors, row, Constantes.XLSX_RECL_COL_CARGO, true, Constantes.XLSX_RECL_CAB_CARGO);
-            Utilitarios.validaValorCeldaXLSX(strCelularReferido, Constantes.TIPO_STRING, msg("reclutamiento.masivo.columna.celular"),
+            Utilitarios.validaValorCeldaXLSX(strCelularReferido, Constantes.TIPO_STRING, msg("reclMasivo.col.celular"),
                     lstErrors, row, Constantes.XLSX_RECL_COL_CELULAR_REFERENCIA, true, Constantes.XLSX_RECL_CAB_CELULAR);
-            Utilitarios.validaValorCeldaXLSX(strTelefonoReferido, Constantes.TIPO_STRING, msg("reclutamiento.masivo.columna.telefono"),
+            Utilitarios.validaValorCeldaXLSX(strTelefonoReferido, Constantes.TIPO_STRING, msg("reclMasivo.col.telefono"),
                     lstErrors, row, Constantes.XLSX_RECL_COL_TELEFONO_REFERENCIA, true, Constantes.XLSX_RECL_CAB_TELEFONO);
 
         } catch (Exception ex) {
@@ -298,29 +299,29 @@ public class RegistrarReclutamientoMasivoView extends BaseView implements Serial
                     Integer cel = Integer.parseInt(Utilitarios.obtieneDatoCelda(row, Constantes.XLSX_RECL_COL_CELULAR));
                     Integer tel = Integer.parseInt(Utilitarios.obtieneDatoCelda(row, Constantes.XLSX_RECL_COL_TELEFONO));
 
-                    Utilitarios.validaValorCeldaXLSX(nombres, Constantes.TIPO_STRING, msg("reclutamiento.masivo.columna.nombres"), 
+                    Utilitarios.validaValorCeldaXLSX(nombres, Constantes.TIPO_STRING, msg("reclMasivo.col.nombres"),
                             lstErrors, row, Constantes.XLSX_RECL_COL_NOMBRES, true);
-                    Utilitarios.validaValorCeldaXLSX(apePater, Constantes.TIPO_STRING, msg("reclutamiento.masivo.columna.apellidoPaterno"), 
+                    Utilitarios.validaValorCeldaXLSX(apePater, Constantes.TIPO_STRING, msg("reclMasivo.col.apePaterno"),
                             lstErrors, row, Constantes.XLSX_RECL_COL_APELLIDO_PATERNO, true);
-                    Utilitarios.validaValorCeldaXLSX(apeMater, Constantes.TIPO_STRING, msg("reclutamiento.masivo.columna.apellidoMaterno"), 
+                    Utilitarios.validaValorCeldaXLSX(apeMater, Constantes.TIPO_STRING, msg("reclMasivo.col.apeMaterno"),
                             lstErrors, row, Constantes.XLSX_RECL_COL_APELLIDO_MATERNO, true);
-                    Utilitarios.validaValorCeldaXLSX(tipoDoc, Constantes.TIPO_STRING, msg("reclutamiento.masivo.columna.tipoDeDocumento"), 
+                    Utilitarios.validaValorCeldaXLSX(tipoDoc, Constantes.TIPO_STRING, msg("reclMasivo.col.tipoDoc"),
                             lstErrors, row, Constantes.XLSX_RECL_COL_TIPO_DOCUMENTO, true);
-                    Utilitarios.validaValorCeldaXLSX(nroDoc, Constantes.TIPO_INTEGER, msg("reclutamiento.masivo.columna.nroDeDocumento"), 
+                    Utilitarios.validaValorCeldaXLSX(nroDoc, Constantes.TIPO_INTEGER, msg("reclMasivo.col.nroDoc"),
                             lstErrors, row, Constantes.XLSX_RECL_COL_NRO_DOCUMENTO, true);
-                    Utilitarios.validaValorCeldaXLSX(fechaNac, Constantes.TIPO_STRING, msg("reclutamiento.masivo.columna.fechaDeNacimiento"), 
+                    Utilitarios.validaValorCeldaXLSX(fechaNac, Constantes.TIPO_STRING, msg("reclMasivo.col.fechaNac"),
                             lstErrors, row, Constantes.XLSX_RECL_COL_FECHA_NACIMIENTO, true);
-                    Utilitarios.validaValorCeldaXLSX(depart, Constantes.TIPO_STRING, msg("reclutamiento.masivo.columna.departamento"), 
+                    Utilitarios.validaValorCeldaXLSX(depart, Constantes.TIPO_STRING, msg("reclMasivo.col.departamento"),
                             lstErrors, row, Constantes.XLSX_RECL_COL_DEPARTAMENTO, true);
-                    Utilitarios.validaValorCeldaXLSX(distr, Constantes.TIPO_STRING, msg("reclutamiento.masivo.columna.distrito"), 
+                    Utilitarios.validaValorCeldaXLSX(distr, Constantes.TIPO_STRING, msg("reclMasivo.col.distrito"),
                             lstErrors, row, Constantes.XLSX_RECL_COL_DISTRITO, true);
-                    Utilitarios.validaValorCeldaXLSX(dir, Constantes.TIPO_STRING, msg("reclutamiento.masivo.columna.direccion"), 
+                    Utilitarios.validaValorCeldaXLSX(dir, Constantes.TIPO_STRING, msg("reclMasivo.col.direccion"),
                             lstErrors, row, Constantes.XLSX_RECL_COL_DIRECCION, true);
-                    Utilitarios.validaValorCeldaXLSX(email, Constantes.TIPO_STRING, msg("reclutamiento.masivo.columna.correo"), 
+                    Utilitarios.validaValorCeldaXLSX(email, Constantes.TIPO_STRING, msg("reclMasivo.col.correo"),
                             lstErrors, row, Constantes.XLSX_RECL_COL_CORREO, true);
-                    Utilitarios.validaValorCeldaXLSX(cel, Constantes.TIPO_INTEGER, msg("reclutamiento.masivo.columna.celular"), 
+                    Utilitarios.validaValorCeldaXLSX(cel, Constantes.TIPO_INTEGER, msg("reclMasivo.col.celular"),
                             lstErrors, row, Constantes.XLSX_RECL_COL_CELULAR, true);
-                    Utilitarios.validaValorCeldaXLSX(tel, Constantes.TIPO_INTEGER, msg("reclutamiento.masivo.columna.telefono"), 
+                    Utilitarios.validaValorCeldaXLSX(tel, Constantes.TIPO_INTEGER, msg("reclMasivo.col.telefono"),
                             lstErrors, row, Constantes.XLSX_RECL_COL_TELEFONO, true);
 
                 } else if (strTipoInfo.equals(Constantes.XLSX_RECL_CAB_INFO_ACADEMICA)) {
@@ -332,17 +333,17 @@ public class RegistrarReclutamientoMasivoView extends BaseView implements Serial
                     String fechaFin = Utilitarios.obtieneDatoCelda(row, Constantes.XLSX_RECL_COL_FECHA_FIN);
                     String logro = Utilitarios.obtieneDatoCelda(row, Constantes.XLSX_RECL_COL_LOGRO);
 
-                    Utilitarios.validaValorCeldaXLSX(nomAcad, Constantes.TIPO_STRING, msg("reclutamiento.masivo.columna.nombreAcademico"), 
+                    Utilitarios.validaValorCeldaXLSX(nomAcad, Constantes.TIPO_STRING, msg("reclMasivo.col.nombreAcademico"),
                             lstErrors, row, Constantes.XLSX_RECL_COL_NOMBRE_ACADEMICO, true);
-                    Utilitarios.validaValorCeldaXLSX(espec, Constantes.TIPO_STRING, msg("reclutamiento.masivo.columna.especialidad"), 
+                    Utilitarios.validaValorCeldaXLSX(espec, Constantes.TIPO_STRING, msg("reclMasivo.col.especialidad"),
                             lstErrors, row, Constantes.XLSX_RECL_COL_ESPECIALIDAD, true);
-                    Utilitarios.validaValorCeldaXLSX(grado, Constantes.TIPO_STRING, msg("reclutamiento.masivo.columna.grado"), 
+                    Utilitarios.validaValorCeldaXLSX(grado, Constantes.TIPO_STRING, msg("reclMasivo.col.grado"),
                             lstErrors, row, Constantes.XLSX_RECL_COL_GRADO, true);
-                    Utilitarios.validaValorCeldaXLSX(fechaIni, Constantes.TIPO_STRING, msg("reclutamiento.masivo.columna.fechaInicio"), 
+                    Utilitarios.validaValorCeldaXLSX(fechaIni, Constantes.TIPO_STRING, msg("reclMasivo.col.fechaInicio"),
                             lstErrors, row, Constantes.XLSX_RECL_COL_FECHA_INICIO, true);
-                    Utilitarios.validaValorCeldaXLSX(fechaFin, Constantes.TIPO_STRING, msg("reclutamiento.masivo.columna.fechaFin"), 
+                    Utilitarios.validaValorCeldaXLSX(fechaFin, Constantes.TIPO_STRING, msg("reclMasivo.col.fechaFin"),
                             lstErrors, row, Constantes.XLSX_RECL_COL_FECHA_FIN, true);
-                    Utilitarios.validaValorCeldaXLSX(logro, Constantes.TIPO_STRING, msg("reclutamiento.masivo.columna.logro"), 
+                    Utilitarios.validaValorCeldaXLSX(logro, Constantes.TIPO_STRING, msg("reclMasivo.col.logro"),
                             lstErrors, row, Constantes.XLSX_RECL_COL_LOGRO, true);
 
                 } else if (strTipoInfo.equals(Constantes.XLSX_RECL_CAB_INFO_CONOCIMIENTOS)) {
@@ -350,9 +351,9 @@ public class RegistrarReclutamientoMasivoView extends BaseView implements Serial
                     String con = Utilitarios.obtieneDatoCelda(row, Constantes.XLSX_RECL_COL_CONOCIMIENTO);
                     String niv = Utilitarios.obtieneDatoCelda(row, Constantes.XLSX_RECL_COL_NIVEL);
 
-                    Utilitarios.validaValorCeldaXLSX(con, Constantes.TIPO_STRING, msg("reclutamiento.masivo.columna.conocimiento"), 
+                    Utilitarios.validaValorCeldaXLSX(con, Constantes.TIPO_STRING, msg("reclMasivo.col.conocimiento"),
                             lstErrors, row, Constantes.XLSX_RECL_COL_CONOCIMIENTO, true);
-                    Utilitarios.validaValorCeldaXLSX(niv, Constantes.TIPO_STRING, msg("reclutamiento.masivo.columna.nivel"), 
+                    Utilitarios.validaValorCeldaXLSX(niv, Constantes.TIPO_STRING, msg("reclMasivo.col.nivel"),
                             lstErrors, row, Constantes.XLSX_RECL_COL_NIVEL, true);
 
                 } else if (strTipoInfo.equals(Constantes.XLSX_RECL_CAB_INFO_EXPERIENCIAS)) {
@@ -363,15 +364,15 @@ public class RegistrarReclutamientoMasivoView extends BaseView implements Serial
                     String fechaIni = Utilitarios.obtieneDatoCelda(row, Constantes.XLSX_RECL_COL_FECHA_INICIO);
                     String fechaFin = Utilitarios.obtieneDatoCelda(row, Constantes.XLSX_RECL_COL_FECHA_FIN);
 
-                    Utilitarios.validaValorCeldaXLSX(nomEm, Constantes.TIPO_STRING, msg("reclutamiento.masivo.columna.nombreEmpresa"), 
+                    Utilitarios.validaValorCeldaXLSX(nomEm, Constantes.TIPO_STRING, msg("reclMasivo.col.nombreEmpresa"),
                             lstErrors, row, Constantes.XLSX_RECL_COL_NOMBRE_EMPRESA, true);
-                    Utilitarios.validaValorCeldaXLSX(cargo, Constantes.TIPO_STRING, msg("reclutamiento.masivo.columna.cargo"), 
+                    Utilitarios.validaValorCeldaXLSX(cargo, Constantes.TIPO_STRING, msg("reclMasivo.col.cargo"),
                             lstErrors, row, Constantes.XLSX_RECL_COL_CARGO, true);
-                    Utilitarios.validaValorCeldaXLSX(logro, Constantes.TIPO_STRING, msg("reclutamiento.masivo.columna.logro"), 
+                    Utilitarios.validaValorCeldaXLSX(logro, Constantes.TIPO_STRING, msg("reclMasivo.col.logro"),
                             lstErrors, row, Constantes.XLSX_RECL_COL_LOGRO_EXPERIENCIA, true);
-                    Utilitarios.validaValorCeldaXLSX(fechaIni, Constantes.TIPO_STRING, msg("reclutamiento.masivo.columna.fechaInicio"), 
+                    Utilitarios.validaValorCeldaXLSX(fechaIni, Constantes.TIPO_STRING, msg("reclMasivo.col.fechaInicio"),
                             lstErrors, row, Constantes.XLSX_RECL_COL_FECHA_INICIO, true);
-                    Utilitarios.validaValorCeldaXLSX(fechaFin, Constantes.TIPO_STRING, msg("reclutamiento.masivo.columna.fechaFin"), 
+                    Utilitarios.validaValorCeldaXLSX(fechaFin, Constantes.TIPO_STRING, msg("reclMasivo.col.fechaFin"),
                             lstErrors, row, Constantes.XLSX_RECL_COL_FECHA_FIN, true);
 
                 } else if (strTipoInfo.equals(Constantes.XLSX_RECL_CAB_INFO_REFERENCIAS)) {
@@ -381,13 +382,13 @@ public class RegistrarReclutamientoMasivoView extends BaseView implements Serial
                     Integer cel = Integer.parseInt(Utilitarios.obtieneDatoCelda(row, Constantes.XLSX_RECL_COL_CELULAR_REFERENCIA));
                     Integer tel = Integer.parseInt(Utilitarios.obtieneDatoCelda(row, Constantes.XLSX_RECL_COL_TELEFONO_REFERENCIA));
 
-                    Utilitarios.validaValorCeldaXLSX(nombRef, Constantes.TIPO_STRING, msg("reclutamiento.masivo.columna.nombreDeReferido"), 
+                    Utilitarios.validaValorCeldaXLSX(nombRef, Constantes.TIPO_STRING, msg("reclMasivo.col.nombreReferido"),
                             lstErrors, row, Constantes.XLSX_RECL_COL_NOMBRE_REFERIDO, true);
-                    Utilitarios.validaValorCeldaXLSX(cargo, Constantes.TIPO_STRING, msg("reclutamiento.masivo.columna.cargo"), 
+                    Utilitarios.validaValorCeldaXLSX(cargo, Constantes.TIPO_STRING, msg("reclMasivo.col.cargo"),
                             lstErrors, row, Constantes.XLSX_RECL_COL_CARGO, true);
-                    Utilitarios.validaValorCeldaXLSX(cel, Constantes.TIPO_INTEGER, msg("reclutamiento.masivo.columna.celular"), 
+                    Utilitarios.validaValorCeldaXLSX(cel, Constantes.TIPO_INTEGER, msg("reclMasivo.col.celular"),
                             lstErrors, row, Constantes.XLSX_RECL_COL_CELULAR_REFERENCIA, true);
-                    Utilitarios.validaValorCeldaXLSX(tel, Constantes.TIPO_INTEGER, msg("reclutamiento.masivo.columna.telefono"), 
+                    Utilitarios.validaValorCeldaXLSX(tel, Constantes.TIPO_INTEGER, msg("reclMasivo.col.telefono"),
                             lstErrors, row, Constantes.XLSX_RECL_COL_TELEFONO_REFERENCIA, true);
                 }
 
@@ -492,9 +493,9 @@ public class RegistrarReclutamientoMasivoView extends BaseView implements Serial
             filas.next();
             filas.next();
             filas.next();
-            
+
             CandidatoBean objCandidatoBean = new CandidatoBean();
-            
+
             while (filas.hasNext()) {
                 Row row = filas.next();
                 String strTipoInfo = Utilitarios.obtieneDatoCelda(row, Constantes.XLSX_RECL_COL_TIPO_INFORMACION);
@@ -513,7 +514,7 @@ public class RegistrarReclutamientoMasivoView extends BaseView implements Serial
                         String strEmail = Utilitarios.obtieneDatoCelda(row, Constantes.XLSX_RECL_COL_CORREO);
                         String strCel = Utilitarios.obtieneDatoCelda(row, Constantes.XLSX_RECL_COL_CELULAR);
                         String strTel = Utilitarios.obtieneDatoCelda(row, Constantes.XLSX_RECL_COL_TELEFONO);
-                        
+
                         objCandidatoBean.setNombre(strNombres);
                         objCandidatoBean.setApellidoParterno(strApePater);
                         objCandidatoBean.setApellidoMaterno(strApeMater);
